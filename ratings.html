@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rated Places — Check-in Journal</title>
+<meta name="description" content="3,700+ venues personally rated on Foursquare — liked, neutral, and disliked places across 62 countries.">
+<link rel="canonical" href="https://4sq.andrei-patsiomkin.workers.dev/ratings.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check-in Journal">
+<meta property="og:title" content="Rated Places — Check-in Journal">
+<meta property="og:description" content="3,700+ venues personally rated on Foursquare — liked, neutral, and disliked places across 62 countries.">
+<meta property="og:url" content="https://4sq.andrei-patsiomkin.workers.dev/ratings.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rated Places — Check-in Journal">
+<meta name="twitter:description" content="3,700+ venues personally rated on Foursquare — liked, neutral, and disliked places across 62 countries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--bg:#0c0e14;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#6b7280;--gold:#e8b86d;--teal:#4ec9b0;}
+body.light{--bg:#ddd8cf;--card:#f0ece3;--card2:#e5e0d7;--border:#aaa49a;--gold:#7a3e00;--teal:#155c58;--muted:#54576a;--text:#15172a;--text2:#373b58;}
+body.light header{background:linear-gradient(160deg,#d6d1c8 0%,#dedad1 70%);}
+body.light .side-nav{background:rgba(220,215,208,0.97);}
+body.light .side-nav a:hover,body.light .side-nav button:hover{background:rgba(0,0,0,.08);}
+body.light .heatmap-tooltip,body.light .map-status{background:rgba(220,215,208,0.97);}
+body.light .card{box-shadow:0 2px 8px rgba(0,0,0,.10);}
+body.light a{color:var(--teal);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;}
+.page{display:flex;flex-direction:column;height:100vh;}
+
+/* ── Top nav ── */
+.topnav{display:flex;align-items:center;gap:20px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;}
+.topnav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);text-decoration:none;margin-right:4px;white-space:nowrap;}
+.topnav-logo:hover{opacity:.85;}
+.topnav a{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);text-decoration:none;transition:color .2s;}
+.topnav a:hover{color:var(--gold);}
+.topnav-current{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--text);}
+.gs-btn{font-family:'DM Mono',monospace;font-size:.60rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:7px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;white-space:nowrap;}
+.gs-btn:hover{border-color:var(--gold);color:var(--gold);}
+.gs-btn kbd{font-family:'DM Mono',monospace;font-size:.52rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:1px 5px;letter-spacing:0;}
+@media(max-width:520px){.gs-btn kbd{display:none;}}
+.gs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10000;backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding-top:16vh;}.gs-overlay.open{display:flex;}
+.gs-modal{background:var(--card);border:1px solid var(--border);border-radius:14px;width:min(560px,92vw);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.7);}
+.gs-input-wrap{display:flex;align-items:center;gap:10px;padding:14px 18px;}
+.gs-icon{font-size:1rem;color:var(--muted);}
+.gs-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;}
+.gs-input::placeholder{color:var(--muted);}
+.gs-esc-hint{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:2px 6px;cursor:pointer;flex-shrink:0;}
+.side-nav{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:4000;display:flex;flex-direction:column;gap:0;background:rgba(18,21,31,0.92);border:1px solid var(--border);border-right:none;border-radius:10px 0 0 10px;backdrop-filter:blur(10px);overflow:hidden;}
+.side-nav a,.side-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:52px;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);text-decoration:none;transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent;}
+.side-nav a:hover,.side-nav button:hover{background:rgba(255,255,255,.06);color:var(--text);}
+.side-nav a.active,.side-nav button.active{color:var(--gold);}
+.side-nav .sn-icon{font-size:.95rem;line-height:1;display:inline-block;transition:transform .15s;}
+.side-nav a:hover .sn-icon,.side-nav button:hover .sn-icon{transform:scale(1.28);}
+.side-nav .sn-lbl{font-family:'DM Mono',monospace;font-size:.42rem;text-transform:uppercase;letter-spacing:.05em;line-height:1;white-space:nowrap;}
+.side-nav .sn-sep{width:32px;height:1px;background:var(--border);margin:2px auto;}
+.side-nav .sn-sep--pages{width:36px;height:2px;background:var(--border);margin:3px auto;border-radius:1px;}
+@media(max-width:900px){.side-nav{display:none;}}
+
+/* ── Topbar ── */
+.topbar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;z-index:200;flex-wrap:wrap;min-height:48px;}
+.topbar h1{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;background:linear-gradient(130deg,#f5d48a,#e8b86d 50%,#b97c30);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:.05em 0 .12em;display:inline-block;white-space:nowrap;}
+.sbtn{background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--muted);padding:4px 9px;cursor:pointer;font-size:.70rem;transition:all .12s;font-family:'DM Sans',sans-serif;}
+.sbtn:hover{border-color:var(--gold);color:var(--gold);}
+.sbtn.act{border-color:var(--gold);color:var(--gold);background:rgba(232,184,109,.08);}
+.badge{font-size:.63rem;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap;}
+.srch{background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.73rem;outline:none;width:185px;}
+.srch:focus{border-color:var(--gold);}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+
+/* ── Layout ── */
+.content{display:flex;flex:1;overflow:hidden;}
+.feed-col{width:400px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;border-right:1px solid var(--border);}
+.feed-scroll{flex:1;overflow-y:auto;padding:8px;}
+.feed-scroll::-webkit-scrollbar{width:3px;}
+.feed-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px;}
+.map-col{flex:1;position:relative;min-width:0;}
+#map{position:absolute;inset:0;}
+.leaflet-container{background:#0c0e14;}
+
+/* ── Venue card ── */
+.vcard{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 15px 10px;margin-bottom:7px;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden;}
+.vcard::after{content:'';position:absolute;top:0;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.2;}
+.vcard:hover{border-color:rgba(232,184,109,.35);}
+.vcard.sel{border-color:var(--gold);}
+.vc-head{display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;}
+.vc-cat-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.vc-name{font-size:.87rem;font-weight:700;line-height:1.28;flex:1;}
+.vc-name a{color:var(--text);text-decoration:none;}
+.vc-name a:hover{color:var(--gold);}
+.vc-closed{font-family:'DM Mono',monospace;font-size:.50rem;color:#ef4444;border:1px solid rgba(239,68,68,.45);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle;white-space:nowrap;line-height:1.4;}
+.vc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.vc-loc{font-size:.70rem;color:var(--muted);display:inline-flex;align-items:center;gap:3px;}
+.vc-cat{font-family:'DM Mono',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.06em;color:var(--teal);white-space:nowrap;}
+.vc-date{font-family:'DM Mono',monospace;font-size:.60rem;color:var(--muted);white-space:nowrap;}
+.vc-rating{font-size:.85rem;display:inline-block;}
+.leaflet-rating-icon{background:none!important;border:none!important;}
+.yr-hdr{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);opacity:.7;padding:10px 4px 4px;border-bottom:1px solid var(--border);margin-bottom:6px;}
+
+/* ── Map popup ── */
+.leaflet-popup-content-wrapper{background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.80rem;}
+.leaflet-popup-tip{background:var(--card2);}
+.leaflet-popup-content{margin:10px 14px;}
+
+@media(max-width:700px){.feed-col{width:100%;border-right:none;}.map-col{display:none;}}
+@media(max-width:480px){
+  .topbar{padding:6px 10px;gap:5px;min-height:auto;}
+  .topbar h1{font-size:1rem;}
+  .srch{width:100%;order:10;margin-top:4px;}
+  .tb-right{flex-wrap:wrap;gap:5px;}
+  .sbtn{font-size:.64rem;padding:3px 7px;}
+  .badge{display:none;}
+  .vcard{padding:10px 12px 9px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="topnav">
+    <a href="index.html" class="topnav-logo">Check-in Journal</a>
+    <span class="topnav-current">Rated Places</span>
+    <button class="gs-btn" style="margin-left:auto" onclick="gsOpen()"><span>⌕</span> Search<kbd>⌘K</kbd></button>
+  </nav>
+<div class="gs-overlay" id="gsOverlay" onclick="if(event.target===this)gsClose()">
+  <div class="gs-modal"><div class="gs-input-wrap"><span class="gs-icon">⌕</span><input class="gs-input" id="gsInput" type="text" placeholder="Search venues, cities, trips…" autocomplete="off" spellcheck="false"><span class="gs-esc-hint" onclick="gsClose()">esc</span></div></div>
+</div>
+  <div class="topbar">
+    <h1>Rated Places</h1>
+    <button class="sbtn act" id="fLike"    onclick="setFilter('like',this)"><span>❤️</span> Liked <span id="cntLike" style="opacity:.55;font-size:.65rem;font-family:'DM Mono',monospace;"></span></button>
+    <button class="sbtn"     id="fNeutral" onclick="setFilter('neutral',this)"><span style="filter:grayscale(1) brightness(0.55)">😐</span> Neutral <span id="cntNeutral" style="opacity:.55;font-size:.65rem;font-family:'DM Mono',monospace;"></span></button>
+    <button class="sbtn"     id="fDislike" onclick="setFilter('dislike',this)"><span style="filter:saturate(0.25) brightness(0.55)">💔</span> Disliked <span id="cntDislike" style="opacity:.55;font-size:.65rem;font-family:'DM Mono',monospace;"></span></button>
+    <button class="sbtn"     id="fClosed"  onclick="toggleClosed(this)">Closed only</button>
+    <select class="sbtn" id="fYear" onchange="setYear(this.value)" style="padding:4px 7px;cursor:pointer;"></select>
+    <div class="tb-right">
+      <input class="srch" id="srch" type="text" placeholder="Search venues, cities…" oninput="onSearch(this.value)">
+      <span class="badge" id="badge"></span>
+    </div>
+  </div>
+  <div class="content">
+    <div class="feed-col">
+      <div class="feed-scroll" id="feedScroll"></div>
+    </div>
+    <div class="map-col">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const ALL = [{"id":"679e401b9c2d6d575bcbffe5","name":"Банька у Деда","url":"","rating":"like","city":"Domoshany","country":"Belarus","nc":"Belarus","nci":"Domoshany","category":"Bath House","lat":"53.989975","lng":"27.958328","last_ts":1775239151,"last_date":"03 Apr 2026","closed":false,"rate_idx":0,"created_at":1757179305},{"id":"4f92fe6be4b08038d78cc77a","name":"Беседка На Набережной","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Other Great Outdoors","lat":"53.90932037426414","lng":"27.568152202916625","last_ts":1773926212,"last_date":"19 Mar 2026","closed":false,"rate_idx":1,"created_at":1751883249},{"id":"4fe7762be4b0a0c3b0bf1679","name":"Автобус №57","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Bus Line","lat":"53.90000823101765","lng":"27.56840039797603","last_ts":1775455938,"last_date":"06 Apr 2026","closed":false,"rate_idx":2,"created_at":1740319374},{"id":"5700fbe0498ec48730b87f88","name":"26","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.89207409593642","lng":"27.55591569842241","last_ts":1773646610,"last_date":"16 Mar 2026","closed":false,"rate_idx":3,"created_at":1741705206},{"id":"58604d9a6cea3f1bbabc58a3","name":"Всё как он любит","url":"","rating":"like","city":"Gomel","country":"Belarus","nc":"Belarus","nci":"Gomel","category":"Café","lat":"52.426158845358806","lng":"31.015455845280542","last_ts":1773509945,"last_date":"14 Mar 2026","closed":false,"rate_idx":4,"created_at":1773509945},{"id":"51c1e843498e3151239a0300","name":"Квартирник","url":"","rating":"like","city":"Gomel","country":"Belarus","nc":"Belarus","nci":"Gomel","category":"Bar","lat":"52.42723587623677","lng":"31.02025566366151","last_ts":1773505452,"last_date":"14 Mar 2026","closed":false,"rate_idx":5,"created_at":1773505452},{"id":"5c4ded9c826444002c2b8ea9","name":"Сябры","url":"","rating":"like","city":"Gomel","country":"Belarus","nc":"Belarus","nci":"Gomel","category":"Belarusian Restaurant","lat":"52.427326","lng":"31.003883","last_ts":1773489117,"last_date":"14 Mar 2026","closed":false,"rate_idx":6,"created_at":1773489117},{"id":"61bf3c5c5f0af210361157b1","name":"Культурно-деловой квартал К21","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Cultural Center","lat":"53.905907","lng":"27.52761","last_ts":1772535848,"last_date":"03 Mar 2026","closed":false,"rate_idx":7,"created_at":1748204120},{"id":"6277bdd0f205340a819dbd25","name":"Martinique Brasserie & Bar","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Restaurant","lat":"53.900684","lng":"27.551487","last_ts":1772979264,"last_date":"08 Mar 2026","closed":false,"rate_idx":8,"created_at":1772979264},{"id":"55747d82498e7f383802a053","name":"Студия красоты \"Selfie\"","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Hair Salon","lat":"53.889784339156485","lng":"27.524464458959205","last_ts":1772776928,"last_date":"06 Mar 2026","closed":false,"rate_idx":9,"created_at":1772776928},{"id":"6649d994907ded0712db4d11","name":"Молодёжная 10","url":"","rating":"like","city":"Khimki","country":"Russia","nc":"Russia","nci":"Khimki","category":"Home (private)","lat":"55.883812279746394","lng":"37.42081213394161","last_ts":1772314809,"last_date":"28 Feb 2026","closed":false,"rate_idx":10,"created_at":1772229630},{"id":"6330724fbb126a0609b7ad87","name":"River Espresso Club","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.908165","lng":"27.55557","last_ts":1771436300,"last_date":"18 Feb 2026","closed":false,"rate_idx":11,"created_at":1771436300},{"id":"5099697de4b075aab8948038","name":"Шафарнянская 6","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Home (private)","lat":"53.95121370407149","lng":"27.683621923489763","last_ts":1771085638,"last_date":"14 Feb 2026","closed":false,"rate_idx":12,"created_at":1771085638},{"id":"679604847372f6262297260f","name":"Nova Shangrila Spa","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Spa","lat":"53.89546","lng":"27.554873","last_ts":1770118672,"last_date":"03 Feb 2026","closed":false,"rate_idx":13,"created_at":1770118672},{"id":"68ee50f964fe3c5d0b080bb2","name":"Цех","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.89741","lng":"27.605722","last_ts":1770563945,"last_date":"08 Feb 2026","closed":false,"rate_idx":14,"created_at":1769861376},{"id":"4c255dca905a0f4764796160","name":"Minsk Railway Station (Чыгуначны вакзал «Мінск-Пасажырскі»)","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Rail Station","lat":"53.89085594183186","lng":"27.550828365039173","last_ts":1773939761,"last_date":"19 Mar 2026","closed":false,"rate_idx":15,"created_at":1740326921},{"id":"55db4db9498ee9a17cd1f246","name":"Dana Mall","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Shopping Mall","lat":"53.93358027582532","lng":"27.65207290649414","last_ts":1772870125,"last_date":"07 Mar 2026","closed":false,"rate_idx":16,"created_at":1744741375},{"id":"696a287360967c1c2162517d","name":"Sueno","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Spanish Restaurant","lat":"53.90167","lng":"27.553013","last_ts":1768564887,"last_date":"16 Jan 2026","closed":false,"rate_idx":17,"created_at":1768564887},{"id":"68c2d0542a1b75082bbfac04","name":"ЖК \"Северный Берег\"","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Housing Development","lat":"53.962383","lng":"27.566189","last_ts":1768050207,"last_date":"10 Jan 2026","closed":false,"rate_idx":18,"created_at":1757597792},{"id":"66f038311122816c4eb1a6f8","name":"Rixo","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.91396","lng":"27.566021","last_ts":1767979635,"last_date":"09 Jan 2026","closed":false,"rate_idx":19,"created_at":1767979635},{"id":"683af4ef2c66f97bdcb0f873","name":"Black Coffee","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Café","lat":"53.96167","lng":"27.56831","last_ts":1768054025,"last_date":"10 Jan 2026","closed":false,"rate_idx":20,"created_at":1768054025},{"id":"512203a5e4b093808d20de87","name":"Кафе РУП «Белстройцентр»","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Corporate Cafeteria","lat":"53.89085020847565","lng":"27.520342328221005","last_ts":1775221099,"last_date":"03 Apr 2026","closed":false,"rate_idx":21,"created_at":1741611432},{"id":"58ba97964bc2f1632a353e04","name":"Stories","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.900877","lng":"27.552514","last_ts":1774202986,"last_date":"22 Mar 2026","closed":false,"rate_idx":22,"created_at":1763404048},{"id":"4f9298bae4b01143d17a91bd","name":"Улица Карла Маркса","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Road","lat":"53.89827854771349","lng":"27.55826167923677","last_ts":1774020693,"last_date":"20 Mar 2026","closed":false,"rate_idx":23,"created_at":1757339315},{"id":"68e6a2a3c70dea212ec2289f","name":"Часы на Комсомольской","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Monument","lat":"53.902634","lng":"27.551916","last_ts":1771165598,"last_date":"15 Feb 2026","closed":false,"rate_idx":24,"created_at":1760351480},{"id":"4e6fa859e4cdd991624c7a02","name":"Привокзальная площадь (Прывакзальная плошча)","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Plaza","lat":"53.891353349574395","lng":"27.551157474517822","last_ts":1774623994,"last_date":"27 Mar 2026","closed":false,"rate_idx":25,"created_at":1741558534},{"id":"4db07be48154905aadad6c40","name":"Soviet Square (Советская площадь / Soviet Square)","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Plaza","lat":"53.67791993285299","lng":"23.8295909166191","last_ts":1770896122,"last_date":"12 Feb 2026","closed":false,"rate_idx":26,"created_at":1739011252},{"id":"561f9bb2498e17de8d4c3918","name":"ZIKO","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Watch Store","lat":"53.90184771255138","lng":"27.55348563194275","last_ts":1775457691,"last_date":"06 Apr 2026","closed":false,"rate_idx":27,"created_at":1740229378},{"id":"61ec945f9efff27d1ff9281f","name":"Капелла","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.91909","lng":"27.58681","last_ts":1763664271,"last_date":"20 Nov 2025","closed":false,"rate_idx":28,"created_at":1763664271},{"id":"68fbc94194af1f69d66b73d8","name":"Vesna","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Café","lat":"53.88695","lng":"27.517244","last_ts":1767967752,"last_date":"09 Jan 2026","closed":false,"rate_idx":29,"created_at":1763642851},{"id":"501ec326e4b0d43ab64feba1","name":"Станция метро «Грушевка»","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Metro Station","lat":"53.88862212532352","lng":"27.5150081137769","last_ts":1775298239,"last_date":"04 Apr 2026","closed":false,"rate_idx":30,"created_at":1740222522},{"id":"691e183811dff730641d8cec","name":"Lidbeer Bar Музей Пива","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Beer Bar","lat":"53.90177","lng":"27.549757","last_ts":1763579966,"last_date":"19 Nov 2025","closed":false,"rate_idx":31,"created_at":1763579966},{"id":"51372453e4b027d7284f5ee2","name":"Grushevka (Грушаўка)","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Neighborhood","lat":"53.88347452374673","lng":"27.51821994781494","last_ts":1775414190,"last_date":"05 Apr 2026","closed":false,"rate_idx":32,"created_at":1745325952},{"id":"5cbf2d42b6eedb002c4ab068","name":"Moby Dick Caffè","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.907653","lng":"27.576194","last_ts":1763490781,"last_date":"18 Nov 2025","closed":false,"rate_idx":33,"created_at":1763490781},{"id":"5003ed00e4b06c76d1847eb9","name":"Комсомольская улица","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Road","lat":"53.90037659797409","lng":"27.554426636121676","last_ts":1775456739,"last_date":"06 Apr 2026","closed":false,"rate_idx":34,"created_at":1740229138},{"id":"607ac909a940c1717aceb18a","name":"Lёn","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Bakery","lat":"53.90496","lng":"27.547764","last_ts":1763213914,"last_date":"15 Nov 2025","closed":false,"rate_idx":35,"created_at":1740237613},{"id":"67eec3faedd6aa1b9b76e53d","name":"Oxy cafe de balzak","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.912058","lng":"27.566351","last_ts":1763219582,"last_date":"15 Nov 2025","closed":false,"rate_idx":36,"created_at":1763219582},{"id":"4c5ebb8499ff76b0aa0dcc9e","name":"Minsk (Мінск)","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"City","lat":"53.9051472024879","lng":"27.56195068359375","last_ts":1775290509,"last_date":"04 Apr 2026","closed":false,"rate_idx":37,"created_at":1741556762},{"id":"689874b036373c3824a39c87","name":"Жёлтый","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Cafe, Coffee, and Tea House","lat":"53.678734","lng":"23.829622","last_ts":1763048033,"last_date":"13 Nov 2025","closed":false,"rate_idx":38,"created_at":1758283621},{"id":"67eed8b9564e2e255490e260","name":"Бухта","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Bar","lat":"53.682791","lng":"23.831285","last_ts":1762973866,"last_date":"12 Nov 2025","closed":false,"rate_idx":39,"created_at":1744479201},{"id":"4ed8f1546c2547bc60d7ebd5","name":"Осмоловка","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Neighborhood","lat":"53.913222696981556","lng":"27.561185528044714","last_ts":1768047878,"last_date":"10 Jan 2026","closed":false,"rate_idx":40,"created_at":1740317058},{"id":"589eb24392789f6a816acfd8","name":"ул. К. Маркса","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Road","lat":"53.67743","lng":"23.835352","last_ts":1762972711,"last_date":"12 Nov 2025","closed":false,"rate_idx":41,"created_at":1747474076},{"id":"68fdfdfc5b397d2c9f04c55e","name":"Утка Копейка","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Outdoor Sculpture","lat":"53.904896","lng":"27.569786","last_ts":1773921294,"last_date":"19 Mar 2026","closed":false,"rate_idx":42,"created_at":1761476103},{"id":"4c5e96debfa595219ed88cff","name":"Комаровский рынок","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Farmers Market","lat":"53.91963949838464","lng":"27.577404109920533","last_ts":1761480773,"last_date":"26 Oct 2025","closed":false,"rate_idx":43,"created_at":1761480773},{"id":"590453a1666116697174bbb1","name":"Om Namo","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Indian Restaurant","lat":"53.91970502515295","lng":"27.574447866522675","last_ts":1761482516,"last_date":"26 Oct 2025","closed":false,"rate_idx":44,"created_at":1761482516},{"id":"665484af3a60dd42b1dbbae5","name":"Тэмпл","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Coffee Shop","lat":"53.676616","lng":"23.828112","last_ts":1770898640,"last_date":"12 Feb 2026","closed":false,"rate_idx":45,"created_at":1748687003},{"id":"6793a94fe327057c4b451674","name":"Синяя Птица","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Bakery","lat":"53.90358","lng":"27.54699","last_ts":1748263357,"last_date":"26 May 2025","closed":false,"rate_idx":46,"created_at":1748263357},{"id":"5079c6a8e4b07d24b09c30f2","name":"Лермонтова 43","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Home (private)","lat":"53.887965093866356","lng":"27.511722772419684","last_ts":1775299456,"last_date":"04 Apr 2026","closed":false,"rate_idx":47,"created_at":1741560249},{"id":"50152aede4b021abafcd95a6","name":"Lida (Лида)","url":"","rating":"like","city":"Lida","country":"Belarus","nc":"Belarus","nci":"Lida","category":"City","lat":"53.88328480658176","lng":"25.30598759651184","last_ts":1760884355,"last_date":"19 Oct 2025","closed":false,"rate_idx":48,"created_at":1754820109},{"id":"5017cb8be4b085e0ab1897e4","name":"Лидское пиво","url":"","rating":"like","city":"Lida","country":"Belarus","nc":"Belarus","nci":"Lida","category":"Bar","lat":"53.89724484722187","lng":"25.303515932633694","last_ts":1760891020,"last_date":"19 Oct 2025","closed":false,"rate_idx":49,"created_at":1760891020},{"id":"4dbd64e85da3ff58ec61b259","name":"Lida Castle (Лидский замок)","url":"","rating":"like","city":"Lida","country":"Belarus","nc":"Belarus","nci":"Lida","category":"Castle","lat":"53.88696288715998","lng":"25.302342663705737","last_ts":1760885544,"last_date":"19 Oct 2025","closed":false,"rate_idx":50,"created_at":1754826061},{"id":"53a6f8a5498ef54d0299ae82","name":"Фара Витовта","url":"","rating":"like","city":"Navahrudak","country":"Belarus","nc":"Belarus","nci":"Navahrudak","category":"Temple","lat":"53.60150795221866","lng":"25.830295085906982","last_ts":1760872553,"last_date":"19 Oct 2025","closed":false,"rate_idx":51,"created_at":1760872553},{"id":"62fa9888c4df816e37553a4b","name":"Tangiers Lounge","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Hookah Bar","lat":"53.903218","lng":"27.589108","last_ts":1760223554,"last_date":"11 Oct 2025","closed":false,"rate_idx":52,"created_at":1760223554},{"id":"68eb956040d1b74c19a25bb4","name":"Music Box","url":"","rating":"like","city":"Minsk","country":"Belarus","nc":"Belarus","nci":"Minsk","category":"Coffee Shop","lat":"53.891537","lng":"27.571898","last_ts":1774005943,"last_date":"20 Mar 2026","closed":false,"rate_idx":53,"created_at":1760269726},{"id":"4f87fbe9e4b0abaa0143227f","name":"Каложская царква","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Church","lat":"53.67847417408055","lng":"23.818415751657643","last_ts":1759588110,"last_date":"04 Oct 2025","closed":false,"rate_idx":54,"created_at":1739014939},{"id":"4d0519a326adb1f78714d670","name":"Grodno (Гродна)","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"City","lat":"53.67495555483196","lng":"23.85019645974287","last_ts":1770887417,"last_date":"12 Feb 2026","closed":false,"rate_idx":55,"created_at":1748547540},{"id":"68cd543251ef7b4222257fda","name":"Сквер на Дарвина","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Urban Park","lat":"53.67146","lng":"23.8248","last_ts":1759321021,"last_date":"01 Oct 2025","closed":false,"rate_idx":56,"created_at":1758286907},{"id":"68a9e6fe131d901245e25a87","name":"Coffee Shop","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Coffee Shop","lat":"53.688232","lng":"23.828142","last_ts":1756227769,"last_date":"26 Aug 2025","closed":false,"rate_idx":57,"created_at":1755965233},{"id":"5ff49adc1ce0757ef5886856","name":"Арабика","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Coffee Shop","lat":"53.68211","lng":"23.835371","last_ts":1762093819,"last_date":"02 Nov 2025","closed":false,"rate_idx":58,"created_at":1755430464},{"id":"62d2fe55c450f134c7856fe4","name":"Урбанист","url":"","rating":"like","city":"Hrodna","country":"Belarus","nc":"Belarus","nci":"Hrodna","category":"Cocktail Bar","lat":"53.676704","lng":"23.828363","last_ts":1755286150,"last_date":"15 Aug 2025","closed":false,"rate_idx":59,"created_at":1749754249},{"id":"4ea9c6e2775bf08569482deb","name":"metro Admiralteyskaya (Метро «Адмиралтейская»)","url":"","rating":"like","city":"Saint Petersburg","country":"Russia","nc":"Russia","nci":"Saint Petersburg","category":"Metro Station","lat":"59.93625345856168","lng":"30.314959633917766","last_ts":1757926703,"last_date":"15 Sep 2025","closed":false,"rate_idx":60,"created_at":1744990267},{"id":"66e934f56eac150c68f21767","name":"Ladozhsky Avenir Residental Complex","url":"","rating":"like","city":"Saint Petersburg","country":"Russia","nc":"Russia","nci":"Saint Petersburg","category":"Inn","lat":"59.939297","lng":"30.434654","last_ts":1768723141,"last_date":"18 Jan 2026","closed":false,"rate_idx":61,"created_at":1745252830},{"id":"65154d2382f732343a2cb515","name":"Пышечка","url":"","rating":"like","city":"Saint Petersburg","country":"Russia","nc":"Russia","nci":"Saint Petersburg","category":"Donut Shop","lat":"59.933552","lng":"30.314741","last_ts":1768827359,"last_date":"19 Jan 2026","closed":false,"rate_idx":62,"created_at":1745165845}];
+const COUNTS = {"likes": 63, "neutral": 0, "dislikes": 0};
+
+const CTRY_CODE = {"Belarus":"by","Moldova":"md","Poland":"pl","Russia":"ru","Ukraine":"ua","Germany":"de","France":"fr","Italy":"it","Spain":"es","Turkey":"tr","Türkiye":"tr","Sweden":"se","Denmark":"dk","Norway":"no","Finland":"fi","Austria":"at","Switzerland":"ch","Netherlands":"nl","Belgium":"be","Portugal":"pt","Czech Republic":"cz","Czechia":"cz","Hungary":"hu","Slovakia":"sk","Romania":"ro","Bulgaria":"bg","Croatia":"hr","Slovenia":"si","Serbia":"rs","Bosnia and Herzegovina":"ba","Montenegro":"me","North Macedonia":"mk","Albania":"al","Kosovo":"xk","Estonia":"ee","Latvia":"lv","Lithuania":"lt","Greece":"gr","Cyprus":"cy","Malta":"mt","Iceland":"is","Ireland":"ie","United Kingdom":"gb","Georgia":"ge","Armenia":"am","Azerbaijan":"az","Kazakhstan":"kz","Uzbekistan":"uz","Kyrgyzstan":"kg","Tajikistan":"tj","Turkmenistan":"tm","Mongolia":"mn","China":"cn","Japan":"jp","South Korea":"kr","Taiwan":"tw","India":"in","Thailand":"th","Vietnam":"vn","Indonesia":"id","Singapore":"sg","Malaysia":"my","Pakistan":"pk","Nepal":"np","Qatar":"qa","UAE":"ae","United Arab Emirates":"ae","Saudi Arabia":"sa","Jordan":"jo","Israel":"il","Iraq":"iq","Lebanon":"lb","Iran":"ir","Egypt":"eg","Morocco":"ma","Tunisia":"tn","South Africa":"za","United States":"us","Canada":"ca","Mexico":"mx","Brazil":"br","Argentina":"ar","Chile":"cl","Colombia":"co","Peru":"pe","Australia":"au","New Zealand":"nz","Holy See (Vatican City State)":"va","San Marino":"sm","Monaco":"mc"};
+function flagHtml(c){const code=(CTRY_CODE[c]||'').toLowerCase();return code?`<span class="fi fi-${code}" style="border-radius:2px;font-size:.85em;vertical-align:middle;"></span> `:''}
+const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const CAT_ICON={'Coffee Shop':['☕','#6F4E37'],'Café':['☕','#6F4E37'],'Bakery':['🥐','#C8860A'],'Restaurant':['🍽️','#C0392B'],'Fast Food Restaurant':['🍔','#E67E22'],'Pizzeria':['🍕','#E74C3C'],'Burger Joint':['🍔','#D35400'],'Italian Restaurant':['🍝','#C0392B'],'Kebab Restaurant':['🌯','#E67E22'],'Cafeteria':['🥣','#D4A017'],'Corporate Cafeteria':['🥣','#D4A017'],'Food Court':['🍱','#E67E22'],'Grocery Store':['🛒','#27AE60'],'Supermarket':['🛒','#219A52'],'Convenience Store':['🏪','#2ECC71'],'Market':['🛒','#27AE60'],'Gourmet Store':['🧀','#F39C12'],'Candy Store':['🍬','#F06292'],'Farmers Market':['🥦','#27AE60'],'Bar':['🍺','#F39C12'],'Beer Bar':['🍺','#E67E22'],'Pub':['🍻','#D4A017'],'Hookah Bar':['💨','#8E44AD'],'Cocktail Bar':['🍸','#E74C3C'],'Wine Bar':['🍷','#922B21'],'Wine Store':['🍷','#7B241C'],'Liquor Store':['🥃','#784212'],'Lounge':['🛋️','#5D6D7E'],'Gastropub':['🍖','#CA6F1E'],'Brewery':['🍻','#BA4A00'],'Nightclub':['🎵','#6C3483'],'Night Club':['🎵','#6C3483'],'Karaoke Bar':['🎤','#7D3C98'],'Beer Garden':['🍻','#D4A017'],'Beach Bar':['🍹','#2980B9'],'Dive Bar':['🍺','#7B241C'],'Sports Bar':['📺','#2C3E50'],'Rock Club':['🎸','#6C3483'],'Hotel Bar':['🍸','#2C3E50'],'Irish Pub':['🍀','#27AE60'],'Beer Store':['🍺','#D4A017'],'Speakeasy':['🥃','#4A235A'],'Whisky Bar':['🥃','#784212'],'Buffet':['🍱','#E67E22'],'Brasserie':['🍺','#D4A017'],'Hotel':['🏨','#2C3E50'],'Hostel':['🛏️','#34495E'],'Bed and Breakfast':['🛏️','#4A235A'],'Inn':['🏠','#2E4053'],'Apartment or Condo':['🏠','#1A5276'],'Home (private)':['🏠','#17202A'],'Resort':['🏖️','#2980B9'],'Lodging':['🛏️','#5D6D7E'],'Metro Station':['🚇','#2980B9'],'Rail Station':['🚉','#1A5276'],'Train':['🚂','#E74C3C'],'Tram Station':['🚃','#2471A3'],'Light Rail Station':['🚈','#2980B9'],'Platform':['🚉','#1F618D'],'Bus Line':['🚌','#27AE60'],'Bus Station':['🚌','#1E8449'],'Bus Stop':['🚏','#239B56'],'Airport Terminal':['✈️','#2471A3'],'International Airport':['✈️','#154360'],'Airport Gate':['✈️','#1A5276'],'Airport':['✈️','#154360'],'Airport Lounge':['🛋️','#21618C'],'Travel Lounge':['🛋️','#21618C'],'Plane':['✈️','#2980B9'],'Boat or Ferry':['⛴️','#117A65'],'Border Crossing':['🛂','#717D7E'],'Taxi':['🚕','#F4D03F'],'Parking':['🅿️','#2980B9'],'Fuel Station':['⛽','#E67E22'],'Cable Car':['🚡','#8E44AD'],'Ski Chairlift':['🚡','#2980B9'],'Marine Terminal':['⚓','#1A5276'],'Port':['🚢','#154360'],'Harbor or Marina':['⛵','#2980B9'],'Pier':['🎣','#2471A3'],'Travel and Transportation':['✈️','#2980B9'],'Transportation Service':['🚐','#27AE60'],'Park':['🌳','#1E8449'],'Plaza':['🏛️','#2E86C1'],'Pedestrian Plaza':['🚶','#2E86C1'],'Beach':['🏖️','#F39C12'],'Mountain':['⛰️','#7F8C8D'],'Hiking Trail':['🥾','#6E2F1A'],'Garden':['🌸','#1E8449'],'Scenic Lookout':['🔭','#1A5276'],'Waterfront':['🌊','#2471A3'],'River':['🌊','#2980B9'],'Lake':['🏞️','#2471A3'],'Island':['🏝️','#27AE60'],'Bike Trail':['🚴','#E67E22'],'Other Great Outdoors':['🌲','#186A3B'],'Cemetery':['🪦','#5D6D7E'],'Ski Area':['⛷️','#85C1E9'],'Bridge':['🌉','#626567'],'Fountain':['⛲','#5DADE2'],'National Park':['🌲','#186A3B'],'Nature Preserve':['🌿','#1E8449'],'Forest':['🌲','#186A3B'],'Botanical Garden':['🌺','#1E8449'],'Waterfall':['💦','#2980B9'],'Canal':['🚤','#2471A3'],'Bay':['🌊','#2980B9'],'Campground':['⛺','#186A3B'],'Playground':['🛝','#E74C3C'],'Tree':['🌳','#1E8449'],'Lighthouse':['🔦','#F39C12'],'Volcano':['🌋','#E74C3C'],'Cave':['🦇','#616A6B'],'Field':['🌾','#27AE60'],'Hill':['⛰️','#784212'],'Vineyard':['🍇','#922B21'],'Farm':['🚜','#27AE60'],'Museum':['🏛️','#7D3C98'],'Art Museum':['🎨','#884EA0'],'History Museum':['📜','#6E2F1A'],'Art Gallery':['🖼️','#7D3C98'],'Monument':['🗽','#626567'],'Historic and Protected Site':['🏰','#784212'],'Castle':['🏰','#6E2F1A'],'Palace':['🏯','#784212'],'Public Art':['🎨','#7D3C98'],'Street Art':['🎨','#8E44AD'],'Theater':['🎭','#922B21'],'Concert Hall':['🎼','#922B21'],'Movie Theater':['🎬','#C0392B'],'Cultural Center':['🎭','#7D3C98'],'Exhibit':['🖼️','#7D3C98'],'Exhibition':['🖼️','#8E44AD'],'Science Museum':['🔬','#1A5276'],'Amusement Park':['🎡','#E74C3C'],'Memorial Site':['🕯️','#626567'],'Library':['📚','#1A5276'],'Amphitheater':['🎭','#8E44AD'],'Music Venue':['🎸','#8E44AD'],'Opera House':['🎭','#6C3483'],'Attraction':['⭐','#D4A017'],'Zoo':['🦁','#D4A017'],'Aquarium':['🐠','#2980B9'],'Casino':['🎲','#C0392B'],'Escape Room':['🔐','#8E44AD'],'Event Space':['🎪','#C0392B'],'Church':['⛪','#7D3C98'],'Mosque':['🕌','#117A65'],'Temple':['🛕','#B9770E'],'Monastery':['🙏','#6E2F1A'],'Synagogue':['✡️','#1A5276'],'Shrine':['⛩️','#C0392B'],'Buddhist Temple':['☸️','#D4A017'],'Hindu Temple':['🛕','#E67E22'],'Shopping Mall':['🛍️','#E91E63'],'Department Store':['🏬','#C0392B'],'Clothing Store':['👔','#8E44AD'],'Shoe Store':['👟','#D35400'],'Electronics Store':['💻','#2471A3'],'Mobile Phone Store':['📱','#2E86C1'],'Bookstore':['📚','#1A5276'],'Furniture and Home Store':['🛋️','#784212'],'Cosmetics Store':['💄','#F06292'],'Bicycle Store':['🚲','#27AE60'],'Big Box Store':['📦','#7F8C8D'],'Flea Market':['🏷️','#D35400'],'Hardware Store':['🔧','#7F8C8D'],'Miscellaneous Store':['🏪','#E67E22'],'Souvenir Store':['🛍️','#D4A017'],'Gift Store':['🎁','#E91E8C'],'Jewelry Store':['💍','#D4A017'],'Antique Store':['🏺','#D4A017'],'Outdoor Supply Store':['⛺','#27AE60'],'Sporting Goods Retail':['⚽','#27AE60'],'Fruit and Vegetable Store':['🥦','#27AE60'],'Butcher':['🥩','#C0392B'],'Fish Market':['🐟','#2980B9'],'Pharmacy':['💊','#27AE60'],'Drugstore':['💊','#27AE60'],'Health Food Store':['🥗','#1E8449'],'Gym':['💪','#E74C3C'],'Bath House':['♨️','#1ABC9C'],'Spa':['💆','#1ABC9C'],'Medical Center':['🏥','#E74C3C'],'Hospital':['🏥','#E74C3C'],'Yoga Studio':['🧘','#27AE60'],'Hair Salon':['✂️','#F06292'],'Swimming Pool':['🏊','#2980B9'],'Sauna':['♨️','#E74C3C'],'Bank':['🏦','#1A5276'],'Office':['🏢','#2C3E50'],'Post Office':['📮','#E74C3C'],'Police Station':['👮','#2471A3'],'City Hall':['🏛️','#1A5276'],'Government Building':['🏛️','#154360'],'University':['🎓','#154360'],'Business Center':['🏢','#2C3E50'],'Coworking Space':['💻','#2C3E50'],'Embassy or Consulate':['🏛️','#1A5276'],'Chinese Restaurant':['🥢','#C0392B'],'Japanese Restaurant':['🍱','#C0392B'],'Korean Restaurant':['🍚','#E74C3C'],'Vietnamese Restaurant':['🍜','#27AE60'],'Thai Restaurant':['🍛','#F39C12'],'Indian Restaurant':['🍛','#E67E22'],'Turkish Restaurant':['🌯','#C0392B'],'Greek Restaurant':['🫒','#27AE60'],'French Restaurant':['🥐','#2980B9'],'Spanish Restaurant':['🥘','#E74C3C'],'German Restaurant':['🍺','#C8860A'],'Mexican Restaurant':['🌮','#27AE60'],'American Restaurant':['🍔','#E67E22'],'Middle Eastern Restaurant':['🧆','#D35400'],'Russian Restaurant':['🥟','#C0392B'],'Ukrainian Restaurant':['🌻','#F39C12'],'Belarusian Restaurant':['🥟','#27AE60'],'Eastern European Restaurant':['🍲','#C0392B'],'Diner':['🍳','#E67E22'],'Bistro':['🍽️','#C0392B'],'Dessert Shop':['🍰','#F06292'],'Ice Cream Parlor':['🍦','#F06292'],'Pastry Shop':['🥐','#C8860A'],'Coffee Roaster':['☕','#4A235A'],'Cafe, Coffee, and Tea House':['☕','#6F4E37'],'Blini House':['🫓','#C8860A'],'Pelmeni House':['🥟','#C8860A'],'Dumpling Restaurant':['🥟','#E67E22'],'Ramen Restaurant':['🍜','#E74C3C'],'Sushi Restaurant':['🍣','#C0392B'],'Steak House':['🥩','#922B21'],'Steakhouse':['🥩','#922B21'],'Seafood Restaurant':['🦐','#2980B9'],'Food Truck':['🚚','#E67E22'],'BBQ Joint':['🔥','#C0392B'],'Vegan and Vegetarian Restaurant':['🥦','#27AE60'],'Breakfast Spot':['🥞','#F39C12'],'Tea Room':['🫖','#27AE60'],'Bubble Tea Shop':['🧋','#8E44AD'],'Hot Dog Joint':['🌭','#E67E22'],'Taco Restaurant':['🌮','#27AE60'],'Trattoria':['🍝','#C0392B'],'Deli':['🥪','#D4A017'],'Sandwich Spot':['🥪','#D4A017'],'Shawarma Restaurant':['🌯','#D35400'],'Doner Restaurant':['🌯','#E67E22'],'Romanian Restaurant':['🥘','#C0392B'],'Polish Restaurant':['🥟','#C0392B'],'Modern European Restaurant':['🍽️','#C0392B'],'Asian Restaurant':['🥢','#C0392B'],'Noodle Restaurant':['🍜','#E67E22'],'Bagel Shop':['🥯','#C8860A'],'Comfort Food Restaurant':['🥘','#D4A017'],'Winery':['🍇','#922B21'],'Christmas Market':['🎄','#27AE60']};
+function catIcon(cat){const e=CAT_ICON[cat||''];return e?{em:e[0],bg:e[1]}:{em:'📍',bg:'#4a5270'};}
+
+const RATING_EMOJI={'like':'❤️','neutral':'😐','dislike':'💔'};
+const RATING_FILTER={'like':'','neutral':'filter:grayscale(1) brightness(0.55)','dislike':'filter:saturate(0.25) brightness(0.55)'};
+
+function ratingDivIcon(rating,selected){
+  const sz=selected?20:14;
+  const filt=RATING_FILTER[rating]||'';
+  return L.divIcon({
+    html:'<span style="font-size:'+sz+'px;line-height:1;display:block;'+filt+'">'+RATING_EMOJI[rating]+'</span>',
+    className:'leaflet-rating-icon',
+    iconSize:[sz+2,sz+2],
+    iconAnchor:[(sz+2)/2,(sz+2)/2],
+  });
+}
+
+// ── Map ──────────────────────────────────────────────────────────────────────
+const map=L.map('map',{preferCanvas:true}).setView([30,15],2);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+
+const markers={};
+let selMarker=null,selIdx=-1;
+ALL.forEach((v,i)=>{
+  if(!v.lat||!v.lng)return;
+  const m=L.marker([parseFloat(v.lat),parseFloat(v.lng)],{icon:ratingDivIcon(v.rating,false)}).addTo(map);
+  const loc=[v.nci||v.city,v.nc||v.country].filter(Boolean).join(', ');
+  m.bindPopup(`<b>${esc(v.name||'')}</b><br><span style="font-size:.75rem;color:#9ca3af;">${esc(loc)}</span><br><span style="font-size:.78rem;">${RATING_EMOJI[v.rating]||''} ${esc(v.category||'')}</span>`,{maxWidth:220});
+  markers[i]=m;
+});
+
+// ── Filter state ─────────────────────────────────────────────────────────────
+let filterRating='like', query='', showClosed=false, yearFilter=0;
+
+// Populate year select (by first-visit year)
+(function(){
+  const yearsSet=new Set();
+  ALL.forEach(v=>{if(v.created_at)yearsSet.add(new Date(v.created_at*1000).getFullYear());});
+  const sel=document.getElementById('fYear');
+  const defOpt=document.createElement('option');
+  defOpt.value='0';defOpt.textContent='All years';sel.appendChild(defOpt);
+  [...yearsSet].sort((a,b)=>b-a).forEach(y=>{
+    const o=document.createElement('option');o.value=y;o.textContent=y;sel.appendChild(o);
+  });
+})();
+function fmtDate(ts){if(!ts)return'';const d=new Date(ts*1000);return d.getDate().toString().padStart(2,'0')+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getFullYear();}
+
+// Update button counts
+document.getElementById('cntLike').textContent   = COUNTS.likes    ? '('+COUNTS.likes+')'    : '';
+document.getElementById('cntNeutral').textContent = COUNTS.neutral  ? '('+COUNTS.neutral+')'  : '';
+document.getElementById('cntDislike').textContent = COUNTS.dislikes ? '('+COUNTS.dislikes+')' : '';
+
+function getFiltered(){
+  const q=query.toLowerCase();
+  return ALL.map((_,i)=>i).filter(i=>{
+    const v=ALL[i];
+    if(v.rating!==filterRating)return false;
+    if(showClosed&&!v.closed)return false;
+    if(yearFilter&&(!v.created_at||new Date(v.created_at*1000).getFullYear()!==yearFilter))return false;
+    if(!q)return true;
+    return (v.name||'').toLowerCase().includes(q)||(v.city||'').toLowerCase().includes(q)||(v.country||'').toLowerCase().includes(q)||(v.category||'').toLowerCase().includes(q);
+  });
+}
+
+function render(){
+  const idx=getFiltered();
+  // rate_idx = exact web list position (scraped from foursquare.com/list/venuelikes)
+  idx.sort((a,b)=>ALL[a].rate_idx-ALL[b].rate_idx);
+  document.getElementById('badge').textContent=idx.length+' / '+ALL.filter(v=>v.rating===filterRating).length+' venues';
+  let prevYear=null;
+  document.getElementById('feedScroll').innerHTML=idx.map(i=>{
+    const v=ALL[i];
+    const{em,bg}=catIcon(v.category||'');
+    const vUrl=v.url||'';
+    const loc=[v.nci||v.city,v.nc||v.country].filter(Boolean).join(', ');
+    const f=(v.nc||v.country)?flagHtml(v.nc||v.country):'';
+    const closedBadge=v.closed?'<span class="vc-closed">CLOSED</span>':'';
+    const venueLabel=vUrl?`<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(v.name||'Unknown venue')}</a>`:esc(v.name||'Unknown venue');
+    const yr=v.created_at?new Date(v.created_at*1000).getFullYear():null;
+    let hdr='';
+    if(yr&&yr!==prevYear){hdr=`<div class="yr-hdr">${yr}</div>`;prevYear=yr;}
+    return hdr+`<div class="vcard" id="vc_${i}" onclick="selectVenue(${i})">
+      <div class="vc-head">
+        <div class="vc-cat-icon" style="background:${bg}22;border:1px solid ${bg}55">${em}</div>
+        <div class="vc-name">${venueLabel}${closedBadge}</div>
+        <span class="vc-rating"${RATING_FILTER[v.rating]?' style="'+RATING_FILTER[v.rating]+'"':''}>${RATING_EMOJI[v.rating]||''}</span>
+      </div>
+      <div class="vc-foot">
+        <span class="vc-cat">${esc(v.category||'')}</span>
+        <span class="vc-loc">${f}${esc(loc)}</span>
+        <span class="vc-date">${fmtDate(v.created_at)||''}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectVenue(i){
+  if(selMarker&&selIdx>=0)selMarker.setIcon(ratingDivIcon(ALL[selIdx].rating,false));
+  document.querySelectorAll('.vcard.sel').forEach(el=>el.classList.remove('sel'));
+  const el=document.getElementById('vc_'+i);
+  if(el){el.classList.add('sel');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
+  const m=markers[i];
+  if(m){
+    m.setIcon(ratingDivIcon(ALL[i].rating,true));
+    selMarker=m;selIdx=i;
+    map.panTo(m.getLatLng(),{animate:true});
+    m.openPopup();
+  }
+}
+
+function setFilter(r,btn){
+  filterRating=r;
+  document.querySelectorAll('.sbtn:not(#fClosed)').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  render();
+}
+function toggleClosed(btn){showClosed=!showClosed;btn.classList.toggle('act');render();}
+function onSearch(v){query=v;render();}
+function setYear(v){yearFilter=parseInt(v)||0;render();}
+
+render();
+
+(function(){const _q=new URLSearchParams(location.search).get('q');if(_q){const _inp=document.getElementById('srch');if(_inp){_inp.value=_q;onSearch(_q);}}})();
+</script>
+<script>
+function gsOpen(){document.getElementById('gsOverlay').classList.add('open');document.getElementById('gsInput').focus();}
+function gsClose(){document.getElementById('gsOverlay').classList.remove('open');}
+document.getElementById('gsInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&this.value.trim()){location.href='search.html?q='+encodeURIComponent(this.value.trim());}if(e.key==='Escape')gsClose();});
+document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();gsOpen();}if(e.key==='Escape'&&document.getElementById('gsOverlay').classList.contains('open'))gsClose();});
+</script>
+<nav class="side-nav" aria-label="Page shortcuts">
+  <a href="index.html"><span class="sn-icon">🏠</span><span class="sn-lbl">HOME</span></a>
+  <div class="sn-sep--pages"></div>
+  <a href="feed.html"><span class="sn-icon">📰</span><span class="sn-lbl">FEED</span></a>
+  <a href="tips.html"><span class="sn-icon">💬</span><span class="sn-lbl">TIPS</span></a>
+  <a class="active" href="ratings.html"><span class="sn-icon">⭐</span><span class="sn-lbl">RATED</span></a>
+  <a href="photos.html"><span class="sn-icon">📷</span><span class="sn-lbl">PHOTOS</span></a>
+  <a href="trips.html"><span class="sn-icon">✈</span><span class="sn-lbl">TRIPS</span></a>
+  <a href="lists.html"><span class="sn-icon">📋</span><span class="sn-lbl">LISTS</span></a>
+  <a href="world_cities.html"><span class="sn-icon">🌐</span><span class="sn-lbl">WORLD CITIES</span></a>
+  <a href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">TOTAL PLACES</span></a>
+  <a href="companions.html"><span class="sn-icon">👥</span><span class="sn-lbl">WITH</span></a>
+  <a href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <div class="sn-sep"></div>
+  <button id="snThemeToggle"><span class="sn-icon" id="snThemeIcon">☀️</span><span class="sn-lbl" id="snThemeLbl">LIGHT</span></button>
+</nav>
+<script>
+(function(){
+  var btn=document.getElementById('snThemeToggle');
+  var ico=document.getElementById('snThemeIcon');
+  var lbl=document.getElementById('snThemeLbl');
+  function apply(light){
+    document.body.classList.toggle('light',light);
+    if(ico) ico.textContent=light?'\u{1F319}':'\u2600\uFE0F';
+    if(lbl) lbl.textContent=light?'DARK':'LIGHT';
+  }
+  apply(localStorage.getItem('fsq-theme')==='light');
+  if(btn) btn.addEventListener('click',function(){
+    var isLight=document.body.classList.toggle('light');
+    localStorage.setItem('fsq-theme',isLight?'light':'dark');
+    apply(isLight);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tips — Check-in Journal</title>
+<meta name="description" content="1,900+ personal Foursquare tips for venues across 62 countries, with agree counts and venue status. Sorted by date, popularity or venue type.">
+<link rel="canonical" href="https://4sq.andrei-patsiomkin.workers.dev/tips.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check-in Journal">
+<meta property="og:title" content="Tips — Check-in Journal">
+<meta property="og:description" content="1,900+ personal Foursquare tips for venues across 62 countries, with agree counts and venue status. Sorted by date, popularity or venue type.">
+<meta property="og:url" content="https://4sq.andrei-patsiomkin.workers.dev/tips.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tips — Check-in Journal">
+<meta name="twitter:description" content="1,900+ personal Foursquare tips for venues across 62 countries, with agree counts and venue status. Sorted by date, popularity or venue type.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--bg:#0c0e14;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#6b7280;--gold:#e8b86d;--teal:#4ec9b0;}
+body.light{--bg:#ddd8cf;--card:#f0ece3;--card2:#e5e0d7;--border:#aaa49a;--gold:#7a3e00;--teal:#155c58;--muted:#54576a;--text:#15172a;--text2:#373b58;}
+body.light header{background:linear-gradient(160deg,#d6d1c8 0%,#dedad1 70%);}
+body.light .side-nav{background:rgba(220,215,208,0.97);}
+body.light .side-nav a:hover,body.light .side-nav button:hover{background:rgba(0,0,0,.08);}
+body.light .heatmap-tooltip,body.light .map-status{background:rgba(220,215,208,0.97);}
+body.light .card{box-shadow:0 2px 8px rgba(0,0,0,.10);}
+body.light a{color:var(--teal);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;}
+.page{display:flex;flex-direction:column;height:100vh;}
+
+/* ── Top bar ── */
+.topbar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;z-index:200;flex-wrap:wrap;min-height:48px;}
+.topbar h1{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;background:linear-gradient(130deg,#f5d48a,#e8b86d 50%,#b97c30);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding:.05em 0 .12em;display:inline-block;white-space:nowrap;}
+.back-link{color:var(--gold);text-decoration:none;font-size:.72rem;font-weight:600;opacity:.8;white-space:nowrap;}
+.back-link:hover{opacity:1;}
+.topnav{display:flex;align-items:center;gap:20px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;}
+.topnav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);text-decoration:none;margin-right:4px;white-space:nowrap;}
+.topnav-logo:hover{opacity:.85;}
+.topnav a{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);text-decoration:none;transition:color .2s;}
+.topnav a:hover{color:var(--gold);}
+.topnav-current{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--text);}
+.gs-btn{font-family:'DM Mono',monospace;font-size:.60rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:7px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;white-space:nowrap;}
+.gs-btn:hover{border-color:var(--gold);color:var(--gold);}
+.gs-btn kbd{font-family:'DM Mono',monospace;font-size:.52rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:1px 5px;letter-spacing:0;}
+@media(max-width:520px){.gs-btn kbd{display:none;}}
+.gs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10000;backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding-top:16vh;}.gs-overlay.open{display:flex;}
+.gs-modal{background:var(--card);border:1px solid var(--border);border-radius:14px;width:min(560px,92vw);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.7);}
+.gs-input-wrap{display:flex;align-items:center;gap:10px;padding:14px 18px;}
+.gs-icon{font-size:1rem;color:var(--muted);}
+.gs-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;}
+.gs-input::placeholder{color:var(--muted);}
+.gs-esc-hint{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:2px 6px;cursor:pointer;flex-shrink:0;}
+.side-nav{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:4000;display:flex;flex-direction:column;gap:0;background:rgba(18,21,31,0.92);border:1px solid var(--border);border-right:none;border-radius:10px 0 0 10px;backdrop-filter:blur(10px);overflow:hidden;}
+.side-nav a,.side-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:52px;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);text-decoration:none;transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent;}
+.side-nav a:hover,.side-nav button:hover{background:rgba(255,255,255,.06);color:var(--text);}
+.side-nav a.active,.side-nav button.active{color:var(--gold);}
+.side-nav .sn-icon{font-size:.95rem;line-height:1;display:inline-block;transition:transform .15s;}
+.side-nav a:hover .sn-icon,.side-nav button:hover .sn-icon{transform:scale(1.28);}
+.side-nav .sn-lbl{font-family:'DM Mono',monospace;font-size:.42rem;text-transform:uppercase;letter-spacing:.05em;line-height:1;white-space:nowrap;}
+.side-nav .sn-sep{width:32px;height:1px;background:var(--border);margin:2px auto;}
+.side-nav .sn-sep--pages{width:36px;height:2px;background:var(--border);margin:3px auto;border-radius:1px;}
+@media(max-width:900px){.side-nav{display:none;}}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.srch{background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.73rem;outline:none;width:185px;}
+.srch:focus{border-color:var(--gold);}
+.badge{font-size:.63rem;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap;}
+.sbtn{background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--muted);padding:4px 9px;cursor:pointer;font-size:.70rem;transition:all .12s;font-family:'DM Sans',sans-serif;}
+.sbtn:hover{border-color:var(--gold);color:var(--gold);}
+.sbtn.act{border-color:var(--gold);color:var(--gold);background:rgba(232,184,109,.08);}
+.nav-btn{background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--muted);padding:4px 9px;cursor:pointer;font-size:.70rem;transition:all .12s;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── Tab bars ── */
+.tabs-wrap{display:flex;align-items:center;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;}
+.tabs-arrow{background:transparent;border:none;color:var(--muted);padding:0 6px;cursor:pointer;font-size:.8rem;flex-shrink:0;line-height:28px;transition:color .12s;}
+.tabs-arrow:hover{color:var(--gold);}
+.tabs-row{display:flex;align-items:center;gap:4px;padding:4px 2px;flex:1;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;}
+.tabs-row::-webkit-scrollbar{display:none;}
+.tab-btn{background:transparent;border:1px solid transparent;border-radius:6px;color:var(--muted);padding:3px 9px;cursor:pointer;font-size:.68rem;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .12s;flex-shrink:0;}
+.tab-btn:hover{border-color:var(--border);color:var(--text);}
+.tab-btn.act{border-color:var(--gold);color:var(--gold);background:rgba(232,184,109,.08);}
+.tab-count{font-family:'DM Mono',monospace;font-size:.60rem;opacity:.55;}
+.cities-wrap{display:none;}
+.cities-wrap.vis{display:flex;}
+
+/* ── Layout ── */
+.content{display:flex;flex:1;overflow:hidden;}
+.feed-col{width:420px;flex-shrink:0;overflow:hidden;display:flex;flex-direction:column;border-right:1px solid var(--border);}
+.feed-scroll{flex:1;overflow-y:auto;padding:8px;}
+.feed-scroll::-webkit-scrollbar{width:3px;}
+.feed-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px;}
+.map-col{flex:1;position:relative;min-width:0;}
+#map{position:absolute;inset:0;}
+.leaflet-container{background:#0c0e14;}
+
+/* ── Tip card ── */
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px 16px 11px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden;}
+.tcard::after{content:'';position:absolute;top:0;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.25;}
+.tcard:hover{border-color:rgba(232,184,109,.35);}
+.tcard.sel{border-color:var(--gold);}
+.tc-venue-row{display:flex;align-items:flex-start;gap:7px;margin-bottom:7px;}
+.tc-cat-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.tc-venue{font-size:.86rem;font-weight:700;line-height:1.28;flex:1;}
+.tc-venue a{color:var(--text);text-decoration:none;}
+.tc-venue a:hover{color:var(--gold);}
+.tc-text{font-size:.83rem;color:var(--text);line-height:1.55;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+.tc-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;}
+.tc-cat{font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.06em;color:var(--teal);white-space:nowrap;}
+.tc-loc{font-size:.70rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
+.tc-agree{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold);white-space:nowrap;}
+.tc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.tc-date{font-family:'DM Mono',monospace;font-size:.60rem;color:var(--muted);}
+.tc-fsq{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);text-decoration:none;}
+.tc-fsq:hover{color:var(--gold);}
+.tc-closed{font-family:'DM Mono',monospace;font-size:.50rem;color:#ef4444;border:1px solid rgba(239,68,68,.45);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle;white-space:nowrap;line-height:1.4;}
+.tc-deleted{font-family:'DM Mono',monospace;font-size:.50rem;color:#a78bfa;border:1px solid rgba(167,139,250,.45);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle;white-space:nowrap;line-height:1.4;}
+.tc-loc{display:inline-flex;align-items:center;gap:3px;}
+.tc-views{font-family:'DM Mono',monospace;font-size:.60rem;color:var(--muted);white-space:nowrap;}
+.tc-photo{width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block;cursor:zoom-in;}
+#tipLightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:9999;align-items:center;justify-content:center;}
+#tipLightbox.open{display:flex;}
+#tipLightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:6px;}
+#tipLightbox-close{position:absolute;top:16px;right:20px;font-size:1.8rem;color:#fff;cursor:pointer;background:none;border:none;line-height:1;}
+
+/* ── Map popup ── */
+.leaflet-popup-content-wrapper{background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.80rem;}
+.leaflet-popup-tip{background:var(--card2);}
+.leaflet-popup-content{margin:10px 14px;}
+
+@media(max-width:700px){.feed-col{width:100%;border-right:none;}.map-col{display:none;}}
+@media(max-width:480px){
+  .topbar{padding:6px 10px;gap:5px;min-height:auto;}
+  .topbar h1{font-size:1rem;}
+  .srch{width:100%;order:10;margin-top:4px;}
+  .tb-right{flex-wrap:wrap;gap:5px;}
+  .sbtn,.nav-btn{font-size:.64rem;padding:3px 7px;}
+  .badge{display:none;}
+  .tabs-wrap .tabs-row{gap:2px;}
+  .tab-btn{font-size:.62rem;padding:2px 7px;}
+  .tcard{padding:10px 12px 9px;}
+  .tc-text{font-size:.79rem;-webkit-line-clamp:3;}
+  .tc-venue{font-size:.82rem;}
+  .tc-views{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="topnav">
+    <a href="index.html" class="topnav-logo">Check-in Journal</a>
+    <span class="topnav-current">Tips</span>
+    <button class="gs-btn" style="margin-left:auto" onclick="gsOpen()"><span>⌕</span> Search<kbd>⌘K</kbd></button>
+  </nav>
+<div class="gs-overlay" id="gsOverlay" onclick="if(event.target===this)gsClose()">
+  <div class="gs-modal"><div class="gs-input-wrap"><span class="gs-icon">⌕</span><input class="gs-input" id="gsInput" type="text" placeholder="Search venues, cities, trips…" autocomplete="off" spellcheck="false"><span class="gs-esc-hint" onclick="gsClose()">esc</span></div></div>
+</div>
+  <div class="topbar">
+    <h1>Tips</h1>
+    <button class="sbtn act" id="sDate" onclick="sortBy('date',this)">By Date ↓</button>
+    <button class="sbtn" id="sAgree" onclick="sortBy('agree',this)">👍 By Agree ↓</button>
+    <button class="sbtn" id="sViews" onclick="sortBy('views',this)">👁 By Views ↓</button>
+    <button class="sbtn" id="sClosed" onclick="toggleClosed(this)">Closed only</button>
+    <button class="sbtn" id="sDeleted" onclick="toggleDeleted(this)">Deleted only</button>
+    <div class="tb-right">
+      <input class="srch" id="srch" type="text" placeholder="Search tips, venues, cities…" oninput="onSearch(this.value)">
+      <span class="badge" id="badge"></span>
+    </div>
+  </div>
+  <div class="tabs-wrap" id="ctryWrap">
+    <button class="tabs-arrow" onclick="scrollTabs('ctryTabs',-160)">◀</button>
+    <div class="tabs-row" id="ctryTabs"></div>
+    <button class="tabs-arrow" onclick="scrollTabs('ctryTabs',160)">▶</button>
+  </div>
+  <div class="tabs-wrap cities-wrap" id="cityWrap">
+    <button class="tabs-arrow" onclick="scrollTabs('cityTabs',-160)">◀</button>
+    <div class="tabs-row" id="cityTabs"></div>
+    <button class="tabs-arrow" onclick="scrollTabs('cityTabs',160)">▶</button>
+  </div>
+  <div class="content">
+    <div class="feed-col">
+      <div class="feed-scroll" id="feedScroll"></div>
+    </div>
+    <div class="map-col">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const ALL = [{"id":"69cbf906faf468158929d59c","ts":1774975238,"text":"Станция с огромной грушей, вкусными булочками из Сдобушки и без запаха шаурмы. Топовая!","venue":"Станция метро «Грушевка»","venue_id":"501ec326e4b0d43ab64feba1","city":"Мінск","country":"Беларусь","lat":53.88862,"lng":27.51501,"category":"Metro Station","agree_count":0,"disagree_count":0,"view_count":1,"closed":false,"date":"31 Mar 2026","time":"16:40","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"69c29bccc26f8816d0298e99","ts":1774361548,"text":"Небольшой парк, в котором много белок 🐿️","venue":"Парк имени Марата Казея (Парк імя Марата Казея)","venue_id":"4e4d292f7d8bdc6f335a823b","city":"Мінск","country":"Беларусь","lat":53.90857,"lng":27.56431,"category":"Park","agree_count":0,"disagree_count":0,"view_count":2,"closed":false,"date":"24 Mar 2026","time":"14:12","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"69c039e5321f1621e2e46aac","ts":1774205413,"text":"После 21:00 скидка на круассаны 30% 😉","venue":"Stories","venue_id":"58ba97964bc2f1632a353e04","city":"Мінск","country":"Беларусь","lat":53.90088,"lng":27.55251,"category":"Coffee Shop","agree_count":0,"disagree_count":0,"view_count":2,"closed":false,"date":"22 Mar 2026","time":"18:50","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"69bbdc3c6211f9673f6530ca","ts":1773919292,"text":"Топовый маршрут, можно доехать до большинства важных локаций города. Приходит, правда, не всегда по расписанию 😄","venue":"Автобус №57","venue_id":"4fe7762be4b0a0c3b0bf1679","city":"","country":"Беларусь","lat":53.90001,"lng":27.5684,"category":"Bus Line","agree_count":0,"disagree_count":0,"view_count":6,"closed":false,"date":"19 Mar 2026","time":"11:21","nc":"Belarus","nci":"","photo_url":""},{"id":"69a59d2df5f0963c7f28a3d3","ts":1772461357,"text":"По будням с 12 до 17 - обеденное меню. Драники с грибным соусом -  highly recommended 🤌","venue":"Моя Дорогая","venue_id":"4da0a25222a5f04dd255e954","city":"Мінск","country":"Беларусь","lat":53.90215,"lng":27.55319,"category":"Café","agree_count":0,"disagree_count":0,"view_count":13,"closed":false,"date":"02 Mar 2026","time":"14:22","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"696a2cd6c55b5552f335b731","ts":1768565974,"text":"Небольшой уютный ресторанчик. Обеденное меню с 12:00 до 16:00. Еда - восторг 🤌","venue":"Sueno","venue_id":"696a287360967c1c2162517d","city":"Minsk","country":"Беларусь","lat":53.90167,"lng":27.55301,"category":"Spanish Restaurant","agree_count":0,"disagree_count":0,"view_count":28,"closed":false,"date":"16 Jan 2026","time":"12:19","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"691f462d64ea6d01c13aa2c8","ts":1763657261,"text":"Крем-суп из тыквы - highly recommended 🤌","venue":"Vesna","venue_id":"68fbc94194af1f69d66b73d8","city":"Minsk","country":"Беларусь","lat":53.88695,"lng":27.51724,"category":"Café","agree_count":0,"disagree_count":0,"view_count":52,"closed":false,"date":"20 Nov 2025","time":"16:47","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"69046b68ddc04e1e1f6d3f79","ts":1761897320,"text":"Самый большой выбор часов в городе!)//the biggest watches assortment!)","venue":"ZIKO","venue_id":"553129c9498e0d5798414695","city":"Гродна","country":"Беларусь","lat":53.67255,"lng":23.86256,"category":"Jewelry Store","agree_count":0,"disagree_count":0,"view_count":32,"closed":false,"date":"31 Oct 2025","time":"07:55","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"68ffa4645ceace7d96889cf3","ts":1761584228,"text":"Поставили терминал и можно оплатить чаёк картой!)","venue":"Поезд № 629 Минск — Гродно","venue_id":"51e00435ccda7ff4515df027","city":"Мінск","country":"Беларусь","lat":53.89004,"lng":27.55051,"category":"Train","agree_count":0,"disagree_count":0,"view_count":16,"closed":false,"date":"27 Oct 2025","time":"16:57","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"68fe20e35ceace7d967cdffc","ts":1761485027,"text":"Хани чикен - великолепна 🤌🔥","venue":"Om Namo","venue_id":"590453a1666116697174bbb1","city":"Мінск","country":"Беларусь","lat":53.91971,"lng":27.57445,"category":"Indian Restaurant","agree_count":0,"disagree_count":0,"view_count":6,"closed":false,"date":"26 Oct 2025","time":"13:23","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"68fa95ef341624746bb072be","ts":1761252847,"text":"По выходным с 12 до 16 бранчи за 15 р с игристым в подарок!)","venue":"Тэмпл","venue_id":"665484af3a60dd42b1dbbae5","city":"Гродна","country":"Беларусь","lat":53.67662,"lng":23.82811,"category":"Coffee Shop","agree_count":0,"disagree_count":0,"view_count":7,"closed":false,"date":"23 Oct 2025","time":"20:54","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"68f568e0bb0644561a6fcf04","ts":1760913632,"text":"Рябиновый чай с шоколадом - восторг 🤌","venue":"Jinnee","venue_id":"5cd67afac4df1d002c6afa27","city":"Ліда","country":"Беларусь","lat":53.89443,"lng":25.30221,"category":"Coffee Shop","agree_count":0,"disagree_count":0,"view_count":5,"closed":false,"date":"19 Oct 2025","time":"22:40","nc":"Belarus","nci":"Lida","photo_url":""},{"id":"68f56807bb0644561a6fc6dd","ts":1760913415,"text":"Небольшой уютный город. Помимо замка, можно посмотреть церкви/костёлы и сходить на экскурсию на пив завод (по предварительной записи)","venue":"Lida (Лида)","venue_id":"50152aede4b021abafcd95a6","city":"","country":"Беларусь","lat":53.88328,"lng":25.30599,"category":"City","agree_count":0,"disagree_count":0,"view_count":5,"closed":false,"date":"19 Oct 2025","time":"22:36","nc":"Belarus","nci":"","photo_url":""},{"id":"68f565f695600d6806788b61","ts":1760912886,"text":"Тёмное бархатное разливное - топ 🤌","venue":"Лидское пиво","venue_id":"5017cb8be4b085e0ab1897e4","city":"Ліда","country":"Беларусь","lat":53.89724,"lng":25.30352,"category":"Bar","agree_count":0,"disagree_count":0,"view_count":3,"closed":false,"date":"19 Oct 2025","time":"22:28","nc":"Belarus","nci":"Lida","photo_url":""},{"id":"68d6b9d9c01301643b6e0e8c","ts":1758902745,"text":"Хороший выбор мороженого на развес 🤌","venue":"Магазин \"Мой Сладкий\"","venue_id":"68d6b9395a85253c823b9e84","city":"Hrodna","country":"Беларусь","lat":53.6662,"lng":23.7776,"category":"Candy Store","agree_count":0,"disagree_count":0,"view_count":2,"closed":false,"date":"26 Sep 2025","time":"16:05","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"68cf16f27e16b10a55da4f4a","ts":1758402290,"text":"Улица с кафешками, барами, ювелирными. Воспользоваться уборной можно в ЦУМе на 3м этаже :)","venue":"Пешеходная Улица","venue_id":"520f95b011d25e900d5b5465","city":"Гродна","country":"Беларусь","lat":53.68061,"lng":23.83061,"category":"Other Great Outdoors","agree_count":0,"disagree_count":0,"view_count":15,"closed":false,"date":"20 Sep 2025","time":"21:04","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"68bef2ec116e041bca90ed4c","ts":1757344492,"text":"Так называемые \"минские Патрики\" :D","venue":"Улица Карла Маркса","venue_id":"4f9298bae4b01143d17a91bd","city":"Мінск","country":"Беларусь","lat":53.89828,"lng":27.55826,"category":"Road","agree_count":0,"disagree_count":0,"view_count":5,"closed":false,"date":"08 Sep 2025","time":"15:14","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"68becf9a34a7bf66ad34c206","ts":1757335450,"text":"Милый сквер с фонтанами. Много лавочек :)","venue":"Сквер им. Дзержинского","venue_id":"4dac33510cb6a89c6291bf79","city":"Мінск","country":"Беларусь","lat":53.89776,"lng":27.55691,"category":"Park","agree_count":0,"disagree_count":0,"view_count":3,"closed":false,"date":"08 Sep 2025","time":"12:44","nc":"Belarus","nci":"Minsk","photo_url":""},{"id":"68ae07f1905de0304745895e","ts":1756235761,"text":"Место с потрясающе вкусным кофе, топовыми сиропами и хорошей музыкой на фоне 🤌","venue":"Coffee Shop","venue_id":"68a9e6fe131d901245e25a87","city":"Hrodna","country":"Беларусь","lat":53.68823,"lng":23.82814,"category":"Coffee Shop","agree_count":0,"disagree_count":0,"view_count":1,"closed":false,"date":"26 Aug 2025","time":"19:16","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"68a1d53292c4fd674a2c7aef","ts":1755436338,"text":"Уютное место, вкусные вафли, потрясающие люди 🫂","venue":"Арабика","venue_id":"5ff49adc1ce0757ef5886856","city":"Гродна","country":"Беларусь","lat":53.68211,"lng":23.83537,"category":"Coffee Shop","agree_count":0,"disagree_count":0,"view_count":2,"closed":false,"date":"17 Aug 2025","time":"13:12","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"689b77341c156035dfe19b81","ts":1755019060,"text":"Ботанический это сильно сказано. Нет скамеек((","venue":"Ботанический Сад ГГАУ","venue_id":"67ca7db3028d6144bda51f2e","city":"Гродна","country":"Беларусь","lat":53.69573,"lng":23.84586,"category":"Park","agree_count":0,"disagree_count":0,"view_count":0,"closed":false,"date":"12 Aug 2025","time":"17:17","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"688e054e9800705e3b2006e0","ts":1754137934,"text":"Самое старинное деревянное здание в Беларуси. Внутри дворика можно купить изделия ручной работы!)","venue":"Старый Лямус","venue_id":"60aa293b3c89944566cb8740","city":"Гродна","country":"Беларусь","lat":53.67612,"lng":23.83633,"category":"Monument","agree_count":0,"disagree_count":0,"view_count":5,"closed":false,"date":"02 Aug 2025","time":"12:32","nc":"Belarus","nci":"Hrodna","photo_url":""},{"id":"682a28627bec7721114976ef","ts":1747593314,"text":"Красивый вид на Неман. Но узкий проход, опасайтесь велосипедистов!","venue":"Румлёвский Мост","venue_id":"4fc11b03e4b08acaf48480e6","city":"Гродна","country":"Беларусь","lat":53.65946,"lng":23.85886,"category":"Bridge","agree_count":0,"disagree_count":0,"view_count":2,"closed":false,"date":"18 May 2025","time":"18:35","nc":"Belarus","nci":"Hrodna","photo_url":""}];
+const TABS_DATA = {"Belarus":{"total":23,"cities":[["Minsk",10],["Hrodna",9],["Lida",2]]}};
+
+const CTRY_CODE = {"Belarus":"by","Moldova":"md","Poland":"pl","Russia":"ru","Ukraine":"ua","Germany":"de","France":"fr","Italy":"it","Spain":"es","Turkey":"tr","Türkiye":"tr","Sweden":"se","Denmark":"dk","Norway":"no","Finland":"fi","Austria":"at","Switzerland":"ch","Netherlands":"nl","Belgium":"be","Portugal":"pt","Czech Republic":"cz","Czechia":"cz","Hungary":"hu","Slovakia":"sk","Romania":"ro","Bulgaria":"bg","Croatia":"hr","Slovenia":"si","Serbia":"rs","Bosnia and Herzegovina":"ba","Montenegro":"me","North Macedonia":"mk","Albania":"al","Kosovo":"xk","Estonia":"ee","Latvia":"lv","Lithuania":"lt","Greece":"gr","Cyprus":"cy","Malta":"mt","Iceland":"is","Ireland":"ie","United Kingdom":"gb","Georgia":"ge","Armenia":"am","Azerbaijan":"az","Kazakhstan":"kz","Uzbekistan":"uz","Kyrgyzstan":"kg","Tajikistan":"tj","Turkmenistan":"tm","Mongolia":"mn","China":"cn","Japan":"jp","South Korea":"kr","Taiwan":"tw","India":"in","Thailand":"th","Vietnam":"vn","Indonesia":"id","Singapore":"sg","Malaysia":"my","Pakistan":"pk","Nepal":"np","Qatar":"qa","UAE":"ae","United Arab Emirates":"ae","Saudi Arabia":"sa","Jordan":"jo","Israel":"il","Iraq":"iq","Lebanon":"lb","Iran":"ir","Egypt":"eg","Morocco":"ma","Tunisia":"tn","South Africa":"za","United States":"us","Canada":"ca","Mexico":"mx","Brazil":"br","Argentina":"ar","Chile":"cl","Colombia":"co","Peru":"pe","Australia":"au","New Zealand":"nz","Holy See (Vatican City State)":"va","San Marino":"sm","Monaco":"mc"};
+
+function flagHtml(c){const code=(CTRY_CODE[c]||'').toLowerCase();return code?`<span class="fi fi-${code}" style="border-radius:2px;font-size:.85em;vertical-align:middle;"></span> `:''}
+const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const CAT_ICON={
+  'Coffee Shop':['☕','#6F4E37'],'Café':['☕','#6F4E37'],'Bakery':['🥐','#C8860A'],
+  'Restaurant':['🍽️','#C0392B'],'Fast Food Restaurant':['🍔','#E67E22'],'Pizzeria':['🍕','#E74C3C'],
+  'Burger Joint':['🍔','#D35400'],'Italian Restaurant':['🍝','#C0392B'],'Kebab Restaurant':['🌯','#E67E22'],
+  'Cafeteria':['🥣','#D4A017'],'Corporate Cafeteria':['🥣','#D4A017'],'Food Court':['🍱','#E67E22'],
+  'Grocery Store':['🛒','#27AE60'],'Supermarket':['🛒','#219A52'],'Convenience Store':['🏪','#2ECC71'],
+  'Market':['🛒','#27AE60'],'Gourmet Store':['🧀','#F39C12'],'Candy Store':['🍬','#F06292'],
+  'Farmers Market':['🥦','#27AE60'],
+  'Bar':['🍺','#F39C12'],'Beer Bar':['🍺','#E67E22'],'Pub':['🍻','#D4A017'],
+  'Hookah Bar':['💨','#8E44AD'],'Cocktail Bar':['🍸','#E74C3C'],'Wine Bar':['🍷','#922B21'],
+  'Wine Store':['🍷','#7B241C'],'Liquor Store':['🥃','#784212'],'Lounge':['🛋️','#5D6D7E'],
+  'Gastropub':['🍖','#CA6F1E'],'Brewery':['🍻','#BA4A00'],'Nightclub':['🎵','#6C3483'],
+  'Night Club':['🎵','#6C3483'],'Karaoke Bar':['🎤','#7D3C98'],'Beer Garden':['🍻','#D4A017'],
+  'Beach Bar':['🍹','#2980B9'],'Dive Bar':['🍺','#7B241C'],'Sports Bar':['📺','#2C3E50'],
+  'Rock Club':['🎸','#6C3483'],'Hotel Bar':['🍸','#2C3E50'],'Irish Pub':['🍀','#27AE60'],
+  'Beer Store':['🍺','#D4A017'],'Speakeasy':['🥃','#4A235A'],'Whisky Bar':['🥃','#784212'],
+  'Buffet':['🍱','#E67E22'],'Brasserie':['🍺','#D4A017'],
+  'Hotel':['🏨','#2C3E50'],'Hostel':['🛏️','#34495E'],'Bed and Breakfast':['🛏️','#4A235A'],
+  'Inn':['🏠','#2E4053'],'Apartment or Condo':['🏠','#1A5276'],'Home (private)':['🏠','#17202A'],
+  'Resort':['🏖️','#2980B9'],'Lodging':['🛏️','#5D6D7E'],
+  'Metro Station':['🚇','#2980B9'],'Rail Station':['🚉','#1A5276'],'Train':['🚂','#E74C3C'],
+  'Tram Station':['🚃','#2471A3'],'Light Rail Station':['🚈','#2980B9'],'Platform':['🚉','#1F618D'],
+  'Bus Line':['🚌','#27AE60'],'Bus Station':['🚌','#1E8449'],'Bus Stop':['🚏','#239B56'],
+  'Airport Terminal':['✈️','#2471A3'],'International Airport':['✈️','#154360'],'Airport Gate':['✈️','#1A5276'],
+  'Airport':['✈️','#154360'],'Airport Lounge':['🛋️','#21618C'],'Travel Lounge':['🛋️','#21618C'],
+  'Plane':['✈️','#2980B9'],'Boat or Ferry':['⛴️','#117A65'],'Border Crossing':['🛂','#717D7E'],
+  'Taxi':['🚕','#F4D03F'],'Parking':['🅿️','#2980B9'],'Fuel Station':['⛽','#E67E22'],
+  'Cable Car':['🚡','#8E44AD'],'Ski Chairlift':['🚡','#2980B9'],'Marine Terminal':['⚓','#1A5276'],
+  'Port':['🚢','#154360'],'Harbor or Marina':['⛵','#2980B9'],'Pier':['🎣','#2471A3'],
+  'Travel and Transportation':['✈️','#2980B9'],'Transportation Service':['🚐','#27AE60'],
+  'Park':['🌳','#1E8449'],'Plaza':['🏛️','#2E86C1'],'Pedestrian Plaza':['🚶','#2E86C1'],
+  'Beach':['🏖️','#F39C12'],'Mountain':['⛰️','#7F8C8D'],'Hiking Trail':['🥾','#6E2F1A'],
+  'Garden':['🌸','#1E8449'],'Scenic Lookout':['🔭','#1A5276'],'Waterfront':['🌊','#2471A3'],
+  'River':['🌊','#2980B9'],'Lake':['🏞️','#2471A3'],'Island':['🏝️','#27AE60'],
+  'Bike Trail':['🚴','#E67E22'],'Other Great Outdoors':['🌲','#186A3B'],
+  'Cemetery':['🪦','#5D6D7E'],'Ski Area':['⛷️','#85C1E9'],'Bridge':['🌉','#626567'],
+  'Fountain':['⛲','#5DADE2'],'National Park':['🌲','#186A3B'],'Nature Preserve':['🌿','#1E8449'],
+  'Forest':['🌲','#186A3B'],'Botanical Garden':['🌺','#1E8449'],'Waterfall':['💦','#2980B9'],
+  'Canal':['🚤','#2471A3'],'Bay':['🌊','#2980B9'],'Campground':['⛺','#186A3B'],
+  'Playground':['🛝','#E74C3C'],'Tree':['🌳','#1E8449'],'Lighthouse':['🔦','#F39C12'],
+  'Volcano':['🌋','#E74C3C'],'Cave':['🦇','#616A6B'],'Field':['🌾','#27AE60'],
+  'Hill':['⛰️','#784212'],'Vineyard':['🍇','#922B21'],'Farm':['🚜','#27AE60'],
+  'Museum':['🏛️','#7D3C98'],'Art Museum':['🎨','#884EA0'],'History Museum':['📜','#6E2F1A'],
+  'Art Gallery':['🖼️','#7D3C98'],'Monument':['🗽','#626567'],'Historic and Protected Site':['🏰','#784212'],
+  'Castle':['🏰','#6E2F1A'],'Palace':['🏯','#784212'],'Public Art':['🎨','#7D3C98'],
+  'Street Art':['🎨','#8E44AD'],'Theater':['🎭','#922B21'],'Concert Hall':['🎼','#922B21'],
+  'Movie Theater':['🎬','#C0392B'],'Cultural Center':['🎭','#7D3C98'],'Exhibit':['🖼️','#7D3C98'],
+  'Exhibition':['🖼️','#8E44AD'],'Science Museum':['🔬','#1A5276'],'Amusement Park':['🎡','#E74C3C'],
+  'Memorial Site':['🕯️','#626567'],'Library':['📚','#1A5276'],'Amphitheater':['🎭','#8E44AD'],
+  'Music Venue':['🎸','#8E44AD'],'Opera House':['🎭','#6C3483'],'Attraction':['⭐','#D4A017'],
+  'Zoo':['🦁','#D4A017'],'Aquarium':['🐠','#2980B9'],'Casino':['🎲','#C0392B'],
+  'Escape Room':['🔐','#8E44AD'],'Event Space':['🎪','#C0392B'],
+  'Church':['⛪','#7D3C98'],'Mosque':['🕌','#117A65'],'Temple':['🛕','#B9770E'],
+  'Monastery':['🙏','#6E2F1A'],'Synagogue':['✡️','#1A5276'],'Shrine':['⛩️','#C0392B'],
+  'Buddhist Temple':['☸️','#D4A017'],'Hindu Temple':['🛕','#E67E22'],
+  'Shopping Mall':['🛍️','#E91E63'],'Department Store':['🏬','#C0392B'],'Clothing Store':['👔','#8E44AD'],
+  'Shoe Store':['👟','#D35400'],'Electronics Store':['💻','#2471A3'],'Mobile Phone Store':['📱','#2E86C1'],
+  'Bookstore':['📚','#1A5276'],'Furniture and Home Store':['🛋️','#784212'],'Cosmetics Store':['💄','#F06292'],
+  'Bicycle Store':['🚲','#27AE60'],'Big Box Store':['📦','#7F8C8D'],'Flea Market':['🏷️','#D35400'],
+  'Hardware Store':['🔧','#7F8C8D'],'Miscellaneous Store':['🏪','#E67E22'],'Souvenir Store':['🛍️','#D4A017'],
+  'Gift Store':['🎁','#E91E8C'],'Jewelry Store':['💍','#D4A017'],'Antique Store':['🏺','#D4A017'],
+  'Outdoor Supply Store':['⛺','#27AE60'],'Sporting Goods Retail':['⚽','#27AE60'],
+  'Fruit and Vegetable Store':['🥦','#27AE60'],'Butcher':['🥩','#C0392B'],'Fish Market':['🐟','#2980B9'],
+  'Pharmacy':['💊','#27AE60'],'Drugstore':['💊','#27AE60'],'Health Food Store':['🥗','#1E8449'],
+  'Gym':['💪','#E74C3C'],'Bath House':['♨️','#1ABC9C'],'Spa':['💆','#1ABC9C'],
+  'Medical Center':['🏥','#E74C3C'],'Hospital':['🏥','#E74C3C'],'Yoga Studio':['🧘','#27AE60'],
+  'Hair Salon':['✂️','#F06292'],'Swimming Pool':['🏊','#2980B9'],'Sauna':['♨️','#E74C3C'],
+  'Bank':['🏦','#1A5276'],'Office':['🏢','#2C3E50'],'Post Office':['📮','#E74C3C'],
+  'Police Station':['👮','#2471A3'],'City Hall':['🏛️','#1A5276'],'Government Building':['🏛️','#154360'],
+  'University':['🎓','#154360'],'Business Center':['🏢','#2C3E50'],'Coworking Space':['💻','#2C3E50'],
+  'Embassy or Consulate':['🏛️','#1A5276'],'Non-Profit Organization':['🤝','#1E8449'],
+  'City':['🏙️','#2E86C1'],'Town':['🏘️','#5D6D7E'],'Village':['🏡','#5D6D7E'],
+  'Neighborhood':['🏘️','#5D6D7E'],'Residential Building':['🏠','#2C3E50'],
+  'Chinese Restaurant':['🥢','#C0392B'],'Japanese Restaurant':['🍱','#C0392B'],
+  'Korean Restaurant':['🍚','#E74C3C'],'Vietnamese Restaurant':['🍜','#27AE60'],
+  'Thai Restaurant':['🍛','#F39C12'],'Indian Restaurant':['🍛','#E67E22'],
+  'Turkish Restaurant':['🌯','#C0392B'],'Greek Restaurant':['🫒','#27AE60'],
+  'French Restaurant':['🥐','#2980B9'],'Spanish Restaurant':['🥘','#E74C3C'],
+  'German Restaurant':['🍺','#C8860A'],'Mexican Restaurant':['🌮','#27AE60'],
+  'American Restaurant':['🍔','#E67E22'],'Middle Eastern Restaurant':['🧆','#D35400'],
+  'Russian Restaurant':['🥟','#C0392B'],'Ukrainian Restaurant':['🌻','#F39C12'],
+  'Belarusian Restaurant':['🥟','#27AE60'],'Eastern European Restaurant':['🍲','#C0392B'],
+  'Diner':['🍳','#E67E22'],'Bistro':['🍽️','#C0392B'],'Dessert Shop':['🍰','#F06292'],
+  'Ice Cream Parlor':['🍦','#F06292'],'Pastry Shop':['🥐','#C8860A'],
+  'Coffee Roaster':['☕','#4A235A'],'Cafe, Coffee, and Tea House':['☕','#6F4E37'],
+  'Blini House':['🫓','#C8860A'],'Pelmeni House':['🥟','#C8860A'],'Dumpling Restaurant':['🥟','#E67E22'],
+  'Ramen Restaurant':['🍜','#E74C3C'],'Sushi Restaurant':['🍣','#C0392B'],'Steak House':['🥩','#922B21'],
+  'Steakhouse':['🥩','#922B21'],'Seafood Restaurant':['🦐','#2980B9'],'Food Truck':['🚚','#E67E22'],
+  'BBQ Joint':['🔥','#C0392B'],'Vegan and Vegetarian Restaurant':['🥦','#27AE60'],
+  'Breakfast Spot':['🥞','#F39C12'],'Tea Room':['🫖','#27AE60'],'Bubble Tea Shop':['🧋','#8E44AD'],
+  'Hot Dog Joint':['🌭','#E67E22'],'Taco Restaurant':['🌮','#27AE60'],
+  'Trattoria':['🍝','#C0392B'],'Deli':['🥪','#D4A017'],'Sandwich Spot':['🥪','#D4A017'],
+  'Education':['🎓','#1A5276'],'Language School':['📝','#2980B9'],'Planetarium':['🌌','#2C3E50'],
+  'Tennis Court':['🎾','#27AE60'],'Soccer Field':['⚽','#27AE60'],'Basketball Court':['🏀','#E67E22'],
+  'Skate Park':['🛹','#5D6D7E'],'Skating Rink':['⛸️','#2980B9'],'Rock Climbing Spot':['🧗','#784212'],
+  'Dog Park':['🐕','#D4A017'],'Sports Club':['🏅','#E67E22'],'Gym and Studio':['💪','#E74C3C'],
+  'Dance Studio':['💃','#E91E8C'],'Pool Hall':['🎱','#2C3E50'],
+  'Road':['🛣️','#7F8C8D'],'Intersection':['🔀','#7F8C8D'],'Tunnel':['🚇','#626567'],
+  'Rest Area':['🛑','#E67E22'],'Toll Plaza':['🚧','#D4A017'],'Toll Booth':['🚧','#E67E22'],
+  'Airport Service':['🛠️','#2471A3'],'Airport Ticket Counter':['🎫','#2471A3'],
+  'Airport Tram Station':['🚈','#2471A3'],'Baggage Claim':['🧳','#2471A3'],
+  'Baggage Locker':['🔒','#2471A3'],'Airfield':['✈️','#154360'],
+  'Bike Rental':['🚲','#27AE60'],'Boat Launch':['⛵','#2980B9'],
+  'Dam':['💧','#2471A3'],'Reservoir':['💧','#2980B9'],
+  'Country':['🌍','#2E86C1'],'County':['🌄','#5D6D7E'],'State':['🗺️','#5D6D7E'],
+  'Landmarks and Outdoors':['🗺️','#27AE60'],
+  'Outdoor Sculpture':['🗿','#7D3C98'],'Sculpture Garden':['🗿','#626567'],
+  'Arts and Entertainment':['🎭','#8E44AD'],
+  'Art Studio':['🎨','#8E44AD'],'Auditorium':['🎭','#8E44AD'],'Ballroom':['💃','#8E44AD'],
+  'Outdoor Event Space':['🎪','#27AE60'],'Circus':['🎪','#E74C3C'],
+  'College Arts Building':['🎨','#8E44AD'],'College Academic Building':['🏫','#1A5276'],
+  'College Cafeteria':['🍽️','#D4A017'],'College Gym':['💪','#E74C3C'],
+  'College Library':['📚','#1A5276'],'College Quad':['🌳','#1E8449'],
+  'College and University':['🎓','#154360'],'Community College':['🎓','#1A5276'],
+  'Caucasian Restaurant':['🍖','#C0392B'],'Shawarma Restaurant':['🌯','#D35400'],
+  'Doner Restaurant':['🌯','#E67E22'],'Romanian Restaurant':['🥘','#C0392B'],
+  'Polish Restaurant':['🥟','#C0392B'],'Modern European Restaurant':['🍽️','#C0392B'],
+  'Asian Restaurant':['🥢','#C0392B'],'Noodle Restaurant':['🍜','#E67E22'],
+  'Bagel Shop':['🥯','#C8860A'],'Comfort Food Restaurant':['🥘','#D4A017'],
+  'Food and Beverage Retail':['🏪','#E67E22'],'Chocolate Store':['🍫','#6F4E37'],
+  'Christmas Market':['🎄','#27AE60'],
+  'Israeli Restaurant':['🧆','#D4A017'],'African Restaurant':['🌍','#D35400'],
+  'Tech Startup':['💻','#2980B9'],'Convention Center':['🏢','#2C3E50'],
+  'Community Center':['🏘️','#27AE60'],'Tourist Information and Service':['ℹ️','#2E86C1'],
+  'Currency Exchange':['💱','#27AE60'],'ATM':['🏧','#1A5276'],
+  'Duty-free Store':['🛍️','#1A5276'],'Discount Store':['🏷️','#E74C3C'],
+  'Shopping Plaza':['🛍️','#E91E63'],'Vintage and Thrift Store':['🏷️','#8E44AD'],
+  'Arts and Crafts Store':['✂️','#8E44AD'],'Flower Store':['🌸','#F06292'],
+  'Leather Goods Store':['👜','#784212'],'Watch Store':['⌚','#2C3E50'],
+  'Tailor':['🧵','#8E44AD'],'Newsstand':['📰','#2C3E50'],
+  'Repair Service':['🔧','#7F8C8D'],'Rental Service':['🔑','#E67E22'],
+  'Automotive Repair Shop':['🔧','#7F8C8D'],'Boutique':['👗','#F06292'],
+  'Structure':['🏗️','#626567'],'Factory':['🏭','#626567'],
+  'Military Base':['🪖','#5D6D7E'],'Construction':['🏗️','#E67E22'],
+  'Capitol Building':['🏛️','#1A5276'],
+  'Sports and Recreation':['🏅','#E67E22'],
+  'Soccer Stadium':['⚽','#27AE60'],'Basketball Stadium':['🏀','#E67E22'],
+  'Bowling Alley':['🎳','#2C3E50'],'Ski Resort and Area':['⛷️','#85C1E9'],
+  'Bathing Area':['🏊','#2980B9'],'Arcade':['🕹️','#8E44AD'],
+  'Comedy Club':['😄','#8E44AD'],
+  'Banking and Finance':['🏦','#1A5276'],'Business and Professional Services':['🏢','#2C3E50'],
+  'Winery':['🍇','#922B21'],'Spiritual Center':['🕯️','#8E44AD'],
+  'Confucian Temple':['⛩️','#D4A017'],
+};
+function catIcon(cat){
+  const entry=CAT_ICON[cat||''];
+  if(!entry) return{em:'📍',bg:'#4a5270'};
+  return{em:entry[0],bg:entry[1]};
+}
+
+// ── Map ──────────────────────────────────────────────────────────────────────
+const map=L.map('map',{preferCanvas:true}).setView([30,15],2);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+
+const markers={};
+let selMarker=null;
+ALL.forEach((t,i)=>{
+  if(t.lat==null||t.lng==null)return;
+  const{em,bg}=catIcon(t.category||'');
+  const m=L.circleMarker([t.lat,t.lng],{radius:6,fillColor:bg,fillOpacity:.75,color:bg,weight:1}).addTo(map);
+  const tipPreview=esc((t.text||'').slice(0,90))+(t.text&&t.text.length>90?'…':'');
+  m.bindPopup(`<b>${esc(t.venue||'')}</b><br><span style="font-size:.75rem;color:#9ca3af;">${esc(t.city||'')}${t.country?', '+esc(t.nc||t.country):''}</span><br><br><i style="font-size:.78rem;">"${tipPreview}"</i>`,{maxWidth:220});
+  markers[i]=m;
+});
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+let selCountry='', selCity='';
+
+function buildCtryTabs(){
+  const total=ALL.length;
+  let html=`<button class="tab-btn ${!selCountry?'act':''}" onclick="setCountry('')">All <span class="tab-count">${total}</span></button>`;
+  for(const[c,d]of Object.entries(TABS_DATA)){
+    const f=flagHtml(c);
+    html+=`<button class="tab-btn ${selCountry===c?'act':''}" onclick='setCountry(${JSON.stringify(c)})'>${f}${esc(c)} <span class="tab-count">${d.total}</span></button>`;
+  }
+  document.getElementById('ctryTabs').innerHTML=html;
+}
+
+function scrollTabs(id,dx){document.getElementById(id).scrollBy({left:dx,behavior:'smooth'});}
+
+function buildCityTabs(){
+  const row=document.getElementById('cityTabs');
+  const wrap=document.getElementById('cityWrap');
+  if(!selCountry){wrap.classList.remove('vis');return;}
+  const d=TABS_DATA[selCountry];
+  if(!d){wrap.classList.remove('vis');return;}
+  wrap.classList.add('vis');
+  let html=`<button class="tab-btn ${!selCity?'act':''}" onclick="setCity('')">All cities <span class="tab-count">${d.total}</span></button>`;
+  for(const[c,n]of d.cities){
+    if(!c)continue;
+    html+=`<button class="tab-btn ${selCity===c?'act':''}" onclick='setCity(${JSON.stringify(c)})'>${esc(c)} <span class="tab-count">${n}</span></button>`;
+  }
+  row.innerHTML=html;
+}
+
+function setCountry(c){selCountry=c;selCity='';buildCtryTabs();buildCityTabs();render();}
+function setCity(c){selCity=c;buildCityTabs();render();}
+
+// ── Filter & sort ────────────────────────────────────────────────────────────
+let sortMode='date', sortDir=1, query='', showClosed=false, showDeleted=false;
+
+function getFiltered(){
+  const q=query.toLowerCase();
+  return ALL.map((_,i)=>i).filter(i=>{
+    const t=ALL[i];
+    if(selCountry && t.nc!==selCountry) return false;
+    if(selCity && t.nci!==selCity) return false;
+    if(showClosed && !t.closed) return false;
+    if(showDeleted && !t.deleted) return false;
+    if(!q) return true;
+    return (t.text||'').toLowerCase().includes(q)||(t.venue||'').toLowerCase().includes(q)||(t.city||'').toLowerCase().includes(q)||(t.country||'').toLowerCase().includes(q)||(t.category||'').toLowerCase().includes(q);
+  });
+}
+
+function render(){
+  let idx=getFiltered();
+  if(sortMode==='date' && sortDir===-1) idx.reverse();
+  if(sortMode==='agree') idx.sort((a,b)=>sortDir*((ALL[b].agree_count||0)-(ALL[a].agree_count||0)));
+  if(sortMode==='views') idx.sort((a,b)=>sortDir*((ALL[b].view_count||0)-(ALL[a].view_count||0)));
+  document.getElementById('badge').textContent=idx.length+' / '+ALL.length+' tips';
+  document.getElementById('feedScroll').innerHTML=idx.map(i=>{
+    const t=ALL[i];
+    const{em,bg}=catIcon(t.category||'');
+    const vUrl=t.venue_id?`https://foursquare.com/v/${t.venue_id}`:'';
+    const tUrl=t.id?`https://foursquare.com/item/${t.id}`:'';
+    const f=t.nc?flagHtml(t.nc):'';
+    const loc=[t.nci||t.city,t.nc||t.country].filter(Boolean).join(', ');
+    const agree=t.agree_count>0?`<span class="tc-agree">👍 ${t.agree_count}</span>`:'';
+    const views=t.view_count>0?`<span class="tc-views">👁 ${t.view_count}</span>`:'';
+    const closedBadge=t.closed?'<span class="tc-closed">CLOSED</span>':'';
+    const deletedBadge=t.deleted?'<span class="tc-deleted">DELETED</span>':'';
+    const venueLabel=vUrl?`<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(t.venue||'Unknown venue')}</a>`:esc(t.venue||'Unknown venue');
+    const photoEl=t.photo_url?`<img class="tc-photo" src="${t.photo_url}" loading="lazy" alt="" onclick="event.stopPropagation();openTipPhoto('${t.photo_url}')">`:'';
+    return `<div class="tcard" id="tc_${i}" onclick="selectTip(${i})">
+      ${photoEl}
+      <div class="tc-venue-row">
+        <div class="tc-cat-icon" style="background:${bg}22;border:1px solid ${bg}55">${em}</div>
+        <div class="tc-venue">${venueLabel}${closedBadge}${deletedBadge}</div>
+      </div>
+      <div class="tc-text">${esc(t.text||'')}</div>
+      <div class="tc-meta">
+        <span class="tc-cat">${esc(t.category||'')}</span>
+        <span class="tc-loc">${f}${esc(loc)}</span>
+        ${agree}
+      </div>
+      <div class="tc-foot">
+        <span class="tc-date">${t.date}</span>
+        ${views}
+        ${tUrl?`<a class="tc-fsq" href="${tUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ foursquare</a>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectTip(i){
+  if(selMarker)selMarker.setStyle({radius:6,weight:1});
+  document.querySelectorAll('.tcard.sel').forEach(el=>el.classList.remove('sel'));
+  const el=document.getElementById('tc_'+i);
+  if(el){el.classList.add('sel');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
+  if(markers[i]){
+    markers[i].setStyle({radius:10,weight:2});
+    selMarker=markers[i];
+    map.panTo([ALL[i].lat,ALL[i].lng],{animate:true});
+    markers[i].openPopup();
+  }
+}
+
+function onSearch(v){query=v;render();}
+function toggleClosed(el){showClosed=!showClosed;el.classList.toggle('act');render();}
+function toggleDeleted(el){showDeleted=!showDeleted;el.classList.toggle('act');render();}
+const SORT_LABELS={'date':'By Date','agree':'👍 By Agree','views':'👁 By Views'};
+function sortBy(mode,el){
+  if(sortMode===mode) sortDir*=-1; else{sortMode=mode;sortDir=1;}
+  document.querySelectorAll('.sbtn:not(#sClosed):not(#sDeleted)').forEach(b=>{
+    const m=b.id==='sDate'?'date':b.id==='sAgree'?'agree':'views';
+    b.textContent=SORT_LABELS[m]+(b===el?(sortDir===1?' ↓':' ↑'):'  ↓');
+    b.classList.toggle('act',b===el);
+  });
+  render();
+}
+
+buildCtryTabs();
+render();
+
+function openTipPhoto(url){
+  document.getElementById('tipLightbox-img').src=url;
+  document.getElementById('tipLightbox').classList.add('open');
+}
+function closeTipPhoto(){
+  document.getElementById('tipLightbox').classList.remove('open');
+  document.getElementById('tipLightbox-img').src='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTipPhoto();});
+(function(){const _q=new URLSearchParams(location.search).get('q');if(_q){const _inp=document.getElementById('srch');if(_inp){_inp.value=_q;onSearch(_q);}}})();
+</script>
+<div id="tipLightbox" onclick="closeTipPhoto()">
+  <img id="tipLightbox-img" src="" alt="" onclick="event.stopPropagation()">
+  <button id="tipLightbox-close" onclick="closeTipPhoto()">&#10005;</button>
+</div>
+<script>
+function gsOpen(){document.getElementById('gsOverlay').classList.add('open');document.getElementById('gsInput').focus();}
+function gsClose(){document.getElementById('gsOverlay').classList.remove('open');}
+document.getElementById('gsInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&this.value.trim()){location.href='search.html?q='+encodeURIComponent(this.value.trim());}if(e.key==='Escape')gsClose();});
+document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();gsOpen();}if(e.key==='Escape'&&document.getElementById('gsOverlay').classList.contains('open'))gsClose();});
+</script>
+<nav class="side-nav" aria-label="Page shortcuts">
+  <a href="index.html"><span class="sn-icon">🏠</span><span class="sn-lbl">HOME</span></a>
+  <div class="sn-sep--pages"></div>
+  <a href="feed.html"><span class="sn-icon">📰</span><span class="sn-lbl">FEED</span></a>
+  <a class="active" href="tips.html"><span class="sn-icon">💬</span><span class="sn-lbl">TIPS</span></a>
+  <a href="ratings.html"><span class="sn-icon">⭐</span><span class="sn-lbl">RATED</span></a>
+  <a href="photos.html"><span class="sn-icon">📷</span><span class="sn-lbl">PHOTOS</span></a>
+  <a href="trips.html"><span class="sn-icon">✈</span><span class="sn-lbl">TRIPS</span></a>
+  <a href="lists.html"><span class="sn-icon">📋</span><span class="sn-lbl">LISTS</span></a>
+  <a href="world_cities.html"><span class="sn-icon">🌐</span><span class="sn-lbl">WORLD CITIES</span></a>
+  <a href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">TOTAL PLACES</span></a>
+  <a href="companions.html"><span class="sn-icon">👥</span><span class="sn-lbl">WITH</span></a>
+  <a href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <div class="sn-sep"></div>
+  <button id="snThemeToggle"><span class="sn-icon" id="snThemeIcon">☀️</span><span class="sn-lbl" id="snThemeLbl">LIGHT</span></button>
+</nav>
+<script>
+(function(){
+  var btn=document.getElementById('snThemeToggle');
+  var ico=document.getElementById('snThemeIcon');
+  var lbl=document.getElementById('snThemeLbl');
+  function apply(light){
+    document.body.classList.toggle('light',light);
+    if(ico) ico.textContent=light?'\u{1F319}':'\u2600\uFE0F';
+    if(lbl) lbl.textContent=light?'DARK':'LIGHT';
+  }
+  apply(localStorage.getItem('fsq-theme')==='light');
+  if(btn) btn.addEventListener('click',function(){
+    var isLight=document.body.classList.toggle('light');
+    localStorage.setItem('fsq-theme',isLight?'light':'dark');
+    apply(isLight);
+  });
+})();
+</script>
+</body>
+</html>

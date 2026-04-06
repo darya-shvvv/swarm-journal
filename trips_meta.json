@@ -1,1395 +1,106 @@
 [
   {
     "id": 1,
-    "name": "Forth and back between two homes 🚂",
-    "start_date": "2013-01-19",
-    "end_date": "2013-02-11",
-    "start_ts": 1358545750,
-    "start_year": 2013,
-    "duration": 24,
-    "checkin_count": 177,
-    "unique_places": 134,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-02-08",
+    "end_date": "2025-02-08",
+    "start_ts": 1739005007,
+    "start_year": 2025,
+    "duration": 1,
+    "checkin_count": 31,
+    "unique_places": 31,
     "countries": [
-      "Moldova",
-      "Ukraine",
       "Belarus"
     ],
     "cities": [
-      "Chișinău",
-      "Odesa",
-      "Kyiv",
-      "Bender",
-      "Minsk",
-      "Tiraspol",
-      "Kuchurhan",
-      "Chernihiv",
-      "Skytok",
-      "Gomel",
-      "Vystupovychi",
-      "Zhmerynka",
-      "Mohyliv-Podilskyy",
-      "Otaci",
-      "Pervomaysk",
-      "Odesa Region",
-      "Voznesensk",
-      "Novaya Huta",
-      "Zhlobin",
-      "Babruysk"
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
       [
         "Plaza",
-        16
+        3
+      ],
+      [
+        "Church",
+        3
+      ],
+      [
+        "Park",
+        3
+      ],
+      [
+        "Road",
+        2
+      ],
+      [
+        "Bridge",
+        2
+      ],
+      [
+        "Other Great Outdoors",
+        2
       ],
       [
         "Rail Station",
-        14
+        1
+      ],
+      [
+        "Sculpture Garden",
+        1
       ],
       [
         "Monument",
-        9
+        1
       ],
       [
-        "Home (private)",
-        8
-      ],
-      [
-        "Apartment or Condo",
-        7
-      ],
-      [
-        "University",
-        7
-      ],
-      [
-        "Border Crossing",
-        6
-      ],
-      [
-        "Bank",
-        6
-      ],
-      [
-        "Supermarket",
-        6
-      ],
-      [
-        "College Academic Building",
-        5
+        "Coffee Shop",
+        1
       ]
     ]
   },
   {
     "id": 2,
-    "name": "Study tours to Poland #1 🚂",
-    "start_date": "2013-04-12",
-    "end_date": "2013-04-26",
-    "start_ts": 1365776336,
-    "start_year": 2013,
-    "duration": 15,
-    "checkin_count": 184,
-    "unique_places": 144,
-    "countries": [
-      "Poland",
-      "Belarus"
-    ],
-    "cities": [
-      "Warsaw",
-      "Katowice",
-      "Brest",
-      "Terespol",
-      "Minsk",
-      "Oświęcim",
-      "Chorzów",
-      "Rechytsa",
-      "Częstochowa"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        11
-      ],
-      [
-        "Neighborhood",
-        11
-      ],
-      [
-        "Hostel",
-        11
-      ],
-      [
-        "Plaza",
-        10
-      ],
-      [
-        "Park",
-        9
-      ],
-      [
-        "Church",
-        7
-      ],
-      [
-        "Metro Station",
-        7
-      ],
-      [
-        "Modern European Restaurant",
-        7
-      ],
-      [
-        "Bar",
-        6
-      ],
-      [
-        "Road",
-        5
-      ]
-    ]
-  },
-  {
-    "id": 3,
-    "name": "ISWI #1 🚂",
-    "start_date": "2013-05-28",
-    "end_date": "2013-09-01",
-    "start_ts": 1369751159,
-    "start_year": 2013,
-    "duration": 97,
-    "checkin_count": 533,
-    "unique_places": 390,
-    "countries": [
-      "Moldova",
-      "Ukraine",
-      "Germany",
-      "Czech Republic",
-      "Romania",
-      "Hungary",
-      "Poland",
-      "Belarus",
-      "Slovakia"
-    ],
-    "cities": [
-      "Chișinău",
-      "Kyiv",
-      "Ilmenau",
-      "Prague",
-      "Odesa",
-      "Dresden",
-      "Cluj-Napoca",
-      "Budapest",
-      "Berlin",
-      "Warsaw",
-      "Tiraspol",
-      "Brest",
-      "Bender",
-      "Minsk",
-      "Ialoveni",
-      "Terespol",
-      "Erfurt",
-      "Chernihiv",
-      "Gomel",
-      "Poznań",
-      "Magdeburg",
-      "Plaue",
-      "Bratislava",
-      "Sculeni",
-      "Varnița",
-      "Tudora",
-      "Starokozache",
-      "Skytok",
-      "Novaya Huta"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        39
-      ],
-      [
-        "Hostel",
-        38
-      ],
-      [
-        "Park",
-        35
-      ],
-      [
-        "Monument",
-        31
-      ],
-      [
-        "Bus Station",
-        20
-      ],
-      [
-        "Apartment or Condo",
-        20
-      ],
-      [
-        "Road",
-        19
-      ],
-      [
-        "Rail Station",
-        18
-      ],
-      [
-        "Metro Station",
-        16
-      ],
-      [
-        "Supermarket",
-        16
-      ]
-    ]
-  },
-  {
-    "id": 4,
-    "name": "Join Veloby",
-    "start_date": "2013-09-29",
-    "end_date": "2013-09-29",
-    "start_ts": 1380425241,
-    "start_year": 2013,
-    "duration": 1,
-    "checkin_count": 5,
-    "unique_places": 5,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Gorodeya",
-      "Minsk",
-      "Yaremichy",
-      "Stowbtsy"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Department Store",
-        1
-      ],
-      [
-        "River",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 5,
-    "name": "Moldova - Street of Arts 🚂",
-    "start_date": "2014-01-15",
-    "end_date": "2014-02-20",
-    "start_ts": 1389801052,
-    "start_year": 2014,
-    "duration": 37,
-    "checkin_count": 166,
-    "unique_places": 127,
-    "countries": [
-      "Moldova",
-      "Ukraine",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Kharkiv",
-      "Odesa",
-      "Minsk",
-      "Terekhovka",
-      "Sumy",
-      "Poltava",
-      "Rozdilna",
-      "Kuchurhan",
-      "Vystupovychi"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Government Building",
-        19
-      ],
-      [
-        "Monument",
-        14
-      ],
-      [
-        "Rail Station",
-        13
-      ],
-      [
-        "Plaza",
-        8
-      ],
-      [
-        "Coffee Shop",
-        8
-      ],
-      [
-        "Shopping Mall",
-        7
-      ],
-      [
-        "Home (private)",
-        6
-      ],
-      [
-        "Park",
-        6
-      ],
-      [
-        "Apartment or Condo",
-        6
-      ],
-      [
-        "Metro Station",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 6,
-    "name": "Study tours to Poland #2 🚂",
-    "start_date": "2014-04-04",
-    "end_date": "2014-04-29",
-    "start_ts": 1396617980,
-    "start_year": 2014,
-    "duration": 26,
-    "checkin_count": 315,
-    "unique_places": 245,
-    "countries": [
-      "Poland",
-      "Czech Republic",
-      "Belarus"
-    ],
-    "cities": [
-      "Warsaw",
-      "Prague",
-      "Wrocław",
-      "Brest",
-      "Białystok",
-      "Gródek",
-      "Terespol",
-      "Minsk",
-      "Łódź",
-      "Tłuszcz",
-      "Kudowa-Zdrój"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        27
-      ],
-      [
-        "Bus Station",
-        17
-      ],
-      [
-        "Rail Station",
-        13
-      ],
-      [
-        "Hostel",
-        13
-      ],
-      [
-        "Bus Line",
-        13
-      ],
-      [
-        "Park",
-        13
-      ],
-      [
-        "Church",
-        11
-      ],
-      [
-        "Tram Station",
-        9
-      ],
-      [
-        "Neighborhood",
-        9
-      ],
-      [
-        "Bridge",
-        9
-      ]
-    ]
-  },
-  {
-    "id": 7,
-    "name": "GRISTUF 🚂",
-    "start_date": "2014-06-17",
-    "end_date": "2014-07-02",
-    "start_ts": 1403014439,
-    "start_year": 2014,
-    "duration": 16,
-    "checkin_count": 168,
-    "unique_places": 140,
-    "countries": [
-      "Germany",
-      "Poland",
-      "Belarus"
-    ],
-    "cities": [
-      "Berlin",
-      "Greifswald",
-      "Warsaw",
-      "Brest",
-      "Schwerin",
-      "Minsk",
-      "Terespol",
-      "Slonim",
-      "Kunowice"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Shoe Store",
-        13
-      ],
-      [
-        "Bus Station",
-        12
-      ],
-      [
-        "Plaza",
-        11
-      ],
-      [
-        "Monument",
-        9
-      ],
-      [
-        "Rail Station",
-        8
-      ],
-      [
-        "Home (private)",
-        8
-      ],
-      [
-        "Supermarket",
-        8
-      ],
-      [
-        "Park",
-        7
-      ],
-      [
-        "Metro Station",
-        6
-      ],
-      [
-        "Student Center",
-        5
-      ]
-    ]
-  },
-  {
-    "id": 8,
-    "name": "Grodno as a meetpoint 🚂",
-    "start_date": "2014-07-02",
-    "end_date": "2014-07-04",
-    "start_ts": 1404333433,
-    "start_year": 2014,
-    "duration": 3,
-    "checkin_count": 20,
-    "unique_places": 17,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-03-07",
+    "end_date": "2025-03-10",
+    "start_ts": 1741352839,
+    "start_year": 2025,
+    "duration": 4,
+    "checkin_count": 26,
+    "unique_places": 23,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Hrodna",
-      "Minsk"
+      "Minsk",
+      "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Rail Station",
-        5
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
         "Park",
-        2
+        3
       ],
       [
-        "History Museum",
-        2
+        "Bus Line",
+        3
       ],
       [
-        "City",
-        1
+        "Home (private)",
+        3
       ],
       [
         "Supermarket",
-        1
-      ],
-      [
-        "Monument",
-        1
-      ],
-      [
-        "River",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
+        2
       ],
       [
         "Big Box Store",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 9,
-    "name": "Moldova - working in a hostel 🚂",
-    "start_date": "2014-07-29",
-    "end_date": "2014-09-04",
-    "start_ts": 1406607511,
-    "start_year": 2014,
-    "duration": 38,
-    "checkin_count": 251,
-    "unique_places": 197,
-    "countries": [
-      "Ukraine",
-      "Moldova",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Odesa",
-      "Lviv",
-      "Chernivtsi",
-      "Bălți",
-      "Sarny",
-      "Tiraspol",
-      "Mamalyha",
-      "Bender",
-      "Minsk",
-      "Baranovichi",
-      "Varnița",
-      "Pervomaysk",
-      "Kuchurhan",
-      "Odesa Region",
-      "Luninyets",
-      "Rechytsa",
-      "Nizhniy Terebezhov",
-      "Edineț",
-      "Briceni",
-      "Lipcani"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        24
+        2
       ],
       [
         "Monument",
-        24
-      ],
-      [
-        "Rail Station",
-        16
-      ],
-      [
-        "Park",
-        15
-      ],
-      [
-        "Supermarket",
-        13
-      ],
-      [
-        "Bus Station",
-        13
-      ],
-      [
-        "Border Crossing",
-        10
-      ],
-      [
-        "Road",
-        10
-      ],
-      [
-        "Government Building",
-        8
-      ],
-      [
-        "Pedestrian Plaza",
-        7
-      ]
-    ]
-  },
-  {
-    "id": 10,
-    "name": "Moldova - celebrating New Year 🚂",
-    "start_date": "2014-12-24",
-    "end_date": "2015-01-12",
-    "start_ts": 1419453762,
-    "start_year": 2014,
-    "duration": 20,
-    "checkin_count": 117,
-    "unique_places": 106,
-    "countries": [
-      "Ukraine",
-      "Moldova",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Kyiv",
-      "Gomel",
-      "Odesa",
-      "Chernivtsi",
-      "Kovel",
-      "Minsk",
-      "Domanove",
-      "Brest",
-      "Novaya Huta",
-      "Skytok",
-      "Bălți",
-      "Edineț",
-      "Briceni",
-      "Lipcani",
-      "Criva",
-      "Mamalyha"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Bus Station",
-        14
-      ],
-      [
-        "Plaza",
-        10
-      ],
-      [
-        "Rail Station",
-        8
-      ],
-      [
-        "Monument",
-        8
-      ],
-      [
-        "Park",
-        5
-      ],
-      [
-        "Bus Line",
-        5
-      ],
-      [
-        "Bank",
-        5
-      ],
-      [
-        "Pizzeria",
-        5
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "Border Crossing",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 11,
-    "name": "Polish village with love 🚂",
-    "start_date": "2015-03-29",
-    "end_date": "2015-04-03",
-    "start_ts": 1427661623,
-    "start_year": 2015,
-    "duration": 6,
-    "checkin_count": 32,
-    "unique_places": 25,
-    "countries": [
-      "Poland",
-      "Belarus"
-    ],
-    "cities": [
-      "Gródek",
-      "Białystok",
-      "Hrodna",
-      "Minsk",
-      "Kuźnica",
-      "Bruzgi"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "Moving Target",
-        4
-      ],
-      [
-        "Bus Station",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Home (private)",
-        2
-      ],
-      [
-        "Supermarket",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Shopping Mall",
-        2
-      ],
-      [
-        "Shoe Store",
-        2
-      ],
-      [
-        "Border Crossing",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 12,
-    "name": "Mir - Nesvizh 🚗",
-    "start_date": "2015-05-02",
-    "end_date": "2015-05-02",
-    "start_ts": 1430564416,
-    "start_year": 2015,
-    "duration": 1,
-    "checkin_count": 14,
-    "unique_places": 14,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Nyasvizh",
-      "Mir",
-      "Ishkol'd'"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Church",
-        4
-      ],
-      [
-        "Park",
-        2
-      ],
-      [
-        "Castle",
-        2
-      ],
-      [
-        "Town",
-        1
-      ],
-      [
-        "Historic and Protected Site",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Monastery",
-        1
-      ],
-      [
-        "Bridge",
-        1
-      ],
-      [
-        "Café",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 13,
-    "name": "ISWI #2 🚂",
-    "start_date": "2015-05-27",
-    "end_date": "2015-06-08",
-    "start_ts": 1432735818,
-    "start_year": 2015,
-    "duration": 13,
-    "checkin_count": 130,
-    "unique_places": 96,
-    "countries": [
-      "Germany",
-      "Poland",
-      "Belarus",
-      "Lithuania"
-    ],
-    "cities": [
-      "Ilmenau",
-      "Warsaw",
-      "Erfurt",
-      "Berlin",
-      "Weimar",
-      "Vilnius",
-      "Brest",
-      "Minsk",
-      "Białystok",
-      "Terespol",
-      "Hobrow",
-      "Augustów",
-      "Marijampolė",
-      "Kaunas",
-      "Maladzyechna"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        16
-      ],
-      [
-        "Rail Station",
-        11
-      ],
-      [
-        "Bus Station",
-        11
-      ],
-      [
-        "College Residence Hall",
-        8
-      ],
-      [
-        "College Cafeteria",
-        7
-      ],
-      [
-        "Park",
-        6
-      ],
-      [
-        "College Library",
-        6
-      ],
-      [
-        "College Auditorium",
-        5
-      ],
-      [
-        "Neighborhood",
-        3
-      ],
-      [
-        "Shopping Mall",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 14,
-    "name": "Summer vacations in a pair 🚂",
-    "start_date": "2015-07-15",
-    "end_date": "2015-09-08",
-    "start_ts": 1436934300,
-    "start_year": 2015,
-    "duration": 56,
-    "checkin_count": 208,
-    "unique_places": 181,
-    "countries": [
-      "Poland",
-      "Moldova",
-      "Ukraine",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Warsaw",
-      "Vilnius",
-      "Lublin",
-      "Lviv",
-      "Gródek",
-      "Chernivtsi",
-      "Białystok",
-      "Odesa",
-      "Minsk",
-      "Ashmyany",
-      "Vilniaus Rajonas",
-      "Hrebenne",
-      "Trebujeni",
-      "Kyiv",
-      "Muravyovka",
-      "Butuceni"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Bus Station",
-        24
-      ],
-      [
-        "Plaza",
-        19
-      ],
-      [
-        "Park",
-        17
-      ],
-      [
-        "Electronics Store",
-        9
-      ],
-      [
-        "Road",
-        8
-      ],
-      [
-        "Supermarket",
-        8
-      ],
-      [
-        "Home (private)",
-        7
-      ],
-      [
-        "Shopping Mall",
-        7
-      ],
-      [
-        "Neighborhood",
-        6
-      ],
-      [
-        "Market",
-        6
-      ]
-    ]
-  },
-  {
-    "id": 15,
-    "name": "Another summer in Moldova 🚂",
-    "start_date": "2016-06-30",
-    "end_date": "2016-11-07",
-    "start_ts": 1467236452,
-    "start_year": 2016,
-    "duration": 131,
-    "checkin_count": 279,
-    "unique_places": 225,
-    "countries": [
-      "Moldova",
-      "Ukraine",
-      "Belarus",
-      "Romania"
-    ],
-    "cities": [
-      "Chișinău",
-      "Kyiv",
-      "Odesa",
-      "Orhei",
-      "Ungheni",
-      "Bălți",
-      "Minsk",
-      "Novaya Huta",
-      "Skytok",
-      "Uman",
-      "Mayaky",
-      "Palanca",
-      "Pîrîta",
-      "Vadul lui Vodă",
-      "Coșnița",
-      "Furceni"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        28
-      ],
-      [
-        "Park",
-        26
-      ],
-      [
-        "Road",
-        20
-      ],
-      [
-        "Bus Station",
-        18
-      ],
-      [
-        "Bank",
-        15
-      ],
-      [
-        "Supermarket",
-        14
-      ],
-      [
-        "Plaza",
-        11
-      ],
-      [
-        "Government Building",
-        11
-      ],
-      [
-        "Pedestrian Plaza",
-        10
-      ],
-      [
-        "Bus Line",
-        9
-      ]
-    ]
-  },
-  {
-    "id": 16,
-    "name": "One day in Vitebsk 🚗",
-    "start_date": "2017-03-25",
-    "end_date": "2017-03-26",
-    "start_ts": 1490416910,
-    "start_year": 2017,
-    "duration": 2,
-    "checkin_count": 18,
-    "unique_places": 18,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Vitebsk",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "City",
-        2
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Park",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Fuel Station",
-        1
-      ],
-      [
-        "Art Gallery",
-        1
-      ],
-      [
-        "Museum",
-        1
-      ],
-      [
-        "Monument",
-        1
-      ],
-      [
-        "Bridge",
-        1
-      ],
-      [
-        "Outdoor Sculpture",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 17,
-    "name": "Lepel lakes 🚌",
-    "start_date": "2017-07-22",
-    "end_date": "2017-07-23",
-    "start_ts": 1500716741,
-    "start_year": 2017,
-    "duration": 2,
-    "checkin_count": 14,
-    "unique_places": 14,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Lyepyel",
-      "Minsk",
-      "Biahoml"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Lake",
-        2
-      ],
-      [
-        "Nature Preserve",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Plaza",
-        1
-      ],
-      [
-        "Monument",
-        1
-      ],
-      [
-        "Medical Center",
-        1
-      ],
-      [
-        "Neighborhood",
-        1
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Bus Line",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 18,
-    "name": "Escaping to Moldova 🚂",
-    "start_date": "2017-07-28",
-    "end_date": "2017-09-09",
-    "start_ts": 1501268863,
-    "start_year": 2017,
-    "duration": 44,
-    "checkin_count": 251,
-    "unique_places": 193,
-    "countries": [
-      "Moldova",
-      "Ukraine",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Odesa",
-      "Kyiv",
-      "Chernivtsi",
-      "Lviv",
-      "Tiraspol",
-      "Minsk",
-      "Bender",
-      "Butuceni",
-      "Gomel",
-      "Novaya Huta",
-      "Skytok",
-      "Chernihiv",
-      "Udobnoye",
-      "Trebujeni",
-      "Bălți",
-      "Mamalyha",
-      "Kovel",
-      "Domanove",
-      "Mokrany"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Bus Station",
-        18
-      ],
-      [
-        "Road",
-        18
-      ],
-      [
-        "Park",
-        18
-      ],
-      [
-        "Tech Startup",
-        18
-      ],
-      [
-        "Gym",
-        13
-      ],
-      [
-        "Supermarket",
-        9
-      ],
-      [
-        "Plaza",
-        8
-      ],
-      [
-        "Bus Line",
-        8
-      ],
-      [
-        "Border Crossing",
-        6
-      ],
-      [
-        "Bookstore",
-        6
-      ]
-    ]
-  },
-  {
-    "id": 19,
-    "name": "Mogilev - the first visit 🚂",
-    "start_date": "2017-09-30",
-    "end_date": "2017-10-01",
-    "start_ts": 1506751492,
-    "start_year": 2017,
-    "duration": 2,
-    "checkin_count": 36,
-    "unique_places": 36,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Mogilev",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        5
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Monument",
-        2
-      ],
-      [
-        "Outdoor Sculpture",
-        2
-      ],
-      [
-        "Playground",
-        2
-      ],
-      [
-        "Home (private)",
-        2
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Bus Station",
-        1
-      ],
-      [
-        "Bus Line",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 20,
-    "name": "Showing Vilnius to a friend 🚂",
-    "start_date": "2018-01-06",
-    "end_date": "2018-01-07",
-    "start_ts": 1515203276,
-    "start_year": 2018,
-    "duration": 2,
-    "checkin_count": 24,
-    "unique_places": 23,
-    "countries": [
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Vilnius",
-      "Minsk",
-      "Kena",
-      "Kotlovka",
-      "Kaunas",
-      "Gudogay"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "Road",
-        3
-      ],
-      [
-        "Bus Station",
-        2
-      ],
-      [
-        "Border Crossing",
-        2
-      ],
-      [
-        "Park",
-        2
-      ],
-      [
-        "Bus Line",
-        1
-      ],
-      [
-        "Country",
         1
       ],
       [
@@ -1397,148 +108,11 @@
         1
       ],
       [
-        "Monument",
+        "Shopping Mall",
         1
       ],
       [
-        "Neighborhood",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 21,
-    "name": "Sleepless Scandinavia ✈️",
-    "start_date": "2018-02-17",
-    "end_date": "2018-02-26",
-    "start_ts": 1518833845,
-    "start_year": 2018,
-    "duration": 10,
-    "checkin_count": 508,
-    "unique_places": 494,
-    "countries": [
-      "Sweden",
-      "Finland",
-      "Poland",
-      "Latvia",
-      "Estonia",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Stockholm",
-      "Helsinki",
-      "Riga",
-      "Tallinn",
-      "Vilnius",
-      "Warsaw",
-      "Gdańsk",
-      "Turku",
-      "Brest",
-      "Jūrmala",
-      "Nyköping",
-      "Terespol",
-      "Minsk",
-      "Kotlovka",
-      "Kena"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        70
-      ],
-      [
-        "Plaza",
-        49
-      ],
-      [
-        "Road",
-        44
-      ],
-      [
-        "Neighborhood",
-        30
-      ],
-      [
-        "Church",
-        23
-      ],
-      [
-        "Monument",
-        22
-      ],
-      [
-        "Historic and Protected Site",
-        16
-      ],
-      [
-        "Outdoor Sculpture",
-        15
-      ],
-      [
-        "Metro Station",
-        15
-      ],
-      [
-        "Rail Station",
-        12
-      ]
-    ]
-  },
-  {
-    "id": 22,
-    "name": "Molodechno trip 🚂",
-    "start_date": "2018-03-24",
-    "end_date": "2018-03-24",
-    "start_ts": 1521874332,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 31,
-    "unique_places": 30,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Maladzyechna",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        4
-      ],
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Train",
-        3
-      ],
-      [
-        "Historic and Protected Site",
-        3
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Monument",
-        2
-      ],
-      [
-        "Supermarket",
-        2
-      ],
-      [
-        "Miscellaneous Store",
-        1
-      ],
-      [
-        "City",
+        "Clothing Store",
         1
       ],
       [
@@ -1548,2267 +122,250 @@
     ]
   },
   {
-    "id": 23,
-    "name": "Orsha trip 🚂",
-    "start_date": "2018-03-25",
-    "end_date": "2018-03-26",
-    "start_ts": 1521952179,
-    "start_year": 2018,
-    "duration": 2,
-    "checkin_count": 42,
-    "unique_places": 41,
+    "id": 3,
+    "name": "Hrodna, Belarus 🚗",
+    "start_date": "2025-04-12",
+    "end_date": "2025-04-14",
+    "start_ts": 1744448721,
+    "start_year": 2025,
+    "duration": 3,
+    "checkin_count": 30,
+    "unique_places": 29,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Orsha",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        7
-      ],
-      [
-        "Historic and Protected Site",
-        4
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Bridge",
-        2
-      ],
-      [
-        "Monastery",
-        2
-      ],
-      [
-        "Bus Station",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 24,
-    "name": "Borisov trip 🚂",
-    "start_date": "2018-04-07",
-    "end_date": "2018-04-07",
-    "start_ts": 1523078935,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 42,
-    "unique_places": 40,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Borisov",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Historic and Protected Site",
-        8
-      ],
-      [
-        "Road",
-        5
-      ],
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Church",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Big Box Store",
-        2
-      ],
-      [
-        "Bridge",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Park",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 25,
-    "name": "Saint Petersburg - never ending start 🚂",
-    "start_date": "2018-04-12",
-    "end_date": "2018-04-18",
-    "start_ts": 1523562004,
-    "start_year": 2018,
-    "duration": 7,
-    "checkin_count": 334,
-    "unique_places": 298,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Vitebsk",
-      "Velikiye Luki",
-      "Nevel",
+      "Hrodna",
       "Minsk",
-      "Lobok",
-      "Moscow"
+      "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
-      [
-        "Road",
-        45
-      ],
-      [
-        "Monument",
-        44
-      ],
       [
         "Plaza",
-        33
-      ],
-      [
-        "Park",
-        27
-      ],
-      [
-        "Metro Station",
-        26
-      ],
-      [
-        "Bridge",
-        23
-      ],
-      [
-        "Outdoor Sculpture",
-        16
-      ],
-      [
-        "Rail Station",
-        9
-      ],
-      [
-        "Bus Line",
-        9
-      ],
-      [
-        "Fountain",
-        7
-      ]
-    ]
-  },
-  {
-    "id": 26,
-    "name": "Lida trip 🚂",
-    "start_date": "2018-04-28",
-    "end_date": "2018-04-28",
-    "start_ts": 1524895341,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 32,
-    "unique_places": 32,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Lida",
-      "Minsk",
-      "Valozhyn"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
         4
       ],
       [
-        "Road",
+        "Supermarket",
         3
       ],
       [
-        "Outdoor Sculpture",
+        "Monument",
         3
       ],
-      [
-        "Transportation Service",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Fuel Station",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Bus Station",
-        1
-      ],
-      [
-        "Convenience Store",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 27,
-    "name": "Mogilev - exploring 🚂",
-    "start_date": "2018-05-05",
-    "end_date": "2018-05-06",
-    "start_ts": 1525492389,
-    "start_year": 2018,
-    "duration": 2,
-    "checkin_count": 45,
-    "unique_places": 45,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Mogilev",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
       [
         "Park",
-        5
-      ],
-      [
-        "Road",
-        5
-      ],
-      [
-        "Plaza",
         3
-      ],
-      [
-        "City",
-        2
       ],
       [
         "Home (private)",
         2
       ],
       [
-        "Cemetery",
+        "Road",
         2
       ],
       [
-        "Monument",
+        "Other Great Outdoors",
         2
       ],
       [
-        "Outdoor Sculpture",
+        "Church",
         2
       ],
       [
-        "Rail Station",
+        "Taxi",
         2
       ],
       [
-        "Bus Station",
+        "Coffee Shop",
         1
       ]
     ]
   },
   {
-    "id": 28,
-    "name": "Back to Moscow 🚂",
-    "start_date": "2018-05-18",
-    "end_date": "2018-05-21",
-    "start_ts": 1526646064,
-    "start_year": 2018,
-    "duration": 4,
-    "checkin_count": 231,
+    "id": 4,
+    "name": "Russia & Belarus 🚌",
+    "start_date": "2025-04-16",
+    "end_date": "2025-04-22",
+    "start_ts": 1744815048,
+    "start_year": 2025,
+    "duration": 7,
+    "checkin_count": 251,
     "unique_places": 225,
     "countries": [
       "Russia",
       "Belarus"
     ],
     "cities": [
-      "Moscow",
-      "Smolensk",
-      "Orsha",
-      "Krasnoye",
+      "Saint Petersburg",
       "Minsk",
-      "Vitebsk Region"
+      "Vitebsk",
+      "Lobok",
+      "Moscow",
+      "Podborovye",
+      "Pskov",
+      "Dolostsy"
     ],
     "tags": [],
     "top_cats": [
-      [
-        "Monument",
-        50
-      ],
-      [
-        "Metro Station",
-        21
-      ],
-      [
-        "Road",
-        18
-      ],
-      [
-        "Plaza",
-        18
-      ],
-      [
-        "Park",
-        17
-      ],
-      [
-        "Rail Station",
-        11
-      ],
-      [
-        "Historic and Protected Site",
-        11
-      ],
       [
         "Bridge",
-        10
-      ],
-      [
-        "Fountain",
-        10
-      ],
-      [
-        "Train",
-        7
-      ]
-    ]
-  },
-  {
-    "id": 29,
-    "name": "Exploring the neighborhood",
-    "start_date": "2018-05-28",
-    "end_date": "2018-05-28",
-    "start_ts": 1527528629,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 9,
-    "unique_places": 9,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Shchomyslitsa",
-      "Machulishchy",
-      "Senitsa"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Road",
-        2
-      ],
-      [
-        "Housing Development",
-        1
-      ],
-      [
-        "Plaza",
-        1
-      ],
-      [
-        "Town",
-        1
-      ],
-      [
-        "Reservoir",
-        1
-      ],
-      [
-        "Light Rail Station",
-        1
-      ],
-      [
-        "Village",
-        1
-      ],
-      [
-        "Home (private)",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 30,
-    "name": "Around Mogilev region 🚂",
-    "start_date": "2018-06-08",
-    "end_date": "2018-06-10",
-    "start_ts": 1528474542,
-    "start_year": 2018,
-    "duration": 3,
-    "checkin_count": 87,
-    "unique_places": 81,
-    "countries": [
-      "Belarus",
-      "Russia"
-    ],
-    "cities": [
-      "Mogilev",
-      "Mstsislaw",
-      "Bykhov",
-      "Krychaw",
-      "Minsk",
-      "Byalynichy",
-      "Monastyrshchina",
-      "Bykhaw"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        10
-      ],
-      [
-        "Outdoor Sculpture",
-        9
-      ],
-      [
-        "Park",
-        7
-      ],
-      [
-        "Bus Station",
-        6
-      ],
-      [
-        "Bus Line",
-        5
-      ],
-      [
-        "City",
-        5
-      ],
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "Home (private)",
-        4
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "River",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 31,
-    "name": "Bobruisk trip 🚂",
-    "start_date": "2018-06-16",
-    "end_date": "2018-06-17",
-    "start_ts": 1529122367,
-    "start_year": 2018,
-    "duration": 2,
-    "checkin_count": 42,
-    "unique_places": 40,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Babruysk",
-      "Bobruisk",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        6
-      ],
-      [
-        "Outdoor Sculpture",
-        6
-      ],
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Pedestrian Plaza",
-        2
-      ],
-      [
-        "Metro Station",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 32,
-    "name": "Taste of Ukraine 🚂",
-    "start_date": "2018-06-22",
-    "end_date": "2018-06-25",
-    "start_ts": 1529671517,
-    "start_year": 2018,
-    "duration": 4,
-    "checkin_count": 189,
-    "unique_places": 187,
-    "countries": [
-      "Ukraine",
-      "Belarus"
-    ],
-    "cities": [
-      "Lviv",
-      "Kyiv",
-      "Gomel",
-      "Kovel",
-      "Minsk",
-      "Brest",
-      "Zdolbuniv",
-      "Khotislav",
-      "Domanove",
-      "Chernihiv",
-      "Novaya Huta",
-      "Skytok"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
         27
       ],
       [
-        "Monument",
-        26
-      ],
-      [
         "Road",
-        20
+        27
       ],
-      [
-        "Park",
-        15
-      ],
-      [
-        "Historic and Protected Site",
-        12
-      ],
-      [
-        "Rail Station",
-        11
-      ],
-      [
-        "Fountain",
-        9
-      ],
-      [
-        "City",
-        7
-      ],
-      [
-        "Train",
-        6
-      ],
-      [
-        "Outdoor Sculpture",
-        6
-      ]
-    ]
-  },
-  {
-    "id": 33,
-    "name": "Backpacking to Bi-2 🚂",
-    "start_date": "2018-07-06",
-    "end_date": "2018-07-09",
-    "start_ts": 1530888550,
-    "start_year": 2018,
-    "duration": 4,
-    "checkin_count": 78,
-    "unique_places": 76,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Gomel",
-      "Loyew",
-      "Rechytsa",
-      "Minsk",
-      "Babruysk",
-      "Karpovka",
-      "Bobruisk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        16
-      ],
-      [
-        "Plaza",
-        7
-      ],
-      [
-        "Monument",
-        6
-      ],
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "City",
-        4
-      ],
-      [
-        "Train",
-        3
-      ],
-      [
-        "Food and Beverage Retail",
-        3
-      ],
-      [
-        "Historic and Protected Site",
-        3
-      ],
-      [
-        "Bus Station",
-        2
-      ],
-      [
-        "Fountain",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 34,
-    "name": "Moldova - good for anyone ✈️",
-    "start_date": "2018-07-13",
-    "end_date": "2018-07-30",
-    "start_ts": 1531487757,
-    "start_year": 2018,
-    "duration": 18,
-    "checkin_count": 867,
-    "unique_places": 797,
-    "countries": [
-      "Ukraine",
-      "Moldova",
-      "Belarus"
-    ],
-    "cities": [
-      "Kyiv",
-      "Odesa",
-      "Chișinău",
-      "Uzhhorod",
-      "Dnipro",
-      "Chernivtsi",
-      "Ternopil",
-      "Lviv",
-      "Chernihiv",
-      "Bender",
-      "Comrat",
-      "Tiraspol",
-      "Gomel",
-      "Minsk",
-      "Butuceni",
-      "Novaya Huta",
-      "Trebujeni",
-      "Skytok",
-      "Palanca",
-      "Calarasi",
-      "Căușeni",
-      "Ialoveni",
-      "Cahul",
-      "Cimișlia",
-      "Bălți",
-      "Criva",
-      "Mamalyha"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        171
-      ],
-      [
-        "Plaza",
-        79
-      ],
-      [
-        "Road",
-        77
-      ],
-      [
-        "Park",
-        71
-      ],
-      [
-        "Outdoor Sculpture",
-        36
-      ],
-      [
-        "Fountain",
-        26
-      ],
-      [
-        "Pedestrian Plaza",
-        24
-      ],
-      [
-        "Bus Line",
-        23
-      ],
-      [
-        "Historic and Protected Site",
-        20
-      ],
-      [
-        "Rail Station",
-        19
-      ]
-    ]
-  },
-  {
-    "id": 35,
-    "name": "Veloby in Hrodna region",
-    "start_date": "2018-09-01",
-    "end_date": "2018-09-01",
-    "start_ts": 1535771970,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 32,
-    "unique_places": 32,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Smarhon",
-      "Zalesye",
-      "Minsk",
-      "Krevo",
-      "Haradzki",
-      "Bogushi",
-      "Minsk District",
-      "Maladzyechna",
-      "Benitsa",
-      "Rymcieli"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "Village",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Historic and Protected Site",
-        2
-      ],
-      [
-        "Castle",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Monument",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ],
-      [
-        "Cemetery",
-        1
-      ],
-      [
-        "Church",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 36,
-    "name": "Moutain track with poehali.net",
-    "start_date": "2018-09-09",
-    "end_date": "2018-09-09",
-    "start_ts": 1536467110,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 24,
-    "unique_places": 24,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Astrashytski Haradok",
-      "Barawtsy",
-      "Belaruchy",
-      "Aina",
-      "Lahoysk"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Village",
-        6
-      ],
-      [
-        "Road",
-        5
-      ],
-      [
-        "Housing Development",
-        2
-      ],
-      [
-        "Food and Beverage Retail",
-        2
-      ],
-      [
-        "Neighborhood",
-        1
-      ],
-      [
-        "Trailer Park",
-        1
-      ],
-      [
-        "Department Store",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ],
-      [
-        "Reservoir",
-        1
-      ],
-      [
-        "Bike Trail",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 37,
-    "name": "Picknick on Neman with Veloby",
-    "start_date": "2018-09-16",
-    "end_date": "2018-09-16",
-    "start_ts": 1537069640,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 17,
-    "unique_places": 17,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Yaremichy",
-      "Minsk",
-      "Mir",
-      "Stowbtsy"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Neighborhood",
-        2
-      ],
-      [
-        "Housing Development",
-        2
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Platform",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ],
-      [
-        "River",
-        1
-      ],
-      [
-        "Beach",
-        1
-      ],
-      [
-        "Food and Beverage Retail",
-        1
-      ],
-      [
-        "City",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 38,
-    "name": "Ride or die - brevet 200",
-    "start_date": "2018-09-22",
-    "end_date": "2018-09-22",
-    "start_ts": 1537590380,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 20,
-    "unique_places": 20,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Chiki",
-      "Stan'kovo",
-      "Ivenets",
-      "Shchomyslitsa",
-      "Dzyarzhynsk",
-      "Bolshiye Novosyolki",
-      "Haradzishcha",
-      "Ivyanets",
-      "Pershai",
-      "Rakov",
-      "Staroye Selo"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Village",
-        2
-      ],
-      [
-        "Farm",
-        2
-      ],
-      [
-        "Housing Development",
-        2
-      ],
-      [
-        "Town",
-        2
-      ],
-      [
-        "Temple",
-        2
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Neighborhood",
-        1
-      ],
-      [
-        "Fuel Station",
-        1
-      ],
-      [
-        "River",
-        1
-      ],
-      [
-        "City",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 39,
-    "name": "Veloby in the forests",
-    "start_date": "2018-09-29",
-    "end_date": "2018-09-29",
-    "start_ts": 1538201712,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 25,
-    "unique_places": 24,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Staroye Selo",
-      "Gonoles",
-      "Rakov",
-      "Dehtaryowka",
-      "Minsk District",
-      "Ratamka",
-      "Zyelonaye",
-      "Krylovo",
-      "Vishniovka"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Village",
-        4
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Fuel Station",
-        2
-      ],
-      [
-        "Reservoir",
-        2
-      ],
-      [
-        "Bridge",
-        1
-      ],
-      [
-        "Bike Rental",
-        1
-      ],
-      [
-        "Beach",
-        1
-      ],
-      [
-        "Campground",
-        1
-      ],
-      [
-        "Rail Station",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 40,
-    "name": "Veloby back to forests",
-    "start_date": "2018-10-07",
-    "end_date": "2018-10-07",
-    "start_ts": 1538889704,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 19,
-    "unique_places": 19,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Stowbtsy",
-      "Minsk",
-      "Dzyarzhynski Rayon",
-      "Mir"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Village",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Housing Development",
-        1
-      ],
-      [
-        "Rest Area",
-        1
-      ],
-      [
-        "Food and Beverage Retail",
-        1
-      ],
-      [
-        "River",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 41,
-    "name": "Vilnius on bike - chapter 1",
-    "start_date": "2018-10-13",
-    "end_date": "2018-10-13",
-    "start_ts": 1539393963,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 26,
-    "unique_places": 25,
-    "countries": [
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Vilnius",
-      "Vilniaus Rajonas",
-      "Minsk",
-      "Muravyovka",
-      "Kena",
-      "Gudogay",
-      "Kaunas",
-      "Losha"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Border Crossing",
-        6
-      ],
-      [
-        "Park",
-        4
-      ],
-      [
-        "Village",
-        3
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Town",
-        1
-      ],
-      [
-        "Country",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 42,
-    "name": "A night in a village with Veloby",
-    "start_date": "2018-10-20",
-    "end_date": "2018-10-21",
-    "start_ts": 1540005814,
-    "start_year": 2018,
-    "duration": 2,
-    "checkin_count": 49,
-    "unique_places": 49,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Haradzki",
-      "Valozhyn",
-      "Zalesye",
-      "Rakov",
-      "Zaslawye",
-      "Benitsa",
-      "Markovo",
-      "Pershai",
-      "Zaslavye",
-      "Ratamka",
-      "Smarhon",
-      "Malaya Daynovka",
-      "Lida",
-      "Rakaŭ",
-      "Gonoles"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Historic and Protected Site",
-        5
-      ],
-      [
-        "Village",
-        4
-      ],
-      [
-        "Housing Development",
-        4
-      ],
-      [
-        "City",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Lake",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Road",
-        3
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Food and Beverage Retail",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 43,
-    "name": "Circle around Minsk",
-    "start_date": "2018-10-28",
-    "end_date": "2018-10-28",
-    "start_ts": 1540707240,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 36,
-    "unique_places": 36,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Machulishchy",
-      "Navapolle",
-      "Mikhanovichi",
-      "Shchomyslitsa",
-      "Krupitsa",
-      "Rudensk"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Road",
-        6
-      ],
-      [
-        "Village",
-        4
-      ],
-      [
-        "Bridge",
-        4
-      ],
-      [
-        "Park",
-        2
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Housing Development",
-        2
-      ],
-      [
-        "Neighborhood",
-        2
-      ],
-      [
-        "Monument",
-        1
-      ],
-      [
-        "Forest",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 44,
-    "name": "Ashmyany with Veloby",
-    "start_date": "2018-11-04",
-    "end_date": "2018-11-04",
-    "start_ts": 1541294346,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 23,
-    "unique_places": 23,
-    "countries": [
-      "Belarus",
-      "Lithuania"
-    ],
-    "cities": [
-      "Ashmyany",
-      "Minsk",
-      "Muravyovka",
-      "Zhuprany",
-      "Gudogay",
-      "Tsudenyshki",
-      "Kena",
-      "Smarhon"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Historic and Protected Site",
-        4
-      ],
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Temple",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Cemetery",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ],
-      [
-        "Sculpture Garden",
-        1
-      ],
-      [
-        "Supermarket",
-        1
-      ],
-      [
-        "Synagogue",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 45,
-    "name": "To the lake",
-    "start_date": "2018-11-07",
-    "end_date": "2018-11-07",
-    "start_ts": 1541569165,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 11,
-    "unique_places": 11,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Maryina Horka",
-      "Minsk",
-      "Zalog Pyatiletki",
-      "Tal'ka",
-      "Pukhavichy",
-      "Asipovichy"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Village",
-        2
-      ],
-      [
-        "Food and Beverage Retail",
-        1
-      ],
-      [
-        "Lake",
-        1
-      ],
-      [
-        "Housing Development",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 46,
-    "name": "Blues express - survival in sands",
-    "start_date": "2018-11-11",
-    "end_date": "2018-11-11",
-    "start_ts": 1541906397,
-    "start_year": 2018,
-    "duration": 1,
-    "checkin_count": 19,
-    "unique_places": 19,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Asipovichy",
-      "Ravaničy",
-      "Chervyen",
-      "Tal'ka",
-      "Rovanichi",
-      "Zhodzina"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "City",
-        3
-      ],
-      [
-        "Village",
-        3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Platform",
-        1
-      ],
-      [
-        "Rest Area",
-        1
-      ],
-      [
-        "Historic and Protected Site",
-        1
-      ],
-      [
-        "Food and Beverage Retail",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 47,
-    "name": "New Year not at home 🚂",
-    "start_date": "2018-12-30",
-    "end_date": "2019-01-02",
-    "start_ts": 1546139546,
-    "start_year": 2018,
-    "duration": 4,
-    "checkin_count": 110,
-    "unique_places": 101,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Mogilev",
-      "Polotsk",
-      "Navapolatsk",
-      "Vitebsk",
-      "Minsk",
-      "Orsha"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        12
-      ],
-      [
-        "Plaza",
-        11
-      ],
-      [
-        "Park",
-        10
-      ],
-      [
-        "Road",
-        10
-      ],
-      [
-        "Rail Station",
-        7
-      ],
-      [
-        "City",
-        6
-      ],
-      [
-        "Historic and Protected Site",
-        6
-      ],
-      [
-        "Outdoor Sculpture",
-        5
-      ],
-      [
-        "River",
-        3
-      ],
-      [
-        "Rest Area",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 48,
-    "name": "Spring ride with Veloby",
-    "start_date": "2019-04-06",
-    "end_date": "2019-04-06",
-    "start_ts": 1554529702,
-    "start_year": 2019,
-    "duration": 1,
-    "checkin_count": 19,
-    "unique_places": 19,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Dzyarzhynsk",
-      "Fanipol",
-      "Ozertso",
-      "Pryluky",
-      "Machulishchy"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Village",
-        2
-      ],
-      [
-        "Housing Development",
-        2
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Food and Beverage Retail",
-        1
-      ],
-      [
-        "Lake",
-        1
-      ],
-      [
-        "Reservoir",
-        1
-      ],
-      [
-        "Farm",
-        1
-      ],
-      [
-        "Shrine",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 49,
-    "name": "Kukupolis with bike",
-    "start_date": "2019-04-14",
-    "end_date": "2019-04-14",
-    "start_ts": 1555223416,
-    "start_year": 2019,
-    "duration": 1,
-    "checkin_count": 18,
-    "unique_places": 18,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Dzyarzhynsk",
-      "Minsk",
-      "Stowbtsy",
-      "Ozertso",
-      "Haradzishcha",
-      "Chiki",
-      "Dzyarzhynski Rayon"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Park",
-        2
-      ],
-      [
-        "Historic and Protected Site",
-        2
-      ],
-      [
-        "Village",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Amusement Park",
-        1
-      ],
-      [
-        "River",
-        1
-      ],
-      [
-        "Farm",
-        1
-      ],
-      [
-        "Department Store",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 50,
-    "name": "Moldova - escape on repeat ✈️",
-    "start_date": "2019-04-19",
-    "end_date": "2019-06-03",
-    "start_ts": 1555678331,
-    "start_year": 2019,
-    "duration": 46,
-    "checkin_count": 1041,
-    "unique_places": 878,
-    "countries": [
-      "Romania",
-      "Moldova",
-      "Ukraine",
-      "Bulgaria",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Iași",
-      "Bucharest",
-      "Varna",
-      "Brașov",
-      "Ivano-Frankivsk",
-      "Kyiv",
-      "Kherson",
-      "Constanța",
-      "Lutsk",
-      "Bacău",
-      "Galați",
-      "Bălți",
-      "Brăila",
-      "Mangalia",
-      "Soroca",
-      "Sinaia",
-      "Chernivtsi",
-      "Bran",
-      "Brest",
-      "Leușeni",
-      "Minsk",
-      "Odesa",
-      "Ungheni",
-      "Gomel",
-      "Ialoveni",
-      "Ruse",
-      "Calarasi",
-      "Sculeni",
-      "Râșnov",
-      "Giurgiulești",
-      "Kavarna",
-      "Novaya Huta",
-      "Ungheni-Prut",
-      "Cleja",
-      "Giurgiu",
-      "Mamaia",
-      "Trușeni",
-      "Vatra",
-      "Kolomyia",
-      "Domanove",
-      "Mokrany",
-      "Skytok",
-      "Chernihiv",
-      "Mykolaiv",
-      "Kobleve",
-      "Khlebodarskoye",
-      "Palanca",
-      "Mohyliv-Podilskyy",
-      "Florești",
-      "Cantemir",
-      "Leova",
-      "Bahmut",
-      "Focșani",
-      "Shumen",
-      "Vama Veche",
-      "Poiana Brașov",
-      "Munții Bucegi",
-      "Colicăuți",
-      "Mamalyha",
-      "Criva",
-      "Kovel",
-      "Luninyets"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        109
-      ],
-      [
-        "Park",
-        102
-      ],
-      [
-        "Monument",
-        85
-      ],
-      [
-        "Plaza",
-        83
-      ],
-      [
-        "Bus Station",
-        41
-      ],
-      [
-        "Bus Line",
-        39
-      ],
-      [
-        "Pedestrian Plaza",
-        37
-      ],
-      [
-        "City",
-        36
-      ],
-      [
-        "Historic and Protected Site",
-        34
-      ],
-      [
-        "Neighborhood",
-        33
-      ]
-    ]
-  },
-  {
-    "id": 51,
-    "name": "Saint Petersburg - museum card 🚂",
-    "start_date": "2019-06-21",
-    "end_date": "2019-07-01",
-    "start_ts": 1561135866,
-    "start_year": 2019,
-    "duration": 11,
-    "checkin_count": 491,
-    "unique_places": 388,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Peterhof",
-      "Pushkin",
-      "Kronshtadt",
-      "Minsk",
-      "Zaplyusye",
-      "Lyepyel",
-      "Dolostsy",
-      "Biahoml",
-      "Moscow",
-      "Opochka"
-    ],
-    "tags": [],
-    "top_cats": [
       [
         "Metro Station",
-        53
-      ],
-      [
-        "Monument",
-        48
-      ],
-      [
-        "Road",
-        37
+        19
       ],
       [
         "Plaza",
-        33
+        18
       ],
       [
-        "Park",
-        32
-      ],
-      [
-        "Fountain",
-        25
-      ],
-      [
-        "Historic and Protected Site",
+        "Monument",
         17
       ],
       [
-        "Bridge",
-        16
+        "Historic and Protected Site",
+        13
       ],
       [
-        "Bus Line",
-        15
-      ],
-      [
-        "Outdoor Sculpture",
+        "Park",
         10
+      ],
+      [
+        "Church",
+        8
+      ],
+      [
+        "River",
+        7
+      ],
+      [
+        "Inn",
+        6
       ]
     ]
   },
   {
-    "id": 52,
-    "name": "Vilnius on bike - a good version",
-    "start_date": "2019-07-06",
-    "end_date": "2019-07-07",
-    "start_ts": 1562375407,
-    "start_year": 2019,
-    "duration": 2,
-    "checkin_count": 23,
-    "unique_places": 22,
-    "countries": [
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Vilnius",
-      "Minsk",
-      "Trakai",
-      "Gudogay",
-      "Kena",
-      "Muravyovka",
-      "Vilniaus Rajonas",
-      "Smarhon"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Border Crossing",
-        2
-      ],
-      [
-        "Country",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Food and Beverage Retail",
-        2
-      ],
-      [
-        "Travel and Transportation",
-        1
-      ],
-      [
-        "Town",
-        1
-      ],
-      [
-        "State or Provincial Park",
-        1
-      ],
-      [
-        "Plaza",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 53,
-    "name": "Grodno Xiaomi ride 🚂",
-    "start_date": "2019-07-21",
-    "end_date": "2019-07-22",
-    "start_ts": 1563656822,
-    "start_year": 2019,
-    "duration": 2,
-    "checkin_count": 50,
-    "unique_places": 48,
+    "id": 5,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-04-29",
+    "end_date": "2025-05-24",
+    "start_ts": 1745927165,
+    "start_year": 2025,
+    "duration": 26,
+    "checkin_count": 144,
+    "unique_places": 77,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Hrodna",
-      "Minsk"
+      "Minsk",
+      "Гродно"
     ],
     "tags": [],
     "top_cats": [
       [
         "Road",
-        5
+        22
       ],
       [
-        "Monument",
-        5
+        "Jewelry Store",
+        17
       ],
       [
-        "Rail Station",
-        4
-      ],
-      [
-        "Park",
-        4
-      ],
-      [
-        "Plaza",
-        4
-      ],
-      [
-        "Other Great Outdoors",
-        4
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Coffee Shop",
-        2
-      ],
-      [
-        "Outdoor Sculpture",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 54,
-    "name": "Crash on halfway",
-    "start_date": "2019-07-28",
-    "end_date": "2019-07-28",
-    "start_ts": 1564306637,
-    "start_year": 2019,
-    "duration": 1,
-    "checkin_count": 16,
-    "unique_places": 16,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Staroye Selo",
-      "Shchomyslitsa",
-      "Pryluky",
-      "Atolino",
-      "Grichino",
-      "Fanipol",
-      "Haradzishcha",
-      "Chiki",
-      "Minsk District"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Village",
-        4
-      ],
-      [
-        "Road",
-        3
-      ],
-      [
-        "Housing Development",
-        2
-      ],
-      [
-        "Light Rail Station",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Tree",
-        1
-      ],
-      [
-        "Food and Beverage Retail",
-        1
-      ],
-      [
-        "Neighborhood",
-        1
-      ],
-      [
-        "Bicycle Store",
-        1
-      ],
-      [
-        "Home (private)",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 55,
-    "name": "Camping in Odessa ⛺",
-    "start_date": "2019-08-02",
-    "end_date": "2019-08-12",
-    "start_ts": 1564748907,
-    "start_year": 2019,
-    "duration": 11,
-    "checkin_count": 415,
-    "unique_places": 341,
-    "countries": [
-      "Ukraine",
-      "Belarus"
-    ],
-    "cities": [
-      "Odesa",
-      "Kyiv",
-      "Kryvyi Rih",
-      "Zaporizhzhia",
-      "Gomel",
-      "Chornomorsk",
-      "Minsk",
-      "Piatykhatky",
-      "Novaya Huta",
-      "Skytok",
-      "Chernihiv",
-      "Mykolaiv"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        48
-      ],
-      [
-        "Monument",
-        42
-      ],
-      [
-        "Plaza",
-        32
-      ],
-      [
-        "Road",
-        25
-      ],
-      [
-        "Metro Station",
-        16
-      ],
-      [
-        "Rail Station",
-        15
-      ],
-      [
-        "Bus Line",
+        "Big Box Store",
         13
       ],
       [
-        "Pedestrian Plaza",
+        "Shopping Mall",
+        12
+      ],
+      [
+        "Bus Line",
+        9
+      ],
+      [
+        "Bridge",
+        8
+      ],
+      [
+        "Plaza",
+        7
+      ],
+      [
+        "Pharmacy",
+        5
+      ],
+      [
+        "Clothing Store",
+        5
+      ],
+      [
+        "Healthcare Clinic",
+        4
+      ]
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Hrodna, Belarus 🚌",
+    "start_date": "2025-05-29",
+    "end_date": "2025-06-21",
+    "start_ts": 1748534162,
+    "start_year": 2025,
+    "duration": 24,
+    "checkin_count": 255,
+    "unique_places": 182,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Hrodna",
+      "Baranovichi",
+      "Slonim",
+      "Skidel",
+      "Minsk",
+      "Strachanyaty",
+      "Masty",
+      "Гродно",
+      "Lavno",
+      "Shchuchin"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Road",
+        42
+      ],
+      [
+        "Bus Station",
+        13
+      ],
+      [
+        "Plaza",
+        13
+      ],
+      [
+        "Monument",
+        13
+      ],
+      [
+        "Park",
+        13
+      ],
+      [
+        "Big Box Store",
+        12
+      ],
+      [
+        "Jewelry Store",
         12
       ],
       [
@@ -3816,6561 +373,151 @@
         10
       ],
       [
-        "Supermarket",
-        9
-      ]
-    ]
-  },
-  {
-    "id": 56,
-    "name": "Pinsk trip 🚂",
-    "start_date": "2019-08-24",
-    "end_date": "2019-08-25",
-    "start_ts": 1566621101,
-    "start_year": 2019,
-    "duration": 2,
-    "checkin_count": 46,
-    "unique_places": 44,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Pinsk",
-      "Minsk",
-      "Mir",
-      "Baranovichi",
-      "Slonim"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        5
-      ],
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Road",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Outdoor Sculpture",
-        3
-      ],
-      [
-        "River",
-        3
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "History Museum",
-        2
-      ],
-      [
-        "Café",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 57,
-    "name": "Eurotrip - ruining in Budapest 🚂",
-    "start_date": "2019-09-06",
-    "end_date": "2019-09-17",
-    "start_ts": 1567771570,
-    "start_year": 2019,
-    "duration": 12,
-    "checkin_count": 694,
-    "unique_places": 640,
-    "countries": [
-      "Hungary",
-      "Poland",
-      "Austria",
-      "Ukraine",
-      "Slovakia",
-      "Belarus"
-    ],
-    "cities": [
-      "Budapest",
-      "Vienna",
-      "Kraków",
-      "Košice",
-      "Lublin",
-      "Lviv",
-      "Brest",
-      "Kovel",
-      "Uzhhorod",
-      "Minsk",
-      "Zdolbuniv",
-      "Kielce",
-      "Khotislav",
-      "Domanove",
-      "Sobrance",
-      "Bratislava",
-      "Kyiv",
-      "Kivertsi",
-      "Rivne",
-      "Warsaw",
-      "Terespol"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        111
-      ],
-      [
-        "Park",
-        51
-      ],
-      [
-        "Road",
-        40
-      ],
-      [
-        "Metro Station",
-        38
-      ],
-      [
-        "Monument",
-        34
-      ],
-      [
-        "Historic and Protected Site",
-        31
-      ],
-      [
-        "Neighborhood",
-        27
-      ],
-      [
-        "Bus Station",
-        20
-      ],
-      [
-        "Rail Station",
-        19
-      ],
-      [
-        "Fountain",
-        17
-      ]
-    ]
-  },
-  {
-    "id": 58,
-    "name": "Around Minsk sea",
-    "start_date": "2019-09-21",
-    "end_date": "2019-09-21",
-    "start_ts": 1569048937,
-    "start_year": 2019,
-    "duration": 1,
-    "checkin_count": 20,
-    "unique_places": 20,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Zaslawye",
-      "Ratamka",
-      "Minsk District",
-      "Zaslavye"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Reservoir",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        2
-      ],
-      [
-        "Bridge",
-        2
-      ],
-      [
-        "Sports and Recreation",
-        1
-      ],
-      [
-        "River",
-        1
-      ],
-      [
-        "Waterfall",
-        1
-      ],
-      [
-        "Lake",
-        1
-      ],
-      [
-        "Swimming Pool",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Café",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 59,
-    "name": "Soligorsk dash Slutsk 🚂",
-    "start_date": "2019-10-05",
-    "end_date": "2019-10-05",
-    "start_ts": 1570249322,
-    "start_year": 2019,
-    "duration": 1,
-    "checkin_count": 39,
-    "unique_places": 39,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Salihorsk",
-      "Slutsk",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "City",
-        3
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Sculpture Garden",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Park",
-        2
-      ],
-      [
-        "Shopping Mall",
-        2
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Bus Station",
-        1
-      ],
-      [
-        "Taxi",
-        1
+        "Bus Line",
+        8
       ],
       [
         "Bus Stop",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 60,
-    "name": "Moscow - 11 years later ✈️",
-    "start_date": "2019-11-15",
-    "end_date": "2019-11-25",
-    "start_ts": 1573837069,
-    "start_year": 2019,
-    "duration": 11,
-    "checkin_count": 534,
-    "unique_places": 455,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Moscow",
-      "Nizhny Novgorod",
-      "Minsk",
-      "Bor",
-      "Krasny District",
-      "Vitebsk Region",
-      "Smolensk Region",
-      "Brest",
-      "Orsha"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Metro Station",
-        80
-      ],
-      [
-        "Monument",
-        60
-      ],
-      [
-        "Plaza",
-        53
-      ],
-      [
-        "Road",
-        45
-      ],
-      [
-        "Park",
-        21
-      ],
-      [
-        "Historic and Protected Site",
-        15
-      ],
-      [
-        "Supermarket",
-        12
-      ],
-      [
-        "Scenic Lookout",
-        12
-      ],
-      [
-        "History Museum",
-        12
-      ],
-      [
-        "Bus Line",
-        11
-      ]
-    ]
-  },
-  {
-    "id": 61,
-    "name": "Holidays in Serbia ✈️",
-    "start_date": "2019-12-02",
-    "end_date": "2019-12-07",
-    "start_ts": 1575257610,
-    "start_year": 2019,
-    "duration": 6,
-    "checkin_count": 365,
-    "unique_places": 304,
-    "countries": [
-      "Serbia",
-      "Bosnia and Herzegovina",
-      "Belarus"
-    ],
-    "cities": [
-      "Belgrade",
-      "Sarajevo",
-      "Novi Sad",
-      "Minsk",
-      "Karakaj",
-      "Mali Zvornik",
-      "Lukavica",
-      "Petrovaradin",
-      "Konjevići"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        36
-      ],
-      [
-        "Road",
-        29
-      ],
-      [
-        "Park",
-        28
-      ],
-      [
-        "Monument",
-        24
-      ],
-      [
-        "Neighborhood",
-        21
-      ],
-      [
-        "Historic and Protected Site",
-        15
-      ],
-      [
-        "Bus Line",
-        12
-      ],
-      [
-        "Pedestrian Plaza",
-        11
-      ],
-      [
-        "Bridge",
-        10
-      ],
-      [
-        "Church",
-        9
-      ]
-    ]
-  },
-  {
-    "id": 62,
-    "name": "Teambuilding in Gomel 🚂",
-    "start_date": "2019-12-13",
-    "end_date": "2019-12-15",
-    "start_ts": 1576251780,
-    "start_year": 2019,
-    "duration": 3,
-    "checkin_count": 76,
-    "unique_places": 61,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Gomel",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        9
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Home (private)",
-        5
-      ],
-      [
-        "Historic and Protected Site",
-        5
-      ],
-      [
-        "Road",
-        5
-      ],
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Outdoor Sculpture",
-        4
-      ],
-      [
-        "Café",
-        4
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Train",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 63,
-    "name": "Poland New Year trip 🚂",
-    "start_date": "2019-12-27",
-    "end_date": "2020-01-06",
-    "start_ts": 1577462658,
-    "start_year": 2019,
-    "duration": 11,
-    "checkin_count": 613,
-    "unique_places": 552,
-    "countries": [
-      "Poland",
-      "Belarus"
-    ],
-    "cities": [
-      "Warsaw",
-      "Wrocław",
-      "Poznań",
-      "Bydgoszcz",
-      "Szczecin",
-      "Łódź",
-      "Toruń",
-      "Brest",
-      "Minsk",
-      "Terespol",
-      "Slonim",
-      "Hobrow",
-      "Wólka Łasiecka",
-      "Pruzhany",
-      "Mir"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        68
-      ],
-      [
-        "Park",
-        60
-      ],
-      [
-        "Monument",
-        48
-      ],
-      [
-        "Road",
-        35
-      ],
-      [
-        "Outdoor Sculpture",
-        33
-      ],
-      [
-        "Neighborhood",
-        27
-      ],
-      [
-        "Historic and Protected Site",
-        25
-      ],
-      [
-        "Bridge",
-        20
-      ],
-      [
-        "Pedestrian Plaza",
-        15
-      ],
-      [
-        "Tram Station",
-        14
-      ]
-    ]
-  },
-  {
-    "id": 64,
-    "name": "Copenhagen with CS ✈️",
-    "start_date": "2020-01-30",
-    "end_date": "2020-02-03",
-    "start_ts": 1580405902,
-    "start_year": 2020,
-    "duration": 5,
-    "checkin_count": 228,
-    "unique_places": 198,
-    "countries": [
-      "Denmark",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Copenhagen",
-      "Kaunas",
-      "Vilnius",
-      "Vilniaus Rajonas",
-      "Minsk",
-      "Smarhon",
-      "Muravyovka",
-      "Trakai"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        24
-      ],
-      [
-        "Metro Station",
-        17
-      ],
-      [
-        "Monument",
-        14
-      ],
-      [
-        "Rail Station",
-        12
-      ],
-      [
-        "Park",
-        11
-      ],
-      [
-        "Road",
-        9
-      ],
-      [
-        "Border Crossing",
-        8
-      ],
-      [
-        "Neighborhood",
-        8
-      ],
-      [
-        "History Museum",
-        7
-      ],
-      [
-        "Bus Station",
-        6
-      ]
-    ]
-  },
-  {
-    "id": 65,
-    "name": "Italy - the bery best of ✈️",
-    "start_date": "2020-02-07",
-    "end_date": "2020-02-15",
-    "start_ts": 1581048248,
-    "start_year": 2020,
-    "duration": 9,
-    "checkin_count": 597,
-    "unique_places": 530,
-    "countries": [
-      "Italy",
-      "Holy See (Vatican City State)",
-      "Belarus"
-    ],
-    "cities": [
-      "Rome",
-      "Florence",
-      "Milan",
-      "Vatican City",
-      "Minsk",
-      "Barberino di Mugello"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        125
-      ],
-      [
-        "Monument",
-        47
-      ],
-      [
-        "Road",
-        46
-      ],
-      [
-        "Fountain",
-        32
-      ],
-      [
-        "Metro Station",
-        29
-      ],
-      [
-        "Historic and Protected Site",
-        27
-      ],
-      [
-        "Neighborhood",
-        21
-      ],
-      [
-        "Church",
-        18
-      ],
-      [
-        "Bus Line",
-        14
-      ],
-      [
-        "Scenic Lookout",
-        14
-      ]
-    ]
-  },
-  {
-    "id": 66,
-    "name": "Novogrudok dash Lida 🚂",
-    "start_date": "2020-08-02",
-    "end_date": "2020-08-02",
-    "start_ts": 1596350245,
-    "start_year": 2020,
-    "duration": 1,
-    "checkin_count": 44,
-    "unique_places": 44,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Lida",
-      "Navahrudak",
-      "Minsk",
-      "Novogrudok"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        9
-      ],
-      [
-        "City",
-        3
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Temple",
-        3
-      ],
-      [
-        "Bus Line",
-        2
-      ],
-      [
-        "Castle",
-        2
-      ],
-      [
-        "Park",
-        2
-      ],
-      [
-        "Church",
-        2
-      ],
-      [
-        "Café",
-        2
-      ],
-      [
-        "Outdoor Sculpture",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 67,
-    "name": "Kalinkovichi in a tent ⛺",
-    "start_date": "2020-08-28",
-    "end_date": "2020-08-31",
-    "start_ts": 1598646525,
-    "start_year": 2020,
-    "duration": 4,
-    "checkin_count": 56,
-    "unique_places": 51,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Kalinkavichy",
-      "Mazyr",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "City",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Home (private)",
-        3
-      ],
-      [
-        "Coffee Shop",
-        3
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Fuel Station",
-        2
-      ],
-      [
-        "Church",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 68,
-    "name": "Borisov - laminate trip 🚌",
-    "start_date": "2020-10-21",
-    "end_date": "2020-10-21",
-    "start_ts": 1603251971,
-    "start_year": 2020,
-    "duration": 1,
-    "checkin_count": 10,
-    "unique_places": 10,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Borisov",
-      "Minsk",
-      "Zhodzina",
-      "Minsk Region"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Bus Line",
-        1
-      ],
-      [
-        "Fuel Station",
-        1
-      ],
-      [
-        "Hardware Store",
-        1
-      ],
-      [
-        "Historic and Protected Site",
-        1
-      ],
-      [
-        "Soccer Stadium",
-        1
-      ],
-      [
-        "Home (private)",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 69,
-    "name": "Istanbul - covid no more ✈️",
-    "start_date": "2020-12-12",
-    "end_date": "2021-02-07",
-    "start_ts": 1607740094,
-    "start_year": 2020,
-    "duration": 58,
-    "checkin_count": 1311,
-    "unique_places": 852,
-    "countries": [
-      "Turkey",
-      "Moldova",
-      "Ukraine",
-      "Belarus"
-    ],
-    "cities": [
-      "Istanbul",
-      "Chișinău",
-      "Odesa",
-      "Minsk",
-      "Orhei",
-      "Hîncești",
-      "Khlebodarskoye",
-      "Calarasi",
-      "Palanca",
-      "Puhoi",
-      "Olănești",
-      "Kyiv",
-      "Ialoveni"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        147
-      ],
-      [
-        "Neighborhood",
-        119
-      ],
-      [
-        "Plaza",
-        89
-      ],
-      [
-        "Park",
-        82
-      ],
-      [
-        "Monument",
-        60
-      ],
-      [
-        "Historic and Protected Site",
-        58
-      ],
-      [
-        "Metro Station",
-        38
-      ],
-      [
-        "Tram Station",
-        34
-      ],
-      [
-        "Bus Line",
-        33
-      ],
-      [
-        "Waterfront",
-        31
-      ]
-    ]
-  },
-  {
-    "id": 70,
-    "name": "Starting spring with Veloby",
-    "start_date": "2021-04-11",
-    "end_date": "2021-04-11",
-    "start_ts": 1618128360,
-    "start_year": 2021,
-    "duration": 1,
-    "checkin_count": 9,
-    "unique_places": 9,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Haradzishcha",
-      "Zaslawye"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Outdoor Sculpture",
-        1
-      ],
-      [
-        "Historic and Protected Site",
-        1
-      ],
-      [
-        "Mountain",
-        1
-      ],
-      [
-        "Village",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Train",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 71,
-    "name": "From Zhodzina on bike",
-    "start_date": "2021-04-18",
-    "end_date": "2021-04-18",
-    "start_ts": 1618726706,
-    "start_year": 2021,
-    "duration": 1,
-    "checkin_count": 16,
-    "unique_places": 16,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Zhodzina",
-      "Lahoysk",
-      "Oktyabrskiy"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Bike Trail",
-        2
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Travel and Transportation",
-        1
-      ],
-      [
-        "Plaza",
-        1
-      ],
-      [
-        "Historic and Protected Site",
-        1
-      ],
-      [
-        "Supermarket",
-        1
-      ],
-      [
-        "Park",
-        1
-      ],
-      [
-        "Monument",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 72,
-    "name": "A weekend in Mogilev 🚂",
-    "start_date": "2021-05-08",
-    "end_date": "2021-05-09",
-    "start_ts": 1620445363,
-    "start_year": 2021,
-    "duration": 2,
-    "checkin_count": 82,
-    "unique_places": 74,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Mogilev",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        12
-      ],
-      [
-        "Outdoor Sculpture",
-        7
-      ],
-      [
-        "Plaza",
-        7
-      ],
-      [
-        "Road",
-        7
-      ],
-      [
-        "Monument",
-        7
-      ],
-      [
-        "Moving Target",
-        3
-      ],
-      [
-        "Historic and Protected Site",
-        3
-      ],
-      [
-        "Café",
-        3
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Sculpture Garden",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 73,
-    "name": "Braslaw lakes camping ⛺",
-    "start_date": "2021-05-14",
-    "end_date": "2021-05-16",
-    "start_ts": 1620997039,
-    "start_year": 2021,
-    "duration": 3,
-    "checkin_count": 35,
-    "unique_places": 29,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Braslaw",
-      "Minsk",
-      "Myadzyel",
-      "Braslav",
-      "Vidzy"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Lake",
-        7
-      ],
-      [
-        "City",
-        4
-      ],
-      [
-        "Bus Station",
-        3
-      ],
-      [
-        "Campground",
-        3
-      ],
-      [
-        "Bus Line",
-        2
-      ],
-      [
-        "National Park",
-        2
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Town",
-        1
-      ],
-      [
-        "Monument",
-        1
-      ],
-      [
-        "Shopping Mall",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 74,
-    "name": "Moscow - Saint Petersburg; Covid vibes 🚂",
-    "start_date": "2021-06-05",
-    "end_date": "2021-06-23",
-    "start_ts": 1622861980,
-    "start_year": 2021,
-    "duration": 19,
-    "checkin_count": 461,
-    "unique_places": 365,
-    "countries": [
-      "Russia",
-      "Belarus",
-      "Finland"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Moscow",
-      "Minsk",
-      "Sestroretsk",
-      "Tver",
-      "Arkhangel'skoye",
-      "Chernaya Gryaz'",
-      "Khimki",
-      "Voskresenkoye",
-      "Helsinki",
-      "Luga",
-      "Opochka",
-      "Dolostsy",
-      "Polotsk",
-      "Lyepyel"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        66
-      ],
-      [
-        "Monument",
-        51
-      ],
-      [
-        "Metro Station",
-        45
-      ],
-      [
-        "Plaza",
-        33
-      ],
-      [
-        "Park",
-        24
-      ],
-      [
-        "Neighborhood",
-        17
-      ],
-      [
-        "Bridge",
-        15
-      ],
-      [
-        "Supermarket",
-        14
-      ],
-      [
-        "Fountain",
-        11
-      ],
-      [
-        "Inn",
-        10
-      ]
-    ]
-  },
-  {
-    "id": 75,
-    "name": "Gomel - party hard 🚂",
-    "start_date": "2021-06-25",
-    "end_date": "2021-06-28",
-    "start_ts": 1624635092,
-    "start_year": 2021,
-    "duration": 4,
-    "checkin_count": 35,
-    "unique_places": 29,
-    "countries": [
-      "Belarus",
-      "Ukraine"
-    ],
-    "cities": [
-      "Gomel",
-      "Minsk",
-      "Skytok",
-      "Rechytsa"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "Campground",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Rest Area",
-        2
-      ],
-      [
-        "River",
-        2
-      ],
-      [
-        "Café",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 76,
-    "name": "Uzbekistan - silk road adventure ✈️",
-    "start_date": "2021-07-09",
-    "end_date": "2021-07-21",
-    "start_ts": 1625843966,
-    "start_year": 2021,
-    "duration": 13,
-    "checkin_count": 391,
-    "unique_places": 294,
-    "countries": [
-      "Uzbekistan",
-      "Belarus"
-    ],
-    "cities": [
-      "Tashkent",
-      "Bukhara",
-      "Samarkand",
-      "Minsk",
-      "Yubileiniy"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Historic and Protected Site",
-        59
-      ],
-      [
-        "Park",
-        31
-      ],
-      [
-        "Road",
-        25
-      ],
-      [
-        "Monument",
-        25
-      ],
-      [
-        "Metro Station",
-        22
-      ],
-      [
-        "Mosque",
-        18
-      ],
-      [
-        "Plaza",
-        17
-      ],
-      [
-        "Airport Service",
-        10
-      ],
-      [
-        "Bed and Breakfast",
-        10
-      ],
-      [
-        "Neighborhood",
         8
       ]
     ]
   },
   {
-    "id": 77,
-    "name": "Transsib to Baikal ✈️",
-    "start_date": "2021-07-23",
-    "end_date": "2021-08-31",
-    "start_ts": 1627044107,
-    "start_year": 2021,
-    "duration": 40,
-    "checkin_count": 1400,
-    "unique_places": 1125,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Yekaterinburg",
-      "Irkutsk",
-      "Kazan",
-      "Krasnoyarsk",
-      "Novosibirsk",
-      "Moscow",
-      "Omsk",
-      "Khuzhir",
-      "Listvyanka",
-      "Divnogorsk",
-      "Nizhneudinsk",
-      "Sakhyurta",
-      "Olkhon Island",
-      "Minsk",
-      "Angasol'skaya",
-      "Krasnoyarsk Region",
-      "Uzury",
-      "Baykal",
-      "Slyudyanka",
-      "Vitebsk Region",
-      "Sliznevo",
-      "Bayanday",
-      "Smolensk Region",
-      "Kharantsy",
-      "Port Baikal",
-      "Kultuk",
-      "Krasny District"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        156
-      ],
-      [
-        "Road",
-        127
-      ],
-      [
-        "Park",
-        122
-      ],
-      [
-        "Plaza",
-        88
-      ],
-      [
-        "Metro Station",
-        62
-      ],
-      [
-        "Outdoor Sculpture",
-        46
-      ],
-      [
-        "Fountain",
-        41
-      ],
-      [
-        "Bus Line",
-        39
-      ],
-      [
-        "Historic and Protected Site",
-        32
-      ],
-      [
-        "Bridge",
-        29
-      ]
-    ]
-  },
-  {
-    "id": 78,
-    "name": "Armenia - across the country by minivan ✈️",
-    "start_date": "2021-09-03",
-    "end_date": "2021-09-19",
-    "start_ts": 1630687927,
-    "start_year": 2021,
-    "duration": 17,
-    "checkin_count": 501,
-    "unique_places": 349,
-    "countries": [
-      "Armenia",
-      "Belarus",
-      "Turkey"
-    ],
-    "cities": [
-      "Yerevan",
-      "Gyumri",
-      "Minsk",
-      "Jermuk",
-      "Goris",
-      "Areni",
-      "Vagharshapat",
-      "Garni",
-      "Sevan",
-      "Saghmosavan",
-      "Noravank",
-      "Sarnakunk",
-      "Kndzoresk",
-      "Tatev",
-      "Dilijan",
-      "Haghartsin",
-      "Marmashen",
-      "Halidzor",
-      "Geghard",
-      "Semyonovka",
-      "Ohanavan",
-      "Byurakan",
-      "Lusarat",
-      "Doğubayazıt",
-      "Yeraskh",
-      "Kech'ut",
-      "Shak'i",
-      "Sisian",
-      "Voghjaberd",
-      "Amberd",
-      "Zvartnots",
-      "Vahramaberd"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        83
-      ],
-      [
-        "Road",
-        46
-      ],
-      [
-        "Park",
-        42
-      ],
-      [
-        "Plaza",
-        32
-      ],
-      [
-        "Outdoor Sculpture",
-        20
-      ],
-      [
-        "Church",
-        13
-      ],
-      [
-        "Metro Station",
-        11
-      ],
-      [
-        "City",
-        9
-      ],
-      [
-        "Lake",
-        9
-      ],
-      [
-        "Monastery",
-        9
-      ]
-    ]
-  },
-  {
-    "id": 79,
-    "name": "Grodno with a friend 🚂",
-    "start_date": "2021-11-05",
-    "end_date": "2021-11-06",
-    "start_ts": 1636143055,
-    "start_year": 2021,
-    "duration": 2,
-    "checkin_count": 53,
-    "unique_places": 51,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Hrodna",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Church",
-        6
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "History Museum",
-        4
-      ],
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "City",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 80,
-    "name": "Mogilev with a friend 🚂",
-    "start_date": "2021-11-07",
-    "end_date": "2021-11-07",
-    "start_ts": 1636262085,
-    "start_year": 2021,
-    "duration": 1,
-    "checkin_count": 50,
-    "unique_places": 50,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Mogilev",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        7
-      ],
-      [
-        "Outdoor Sculpture",
-        6
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Monument",
-        5
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Playground",
-        2
-      ],
-      [
-        "Church",
-        2
-      ],
-      [
-        "Cemetery",
-        2
-      ],
-      [
-        "Rail Station",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 81,
-    "name": "Brest with a friend 🚂",
-    "start_date": "2021-11-13",
-    "end_date": "2021-11-13",
-    "start_ts": 1636774654,
-    "start_year": 2021,
-    "duration": 1,
-    "checkin_count": 60,
-    "unique_places": 59,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Brest",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Historic and Protected Site",
-        9
-      ],
-      [
-        "Outdoor Sculpture",
-        8
-      ],
-      [
-        "Monument",
-        7
-      ],
-      [
-        "Park",
-        5
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Plaza",
-        3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "City",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 82,
-    "name": "Vitebsk with a friend 🚂",
-    "start_date": "2021-11-14",
-    "end_date": "2021-11-15",
-    "start_ts": 1636860865,
-    "start_year": 2021,
-    "duration": 2,
-    "checkin_count": 67,
-    "unique_places": 63,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Vitebsk",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        8
-      ],
-      [
-        "Plaza",
-        7
-      ],
-      [
-        "Road",
-        5
-      ],
-      [
-        "Outdoor Sculpture",
-        5
-      ],
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Park",
-        4
-      ],
-      [
-        "Church",
-        4
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "River",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 83,
-    "name": "Egyptian pyramids ✈️",
-    "start_date": "2021-12-02",
-    "end_date": "2022-01-19",
-    "start_ts": 1638449169,
-    "start_year": 2021,
-    "duration": 49,
-    "checkin_count": 1559,
-    "unique_places": 1179,
-    "countries": [
-      "Russia",
-      "Egypt",
-      "Belarus"
-    ],
-    "cities": [
-      "Moscow",
-      "Cairo",
-      "Saint Petersburg",
-      "Yaroslavl",
-      "Vladimir",
-      "Ryazan",
-      "Vyborg",
-      "Alexandria",
-      "Khimki",
-      "Port Said",
-      "Veliky Novgorod",
-      "Tver",
-      "Shlissel'burg",
-      "Al Temsah",
-      "Minsk",
-      "Ladozhskoye Ozero",
-      "Ismailia",
-      "Dahshur",
-      "Smolensk Region",
-      "El-Qantara el-Sharqîya",
-      "Vitebsk Region",
-      "Staromelkovskoye",
-      "Kokkoryevo",
-      "Orsha"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        180
-      ],
-      [
-        "Metro Station",
-        163
-      ],
-      [
-        "Road",
-        152
-      ],
-      [
-        "Monument",
-        113
-      ],
-      [
-        "Historic and Protected Site",
-        74
-      ],
-      [
-        "Neighborhood",
-        60
-      ],
-      [
-        "Park",
-        57
-      ],
-      [
-        "Bridge",
-        44
-      ],
-      [
-        "Church",
-        33
-      ],
-      [
-        "Bus Line",
-        29
-      ]
-    ]
-  },
-  {
-    "id": 84,
-    "name": "Gomel - owl trip 🚂",
-    "start_date": "2022-04-09",
-    "end_date": "2022-04-09",
-    "start_ts": 1649476452,
-    "start_year": 2022,
-    "duration": 1,
-    "checkin_count": 38,
-    "unique_places": 38,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Gomel",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Outdoor Sculpture",
-        5
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "Monument",
-        4
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Café",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Bank",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 85,
-    "name": "Lovely trip to Saint Petersburg 🚂",
-    "start_date": "2022-04-29",
-    "end_date": "2022-05-09",
-    "start_ts": 1651254118,
-    "start_year": 2022,
-    "duration": 11,
-    "checkin_count": 471,
-    "unique_places": 403,
-    "countries": [
-      "Russia",
-      "Belarus",
-      "Finland"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Vyborg",
-      "Pskov",
-      "Kronshtadt",
-      "Minsk",
-      "Dolostsy",
-      "Zaplyusye",
-      "Opochka",
-      "Polotsk",
-      "Moscow",
-      "Podborovye",
-      "Helsinki",
-      "Sestroretsk",
-      "Lyepyel"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        55
-      ],
-      [
-        "Road",
-        42
-      ],
-      [
-        "Plaza",
-        38
-      ],
-      [
-        "Metro Station",
-        36
-      ],
-      [
-        "Bridge",
-        32
-      ],
-      [
-        "Historic and Protected Site",
-        25
-      ],
-      [
-        "Park",
-        24
-      ],
-      [
-        "Neighborhood",
-        11
-      ],
-      [
-        "River",
-        10
-      ],
-      [
-        "Church",
-        10
-      ]
-    ]
-  },
-  {
-    "id": 86,
-    "name": "Kazakhstan - visiting a relocant ✈️",
-    "start_date": "2022-06-09",
-    "end_date": "2022-06-29",
-    "start_ts": 1654784341,
-    "start_year": 2022,
-    "duration": 21,
-    "checkin_count": 554,
-    "unique_places": 402,
-    "countries": [
-      "Kazakhstan",
-      "Kyrgyzstan",
-      "Belarus"
-    ],
-    "cities": [
-      "Astana",
-      "Almaty",
-      "Bishkek",
-      "Minsk",
-      "Burabay",
-      "Zhanashar",
-      "Korday",
-      "Almaty Region",
-      "Shchuchinsk",
-      "Sary-Oy",
-      "Issyk-Kul",
-      "Dolinka",
-      "Cholpon-Ata"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        50
-      ],
-      [
-        "Monument",
-        46
-      ],
-      [
-        "Park",
-        34
-      ],
-      [
-        "Taxi",
-        25
-      ],
-      [
-        "Plaza",
-        22
-      ],
-      [
-        "Fountain",
-        19
-      ],
-      [
-        "Hotel",
-        18
-      ],
-      [
-        "Airport Service",
-        15
-      ],
-      [
-        "Mountain",
-        12
-      ],
-      [
-        "River",
-        10
-      ]
-    ]
-  },
-  {
-    "id": 87,
-    "name": "A weekend in Grodno 🚂",
-    "start_date": "2022-07-16",
-    "end_date": "2022-07-17",
-    "start_ts": 1657944102,
-    "start_year": 2022,
-    "duration": 2,
-    "checkin_count": 87,
-    "unique_places": 75,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Hrodna",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        8
-      ],
-      [
-        "Monument",
-        7
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Park",
-        6
-      ],
-      [
-        "Other Great Outdoors",
-        6
-      ],
-      [
-        "Church",
-        5
-      ],
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Bridge",
-        3
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "City",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 88,
-    "name": "Moscow - visit Hellenic 🚂",
-    "start_date": "2022-07-28",
-    "end_date": "2022-08-01",
-    "start_ts": 1659035968,
-    "start_year": 2022,
-    "duration": 5,
-    "checkin_count": 235,
-    "unique_places": 222,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Moscow",
-      "Minsk",
-      "Smolensk Region",
-      "Vitebsk Region",
-      "Krasny District",
-      "Golitsino",
-      "Zhodzina"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Metro Station",
-        29
-      ],
-      [
-        "Monument",
-        29
-      ],
-      [
-        "Road",
-        28
-      ],
-      [
-        "Plaza",
-        24
-      ],
-      [
-        "Park",
-        14
-      ],
-      [
-        "Fountain",
-        9
-      ],
-      [
-        "Border Crossing",
-        7
-      ],
-      [
-        "Hiking Trail",
-        7
-      ],
-      [
-        "Outdoor Sculpture",
-        6
-      ],
-      [
-        "Neighborhood",
-        5
-      ]
-    ]
-  },
-  {
-    "id": 89,
-    "name": "MoldovaRomanian - visa open ✈️",
-    "start_date": "2022-08-06",
-    "end_date": "2022-09-05",
-    "start_ts": 1659750250,
-    "start_year": 2022,
-    "duration": 31,
-    "checkin_count": 929,
-    "unique_places": 801,
-    "countries": [
-      "Romania",
-      "Moldova",
-      "Poland",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Bucharest",
-      "Warsaw",
-      "Sibiu",
-      "Brașov",
-      "Vilnius",
-      "Târgu Mureș",
-      "Sighișoara",
-      "Constanța",
-      "Suceava",
-      "Iași",
-      "Orhei",
-      "Minsk",
-      "Butuceni",
-      "Mediaș",
-      "Calarasi",
-      "Leușeni",
-      "Trebujeni",
-      "Vilniaus Rajonas",
-      "Ungheni",
-      "Botoșani",
-      "Bălți",
-      "Brest",
-      "Stânca",
-      "Costești",
-      "Borzont",
-      "Vadu Oii",
-      "Maladzyechna",
-      "Smarhon",
-      "Ashmyany",
-      "Muravyovka",
-      "Kaunas",
-      "Trakai",
-      "Alytus",
-      "Sejny",
-      "Augustów",
-      "Białystok",
-      "Ialoveni",
-      "Bistrița",
-      "Poiana Brașov",
-      "Gălbiori",
-      "Hârșova",
-      "Oancea",
-      "Cahul",
-      "Mitoc",
-      "Terespol",
-      "Slonim",
-      "Gorodeya"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        80
-      ],
-      [
-        "Monument",
-        78
-      ],
-      [
-        "Park",
-        64
-      ],
-      [
-        "Plaza",
-        61
-      ],
-      [
-        "Neighborhood",
-        36
-      ],
-      [
-        "Historic and Protected Site",
-        33
-      ],
-      [
-        "Church",
-        31
-      ],
-      [
-        "Pedestrian Plaza",
-        28
-      ],
-      [
-        "Bus Line",
-        24
-      ],
-      [
-        "City",
-        22
-      ]
-    ]
-  },
-  {
-    "id": 90,
-    "name": "Croatia - Plitvice Lakes ✈️",
-    "start_date": "2022-09-22",
-    "end_date": "2022-10-03",
-    "start_ts": 1663861208,
-    "start_year": 2022,
-    "duration": 12,
-    "checkin_count": 639,
-    "unique_places": 560,
-    "countries": [
-      "Croatia",
-      "Norway",
-      "Slovenia",
-      "Poland",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Zagreb",
-      "Zadar",
-      "Oslo",
-      "Ljubljana",
-      "Plitvice Lakes",
-      "Vilnius",
-      "Warsaw",
-      "Samobor",
-      "Titova Korenica",
-      "Minsk",
-      "Velika Gorica",
-      "Sandefjord",
-      "Bregana",
-      "Nowy Dwór Mazowiecki",
-      "Brest",
-      "Vilniaus Rajonas",
-      "Gardermoen",
-      "Obrežje",
-      "Plitvica",
-      "Muravyovka",
-      "Kaunas",
-      "Karlovac",
-      "Gornja Ploča",
-      "Sveti Rok",
-      "Poličnik",
-      "Modlin",
-      "Kałuszyn",
-      "Terespol",
-      "Gorodeya"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        81
-      ],
-      [
-        "Park",
-        41
-      ],
-      [
-        "Road",
-        35
-      ],
-      [
-        "Neighborhood",
-        26
-      ],
-      [
-        "Church",
-        21
-      ],
-      [
-        "Historic and Protected Site",
-        20
-      ],
-      [
-        "Scenic Lookout",
-        19
-      ],
-      [
-        "Bridge",
-        18
-      ],
-      [
-        "Border Crossing",
-        15
-      ],
-      [
-        "Bus Station",
-        14
-      ]
-    ]
-  },
-  {
-    "id": 91,
-    "name": "Kaliningrad - amber glow 🚂",
-    "start_date": "2022-10-27",
-    "end_date": "2022-10-31",
-    "start_ts": 1666895237,
-    "start_year": 2022,
-    "duration": 5,
-    "checkin_count": 208,
-    "unique_places": 177,
-    "countries": [
-      "Russia",
-      "Belarus",
-      "Lithuania"
-    ],
-    "cities": [
-      "Kaliningrad",
-      "Zelenogradsk",
-      "Minsk",
-      "Morskoye",
-      "Gudogay",
-      "Chernyshevskoye",
-      "Lesnoy",
-      "Muravyovka",
-      "Kaunas",
-      "Kybartai",
-      "Rybachiy",
-      "Moscow",
-      "Kena"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        25
-      ],
-      [
-        "Historic and Protected Site",
-        19
-      ],
-      [
-        "Rail Station",
-        15
-      ],
-      [
-        "Road",
-        12
-      ],
-      [
-        "Bridge",
-        12
-      ],
-      [
-        "Plaza",
-        9
-      ],
-      [
-        "Park",
-        9
-      ],
-      [
-        "Outdoor Sculpture",
-        9
-      ],
-      [
-        "Border Crossing",
-        6
-      ],
-      [
-        "Lake",
-        6
-      ]
-    ]
-  },
-  {
-    "id": 92,
-    "name": "Cyprus - cash please ✈️",
-    "start_date": "2022-11-04",
-    "end_date": "2022-11-24",
-    "start_ts": 1667593082,
-    "start_year": 2022,
-    "duration": 21,
-    "checkin_count": 753,
-    "unique_places": 664,
-    "countries": [
-      "Italy",
-      "Cyprus",
-      "Moldova",
-      "Lithuania",
-      "Romania",
-      "Poland",
-      "Belarus"
-    ],
-    "cities": [
-      "Venice",
-      "Chișinău",
-      "Bologna",
-      "Limassol",
-      "Kaunas",
-      "Larnaca",
-      "Nicosia",
-      "Iași",
-      "Paphos",
-      "Treviso",
-      "Warsaw",
-      "Minsk",
-      "Ungheni",
-      "Nowy Dwór Mazowiecki",
-      "Brest",
-      "Vilniaus Rajonas",
-      "Calarasi",
-      "Ashmyany",
-      "Sighișoara",
-      "Ungheni-Prut",
-      "Sculeni",
-      "Modlin",
-      "Muravyovka",
-      "Vilnius",
-      "Meneou",
-      "Strășeni",
-      "Rome",
-      "Terespol",
-      "Slonim",
-      "Baranovichi"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        105
-      ],
-      [
-        "Church",
-        51
-      ],
-      [
-        "Road",
-        39
-      ],
-      [
-        "Bridge",
-        36
-      ],
-      [
-        "Monument",
-        31
-      ],
-      [
-        "Historic and Protected Site",
-        30
-      ],
-      [
-        "Neighborhood",
-        22
-      ],
-      [
-        "Park",
-        21
-      ],
-      [
-        "Airport Service",
-        17
-      ],
-      [
-        "Border Crossing",
-        16
-      ]
-    ]
-  },
-  {
-    "id": 93,
-    "name": "Madrid + Paris - cheap tickets ✈️",
-    "start_date": "2022-11-25",
-    "end_date": "2022-12-05",
-    "start_ts": 1669408089,
-    "start_year": 2022,
-    "duration": 11,
-    "checkin_count": 708,
-    "unique_places": 637,
-    "countries": [
-      "France",
-      "Spain",
-      "Poland",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Paris",
-      "Madrid",
-      "Kaunas",
-      "Warsaw",
-      "Minsk",
-      "Tillé",
-      "Vilniaus Rajonas",
-      "Nowy Dwór Mazowiecki",
-      "Brest",
-      "Modlin",
-      "Hobrow",
-      "Ashmyany",
-      "Muravyovka",
-      "Beauvais",
-      "Terespol"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        147
-      ],
-      [
-        "Metro Station",
-        63
-      ],
-      [
-        "Road",
-        61
-      ],
-      [
-        "Monument",
-        40
-      ],
-      [
-        "Park",
-        33
-      ],
-      [
-        "Neighborhood",
-        28
-      ],
-      [
-        "Garden",
-        28
-      ],
-      [
-        "Fountain",
-        18
-      ],
-      [
-        "Church",
-        18
-      ],
-      [
-        "Bridge",
-        17
-      ]
-    ]
-  },
-  {
-    "id": 94,
-    "name": "Malta ✈️",
-    "start_date": "2022-12-17",
-    "end_date": "2023-01-22",
-    "start_ts": 1671261976,
-    "start_year": 2022,
-    "duration": 37,
-    "checkin_count": 1281,
-    "unique_places": 1081,
-    "countries": [
-      "Malta",
-      "Italy",
-      "Romania",
-      "Poland",
-      "Moldova",
-      "Cyprus",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Palermo",
-      "Naples",
-      "Chișinău",
-      "Catania",
-      "Valletta",
-      "Kraków",
-      "Warsaw",
-      "Brașov",
-      "Larnaca",
-      "Bucharest",
-      "Sliema",
-      "Saint Julian's",
-      "Mdina",
-      "Messina",
-      "Victoria",
-      "Imsida",
-      "Buġibba",
-      "Luqa",
-      "Vilnius",
-      "Cospicua",
-      "Marsaskala",
-      "Sinaia",
-      "Leușeni",
-      "San Pawl il-Baħar",
-      "Floriana",
-      "Gżira",
-      "Balzan",
-      "Birgu",
-      "Għajnsielem",
-      "Rabat",
-      "Minsk",
-      "Mellieħa",
-      "Imġarr",
-      "Senglea",
-      "Poiana Brașov",
-      "Munții Bucegi",
-      "Comino",
-      "Mosta",
-      "Dingli",
-      "Żebbuġ",
-      "San Lawrenz",
-      "Villa San Giovanni",
-      "Iași",
-      "Żejtun",
-      "Birkirkara",
-      "Tarxien",
-      "Marsaxlokk",
-      "Għarb",
-      "Bușteni",
-      "Ċirkewwa",
-      "Ir-Rabat Għawdex",
-      "Paola",
-      "Qawra",
-      "Pembroke",
-      "Lija",
-      "Siġġiewi",
-      "Marsalforn",
-      "Sighișoara",
-      "Focșani",
-      "Sculeni",
-      "Balice",
-      "Brest",
-      "Mġarr",
-      "Xewkija",
-      "Żurrieq",
-      "Għasri",
-      "Calarasi",
-      "Bacău",
-      "Bran",
-      "Strachanyaty",
-      "Benyakoni",
-      "Šalčininkai",
-      "Kaunas",
-      "Marsa",
-      "Ħamrun",
-      "Pietà",
-      "Swieqi",
-      "Attard",
-      "Kalkara",
-      "Baħar iċ-Ċagħaq",
-      "Qrendi",
-      "Ta' Xbiex",
-      "Marsalforn, Gozo",
-      "Għammar",
-      "Gharb, Gozo",
-      "San Lawrenz, Gozo",
-      "Campofelice di Roccella",
-      "Rome",
-      "Nicosia",
-      "Meneou",
-      "Olszamowice",
-      "Terespol",
-      "Gorodeya"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        188
-      ],
-      [
-        "Church",
-        80
-      ],
-      [
-        "Road",
-        70
-      ],
-      [
-        "Historic and Protected Site",
-        65
-      ],
-      [
-        "Bus Line",
-        52
-      ],
-      [
-        "Neighborhood",
-        42
-      ],
-      [
-        "Monument",
-        39
-      ],
-      [
-        "City",
-        34
-      ],
-      [
-        "Park",
-        31
-      ],
-      [
-        "Bus Station",
-        26
-      ]
-    ]
-  },
-  {
-    "id": 95,
-    "name": "A weekend in Riga 🚌",
-    "start_date": "2023-01-27",
-    "end_date": "2023-01-30",
-    "start_ts": 1674851270,
-    "start_year": 2023,
-    "duration": 4,
-    "checkin_count": 173,
-    "unique_places": 156,
-    "countries": [
-      "Latvia",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Riga",
-      "Vilnius",
-      "Minsk",
-      "Vilniaus Rajonas",
-      "Muravyovka",
-      "Kaunas",
-      "Ashmyany"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        19
-      ],
-      [
-        "Park",
-        18
-      ],
-      [
-        "Plaza",
-        14
-      ],
-      [
-        "Border Crossing",
-        8
-      ],
-      [
-        "Monument",
-        8
-      ],
-      [
-        "Sculpture Garden",
-        8
-      ],
-      [
-        "Church",
-        8
-      ],
-      [
-        "Bus Station",
-        7
-      ],
-      [
-        "Neighborhood",
-        7
-      ],
-      [
-        "Outdoor Sculpture",
-        6
-      ]
-    ]
-  },
-  {
-    "id": 96,
-    "name": "Italy - open eyes wide ✈️",
-    "start_date": "2023-02-04",
-    "end_date": "2023-02-14",
-    "start_ts": 1675467980,
-    "start_year": 2023,
-    "duration": 11,
-    "checkin_count": 635,
-    "unique_places": 589,
-    "countries": [
-      "Italy",
-      "Latvia",
-      "Poland",
-      "Belarus",
-      "Holy See (Vatican City State)",
-      "Lithuania"
-    ],
-    "cities": [
-      "Rome",
-      "Naples",
-      "Bari",
-      "Lecce",
-      "Brindisi",
-      "Riga",
-      "Warsaw",
-      "Vatican City",
-      "Minsk",
-      "Vilnius",
-      "Nowy Dwór Mazowiecki",
-      "Brest",
-      "Castrocielo",
-      "Modlin",
-      "Strachanyaty",
-      "Benyakoni",
-      "Šalčininkai",
-      "Kaunas",
-      "Terespol"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        160
-      ],
-      [
-        "Church",
-        48
-      ],
-      [
-        "Monument",
-        46
-      ],
-      [
-        "Road",
-        40
-      ],
-      [
-        "Historic and Protected Site",
-        33
-      ],
-      [
-        "Metro Station",
-        33
-      ],
-      [
-        "Fountain",
-        24
-      ],
-      [
-        "Neighborhood",
-        22
-      ],
-      [
-        "Rail Station",
-        13
-      ],
-      [
-        "Bus Line",
-        12
-      ]
-    ]
-  },
-  {
-    "id": 97,
-    "name": "Vilnius - closing the visa ✈️",
-    "start_date": "2023-02-18",
-    "end_date": "2023-02-20",
-    "start_ts": 1676677809,
-    "start_year": 2023,
-    "duration": 3,
-    "checkin_count": 106,
-    "unique_places": 100,
-    "countries": [
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Vilnius",
-      "Minsk",
-      "Strachanyaty",
-      "Benyakoni",
-      "Šalčininkai",
-      "Kaunas",
-      "Lida"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        12
-      ],
-      [
-        "Monument",
-        11
-      ],
-      [
-        "Neighborhood",
-        7
-      ],
-      [
-        "Road",
-        6
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Church",
-        5
-      ],
-      [
-        "Bridge",
-        5
-      ],
-      [
-        "Scenic Lookout",
-        5
-      ],
-      [
-        "Border Crossing",
-        4
-      ],
-      [
-        "Hill",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 98,
-    "name": "Eurotour ✈️",
-    "start_date": "2023-03-18",
-    "end_date": "2023-04-03",
-    "start_ts": 1679087054,
-    "start_year": 2023,
-    "duration": 17,
-    "checkin_count": 581,
-    "unique_places": 520,
-    "countries": [
-      "Italy",
-      "Poland",
-      "Romania",
-      "Moldova",
-      "Hungary",
-      "Belarus",
-      "Lithuania",
-      "Latvia"
-    ],
-    "cities": [
-      "Warsaw",
-      "Verona",
-      "Chișinău",
-      "Budapest",
-      "Bucharest",
-      "Bergamo",
-      "Cluj-Napoca",
-      "Brescia",
-      "Bologna",
-      "Leușeni",
-      "Minsk",
-      "Vilnius",
-      "Riga",
-      "Brest",
-      "Vilniaus Rajonas",
-      "Nowy Dwór Mazowiecki",
-      "Rome",
-      "Sighișoara",
-      "Bicaz-Chei",
-      "Modlin",
-      "Muravyovka",
-      "Kaunas",
-      "Târgu Mureș",
-      "Poiana Brașov",
-      "Borzont",
-      "Calarasi",
-      "Buzău",
-      "Terespol",
-      "Slonim",
-      "Ishkol'd'"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        66
-      ],
-      [
-        "Road",
-        42
-      ],
-      [
-        "Park",
-        39
-      ],
-      [
-        "Neighborhood",
-        35
-      ],
-      [
-        "Monument",
-        27
-      ],
-      [
-        "Bus Line",
-        16
-      ],
-      [
-        "Church",
-        16
-      ],
-      [
-        "Airport Terminal",
-        15
-      ],
-      [
-        "Airport Service",
-        14
-      ],
-      [
-        "Bridge",
-        13
-      ]
-    ]
-  },
-  {
-    "id": 99,
-    "name": "Stan'kovo - Veloby quick",
-    "start_date": "2023-04-15",
-    "end_date": "2023-04-15",
-    "start_ts": 1681538635,
-    "start_year": 2023,
-    "duration": 1,
-    "checkin_count": 21,
-    "unique_places": 21,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Stan'kovo",
-      "Rudensk",
-      "Vozera",
-      "Navapolle",
-      "Dabrynova",
-      "Dzyarzhynsk"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "River",
-        2
-      ],
-      [
-        "Lake",
-        2
-      ],
-      [
-        "Village",
-        2
-      ],
-      [
-        "Bridge",
-        1
-      ],
-      [
-        "Park",
-        1
-      ],
-      [
-        "Travel and Transportation",
-        1
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Town",
-        1
-      ],
-      [
-        "Housing Development",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 100,
-    "name": "Moscow - never bad 🚌",
-    "start_date": "2023-04-28",
-    "end_date": "2023-05-01",
-    "start_ts": 1682710064,
-    "start_year": 2023,
-    "duration": 4,
-    "checkin_count": 169,
-    "unique_places": 162,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Moscow",
-      "Minsk",
-      "Smolensk Region",
-      "Vitebsk Region",
-      "Borisov",
-      "Smolensk",
-      "Krasny District"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        25
-      ],
-      [
-        "Park",
-        17
-      ],
-      [
-        "Plaza",
-        17
-      ],
-      [
-        "Fountain",
-        13
-      ],
-      [
-        "Road",
-        12
-      ],
-      [
-        "Metro Station",
-        12
-      ],
-      [
-        "Lake",
-        7
-      ],
-      [
-        "Border Crossing",
-        6
-      ],
-      [
-        "Bus Station",
-        4
-      ],
-      [
-        "Bus Line",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 101,
-    "name": "The castles 🚗",
-    "start_date": "2023-05-06",
-    "end_date": "2023-05-06",
-    "start_ts": 1683363039,
-    "start_year": 2023,
-    "duration": 1,
-    "checkin_count": 38,
-    "unique_places": 38,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Nyasvizh",
-      "Lida",
-      "Mir",
-      "Minsk",
-      "Navahrudak",
-      "Nesvizh",
-      "Vorotishchenskiy",
-      "Novogrudok"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        6
-      ],
-      [
-        "Park",
-        5
-      ],
-      [
-        "City",
-        4
-      ],
-      [
-        "Castle",
-        4
-      ],
-      [
-        "Outdoor Sculpture",
-        3
-      ],
-      [
-        "Lake",
-        3
-      ],
-      [
-        "Neighborhood",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Church",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 102,
-    "name": "Karlsruhe - visiting an old friend ✈️",
-    "start_date": "2023-05-12",
-    "end_date": "2023-05-24",
-    "start_ts": 1683923016,
-    "start_year": 2023,
-    "duration": 13,
-    "checkin_count": 395,
-    "unique_places": 323,
-    "countries": [
-      "Germany",
-      "France",
-      "Lithuania",
-      "Latvia",
-      "Belarus"
-    ],
-    "cities": [
-      "Karlsruhe",
-      "Strasbourg",
-      "Vilnius",
-      "Stuttgart",
-      "Tübingen",
-      "Riga",
-      "Minsk",
-      "Vilniaus Rajonas",
-      "Muravyovka",
-      "Kaunas",
-      "Erfurt",
-      "Iffezheim",
-      "Ashmyany",
-      "Kehl",
-      "Paris"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        73
-      ],
-      [
-        "Road",
-        30
-      ],
-      [
-        "Neighborhood",
-        25
-      ],
-      [
-        "Park",
-        23
-      ],
-      [
-        "Bridge",
-        15
-      ],
-      [
-        "Church",
-        14
-      ],
-      [
-        "Monument",
-        13
-      ],
-      [
-        "Fountain",
-        11
-      ],
-      [
-        "Home (private)",
-        11
-      ],
-      [
-        "Border Crossing",
-        10
-      ]
-    ]
-  },
-  {
-    "id": 103,
-    "name": "A weekend in Brest 🚂",
-    "start_date": "2023-06-09",
-    "end_date": "2023-06-12",
-    "start_ts": 1686339734,
-    "start_year": 2023,
-    "duration": 4,
-    "checkin_count": 119,
-    "unique_places": 107,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Brest",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Outdoor Sculpture",
-        14
-      ],
-      [
-        "Historic and Protected Site",
-        12
-      ],
-      [
-        "Monument",
-        10
-      ],
-      [
-        "Road",
-        8
-      ],
-      [
-        "Park",
-        7
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Other Great Outdoors",
-        6
-      ],
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "Bridge",
-        3
-      ],
-      [
-        "Coffee Shop",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 104,
-    "name": "Athens - shining bright ✈️",
-    "start_date": "2023-06-17",
-    "end_date": "2023-06-26",
-    "start_ts": 1686949708,
-    "start_year": 2023,
-    "duration": 10,
-    "checkin_count": 510,
-    "unique_places": 441,
-    "countries": [
-      "Greece",
-      "Lithuania",
-      "Latvia",
-      "Belarus"
-    ],
-    "cities": [
-      "Athens",
-      "Riga",
-      "Piraeus",
-      "Vilnius",
-      "Trakai",
-      "Minsk",
-      "Vilniaus Rajonas",
-      "Muravyovka",
-      "Kaunas",
-      "Ashmyany"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        84
-      ],
-      [
-        "Neighborhood",
-        34
-      ],
-      [
-        "Park",
-        32
-      ],
-      [
-        "Monument",
-        31
-      ],
-      [
-        "Historic and Protected Site",
-        28
-      ],
-      [
-        "Pedestrian Plaza",
-        20
-      ],
-      [
-        "Church",
-        18
-      ],
-      [
-        "Metro Station",
-        18
-      ],
-      [
-        "Bus Line",
-        14
-      ],
-      [
-        "Café",
-        13
-      ]
-    ]
-  },
-  {
-    "id": 105,
-    "name": "In a village for a weekend 🚌",
-    "start_date": "2023-07-01",
-    "end_date": "2023-07-03",
-    "start_ts": 1688197774,
-    "start_year": 2023,
-    "duration": 3,
-    "checkin_count": 14,
-    "unique_places": 14,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Prasnaki",
-      "Slutsk",
-      "Salihorsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        3
-      ],
-      [
-        "Bus Line",
-        1
-      ],
-      [
-        "Outdoor Sculpture",
-        1
-      ],
-      [
-        "Bath House",
-        1
-      ],
-      [
-        "Taxi",
-        1
-      ],
-      [
-        "Neighborhood",
-        1
-      ],
-      [
-        "Fuel Station",
-        1
-      ],
-      [
-        "Village",
-        1
-      ],
-      [
-        "Farm",
-        1
-      ],
-      [
-        "Travel and Transportation",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 106,
-    "name": "Saint Petersburg - Belavia points ✈️",
-    "start_date": "2023-07-08",
-    "end_date": "2023-07-11",
-    "start_ts": 1688785266,
-    "start_year": 2023,
-    "duration": 4,
-    "checkin_count": 154,
-    "unique_places": 143,
-    "countries": [
-      "Russia",
-      "Belarus",
-      "Finland"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Minsk",
-      "Opochka",
-      "Moscow",
-      "Helsinki",
-      "Luga",
-      "Dolostsy",
-      "Polotsk",
-      "Lyepyel",
-      "Astrashytski Haradok"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        16
-      ],
-      [
-        "Metro Station",
-        13
-      ],
-      [
-        "Bridge",
-        12
-      ],
-      [
-        "Monument",
-        11
-      ],
-      [
-        "Plaza",
-        10
-      ],
-      [
-        "Lake",
-        5
-      ],
-      [
-        "Airport Service",
-        4
-      ],
-      [
-        "Park",
-        4
-      ],
-      [
-        "Neighborhood",
-        4
-      ],
-      [
-        "Intersection",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 107,
-    "name": "Camping on Vilyeyka ⛺",
-    "start_date": "2023-07-15",
-    "end_date": "2023-07-17",
-    "start_ts": 1689408065,
-    "start_year": 2023,
-    "duration": 3,
-    "checkin_count": 33,
-    "unique_places": 31,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Vilyeyka",
-      "Maladzyechna",
-      "Benitsa",
-      "Minsk",
-      "Grudki",
-      "Zaslawye",
-      "Krasnaje"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        6
-      ],
-      [
-        "Road",
-        3
-      ],
-      [
-        "City",
-        3
-      ],
-      [
-        "Church",
-        3
-      ],
-      [
-        "Campground",
-        2
-      ],
-      [
-        "Reservoir",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        2
-      ],
-      [
-        "Temple",
-        2
-      ],
-      [
-        "Park",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 108,
-    "name": "I need cash - Hellenic from Moldova ✈️",
-    "start_date": "2023-07-21",
-    "end_date": "2023-09-04",
-    "start_ts": 1689964281,
-    "start_year": 2023,
-    "duration": 46,
-    "checkin_count": 1154,
-    "unique_places": 862,
-    "countries": [
-      "Moldova",
-      "Romania",
-      "Bulgaria",
-      "Cyprus",
-      "Latvia",
-      "Poland",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Sofia",
-      "Iași",
-      "Bucharest",
-      "Warsaw",
-      "Nicosia",
-      "Daugavpils",
-      "Riga",
-      "Tiraspol",
-      "Paphos",
-      "Larnaca",
-      "Miory",
-      "Minsk",
-      "Leușeni",
-      "Ungheni",
-      "Vadul lui Vodă",
-      "Braslaw",
-      "Yaznenski",
-      "Braslav",
-      "Sighișoara",
-      "Brest",
-      "Calarasi",
-      "Polikraishte",
-      "Giurgiu",
-      "Bender",
-      "Sculeni",
-      "Krasnosel'tsy",
-      "Urbany",
-      "Lilieci",
-      "Ungheni-Prut",
-      "Ruse",
-      "Spătaru",
-      "Hobrow",
-      "Terespol",
-      "Baranovichi",
-      "Mir"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        123
-      ],
-      [
-        "Monument",
-        106
-      ],
-      [
-        "Park",
-        88
-      ],
-      [
-        "Plaza",
-        80
-      ],
-      [
-        "Neighborhood",
-        60
-      ],
-      [
-        "Bus Line",
-        40
-      ],
-      [
-        "Pedestrian Plaza",
-        33
-      ],
-      [
-        "Lake",
-        22
-      ],
-      [
-        "Church",
-        21
-      ],
-      [
-        "Coffee Shop",
-        21
-      ]
-    ]
-  },
-  {
-    "id": 109,
-    "name": "Moscow - farewell before a collapse 🚂",
-    "start_date": "2023-09-09",
-    "end_date": "2023-09-11",
-    "start_ts": 1694228888,
-    "start_year": 2023,
-    "duration": 3,
-    "checkin_count": 147,
-    "unique_places": 140,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Moscow",
-      "Minsk",
-      "Smolensk Region",
-      "Golitsino",
-      "Vitebsk Region",
-      "Borisov"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Metro Station",
-        21
-      ],
-      [
-        "Plaza",
-        17
-      ],
-      [
-        "Monument",
-        16
-      ],
-      [
-        "Park",
-        7
-      ],
-      [
-        "Road",
-        6
-      ],
-      [
-        "Bus Line",
-        5
-      ],
-      [
-        "Church",
-        4
-      ],
-      [
-        "Supermarket",
-        4
-      ],
-      [
-        "Shopping Mall",
-        4
-      ],
-      [
-        "Fountain",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 110,
-    "name": "Baranovichi trip 🚂",
-    "start_date": "2023-09-23",
-    "end_date": "2023-09-23",
-    "start_ts": 1695453497,
-    "start_year": 2023,
-    "duration": 1,
-    "checkin_count": 45,
-    "unique_places": 44,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Baranovichi",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        6
-      ],
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Park",
-        4
-      ],
-      [
-        "Road",
-        4
-      ],
-      [
-        "Bridge",
-        3
-      ],
-      [
-        "Platform",
-        2
-      ],
-      [
-        "Memorial Site",
-        2
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Outdoor Sculpture",
-        2
-      ],
-      [
-        "Plaza",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 111,
-    "name": "Georgia - small talks ✈️",
-    "start_date": "2023-10-03",
-    "end_date": "2023-10-26",
-    "start_ts": 1696347865,
-    "start_year": 2023,
-    "duration": 24,
-    "checkin_count": 844,
-    "unique_places": 647,
-    "countries": [
-      "Georgia",
-      "Poland",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Tbilisi",
-      "Batumi",
-      "Kutaisi",
-      "Warsaw",
-      "Vilnius",
-      "Gori",
-      "Sighnaghi",
-      "Mtskheta",
-      "Minsk",
-      "Telavi",
-      "Chakvi",
-      "Vilniaus Rajonas",
-      "Uplitskhite",
-      "Brest",
-      "Chognari",
-      "Signagi",
-      "Ashmyany",
-      "Muravyovka",
-      "Kaunas",
-      "Manavi",
-      "Badiauri",
-      "Terespol",
-      "Vorotishchenskiy"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        81
-      ],
-      [
-        "Plaza",
-        64
-      ],
-      [
-        "Monument",
-        59
-      ],
-      [
-        "Park",
-        46
-      ],
-      [
-        "Outdoor Sculpture",
-        43
-      ],
-      [
-        "Metro Station",
-        41
-      ],
-      [
-        "Bridge",
-        32
-      ],
-      [
-        "Church",
-        32
-      ],
-      [
-        "Neighborhood",
-        26
-      ],
-      [
-        "Beach",
-        17
-      ]
-    ]
-  },
-  {
-    "id": 112,
-    "name": "Great Asian tour ✈️",
-    "start_date": "2023-11-10",
-    "end_date": "2024-02-13",
-    "start_ts": 1699626589,
-    "start_year": 2023,
-    "duration": 96,
-    "checkin_count": 3384,
-    "unique_places": 2653,
-    "countries": [
-      "China",
-      "India",
-      "Vietnam",
-      "Indonesia",
-      "Cambodia",
-      "Malaysia",
-      "Singapore",
-      "United Arab Emirates",
-      "Hong Kong",
-      "Azerbaijan",
-      "Belarus",
-      "Macao"
-    ],
-    "cities": [
-      "Beijing",
-      "Jakarta",
-      "New Delhi",
-      "Kuala Lumpur",
-      "Ho Chi Minh City",
-      "Singapore",
-      "Mumbai",
-      "Hanoi",
-      "Phnom Penh",
-      "Dubai",
-      "Kolkata",
-      "Siem Reap",
-      "Shanghai",
-      "Hong Kong",
-      "Baku",
-      "Macau",
-      "Guangzhou",
-      "Harbin",
-      "Jaipur",
-      "Ahmedabad",
-      "Agra",
-      "Minsk",
-      "Kabupaten Lampung Selatan",
-      "Mỹ Tho",
-      "Cilegon",
-      "Xiamen",
-      "Rajabasa",
-      "Langfang",
-      "Ketapang",
-      "Neak Loeung",
-      "Lampung",
-      "Mekong",
-      "Selat Sunda",
-      "Penengahan",
-      "Kecamatan Talang Ubi",
-      "Bandar Lampung",
-      "Pulau",
-      "Hà Nội",
-      "Sóc Sơn",
-      "Bến Cầu"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Historic and Protected Site",
-        263
-      ],
-      [
-        "Metro Station",
-        254
-      ],
-      [
-        "Road",
-        212
-      ],
-      [
-        "Park",
-        209
-      ],
-      [
-        "Neighborhood",
-        157
-      ],
-      [
-        "Monument",
-        126
-      ],
-      [
-        "Bridge",
-        115
-      ],
-      [
-        "Plaza",
-        98
-      ],
-      [
-        "Rail Station",
-        82
-      ],
-      [
-        "Hotel",
-        74
-      ]
-    ]
-  },
-  {
-    "id": 113,
-    "name": "Rostock - another friend another visit ✈️",
-    "start_date": "2024-03-01",
-    "end_date": "2024-04-08",
-    "start_ts": 1709254175,
-    "start_year": 2024,
-    "duration": 39,
-    "checkin_count": 878,
-    "unique_places": 664,
-    "countries": [
-      "Germany",
-      "Moldova",
-      "Lithuania",
-      "Latvia",
-      "Poland",
-      "Belarus",
-      "Romania",
-      "Denmark"
-    ],
-    "cities": [
-      "Chișinău",
-      "Rostock",
-      "Hamburg",
-      "Berlin",
-      "Lübeck",
-      "Vilnius",
-      "Schwerin",
-      "Wismar",
-      "Riga",
-      "Warsaw",
-      "Warnemünde",
-      "Minsk",
-      "Bad Kleinen",
-      "Schönefeld",
-      "Vilniaus Rajonas",
-      "Bucharest",
-      "Leușeni",
-      "Brest",
-      "Nienhagen",
-      "Muravyovka",
-      "Kaunas",
-      "Erfurt",
-      "Copenhagen",
-      "Ostseebad Nienhagen",
-      "Lilieci",
-      "Cioranca",
-      "Calarasi",
-      "Terespol",
-      "Mir"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        95
-      ],
-      [
-        "Road",
-        63
-      ],
-      [
-        "Neighborhood",
-        59
-      ],
-      [
-        "Monument",
-        50
-      ],
-      [
-        "Historic and Protected Site",
-        35
-      ],
-      [
-        "Park",
-        34
-      ],
-      [
-        "Church",
-        30
-      ],
-      [
-        "Bridge",
-        24
-      ],
-      [
-        "Bus Line",
-        22
-      ],
-      [
-        "Supermarket",
-        21
-      ]
-    ]
-  },
-  {
-    "id": 114,
-    "name": "Asipovichy for a dream 🚂",
-    "start_date": "2024-04-12",
-    "end_date": "2024-04-13",
-    "start_ts": 1712943667,
-    "start_year": 2024,
-    "duration": 2,
-    "checkin_count": 55,
-    "unique_places": 51,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Babruysk",
-      "Asipovichy",
-      "Bobruisk",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        9
-      ],
-      [
-        "Outdoor Sculpture",
-        6
-      ],
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "Plaza",
-        5
-      ],
-      [
-        "Park",
-        4
-      ],
-      [
-        "Train",
-        3
-      ],
-      [
-        "City",
-        3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ],
-      [
-        "Platform",
-        2
-      ],
-      [
-        "Historic and Protected Site",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 115,
-    "name": "Moscow shorts 🚌",
-    "start_date": "2024-05-17",
-    "end_date": "2024-05-20",
-    "start_ts": 1715974457,
-    "start_year": 2024,
-    "duration": 4,
-    "checkin_count": 117,
-    "unique_places": 112,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Moscow",
-      "Minsk",
-      "Smolensk Region",
-      "Khimki",
-      "Vitebsk Region",
-      "Borisov"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        15
-      ],
-      [
-        "Plaza",
-        11
-      ],
-      [
-        "Metro Station",
-        9
-      ],
-      [
-        "Monument",
-        7
-      ],
-      [
-        "Park",
-        6
-      ],
-      [
-        "Bus Line",
-        5
-      ],
-      [
-        "Bus Station",
-        4
-      ],
-      [
-        "Border Crossing",
-        4
-      ],
-      [
-        "Home (private)",
-        4
-      ],
-      [
-        "Neighborhood",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 116,
-    "name": "Camping on Myadzyel ⛺",
-    "start_date": "2024-05-25",
-    "end_date": "2024-05-26",
-    "start_ts": 1716618399,
-    "start_year": 2024,
-    "duration": 2,
-    "checkin_count": 36,
-    "unique_places": 30,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Myadzyel",
-      "Kochergi",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        5
-      ],
-      [
-        "Lake",
-        5
-      ],
-      [
-        "Campground",
-        4
-      ],
-      [
-        "City",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Bus Station",
-        2
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Supermarket",
-        1
-      ],
-      [
-        "Village",
-        1
-      ],
-      [
-        "National Park",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 117,
-    "name": "Mogilev - lonely trip 🚂",
-    "start_date": "2024-06-01",
-    "end_date": "2024-06-03",
-    "start_ts": 1717218848,
-    "start_year": 2024,
-    "duration": 3,
-    "checkin_count": 110,
-    "unique_places": 89,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Mogilev",
-      "Minsk",
-      "Byalynichy"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Park",
-        18
-      ],
-      [
-        "Monument",
-        15
-      ],
-      [
-        "Outdoor Sculpture",
-        11
-      ],
-      [
-        "Road",
-        10
-      ],
-      [
-        "Plaza",
-        9
-      ],
-      [
-        "Bridge",
-        4
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        2
-      ],
-      [
-        "Coffee Shop",
-        2
-      ],
-      [
-        "Shopping Mall",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 118,
-    "name": "Warsaw - recharge 🚂",
-    "start_date": "2024-06-08",
-    "end_date": "2024-06-17",
-    "start_ts": 1717824075,
-    "start_year": 2024,
-    "duration": 10,
-    "checkin_count": 233,
-    "unique_places": 196,
-    "countries": [
-      "Poland",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Warsaw",
-      "Vilnius",
-      "Minsk",
-      "Białystok",
-      "Vilniaus Rajonas",
-      "Muravyovka",
-      "Kaunas",
-      "Grójec",
-      "Sejny"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Neighborhood",
-        22
-      ],
-      [
-        "Road",
-        20
-      ],
-      [
-        "Park",
-        13
-      ],
-      [
-        "Plaza",
-        11
-      ],
-      [
-        "Bus Station",
-        9
-      ],
-      [
-        "Border Crossing",
-        9
-      ],
-      [
-        "Monument",
-        9
-      ],
-      [
-        "Bridge",
-        9
-      ],
-      [
-        "Bus Line",
-        8
-      ],
-      [
-        "Home (private)",
-        8
-      ]
-    ]
-  },
-  {
-    "id": 119,
-    "name": "Orsha - Mogilev en route",
-    "start_date": "2024-07-13",
-    "end_date": "2024-07-15",
-    "start_ts": 1720840091,
-    "start_year": 2024,
-    "duration": 3,
-    "checkin_count": 75,
-    "unique_places": 67,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Mogilev",
-      "Orsha",
-      "Minsk",
-      "Kopyś",
-      "Shklow",
-      "Shklov",
-      "Borisov",
-      "Dabrejka"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Plaza",
-        8
-      ],
-      [
-        "Road",
-        7
-      ],
-      [
-        "Rail Station",
-        6
-      ],
-      [
-        "Monument",
-        6
-      ],
-      [
-        "Park",
-        5
-      ],
-      [
-        "City",
-        5
-      ],
-      [
-        "Housing Development",
-        4
-      ],
-      [
-        "Bridge",
-        3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ],
-      [
-        "Village",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 120,
-    "name": "Belovezhskaya Pushcha on bike",
-    "start_date": "2024-07-20",
-    "end_date": "2024-07-21",
-    "start_ts": 1721436684,
-    "start_year": 2024,
-    "duration": 2,
-    "checkin_count": 72,
-    "unique_places": 68,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Brest",
-      "Baranovichi",
-      "Minsk",
-      "Pruzhany",
-      "Byaroza",
-      "Kamyanyetski Rayon",
-      "Kamyanyets",
-      "Kamianiuki",
-      "Vily",
-      "Bielaja"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Monument",
-        8
-      ],
-      [
-        "Rail Station",
-        6
-      ],
-      [
-        "City",
-        6
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Road",
-        6
-      ],
-      [
-        "Bridge",
-        5
-      ],
-      [
-        "Park",
-        4
-      ],
-      [
-        "Train",
-        3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ],
-      [
-        "Outdoor Sculpture",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 121,
-    "name": "Balcans on the run ✈️",
-    "start_date": "2024-07-27",
-    "end_date": "2024-08-11",
-    "start_ts": 1722037693,
-    "start_year": 2024,
+    "id": 7,
+    "name": "Hrodna, Belarus 🚗",
+    "start_date": "2025-06-21",
+    "end_date": "2025-07-06",
+    "start_ts": 1750530468,
+    "start_year": 2025,
     "duration": 16,
-    "checkin_count": 696,
-    "unique_places": 564,
-    "countries": [
-      "North Macedonia",
-      "Albania",
-      "Lithuania",
-      "Montenegro",
-      "Bosnia and Herzegovina",
-      "Latvia",
-      "Croatia",
-      "Belarus"
-    ],
-    "cities": [
-      "Skopje",
-      "Tirana",
-      "Vilnius",
-      "Podgorica",
-      "Mostar",
-      "Ohrid",
-      "Riga",
-      "Split",
-      "Minsk",
-      "Vilniaus Rajonas",
-      "Benyakoni",
-      "Kaunas",
-      "Struga",
-      "Hani i Hotit",
-      "Metković",
-      "Šalčininkai",
-      "Krushopek",
-      "Vilusi",
-      "Sarajevo",
-      "Arandjelovo",
-      "Zagreb",
-      "Muravyovka"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        69
-      ],
-      [
-        "Park",
-        50
-      ],
-      [
-        "Road",
-        48
-      ],
-      [
-        "Bridge",
-        44
-      ],
-      [
-        "Neighborhood",
-        35
-      ],
-      [
-        "Monument",
-        32
-      ],
-      [
-        "Historic and Protected Site",
-        28
-      ],
-      [
-        "Church",
-        21
-      ],
-      [
-        "Bus Station",
-        19
-      ],
-      [
-        "River",
-        18
-      ]
-    ]
-  },
-  {
-    "id": 122,
-    "name": "Car ride through rainy day 🚗",
-    "start_date": "2024-08-11",
-    "end_date": "2024-08-11",
-    "start_ts": 1723376370,
-    "start_year": 2024,
-    "duration": 1,
-    "checkin_count": 10,
-    "unique_places": 10,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Haradzishcha",
-      "Minsk",
-      "Minsk District"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        1
-      ],
-      [
-        "Well",
-        1
-      ],
-      [
-        "Lake",
-        1
-      ],
-      [
-        "Village",
-        1
-      ],
-      [
-        "River",
-        1
-      ],
-      [
-        "Historic and Protected Site",
-        1
-      ],
-      [
-        "Cemetery",
-        1
-      ],
-      [
-        "Supermarket",
-        1
-      ],
-      [
-        "Bus Line",
-        1
-      ],
-      [
-        "Home (private)",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 123,
-    "name": "Checking the stars 🚗",
-    "start_date": "2024-08-11",
-    "end_date": "2024-08-12",
-    "start_ts": 1723406620,
-    "start_year": 2024,
-    "duration": 2,
-    "checkin_count": 8,
-    "unique_places": 8,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Zaslawye"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        2
-      ],
-      [
-        "Parking",
-        1
-      ],
-      [
-        "Fuel Station",
-        1
-      ],
-      [
-        "Other Great Outdoors",
-        1
-      ],
-      [
-        "Park",
-        1
-      ],
-      [
-        "Dam",
-        1
-      ],
-      [
-        "Neighborhood",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 124,
-    "name": "Speedfriending bike ride",
-    "start_date": "2024-08-18",
-    "end_date": "2024-08-18",
-    "start_ts": 1723971021,
-    "start_year": 2024,
-    "duration": 1,
-    "checkin_count": 27,
-    "unique_places": 27,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Pryluky",
-      "Machulishchy",
-      "Samakhvalavichy",
-      "Minsk",
-      "Shchomyslitsa",
-      "Atolino",
-      "Dehtaryowka"
-    ],
-    "tags": [
-      "bicycle"
-    ],
-    "top_cats": [
-      [
-        "Village",
-        5
-      ],
-      [
-        "Historic and Protected Site",
-        5
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Park",
-        2
-      ],
-      [
-        "Miscellaneous Store",
-        1
-      ],
-      [
-        "History Museum",
-        1
-      ],
-      [
-        "Winery",
-        1
-      ],
-      [
-        "Housing Development",
-        1
-      ],
-      [
-        "Intersection",
-        1
-      ],
-      [
-        "Supermarket",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 125,
-    "name": "Airbaltic rush to Moldova ✈️",
-    "start_date": "2024-08-23",
-    "end_date": "2024-09-23",
-    "start_ts": 1724370359,
-    "start_year": 2024,
-    "duration": 32,
-    "checkin_count": 1040,
-    "unique_places": 763,
-    "countries": [
-      "Russia",
-      "Moldova",
-      "Romania",
-      "Latvia",
-      "Estonia",
-      "Lithuania",
-      "Belarus",
-      "Finland"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Chișinău",
-      "Constanța",
-      "Riga",
-      "Tartu",
-      "Vilnius",
-      "Pärnu",
-      "Mamaia",
-      "Minsk",
-      "Pechory",
-      "Leușeni",
-      "Pskov",
-      "Calarasi",
-      "Vadu Oii",
-      "Helsinki",
-      "Benyakoni",
-      "Šalčininkai",
-      "Kaunas",
-      "Puhoi",
-      "Mirești",
-      "Sighișoara",
-      "Brăila",
-      "Gălbiori",
-      "Hârșova",
-      "Oancea",
-      "Cahul",
-      "Ialoveni",
-      "Tallinn",
-      "Moscow",
-      "Luga",
-      "Opochka",
-      "Dolostsy",
-      "Astrashytski Haradok"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        136
-      ],
-      [
-        "Monument",
-        89
-      ],
-      [
-        "Plaza",
-        72
-      ],
-      [
-        "Neighborhood",
-        55
-      ],
-      [
-        "Park",
-        55
-      ],
-      [
-        "Metro Station",
-        54
-      ],
-      [
-        "Bridge",
-        41
-      ],
-      [
-        "Bus Line",
-        32
-      ],
-      [
-        "Beach",
-        19
-      ],
-      [
-        "Supermarket",
-        18
-      ]
-    ]
-  },
-  {
-    "id": 126,
-    "name": "Camping on Minsk sea - last resort ⛺",
-    "start_date": "2024-09-28",
-    "end_date": "2024-09-29",
-    "start_ts": 1727523856,
-    "start_year": 2024,
-    "duration": 2,
-    "checkin_count": 17,
-    "unique_places": 11,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Zarechye",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Beach",
-        4
-      ],
-      [
-        "Train",
-        2
-      ],
-      [
-        "Dam",
-        2
-      ],
-      [
-        "Reservoir",
-        2
-      ],
-      [
-        "Café",
-        1
-      ],
-      [
-        "Harbor or Marina",
-        1
-      ],
-      [
-        "Village",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 127,
-    "name": "Franbene without lux ✈️",
-    "start_date": "2024-10-04",
-    "end_date": "2024-10-14",
-    "start_ts": 1727999064,
-    "start_year": 2024,
-    "duration": 11,
-    "checkin_count": 829,
-    "unique_places": 791,
-    "countries": [
-      "Belgium",
-      "France",
-      "Netherlands",
-      "Lithuania",
-      "Poland",
-      "Belarus",
-      "Latvia"
-    ],
-    "cities": [
-      "Paris",
-      "Bruges",
-      "Brussels",
-      "Antwerp",
-      "Ghent",
-      "Rotterdam",
-      "Lille",
-      "Warsaw",
-      "Vilnius",
-      "Gosselies",
-      "Minsk",
-      "Riga",
-      "Brest",
-      "Tremblay-en-France",
-      "Gavrelle",
-      "Lida",
-      "Benyakoni",
-      "Šalčininkai",
-      "Kaunas",
-      "Ressons-sur-Matz",
-      "Menen",
-      "Zandvliet",
-      "Hazeldonk",
-      "Minderhout",
-      "Charleroi",
-      "Terespol"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        170
-      ],
-      [
-        "Road",
-        68
-      ],
-      [
-        "Monument",
-        46
-      ],
-      [
-        "Neighborhood",
-        46
-      ],
-      [
-        "Park",
-        45
-      ],
-      [
-        "Bridge",
-        44
-      ],
-      [
-        "Church",
-        40
-      ],
-      [
-        "Outdoor Sculpture",
-        33
-      ],
-      [
-        "Historic and Protected Site",
-        31
-      ],
-      [
-        "Metro Station",
-        19
-      ]
-    ]
-  },
-  {
-    "id": 128,
-    "name": "New World - new life ✈️",
-    "start_date": "2024-11-15",
-    "end_date": "2025-01-07",
-    "start_ts": 1731631703,
-    "start_year": 2024,
-    "duration": 54,
-    "checkin_count": 2211,
-    "unique_places": 1791,
-    "countries": [
-      "Brazil",
-      "Poland",
-      "Argentina",
-      "Chile",
-      "Turkey",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Warsaw",
-      "Buenos Aires",
-      "Rio de Janeiro",
-      "São Paulo",
-      "Santiago",
-      "Kraków",
-      "Mendoza",
-      "Córdoba",
-      "Rosario",
-      "Valparaíso",
-      "Guarulhos",
-      "Istanbul",
-      "Vilnius",
-      "Niterói",
-      "Viña del Mar",
-      "Minsk",
-      "San José de Maipo",
-      "Brest",
-      "Vilniaus Rajonas",
-      "Los Andes",
-      "Kaunas",
-      "Cajon Del Maipo",
-      "Puente del Inca",
-      "Krevo",
-      "Muravyovka",
-      "San Alfonso",
-      "Casablanca",
-      "Colina",
-      "Toledo",
-      "Sejny",
-      "Grójec",
-      "Występa",
-      "Terespol"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        362
-      ],
-      [
-        "Neighborhood",
-        164
-      ],
-      [
-        "Road",
-        146
-      ],
-      [
-        "Metro Station",
-        119
-      ],
-      [
-        "Monument",
-        113
-      ],
-      [
-        "Park",
-        107
-      ],
-      [
-        "Historic and Protected Site",
-        61
-      ],
-      [
-        "Other Great Outdoors",
-        49
-      ],
-      [
-        "Pedestrian Plaza",
-        45
-      ],
-      [
-        "Scenic Lookout",
-        42
-      ]
-    ]
-  },
-  {
-    "id": 129,
-    "name": "Bath session #1 🛁",
-    "start_date": "2025-02-01",
-    "end_date": "2025-02-02",
-    "start_ts": 1738418324,
-    "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 8,
-    "unique_places": 7,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Domoshany"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Neighborhood",
-        2
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Bath House",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Home (private)",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 130,
-    "name": "Unexpected winter Grodno 🚂",
-    "start_date": "2025-02-08",
-    "end_date": "2025-02-09",
-    "start_ts": 1738986409,
-    "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 49,
-    "unique_places": 48,
+    "checkin_count": 80,
+    "unique_places": 53,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Hrodna",
       "Minsk",
-      "Strachanyaty"
+      "Гродно",
+      "Skidel"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Road",
-        5
+        "Big Box Store",
+        11
       ],
       [
-        "Plaza",
-        4
+        "Jewelry Store",
+        9
       ],
       [
-        "Rail Station",
-        3
-      ],
-      [
-        "Church",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "City",
-        2
-      ],
-      [
-        "Monument",
-        2
-      ],
-      [
-        "Bridge",
-        2
-      ],
-      [
-        "Outdoor Sculpture",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        2
-      ]
-    ]
-  },
-  {
-    "id": 131,
-    "name": "Петербург и мэрцишоры 🚌",
-    "start_date": "2025-02-28",
-    "end_date": "2025-03-05",
-    "start_ts": 1740760905,
-    "start_year": 2025,
-    "duration": 6,
-    "checkin_count": 117,
-    "unique_places": 97,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Minsk",
-      "Vitebsk",
-      "Lobok",
-      "Kopyś",
-      "Moscow",
-      "Podborovye"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Metro Station",
-        16
-      ],
-      [
-        "Bridge",
-        10
-      ],
-      [
-        "Monument",
-        8
-      ],
-      [
-        "Road",
-        8
-      ],
-      [
-        "Plaza",
+        "Shopping Mall",
         7
       ],
       [
-        "Bus Station",
+        "Road",
+        6
+      ],
+      [
+        "Plaza",
         5
       ],
       [
+        "Park",
+        5
+      ],
+      [
+        "Home (private)",
+        3
+      ],
+      [
+        "Other Great Outdoors",
+        3
+      ],
+      [
         "Supermarket",
-        4
+        3
       ],
       [
-        "Inn",
-        4
-      ],
-      [
-        "Bakery",
-        4
-      ],
-      [
-        "Taxi",
-        4
+        "City",
+        2
       ]
     ]
   },
   {
-    "id": 132,
-    "name": "Grodno business 🚂",
-    "start_date": "2025-03-07",
-    "end_date": "2025-03-10",
-    "start_ts": 1741295970,
+    "id": 8,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-07-08",
+    "end_date": "2025-09-06",
+    "start_ts": 1751990268,
     "start_year": 2025,
-    "duration": 4,
-    "checkin_count": 107,
-    "unique_places": 95,
+    "duration": 61,
+    "checkin_count": 502,
+    "unique_places": 215,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Hrodna",
-      "Shchuchin",
+      "Lida",
+      "Minsk",
+      "Гродно",
+      "Vawkavysk",
       "Skidel",
-      "Minsk",
-      "Shchuchyn",
-      "Strachanyaty"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        15
-      ],
-      [
-        "Park",
-        9
-      ],
-      [
-        "Monument",
-        7
-      ],
-      [
-        "City",
-        6
-      ],
-      [
-        "Bus Line",
-        6
-      ],
-      [
-        "Rail Station",
-        5
-      ],
-      [
-        "Bus Station",
-        5
-      ],
-      [
-        "Church",
-        5
-      ],
-      [
-        "Plaza",
-        4
-      ],
-      [
-        "Coffee Shop",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 133,
-    "name": "Smolensk and Piter - the purchase 🚂",
-    "start_date": "2025-03-15",
-    "end_date": "2025-03-18",
-    "start_ts": 1742021016,
-    "start_year": 2025,
-    "duration": 4,
-    "checkin_count": 143,
-    "unique_places": 134,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Smolensk",
-      "Minsk",
-      "Opochka",
-      "Moscow",
-      "Lobok",
-      "Luga",
-      "Pskov",
-      "Dolostsy"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Monument",
-        20
-      ],
-      [
-        "Road",
-        19
-      ],
-      [
-        "Historic and Protected Site",
-        10
-      ],
-      [
-        "Bridge",
-        10
-      ],
-      [
-        "Plaza",
-        9
-      ],
-      [
-        "Metro Station",
-        9
-      ],
-      [
-        "Bus Station",
-        5
-      ],
-      [
-        "Bank",
-        5
-      ],
-      [
-        "Bus Line",
-        4
-      ],
-      [
-        "City",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 134,
-    "name": "Moldova - for a salary ✈️",
-    "start_date": "2025-03-22",
-    "end_date": "2025-04-09",
-    "start_ts": 1742604682,
-    "start_year": 2025,
-    "duration": 19,
-    "checkin_count": 306,
-    "unique_places": 241,
-    "countries": [
-      "Moldova",
-      "Poland",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Chișinău",
-      "Warsaw",
-      "Vilnius",
-      "Bender",
-      "Tiraspol",
-      "Minsk",
-      "Vilniaus Rajonas",
-      "Brest",
-      "Muravyovka",
-      "Kaunas",
-      "Calarasi",
-      "Terespol",
-      "Slonim"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Neighborhood",
-        23
-      ],
-      [
-        "Road",
-        22
-      ],
-      [
-        "Monument",
-        20
-      ],
-      [
-        "Bus Line",
-        18
-      ],
-      [
-        "Park",
-        14
-      ],
-      [
-        "Plaza",
-        14
-      ],
-      [
-        "Metro Station",
-        9
-      ],
-      [
-        "Border Crossing",
-        8
-      ],
-      [
-        "City",
-        8
-      ],
-      [
-        "Taxi",
-        8
-      ]
-    ]
-  },
-  {
-    "id": 135,
-    "name": "Hrodna vibes 🚂",
-    "start_date": "2025-04-12",
-    "end_date": "2025-04-14",
-    "start_ts": 1744429452,
-    "start_year": 2025,
-    "duration": 3,
-    "checkin_count": 71,
-    "unique_places": 66,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Hrodna",
-      "Minsk",
-      "Strachanyaty"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        11
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Monument",
-        5
-      ],
-      [
-        "Park",
-        5
-      ],
-      [
-        "Other Great Outdoors",
-        4
-      ],
-      [
-        "Church",
-        4
-      ],
-      [
-        "Rail Station",
-        3
-      ],
-      [
-        "Home (private)",
-        3
-      ],
-      [
-        "Supermarket",
-        3
-      ],
-      [
-        "Bus Line",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 136,
-    "name": "Piter is a key 🚌",
-    "start_date": "2025-04-16",
-    "end_date": "2025-04-22",
-    "start_ts": 1744815048,
-    "start_year": 2025,
-    "duration": 7,
-    "checkin_count": 266,
-    "unique_places": 241,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Minsk",
-      "Vitebsk",
-      "Lobok",
-      "Moscow",
-      "Podborovye",
-      "Pskov",
-      "Dolostsy"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        34
-      ],
-      [
-        "Bridge",
-        26
-      ],
-      [
-        "Metro Station",
-        23
-      ],
-      [
-        "Plaza",
-        20
-      ],
-      [
-        "Monument",
-        17
-      ],
-      [
-        "Historic and Protected Site",
-        10
-      ],
-      [
-        "Inn",
-        7
-      ],
-      [
-        "Park",
-        7
-      ],
-      [
-        "River",
-        7
-      ],
-      [
-        "Neighborhood",
-        6
-      ]
-    ]
-  },
-  {
-    "id": 137,
-    "name": "Portugal & Spain - la tapas ✈️",
-    "start_date": "2025-05-03",
-    "end_date": "2025-05-18",
-    "start_ts": 1746229485,
-    "start_year": 2025,
-    "duration": 16,
-    "checkin_count": 1195,
-    "unique_places": 1077,
-    "countries": [
-      "Portugal",
-      "Spain",
-      "Lithuania",
-      "Belarus"
-    ],
-    "cities": [
-      "Lisbon",
-      "Málaga",
-      "Porto",
-      "Seville",
-      "Coimbra",
-      "Ronda",
-      "Sintra",
-      "Kaunas",
-      "Vilnius",
-      "Cascais",
-      "El Chorro",
-      "Ardales",
-      "Minsk",
-      "Colares",
-      "Vilniaus Rajonas",
-      "Benyakoni",
-      "Šalčininkai",
-      "Madrid",
-      "Fuengirola",
-      "Muravyovka",
-      "Rakovtsy"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        175
-      ],
-      [
-        "Road",
-        79
-      ],
-      [
-        "Monument",
-        78
-      ],
-      [
-        "Scenic Lookout",
-        72
-      ],
-      [
-        "Historic and Protected Site",
-        56
-      ],
-      [
-        "Church",
-        54
-      ],
-      [
-        "Neighborhood",
-        53
-      ],
-      [
-        "Park",
-        53
-      ],
-      [
-        "Metro Station",
-        37
-      ],
-      [
-        "Garden",
-        31
-      ]
-    ]
-  },
-  {
-    "id": 138,
-    "name": "Ladoga 🚌",
-    "start_date": "2025-05-29",
-    "end_date": "2025-06-10",
-    "start_ts": 1748534162,
-    "start_year": 2025,
-    "duration": 13,
-    "checkin_count": 322,
-    "unique_places": 234,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Sestroretsk",
-      "Minsk",
-      "Dolostsy",
-      "Opochka",
-      "Luga",
-      "Moscow",
-      "Lyepyel"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        37
-      ],
-      [
-        "Metro Station",
-        31
-      ],
-      [
-        "Plaza",
-        20
-      ],
-      [
-        "Bridge",
-        19
-      ],
-      [
-        "Inn",
-        18
-      ],
-      [
-        "Neighborhood",
-        16
-      ],
-      [
-        "Monument",
-        13
-      ],
-      [
-        "Park",
-        13
-      ],
-      [
-        "Bus Line",
-        11
-      ],
-      [
-        "Furniture and Home Store",
-        11
-      ]
-    ]
-  },
-  {
-    "id": 139,
-    "name": "Weekend in Bary 🚂",
-    "start_date": "2025-06-14",
-    "end_date": "2025-06-16",
-    "start_ts": 1749884333,
-    "start_year": 2025,
-    "duration": 3,
-    "checkin_count": 91,
-    "unique_places": 84,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Baranovichi",
+      "Zel’va",
+      "Volkovysk",
+      "Horad Hrodna",
       "Slonim",
-      "Minsk"
+      "Пекари (Волковысский р-н)"
     ],
     "tags": [],
     "top_cats": [
-      [
-        "Monument",
-        11
-      ],
-      [
-        "Park",
-        9
-      ],
-      [
-        "Road",
-        7
-      ],
-      [
-        "Plaza",
-        6
-      ],
-      [
-        "Rail Station",
-        5
-      ],
       [
         "Bus Line",
-        5
+        55
       ],
       [
-        "City",
-        3
-      ],
-      [
-        "Lake",
-        3
-      ],
-      [
-        "Historic and Protected Site",
-        3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 140,
-    "name": "Swiss cheese ✈️",
-    "start_date": "2025-06-20",
-    "end_date": "2025-07-07",
-    "start_ts": 1750430424,
-    "start_year": 2025,
-    "duration": 18,
-    "checkin_count": 881,
-    "unique_places": 824,
-    "countries": [
-      "Switzerland",
-      "Moldova",
-      "Poland",
-      "Latvia",
-      "Italy",
-      "Austria",
-      "France",
-      "Belarus",
-      "Liechtenstein",
-      "Lithuania",
-      "Germany"
-    ],
-    "cities": [
-      "Zurich",
-      "Chișinău",
-      "Basel",
-      "Lucerne",
-      "Bern",
-      "Riga",
-      "Geneva",
-      "Turin",
-      "Warsaw",
-      "Kraków",
-      "Biel/Bienne",
-      "Würenlos",
-      "St. Gallen",
-      "Baden",
-      "Lausanne",
-      "Bregenz",
-      "Feldkirch",
-      "Winterthur",
-      "Vaduz",
-      "Olten",
-      "Minsk",
-      "Killwangen",
-      "Beckenried",
-      "Saint-Louis",
-      "Sargans",
-      "St. Margrethen",
-      "Weil am Rhein",
-      "Vilnius",
-      "Dietikon",
-      "Kloten",
-      "Huningue",
-      "Brest",
-      "Vilniaus Rajonas",
-      "Schaan",
-      "Twann",
-      "Chamonix",
-      "Balice",
-      "Paris",
-      "Cluses",
-      "Chatillon",
-      "Rakovtsy",
-      "Muravyovka",
-      "Kaunas",
-      "Neuenhof",
-      "Spreitenbach",
-      "Schaanwald",
-      "Vienna",
-      "Lochau",
-      "Zug",
-      "Weggis",
-      "Erfurt",
-      "Neuchâtel",
-      "Nangy",
-      "Courmayeur",
-      "Rome",
-      "Quart",
-      "Calarasi",
-      "Terespol"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        142
-      ],
-      [
-        "Park",
-        57
-      ],
-      [
-        "Road",
-        45
-      ],
-      [
-        "Neighborhood",
-        39
-      ],
-      [
-        "Bridge",
-        37
-      ],
-      [
-        "Church",
-        37
-      ],
-      [
-        "Rail Station",
-        34
-      ],
-      [
-        "City",
-        29
-      ],
-      [
-        "Monument",
-        26
-      ],
-      [
-        "Pedestrian Plaza",
-        21
-      ]
-    ]
-  },
-  {
-    "id": 141,
-    "name": "Bath session #2 🛁",
-    "start_date": "2025-07-09",
-    "end_date": "2025-07-10",
-    "start_ts": 1752072574,
-    "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 11,
-    "unique_places": 10,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Domoshany"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Trailer Park",
-        2
-      ],
-      [
-        "Platform",
-        1
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Neighborhood",
-        1
-      ],
-      [
-        "Bath House",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Road",
-        1
-      ],
-      [
-        "Home (private)",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 142,
-    "name": "S.P.B 🚌",
-    "start_date": "2025-07-11",
-    "end_date": "2025-07-27",
-    "start_ts": 1752250900,
-    "start_year": 2025,
-    "duration": 17,
-    "checkin_count": 355,
-    "unique_places": 222,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Minsk",
-      "Kronshtadt",
-      "Dolostsy",
-      "Opochka",
-      "Luga",
-      "Lyepyel",
-      "Moscow",
-      "Zaplyusye"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        38
-      ],
-      [
-        "Inn",
-        25
-      ],
-      [
-        "Neighborhood",
-        22
-      ],
-      [
-        "Metro Station",
-        21
-      ],
-      [
-        "Bridge",
-        21
-      ],
-      [
-        "Plaza",
-        19
-      ],
-      [
-        "Park",
-        15
-      ],
-      [
-        "Bus Line",
-        14
-      ],
-      [
-        "Intersection",
-        12
-      ],
-      [
-        "Supermarket",
-        12
-      ]
-    ]
-  },
-  {
-    "id": 143,
-    "name": "Bath session #3 🛁",
-    "start_date": "2025-07-27",
-    "end_date": "2025-07-28",
-    "start_ts": 1753624425,
-    "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 20,
-    "unique_places": 19,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Minsk",
-      "Domoshany"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Metro Station",
-        3
-      ],
-      [
-        "Rail Station",
-        2
-      ],
-      [
-        "Neighborhood",
-        2
-      ],
-      [
-        "Trailer Park",
-        2
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Coffee Shop",
-        2
-      ],
-      [
-        "Doner Restaurant",
-        1
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Bath House",
-        1
-      ],
-      [
-        "Bakery",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 144,
-    "name": "Slovenia - into the wild ✈️",
-    "start_date": "2025-07-31",
-    "end_date": "2025-09-04",
-    "start_ts": 1753911128,
-    "start_year": 2025,
-    "duration": 36,
-    "checkin_count": 1187,
-    "unique_places": 964,
-    "countries": [
-      "Slovenia",
-      "Italy",
-      "Moldova",
-      "Romania",
-      "Belarus",
-      "Austria",
-      "Poland",
-      "Lithuania",
-      "Latvia"
-    ],
-    "cities": [
-      "Chișinău",
-      "Venice",
-      "Trieste",
-      "Constanța",
-      "Hrodna",
-      "Koper",
-      "Kranj",
-      "Ljubljana",
-      "Piran",
-      "Padua",
-      "Sighișoara",
-      "Warsaw",
-      "Radovljica",
-      "Škofja Loka",
-      "Izola",
-      "Villach",
-      "Bled",
-      "Klagenfurt",
-      "Jesenice",
-      "Kranjska Gora",
-      "Minsk",
-      "Tolmin",
-      "Vilnius",
-      "Bohinj",
-      "Oberkerz",
-      "Kobarid",
-      "Curtea de Argeș",
-      "Portorož",
-      "Mamaia",
-      "Transfăgărășan",
-      "Stara Fužina",
-      "Most na Soči",
-      "Leușeni",
-      "Cârțișoara",
-      "Riga",
-      "Zgornje Gorje",
-      "Calarasi",
-      "Brest",
-      "Blejska Dobrava",
-      "Bohinjsko jezero",
-      "Ribčev Laz",
-      "Bohinjska Bistrica",
-      "Brăila",
-      "Fetești",
-      "Mihai Viteazu",
-      "Giurgiulești",
-      "Sculeni",
-      "Bucșenești",
-      "Bucharest",
-      "Benyakoni",
-      "Šalčininkai",
-      "Kaunas",
-      "Trenta",
-      "Ukanc",
-      "Zatolmin",
-      "Lesce",
-      "Vienna",
-      "Dekani",
-      "Zgornje Škofije",
-      "Muggia",
-      "Rome",
-      "Șendreni",
-      "Galați",
-      "Cornești",
-      "Bistrița",
-      "Poiana Brașov",
-      "Munții Făgăraș",
-      "Pitești",
-      "Însurăței",
-      "Oancea",
-      "Cahul",
-      "Terespol",
-      "Lida"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        147
-      ],
-      [
-        "Road",
-        72
-      ],
-      [
-        "Bridge",
-        65
-      ],
-      [
-        "Monument",
-        49
-      ],
-      [
-        "Neighborhood",
+        "Bus Station",
         47
       ],
       [
-        "Church",
-        44
-      ],
-      [
-        "Park",
-        42
-      ],
-      [
-        "Bus Line",
+        "Road",
         38
       ],
       [
-        "City",
+        "Bus Stop",
+        37
+      ],
+      [
+        "Big Box Store",
+        37
+      ],
+      [
+        "Jewelry Store",
         34
       ],
       [
-        "Beach",
-        30
+        "Shopping Mall",
+        28
+      ],
+      [
+        "Plaza",
+        17
+      ],
+      [
+        "Other Great Outdoors",
+        17
+      ],
+      [
+        "Bridge",
+        13
       ]
     ]
   },
   {
-    "id": 145,
-    "name": "Bath session #4 🛁",
+    "id": 9,
+    "name": "Domoshany, Belarus 🚂",
     "start_date": "2025-09-06",
     "end_date": "2025-09-07",
     "start_ts": 1757168992,
@@ -10414,468 +561,407 @@
     ]
   },
   {
-    "id": 146,
-    "name": "SPB Renaissance 🚂",
+    "id": 10,
+    "name": "Russia & Belarus 🚌",
     "start_date": "2025-09-12",
-    "end_date": "2025-10-07",
+    "end_date": "2025-09-18",
     "start_ts": 1757699412,
     "start_year": 2025,
-    "duration": 26,
-    "checkin_count": 886,
-    "unique_places": 655,
+    "duration": 7,
+    "checkin_count": 382,
+    "unique_places": 346,
     "countries": [
       "Russia",
-      "Belarus",
-      "Estonia"
+      "Belarus"
     ],
     "cities": [
       "Saint Petersburg",
-      "Petrozavodsk",
       "Vyborg",
+      "Peterhof",
       "Kronshtadt",
-      "Lomonosov",
-      "Kingisepp",
-      "Minsk",
-      "Ivangorod",
-      "Narva",
-      "Pskov",
-      "Domozhirovo",
-      "Lodeynoye Pole",
-      "Zaplyusye",
-      "Vitebsk",
-      "Lobok",
-      "Moscow",
       "Pushkin",
-      "Luga",
-      "Dolostsy",
-      "Lyepyel"
+      "Lomonosov",
+      "Minsk",
+      "Lobok",
+      "Petrodvorets",
+      "Vitebsk",
+      "Moscow",
+      "Pskov",
+      "Zaplyusye",
+      "Opochka",
+      "Orsha"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Road",
-        76
-      ],
-      [
-        "Bridge",
-        73
-      ],
-      [
-        "Park",
-        70
-      ],
-      [
-        "Plaza",
-        63
-      ],
-      [
         "Monument",
-        62
+        33
       ],
       [
         "Metro Station",
-        52
+        26
       ],
       [
-        "Neighborhood",
-        38
+        "Park",
+        26
+      ],
+      [
+        "Historic and Protected Site",
+        25
+      ],
+      [
+        "Plaza",
+        24
+      ],
+      [
+        "Bridge",
+        20
+      ],
+      [
+        "Fountain",
+        20
+      ],
+      [
+        "Road",
+        17
       ],
       [
         "Outdoor Sculpture",
-        31
+        14
       ],
       [
-        "Inn",
-        27
-      ],
-      [
-        "Intersection",
-        26
+        "Bus Line",
+        11
       ]
     ]
   },
   {
-    "id": 147,
-    "name": "Bath session #5 🛁",
-    "start_date": "2025-10-17",
-    "end_date": "2025-10-18",
-    "start_ts": 1760715271,
+    "id": 11,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-09-18",
+    "end_date": "2025-09-29",
+    "start_ts": 1758197397,
     "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 11,
-    "unique_places": 7,
+    "duration": 12,
+    "checkin_count": 104,
+    "unique_places": 71,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Domoshany",
-      "Minsk"
+      "Hrodna",
+      "Minsk",
+      "Skidel"
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Bus Station",
+        9
+      ],
+      [
+        "Bus Line",
+        9
+      ],
+      [
+        "Bus Stop",
+        8
+      ],
+      [
+        "Big Box Store",
+        7
+      ],
+      [
+        "Plaza",
+        5
+      ],
+      [
+        "Shopping Mall",
+        5
+      ],
+      [
+        "Road",
+        5
+      ],
+      [
+        "Jewelry Store",
+        5
+      ],
       [
         "Rail Station",
         4
       ],
       [
-        "Neighborhood",
-        2
-      ],
-      [
-        "Trailer Park",
-        2
-      ],
-      [
-        "Train",
-        1
-      ],
-      [
-        "Bath House",
-        1
-      ],
-      [
-        "City",
-        1
+        "Park",
+        4
       ]
     ]
   },
   {
-    "id": 148,
-    "name": "A date in the middle 🚂",
-    "start_date": "2025-10-19",
-    "end_date": "2025-10-20",
-    "start_ts": 1760851775,
+    "id": 12,
+    "name": "Hrodna, Belarus 🚌",
+    "start_date": "2025-09-29",
+    "end_date": "2025-10-11",
+    "start_ts": 1759151680,
     "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 78,
-    "unique_places": 78,
+    "duration": 13,
+    "checkin_count": 84,
+    "unique_places": 56,
     "countries": [
       "Belarus"
     ],
     "cities": [
+      "Hrodna",
+      "Minsk",
+      "Horad Hrodna",
+      "Strachanyaty"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Bus Station",
+        13
+      ],
+      [
+        "Big Box Store",
+        8
+      ],
+      [
+        "Jewelry Store",
+        7
+      ],
+      [
+        "Bus Stop",
+        6
+      ],
+      [
+        "Bus Line",
+        4
+      ],
+      [
+        "Plaza",
+        4
+      ],
+      [
+        "Road",
+        4
+      ],
+      [
+        "Neighborhood",
+        3
+      ],
+      [
+        "Monument",
+        3
+      ],
+      [
+        "Park",
+        3
+      ]
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-10-13",
+    "end_date": "2025-10-26",
+    "start_ts": 1760370698,
+    "start_year": 2025,
+    "duration": 14,
+    "checkin_count": 144,
+    "unique_places": 110,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Hrodna",
       "Navahrudak",
       "Lida",
       "Minsk",
       "Novogrudok",
+      "Horad Hrodna",
       "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
         "Monument",
+        13
+      ],
+      [
+        "Bus Station",
         12
+      ],
+      [
+        "Plaza",
+        9
+      ],
+      [
+        "Jewelry Store",
+        9
       ],
       [
         "Outdoor Sculpture",
         9
       ],
       [
-        "Road",
+        "Big Box Store",
         8
       ],
       [
-        "Plaza",
-        4
-      ],
-      [
-        "Bus Station",
-        3
-      ],
-      [
         "Bus Line",
-        3
+        7
+      ],
+      [
+        "Road",
+        6
       ],
       [
         "City",
-        3
-      ],
-      [
-        "Historic and Protected Site",
-        3
-      ],
-      [
-        "Church",
-        3
-      ],
-      [
-        "Temple",
-        3
-      ]
-    ]
-  },
-  {
-    "id": 149,
-    "name": "Eurobank - eurotrip ✈️",
-    "start_date": "2025-11-07",
-    "end_date": "2025-11-14",
-    "start_ts": 1762539967,
-    "start_year": 2025,
-    "duration": 8,
-    "checkin_count": 238,
-    "unique_places": 222,
-    "countries": [
-      "Cyprus",
-      "Belarus",
-      "Moldova",
-      "Latvia",
-      "Lithuania",
-      "Poland"
-    ],
-    "cities": [
-      "Chișinău",
-      "Vitebsk",
-      "Paphos",
-      "Riga",
-      "Kaunas",
-      "Limassol",
-      "Warsaw",
-      "Minsk",
-      "Larnaca",
-      "Brest",
-      "Daugavpils",
-      "Zaslawye",
-      "Polotsk",
-      "Grigorovshchina",
-      "Paternieki",
-      "Jēkabpils",
-      "Brunava",
-      "Nicosia",
-      "Calarasi",
-      "Iganie Stare",
-      "Terespol",
-      "Slonim"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        18
-      ],
-      [
-        "Plaza",
-        16
-      ],
-      [
-        "Monument",
-        15
+        5
       ],
       [
         "Park",
-        13
-      ],
-      [
-        "Bus Line",
-        11
-      ],
-      [
-        "Border Crossing",
-        9
-      ],
-      [
-        "City",
-        8
-      ],
-      [
-        "Bridge",
-        8
-      ],
-      [
-        "Bus Station",
-        8
-      ],
-      [
-        "Neighborhood",
-        8
+        5
       ]
     ]
   },
   {
-    "id": 150,
-    "name": "MDA ✈️",
-    "start_date": "2025-11-21",
-    "end_date": "2025-12-08",
-    "start_ts": 1763738809,
+    "id": 14,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-10-27",
+    "end_date": "2025-11-14",
+    "start_ts": 1761581176,
     "start_year": 2025,
-    "duration": 18,
-    "checkin_count": 445,
-    "unique_places": 340,
+    "duration": 19,
+    "checkin_count": 113,
+    "unique_places": 55,
     "countries": [
-      "Moldova",
-      "Romania",
-      "Latvia",
-      "Lithuania",
       "Belarus"
     ],
     "cities": [
-      "Chișinău",
-      "Riga",
-      "Vilnius",
-      "Borșa",
-      "Polotsk",
+      "Hrodna",
       "Minsk",
-      "Sighetu Marmației",
-      "Vișeu de Sus",
-      "Sculeni",
-      "Săpânța",
-      "Dragomirești",
-      "Vilniaus Rajonas",
-      "Grigorovshchina",
-      "Kaunas",
-      "Calarasi",
-      "Ialoveni",
-      "Cornești",
-      "Iași",
-      "Câmpulung Moldovenesc",
-      "Bârsana",
-      "Biegomlia",
-      "Lyepyel",
-      "Paternieki",
-      "Daugavpils",
-      "Brunava",
-      "Transfăgărășan",
-      "Săcel",
-      "Rodna",
-      "Gura Humorului",
-      "Muravyovka"
+      "Horad Hrodna",
+      "Гродно",
+      "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
+        "Big Box Store",
+        14
+      ],
+      [
+        "Jewelry Store",
+        14
+      ],
+      [
+        "Bus Station",
+        14
+      ],
+      [
         "Road",
-        37
-      ],
-      [
-        "Plaza",
-        31
-      ],
-      [
-        "Bus Line",
-        30
-      ],
-      [
-        "Monument",
-        28
-      ],
-      [
-        "Neighborhood",
-        25
-      ],
-      [
-        "Border Crossing",
         13
-      ],
-      [
-        "Park",
-        12
-      ],
-      [
-        "Pedestrian Plaza",
-        10
       ],
       [
         "Bus Stop",
-        10
+        12
       ],
       [
-        "Church",
-        9
+        "Bus Line",
+        6
+      ],
+      [
+        "Plaza",
+        5
+      ],
+      [
+        "Other Great Outdoors",
+        4
+      ],
+      [
+        "Bridge",
+        3
+      ],
+      [
+        "Rail Station",
+        2
       ]
     ]
   },
   {
-    "id": 151,
-    "name": "Middle east ✈️",
-    "start_date": "2025-12-11",
-    "end_date": "2025-12-30",
-    "start_ts": 1765482030,
+    "id": 15,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2025-11-25",
+    "end_date": "2025-11-26",
+    "start_ts": 1764043452,
     "start_year": 2025,
-    "duration": 20,
-    "checkin_count": 851,
-    "unique_places": 714,
+    "duration": 2,
+    "checkin_count": 37,
+    "unique_places": 32,
     "countries": [
-      "Iran",
-      "Azerbaijan",
-      "Oman",
-      "Russia",
-      "Qatar",
       "Belarus"
     ],
     "cities": [
-      "Tehran",
-      "Isfahan",
-      "Yazd",
-      "Shiraz",
-      "Baku",
-      "Muscat",
-      "Doha",
-      "Moscow",
-      "Marv Dasht",
+      "Hrodna",
       "Minsk",
-      "Smolensk Region",
-      "Khimki",
-      "Mogilev",
-      "Borisov",
-      "Vitebsk Region",
-      "Madarsoleyman",
-      "Abadeh",
-      "Byalynichy",
-      "Qom",
-      "Tarlab"
+      "Horad Hrodna"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Historic and Protected Site",
-        92
-      ],
-      [
-        "Road",
-        90
-      ],
-      [
         "Plaza",
-        73
+        5
+      ],
+      [
+        "Rail Station",
+        4
+      ],
+      [
+        "Bus Line",
+        4
+      ],
+      [
+        "Home (private)",
+        3
+      ],
+      [
+        "Train",
+        2
+      ],
+      [
+        "City",
+        2
+      ],
+      [
+        "Bus Stop",
+        2
+      ],
+      [
+        "Neighborhood",
+        2
+      ],
+      [
+        "Bus Station",
+        2
       ],
       [
         "Metro Station",
-        58
-      ],
-      [
-        "Park",
-        45
-      ],
-      [
-        "Mosque",
-        34
-      ],
-      [
-        "Monument",
-        20
-      ],
-      [
-        "Hostel",
-        20
-      ],
-      [
-        "Bridge",
-        17
-      ],
-      [
-        "Market",
-        17
+        2
       ]
     ]
   },
   {
-    "id": 152,
-    "name": "Rental party ✈️",
+    "id": 16,
+    "name": "Russia & Belarus 🚌",
     "start_date": "2026-01-16",
-    "end_date": "2026-02-02",
+    "end_date": "2026-01-19",
     "start_ts": 1768589915,
     "start_year": 2026,
-    "duration": 18,
-    "checkin_count": 602,
-    "unique_places": 428,
+    "duration": 4,
+    "checkin_count": 160,
+    "unique_places": 153,
     "countries": [
       "Russia",
       "Belarus"
@@ -10888,129 +974,252 @@
       "Dolostsy",
       "Moscow",
       "Pskov Region",
-      "Luga"
+      "Pushkin"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Metro Station",
-        56
-      ],
-      [
         "Road",
-        55
+        17
       ],
       [
         "Bridge",
-        50
-      ],
-      [
-        "Plaza",
-        48
+        17
       ],
       [
         "Monument",
-        34
+        13
       ],
       [
-        "Park",
-        29
+        "Metro Station",
+        12
+      ],
+      [
+        "Plaza",
+        11
       ],
       [
         "Bus Line",
-        27
+        6
       ],
       [
-        "Inn",
-        22
+        "Outdoor Sculpture",
+        5
+      ],
+      [
+        "Park",
+        5
       ],
       [
         "Neighborhood",
-        22
+        5
       ],
       [
-        "Intersection",
-        21
+        "Inn",
+        4
       ]
     ]
   },
   {
-    "id": 153,
-    "name": "Moscow city ✈️",
+    "id": 17,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2026-01-22",
+    "end_date": "2026-01-23",
+    "start_ts": 1769053585,
+    "start_year": 2026,
+    "duration": 2,
+    "checkin_count": 32,
+    "unique_places": 29,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Hrodna",
+      "Minsk"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Rail Station",
+        4
+      ],
+      [
+        "Plaza",
+        4
+      ],
+      [
+        "City",
+        3
+      ],
+      [
+        "Home (private)",
+        3
+      ],
+      [
+        "Train",
+        2
+      ],
+      [
+        "Neighborhood",
+        2
+      ],
+      [
+        "Bus Line",
+        2
+      ],
+      [
+        "Other Great Outdoors",
+        2
+      ],
+      [
+        "Platform",
+        1
+      ],
+      [
+        "Ski Resort and Area",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2026-02-12",
+    "end_date": "2026-02-12",
+    "start_ts": 1770868553,
+    "start_year": 2026,
+    "duration": 1,
+    "checkin_count": 34,
+    "unique_places": 34,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Hrodna",
+      "Minsk",
+      "Strachanyaty"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Plaza",
+        3
+      ],
+      [
+        "Monument",
+        3
+      ],
+      [
+        "Bus Line",
+        3
+      ],
+      [
+        "Rail Station",
+        2
+      ],
+      [
+        "City",
+        2
+      ],
+      [
+        "Other Great Outdoors",
+        2
+      ],
+      [
+        "Cosmetics Store",
+        2
+      ],
+      [
+        "Coffee Shop",
+        2
+      ],
+      [
+        "Platform",
+        1
+      ],
+      [
+        "Train",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Russia & Belarus 🚌",
     "start_date": "2026-02-26",
-    "end_date": "2026-03-03",
+    "end_date": "2026-03-01",
     "start_ts": 1772133788,
     "start_year": 2026,
-    "duration": 6,
-    "checkin_count": 237,
-    "unique_places": 212,
+    "duration": 4,
+    "checkin_count": 210,
+    "unique_places": 205,
     "countries": [
       "Russia",
       "Belarus"
     ],
     "cities": [
       "Moscow",
-      "Khimki",
       "Minsk",
-      "Smolensk Region",
-      "Vitebsk Region",
+      "Khimki",
       "Borisov",
-      "Muravnichi"
+      "Muravnichi",
+      "Vitebsk Region",
+      "Smolensk Region"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Metro Station",
-        34
+        "Monument",
+        33
       ],
       [
         "Plaza",
-        31
-      ],
-      [
-        "Monument",
-        30
+        27
       ],
       [
         "Road",
-        28
+        26
+      ],
+      [
+        "Metro Station",
+        22
       ],
       [
         "Park",
-        11
+        13
       ],
       [
         "Bus Line",
-        9
+        7
       ],
       [
         "Neighborhood",
-        9
+        7
       ],
       [
-        "Bus Station",
-        6
+        "Shopping Mall",
+        4
       ],
       [
         "Home (private)",
-        6
+        4
       ],
       [
-        "Border Crossing",
+        "Fountain",
         4
       ]
     ]
   },
   {
-    "id": 154,
-    "name": "Gomel - city of lynx 🚂",
+    "id": 20,
+    "name": "Gomel, Belarus 🚂",
     "start_date": "2026-03-14",
     "end_date": "2026-03-16",
     "start_ts": 1773460114,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 103,
-    "unique_places": 94,
+    "checkin_count": 102,
+    "unique_places": 93,
     "countries": [
       "Belarus"
     ],
@@ -11026,7 +1235,7 @@
       ],
       [
         "Road",
-        12
+        11
       ],
       [
         "Park",
@@ -11049,7 +1258,7 @@
         3
       ],
       [
-        "Bus Line",
+        "Café",
         3
       ],
       [
@@ -11063,86 +1272,15 @@
     ]
   },
   {
-    "id": 155,
-    "name": "S.P.B.2 🚌",
-    "start_date": "2026-03-19",
-    "end_date": "2026-03-25",
-    "start_ts": 1773939203,
-    "start_year": 2026,
-    "duration": 7,
-    "checkin_count": 171,
-    "unique_places": 133,
-    "countries": [
-      "Russia",
-      "Belarus"
-    ],
-    "cities": [
-      "Saint Petersburg",
-      "Minsk",
-      "Vitebsk",
-      "Lobok",
-      "Pskov",
-      "Zhodzina",
-      "Brest",
-      "Moscow",
-      "Luga",
-      "Zaplyusye",
-      "Opochka"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        18
-      ],
-      [
-        "Bridge",
-        17
-      ],
-      [
-        "Metro Station",
-        12
-      ],
-      [
-        "Bus Line",
-        11
-      ],
-      [
-        "Inn",
-        11
-      ],
-      [
-        "Plaza",
-        8
-      ],
-      [
-        "Intersection",
-        6
-      ],
-      [
-        "Neighborhood",
-        6
-      ],
-      [
-        "Supermarket",
-        5
-      ],
-      [
-        "Bus Station",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 156,
-    "name": "Bath session #6 🛁",
+    "id": 21,
+    "name": "Minsk, Belarus 🚂",
     "start_date": "2026-04-03",
     "end_date": "2026-04-04",
     "start_ts": 1775230601,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 17,
-    "unique_places": 14,
+    "checkin_count": 20,
+    "unique_places": 19,
     "countries": [
       "Belarus"
     ],
@@ -11153,8 +1291,12 @@
     "tags": [],
     "top_cats": [
       [
-        "Rail Station",
+        "Metro Station",
         5
+      ],
+      [
+        "Rail Station",
+        4
       ],
       [
         "Train",
@@ -11162,15 +1304,11 @@
       ],
       [
         "Neighborhood",
-        2
+        1
       ],
       [
         "Trailer Park",
-        2
-      ],
-      [
-        "Metro Station",
-        2
+        1
       ],
       [
         "Bath House",
@@ -11181,11 +1319,15 @@
         1
       ],
       [
-        "Bus Stop",
+        "Fast Food Restaurant",
         1
       ],
       [
-        "Home (private)",
+        "Supermarket",
+        1
+      ],
+      [
+        "Gym and Studio",
         1
       ]
     ]
