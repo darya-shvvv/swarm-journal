@@ -125,25 +125,7 @@ jobs:
             python scripts/fetch_tips.py --token "$FOURSQUARE_TOKEN" --out private-data/tips.json --csv private-data/checkins.csv >> "$GITHUB_OUTPUT"
           fi
 
-      # ── 4c. Fetch photos for new check-ins ──────────────────────────────────
-      - name: Fetch photos for new check-ins
-        id: fetch_photos
-        env:
-          FOURSQUARE_TOKEN: ${{ secrets.FOURSQUARE_TOKEN }}
-        run: |
-          if [ -z "$FOURSQUARE_TOKEN" ]; then
-            echo "CHANGED=false" >> "$GITHUB_OUTPUT"
-          else
-            python scripts/fetch_photos.py \
-              --token "$FOURSQUARE_TOKEN" \
-              --csv   private-data/checkins.csv \
-              --out   private-data/photos.json \
-              --pix-dir private-data/pix \
-              --recheck-days 1 \
-              --sleep 0.3 >> "$GITHUB_OUTPUT"
-          fi
-
-      # ── 4d. Fetch updated venue ratings ─────────────────────────────────────
+      # ── 4c. Fetch updated venue ratings ─────────────────────────────────────
       - name: Fetch venue ratings
         id: fetch_ratings
         env:
@@ -156,19 +138,43 @@ jobs:
             python scripts/fetch_ratings.py --token "$FOURSQUARE_TOKEN" --out private-data/venueRatings.json >> "$GITHUB_OUTPUT"
           fi
 
-      # ── 4f. Upload new photos to Cloudflare R2 ──────────────────────────────
-      - name: Upload new photos to R2
-        if: steps.fetch_photos.outputs.CHANGED == 'true'
-        env:
-          AWS_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_ACCOUNT_ID:         ${{ secrets.R2_ACCOUNT_ID }}
-          R2_BUCKET_NAME:        ${{ secrets.R2_BUCKET_NAME }}
-        run: |
-          pip install awscli --quiet
-          aws s3 sync private-data/pix/ s3://${R2_BUCKET_NAME}/pix/ \
-            --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
-            --no-progress
+      # ── PHOTO FETCHING — COMMENTED OUT FOR NOW ───────────────────────────────
+      # ── 4d. Fetch photos for new check-ins ──────────────────────────────────
+      # - name: Fetch photos for new check-ins
+      #   id: fetch_photos
+      #   env:
+      #     FOURSQUARE_TOKEN: ${{ secrets.FOURSQUARE_TOKEN }}
+      #   run: |
+      #     if [ -z "$FOURSQUARE_TOKEN" ]; then
+      #       echo "CHANGED=false" >> "$GITHUB_OUTPUT"
+      #     else
+      #       python scripts/fetch_photos.py \
+      #         --token "$FOURSQUARE_TOKEN" \
+      #         --csv   private-data/checkins.csv \
+      #         --out   private-data/photos.json \
+      #         --pix-dir private-data/pix \
+      #         --recheck-days 1 \
+      #         --sleep 0.3 >> "$GITHUB_OUTPUT"
+      #     fi
+
+      # ── PHOTO UPLOAD TO R2 — COMMENTED OUT FOR NOW ───────────────────────────
+      # ── 4e. Upload new photos to Cloudflare R2 ──────────────────────────────
+      # - name: Upload new photos to R2
+      #   if: steps.fetch_photos.outputs.CHANGED == 'true'
+      #   env:
+      #     AWS_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      #     R2_ACCOUNT_ID:         ${{ secrets.R2_ACCOUNT_ID }}
+      #     R2_BUCKET_NAME:        ${{ secrets.R2_BUCKET_NAME }}
+      #   run: |
+      #     if [ -z "$R2_ACCOUNT_ID" ] || [ -z "$R2_BUCKET_NAME" ]; then
+      #       echo "⚠️  R2 configuration not set — skipping photo upload."
+      #       exit 0
+      #     fi
+      #     pip install awscli --quiet
+      #     aws s3 sync private-data/pix/ s3://${R2_BUCKET_NAME}/pix/ \
+      #       --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+      #       --no-progress
 
       # ── 5. Exit gracefully if nothing changed ────────────────────────────────
       - name: Skip if no new data
@@ -176,7 +182,6 @@ jobs:
           github.event_name != 'workflow_dispatch' &&
           steps.fetch.outputs.CHANGED != 'true' &&
           steps.fetch_tips.outputs.CHANGED != 'true' &&
-          steps.fetch_photos.outputs.CHANGED != 'true' &&
           steps.fetch_ratings.outputs.CHANGED != 'true'
         run: |
           echo "No new data — nothing to rebuild or deploy."
@@ -187,15 +192,16 @@ jobs:
         if: |
           steps.fetch.outputs.CHANGED == 'true' ||
           steps.fetch_tips.outputs.CHANGED == 'true' ||
-          steps.fetch_photos.outputs.CHANGED == 'true' ||
           steps.fetch_ratings.outputs.CHANGED == 'true'
         run: |
           cd private-data
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add checkins.csv tips.json photos.json
+          git add checkins.csv tips.json
           [ -f venueRatings.json ] && git add venueRatings.json || true
           [ -f lists.json ]        && git add lists.json        || true
+          # Photos commented out for now
+          # [ -f photos.json ] && git add photos.json || true
           if git diff --cached --quiet; then
             echo "Nothing to commit in data repo."
           else
@@ -211,19 +217,18 @@ jobs:
           github.event_name == 'workflow_dispatch' ||
           steps.fetch.outputs.CHANGED == 'true' ||
           steps.fetch_tips.outputs.CHANGED == 'true' ||
-          steps.fetch_photos.outputs.CHANGED == 'true' ||
           steps.fetch_ratings.outputs.CHANGED == 'true'
         env:
           R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
         run: |
-          PIX_URL_ARG=""
-          if [ -n "$R2_PUBLIC_URL" ]; then
-            PIX_URL_ARG="--pix-url ${R2_PUBLIC_URL}"
-          fi
-          PHOTOS_ARG=""
-          if [ -f private-data/photos.json ]; then
-            PHOTOS_ARG="--photos private-data/photos.json"
-          fi
+          # PIX_URL_ARG=""  # Commented out with photos
+          # if [ -n "$R2_PUBLIC_URL" ]; then
+          #   PIX_URL_ARG="--pix-url ${R2_PUBLIC_URL}"
+          # fi
+          # PHOTOS_ARG=""  # Commented out with photos
+          # if [ -f private-data/photos.json ]; then
+          #   PHOTOS_ARG="--photos private-data/photos.json"
+          # fi
           RATINGS_ARG=""
           if [ -f private-data/venueRatings.json ]; then
             RATINGS_ARG="--ratings private-data/venueRatings.json"
@@ -236,7 +241,8 @@ jobs:
             --input private-data/checkins.csv \
             --config-dir config \
             --output-dir . \
-            $PHOTOS_ARG $PIX_URL_ARG $RATINGS_ARG $LISTS_ARG
+            $RATINGS_ARG $LISTS_ARG
+          # Removed $PHOTOS_ARG $PIX_URL_ARG
 
       # ── 7b. Sync data to Cloudflare D1 ──────────────────────────────────────
       - name: Sync data to D1
@@ -250,23 +256,23 @@ jobs:
           CF_ACCOUNT_ID:     ${{ secrets.CF_ACCOUNT_ID }}
           CF_D1_DATABASE_ID: ${{ secrets.CF_D1_DATABASE_ID }}
         run: |
+          if [ -z "$CF_D1_TOKEN" ] || [ -z "$CF_ACCOUNT_ID" ] || [ -z "$CF_D1_DATABASE_ID" ]; then
+            echo "⚠️  Cloudflare D1 configuration not set — skipping D1 sync."
+            exit 0
+          fi
           RATINGS_ARG=""
           if [ -f private-data/venueRatings.json ]; then RATINGS_ARG="--ratings private-data/venueRatings.json"; fi
           LISTS_ARG=""
           if [ -f private-data/lists.json ]; then LISTS_ARG="--lists private-data/lists.json"; fi
-          if [ -z "$CF_D1_TOKEN" ]; then
-            echo "⚠️  CF_D1_TOKEN not set — skipping D1 sync."
-          else
-            python scripts/sync_to_d1.py \
-              --csv             private-data/checkins.csv \
-              --tips            private-data/tips.json \
-              --trips           trips_meta.json \
-              --tips-changed    ${{ steps.fetch_tips.outputs.CHANGED    || 'false' }} \
-              --ratings-changed ${{ steps.fetch_ratings.outputs.CHANGED || 'false' }} \
-              --lists-changed   ${{ steps.fetch.outputs.CHANGED         || 'false' }} \
-              --trips-changed   ${{ steps.fetch.outputs.CHANGED         || 'false' }} \
-              $RATINGS_ARG $LISTS_ARG
-          fi
+          python scripts/sync_to_d1.py \
+            --csv             private-data/checkins.csv \
+            --tips            private-data/tips.json \
+            --trips           trips_meta.json \
+            --tips-changed    ${{ steps.fetch_tips.outputs.CHANGED    || 'false' }} \
+            --ratings-changed ${{ steps.fetch_ratings.outputs.CHANGED || 'false' }} \
+            --lists-changed   ${{ steps.fetch.outputs.CHANGED         || 'false' }} \
+            --trips-changed   ${{ steps.fetch.outputs.CHANGED         || 'false' }} \
+            $RATINGS_ARG $LISTS_ARG
 
       # ── 8. Commit HTML files to public repo → Cloudflare Pages auto-deploys ──
       - name: Commit updated HTML files
@@ -274,17 +280,18 @@ jobs:
           github.event_name == 'workflow_dispatch' ||
           steps.fetch.outputs.CHANGED == 'true' ||
           steps.fetch_tips.outputs.CHANGED == 'true' ||
-          steps.fetch_photos.outputs.CHANGED == 'true' ||
           steps.fetch_ratings.outputs.CHANGED == 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add index.html trips.html feed.html companions.html world_cities.html venues.html tips.html photos.html stats.html search.html trips_meta.json feed_meta.json
+          git add index.html trips.html feed.html companions.html world_cities.html venues.html tips.html stats.html search.html trips_meta.json feed_meta.json
           # Only update ratings.html if ratings data was available during the build
           [ -f private-data/venueRatings.json ] && git add ratings.html || true
           # Only update lists.html if lists data was available during the build
           [ -f private-data/lists.json ] && git add lists.html || true
+          # Photos commented out for now
+          # [ -f photos.html ] && git add photos.html || true
 
           if git diff --cached --quiet; then
             echo "Nothing to commit."
@@ -325,6 +332,10 @@ jobs:
           NETLIFY_SITE_ID:    ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
+          if [ -z "$NETLIFY_SITE_ID" ] || [ -z "$NETLIFY_AUTH_TOKEN" ]; then
+            echo "⚠️  Netlify configuration not set — skipping deploy."
+            exit 0
+          fi
           npm install -g netlify-cli
           netlify deploy \
             --site  "$NETLIFY_SITE_ID" \
