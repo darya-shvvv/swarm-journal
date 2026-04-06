@@ -11,7 +11,7 @@
 #
 # Required repository secrets:
 #   FOURSQUARE_TOKEN   — Foursquare OAuth token
-#   DATA_REPO_PAT      — Fine-grained PAT with Contents read/write on toouur/foursquare-data
+#   DATA_REPO_PAT      — Fine-grained PAT with Contents read/write on darya-shvvv/foursquare-data
 #   NETLIFY_SITE_ID    — found in Netlify site settings → General → Site ID
 #   NETLIFY_AUTH_TOKEN — personal access token from app.netlify.com/user/applications
 
@@ -39,11 +39,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: darya-shvvv/swarm-journal
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # ── Checkout private data repo ────────────────────────────────────────────
       - uses: actions/checkout@v4
         with:
-          repository: toouur/foursquare-data
+          repository: darya-shvvv/foursquare-data
           token: ${{ secrets.DATA_REPO_PAT }}
           path: private-data
 
@@ -76,12 +79,14 @@ jobs:
       # ── 1. Checkout public repo ───────────────────────────────────────────────
       - uses: actions/checkout@v4
         with:
+          repository: darya-shvvv/swarm-journal
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       # ── 2. Checkout private data repo ────────────────────────────────────────
       - uses: actions/checkout@v4
         with:
-          repository: toouur/foursquare-data
+          repository: darya-shvvv/foursquare-data
           token: ${{ secrets.DATA_REPO_PAT }}
           path: private-data
 
@@ -310,6 +315,9 @@ jobs:
 
       - uses: actions/checkout@v4
         if: steps.lastday.outputs.is_last_day == 'true'
+        with:
+          repository: darya-shvvv/swarm-journal
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to Netlify
         if: steps.lastday.outputs.is_last_day == 'true'
