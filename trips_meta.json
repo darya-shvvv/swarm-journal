@@ -462,12 +462,10 @@
       "Hrodna",
       "Lida",
       "Minsk",
-      "Гродно",
       "Vawkavysk",
+      "Гродно",
       "Skidel",
       "Zel’va",
-      "Volkovysk",
-      "Horad Hrodna",
       "Slonim",
       "Пекари (Волковысский р-н)"
     ],
@@ -713,7 +711,6 @@
     "cities": [
       "Hrodna",
       "Minsk",
-      "Horad Hrodna",
       "Strachanyaty"
     ],
     "tags": [],
@@ -778,8 +775,6 @@
       "Navahrudak",
       "Lida",
       "Minsk",
-      "Novogrudok",
-      "Horad Hrodna",
       "Strachanyaty"
     ],
     "tags": [],
@@ -842,7 +837,6 @@
     "cities": [
       "Hrodna",
       "Minsk",
-      "Horad Hrodna",
       "Гродно",
       "Strachanyaty"
     ],
@@ -905,8 +899,7 @@
     ],
     "cities": [
       "Hrodna",
-      "Minsk",
-      "Horad Hrodna"
+      "Minsk"
     ],
     "tags": [],
     "top_cats": [
@@ -1328,6 +1321,67 @@
       ],
       [
         "Gym and Studio",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2026-04-07",
+    "end_date": "2026-04-08",
+    "start_ts": 1775534128,
+    "start_year": 2026,
+    "duration": 2,
+    "checkin_count": 30,
+    "unique_places": 26,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Hrodna",
+      "Minsk"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Rail Station",
+        4
+      ],
+      [
+        "Plaza",
+        4
+      ],
+      [
+        "Home (private)",
+        3
+      ],
+      [
+        "Train",
+        2
+      ],
+      [
+        "City",
+        2
+      ],
+      [
+        "Bus Stop",
+        2
+      ],
+      [
+        "Platform",
+        1
+      ],
+      [
+        "Café",
+        1
+      ],
+      [
+        "Road",
+        1
+      ],
+      [
+        "Dentist",
         1
       ]
     ]
