@@ -19,6 +19,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Check-in Feed — Check-in Journal">
 <meta name="twitter:description" content="Chronological feed of 65,000+ Foursquare check-ins with venue, city, country and category details. Filter and search the full check-in history.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -308,7 +309,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
     <div class="tb-nav">
 
-      <button class="nav-btn" onclick="jumpTo(0)">↑ Latest</button>
+      <button class="nav-btn" onclick="goLatest()">↑ Latest</button>
 
       <button class="nav-btn" onclick="goOldest()">↓ Oldest</button>
 
@@ -393,6 +394,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 let ALL=[];
 
 let YM_IDX={};
+let META_TOTAL=0;
+let FIRST_TS=null;
+let allLoaded=false; // kept for legacy goOldest guard; will be true when fwdDone&&revDone
 
 
 
@@ -941,6 +945,12 @@ function gapFor(sec){
 
 
 let DATA=ALL, pos=[], totalH=0; let isFiltered=false; let monthMode=null;
+let oldestInsertIdx=0;
+let gapFwdEnd=0; // end of forward-filled region (insertion point for both directions)
+let fwdCursor=null, revCursor=null, fwdDone=false, revDone=false, gapLoading=false;
+const GAP_NEAR=80;
+
+const AVG_ITEM_H=ITEM_STEP+6; // ~132px average, used for unloaded region estimation
 
 function buildPos(data){
 
@@ -956,8 +966,31 @@ function buildPos(data){
 
   }
 
-  totalH=y+40;
+  // Anchor the oldest region to the bottom of the virtual scroll space so
+  // there is no empty dead zone below the oldest card.
+  if(!isFiltered&&!monthMode&&totalH>0&&oldestInsertIdx<data.length){
+    const desiredLastPos=totalH-GAP_PAD-ITEM_STEP;
+    const actualLastPos=pos[data.length-1];
+    const offset=desiredLastPos-actualLastPos;
+    if(offset>0){
+      for(let i=oldestInsertIdx;i<data.length;i++) pos[i]+=offset;
+    }
+  }
 
+}
+
+// Returns the nearest loaded index for a scroll position.
+// For positions beyond the loaded range, estimates linearly.
+function getIndexFromScrollTop(scrollTop){
+  if(!DATA.length) return 0;
+  let lo=0,hi=DATA.length-1,best=0;
+  while(lo<=hi){const m=(lo+hi)>>1;pos[m]<=scrollTop?(best=m,lo=m+1):hi=m-1;}
+  // If we hit the last loaded item and scrollTop is deeper, estimate into unloaded region
+  if(best===DATA.length-1&&pos[best]!=null&&scrollTop>pos[best]+ITEM_STEP){
+    const est=best+Math.floor((scrollTop-pos[best])/AVG_ITEM_H);
+    return Math.min(est,META_TOTAL>0?META_TOTAL-1:best);
+  }
+  return best;
 }
 
 
@@ -1198,38 +1231,41 @@ function jumpTo(i){
 
   i=Math.max(0,Math.min(DATA.length-1,Math.round(i)));
 
+  manualClick=true;
+  clearTimeout(manualTimer);
+  manualTimer=setTimeout(()=>{manualClick=false;},1500);
+
   activate(i, true);
 
 }
 
 
 
-let scrollTmr=null;
+let scrollRaf=null, scrollEndTmr=null;
+
+function _gapCheckAt(sc){
+  if(manualClick) return;
+  const target=sc.scrollTop+sc.clientHeight*0.2;
+  const best=getIndexFromScrollTop(target);
+  // activate only within loaded range
+  const loadedBest=Math.min(best,DATA.length-1);
+  if(!gapLoading&&loadedBest!==activeIdx) activate(loadedBest,false);
+  checkGapLoad(best);
+}
 
 document.getElementById('feedScroll').addEventListener('scroll',()=>{
 
   renderVis();
 
   if(!manualClick){
+    // Immediate check each frame — no debounce delay for gap loading
+    const sc=document.getElementById('feedScroll');
+    if(scrollRaf) cancelAnimationFrame(scrollRaf);
+    scrollRaf=requestAnimationFrame(()=>{_gapCheckAt(sc);scrollRaf=null;});
 
-    clearTimeout(scrollTmr);
-
-    scrollTmr=setTimeout(()=>{
-
-      if(manualClick) return;
-
-      const sc=document.getElementById('feedScroll');
-
-      const target=sc.scrollTop+sc.clientHeight*0.2;
-
-      let lo=0,hi=DATA.length-1,best=0;
-
-      while(lo<=hi){const m=(lo+hi)>>1;pos[m]<=target?(best=m,lo=m+1):hi=m-1;}
-
-      if(best!==activeIdx) activate(best, false);
-
-    },150);
-
+    // Fallback: after scrolling stops, catch any missed trigger zone
+    clearTimeout(scrollEndTmr);
+    scrollEndTmr=setTimeout(()=>{if(!gapLoading) _gapCheckAt(sc);},200);
   }
 
 },{passive:true});
@@ -1246,13 +1282,12 @@ const ymCnts={};
 const ydCnts={};   // "YYYY-MM-DD" → count
 const YD_IDX={};   // "YYYY-MM-DD" → first checkin index
 
-function addToCalCounts(items,startIdx){
+function addToCalCounts(items){
 
   // r[1] is local date string like "03 Mar 2025" — use it for calendar so counts match displayed dates
+  // YD_IDX stores the Unix timestamp r[0] so it remains valid after array splices
 
-  items.forEach((r,j)=>{
-
-    const i=startIdx+j;
+  items.forEach((r)=>{
 
     const parts=(r[1]||'').split(' ');
 
@@ -1265,7 +1300,7 @@ function addToCalCounts(items,startIdx){
         ymCnts[ym]=(ymCnts[ym]||0)+1;
         const ymd=`${ym}-${parts[0]}`;
         ydCnts[ymd]=(ydCnts[ymd]||0)+1;
-        if(!(ymd in YD_IDX)) YD_IDX[ymd]=i;
+        if(!(ymd in YD_IDX)) YD_IDX[ymd]=r[0]; // store timestamp, not array index
       }
 
     }
@@ -1346,9 +1381,42 @@ function renderCal(){
 
 }
 
+// Tracks which months have had their day counts populated from D1
+const _ymDaysFetched=new Set();
+
+async function _fetchDayCounts(ym){
+  if(_ymDaysFetched.has(ym)) return;
+  _ymDaysFetched.add(ym);
+  try{
+    const data=await(await fetch(`/api/feed?month=${ym}`)).json();
+    const items=data.items||[];
+    const[myr,mmo]=ym.split('-').map(Number);
+    const mdays=new Date(myr,mmo,0).getDate();
+    // Clear stale estimates for this month, then repopulate
+    for(let d=1;d<=mdays;d++) delete ydCnts[`${ym}-${String(d).padStart(2,'0')}`];
+    items.forEach(r=>{
+      const parts=(r[1]||'').split(' ');
+      if(parts.length===3){
+        const mo2=MOS.indexOf(parts[1])+1;
+        if(mo2>0){
+          const ymd=`${parts[2]}-${String(mo2).padStart(2,'0')}-${parts[0]}`;
+          ydCnts[ymd]=(ydCnts[ymd]||0)+1;
+          if(!(ymd in YD_IDX)) YD_IDX[ymd]=r[0];
+        }
+      }
+    });
+    // Refresh day grid if this month is still expanded
+    if(selYM===ym) renderDays(ym);
+  }catch(e){_ymDaysFetched.delete(ym);}
+}
+
 function goYM(ym){
-  if(monthMode===ym){exitMonthView();return;}
-  fetchAndShowMonth(ym);
+  // Only expand the day grid — don't fetch; user must click a specific day
+  if(selYM===ym){selYM=null;document.getElementById('calDays').innerHTML='';renderCal();return;}
+  selYM=ym;
+  renderCal();
+  // Fetch day counts in background if not yet loaded
+  _fetchDayCounts(ym);
 }
 
 function renderDays(ym){
@@ -1366,20 +1434,66 @@ function renderDays(ym){
   document.getElementById('calDays').innerHTML=html;
 }
 
-function goYMD(ymd){
+// Binary search on DESC-sorted ALL for a specific timestamp → array index
+function tsToIdx(ts){
+  let lo=0,hi=ALL.length-1;
+  while(lo<=hi){const m=(lo+hi)>>1;if(ALL[m][0]===ts)return m;if(ALL[m][0]>ts)lo=m+1;else hi=m-1;}
+  return -1;
+}
+
+async function goYMD(ymd){
   document.getElementById('calDrop').classList.remove('open');
   selYM=null;
-  if(monthMode){
-    // In month view: find matching item by date string
-    const[yr,mo,d]=ymd.split('-');
-    const target=`${String(parseInt(d)).padStart(2,'0')} ${MOS[parseInt(mo)-1]} ${yr}`;
-    const idx=DATA.findIndex(r=>r[1]===target);
-    if(idx>=0) jumpTo(idx);
-  } else {
-    const idx=YD_IDX[ymd];
-    if(idx!=null) jumpTo(idx);
-    else fetchAndShowMonth(ymd.slice(0,7)); // data not yet loaded — fetch month
-  }
+  const ym=ymd.slice(0,7);
+  // Ensure day-level timestamps are fetched for this month
+  await _fetchDayCounts(ym);
+  const ts=YD_IDX[ymd];
+  if(ts==null) return; // no check-ins on that day
+  if(monthMode) exitMonthView();
+  // Fast path: item already in memory
+  const idx=tsToIdx(ts);
+  if(idx>=0){jumpTo(idx);return;}
+  // Load items around the target timestamp, then jump
+  await _loadAroundTs(ts);
+  const idx2=tsToIdx(ts);
+  if(idx2>=0){jumpTo(idx2);return;}
+  // Fallback: scroll to estimated position
+  _scrollToTs(ts);
+}
+
+// Fetch ~50 items centred around a timestamp and splice them into ALL.
+async function _loadAroundTs(ts){
+  try{
+    const d=await(await fetch(`/api/feed?cursor=${ts+1}&limit=50`)).json();
+    const items=d.items||[];
+    if(!items.length) return;
+    const existingTs=new Set(ALL.map(r=>r[0]));
+    const fi=items.filter(r=>!existingTs.has(r[0]));
+    if(!fi.length) return;
+    // Find insertion point within the gap [gapFwdEnd, oldestInsertIdx)
+    let insertAt=oldestInsertIdx;
+    for(let i=gapFwdEnd;i<oldestInsertIdx;i++){
+      if(ALL[i][0]<fi[0][0]){insertAt=i;break;}
+    }
+    ALL.splice(insertAt,0,...fi);
+    if(insertAt<=oldestInsertIdx) oldestInsertIdx+=fi.length;
+    addToCalCounts(fi);
+    rebuildAfterSplice(insertAt,fi.length);
+  }catch(e){console.warn('_loadAroundTs',e);}
+}
+
+// Scroll to an estimated position for a timestamp (used when the exact item
+// could not be loaded — proportional interpolation within known bounds).
+function _scrollToTs(ts){
+  const sc=document.getElementById('feedScroll');
+  if(!ALL.length) return;
+  const newestTs=ALL[0][0];
+  const oldestTs=ALL[ALL.length-1][0];
+  if(newestTs<=oldestTs) return;
+  const frac=Math.max(0,Math.min(1,(newestTs-ts)/(newestTs-oldestTs)));
+  const topY=pos[0]||0;
+  const botY=pos[ALL.length-1]||totalH;
+  sc.scrollTop=Math.max(0,topY+frac*(botY-topY)-sc.clientHeight/2);
 }
 
 async function fetchAndShowMonth(ym){
@@ -1432,15 +1546,113 @@ function exitMonthView(){
   buildPos(DATA);
   document.getElementById('vsSizer').style.height=totalH+'px';
   renderVis();
-  document.getElementById('badge').textContent=ALL.length.toLocaleString()+' check-ins';
+  document.getElementById('badge').textContent=(META_TOTAL||ALL.length).toLocaleString()+' check-ins';
   renderCal();
 }
 
+function goLatest(){
+  if(monthMode) exitMonthView();
+  jumpTo(0);
+}
+
 function goOldest(){
-  const entries=Object.entries(YM_IDX);
-  if(!entries.length) return;
-  const[oldestYM]=entries.reduce((a,b)=>b[1]>a[1]?b:a);
-  fetchAndShowMonth(oldestYM);
+  if(monthMode) exitMonthView();
+  const i=ALL.length-1;
+  const sc=document.getElementById('feedScroll');
+  manualClick=true;
+  clearTimeout(manualTimer);
+  manualTimer=setTimeout(()=>{manualClick=false;},1500);
+  // Scroll so the oldest card is near the bottom of the viewport
+  const target=pos[i]||0;
+  sc.scrollTop=Math.max(0,target-sc.clientHeight+CARD_H+40);
+  lastR=[-1,-1];
+  activate(i,false);
+  setTimeout(renderVis,60);
+}
+
+// ── Bidirectional gap fill ──
+
+function rebuildAfterSplice(insertAt,numInserted){
+  const sc=document.getElementById('feedScroll');
+  const oldPos=pos[activeIdx]||0;
+  const scrollOffset=sc.scrollTop-oldPos;
+  if(activeIdx>=insertAt) activeIdx+=numInserted;
+  if(isFiltered||monthMode) return;
+  DATA=ALL;
+  buildPos(DATA);
+  document.getElementById('vsSizer').style.height=totalH+'px';
+  sc.scrollTop=Math.max(0,(pos[activeIdx]||0)+scrollOffset);
+  lastR=[-1,-1];
+  renderVis();
+}
+
+async function loadFwd(){
+  if(gapLoading||fwdDone||!fwdCursor) return;
+  gapLoading=true;
+  try{
+    const d=await(await fetch(`/api/feed?limit=50&cursor=${fwdCursor}`)).json();
+    const items=d.items||[];
+    if(!items.length){fwdDone=true;return;}
+    // Only insert items strictly older than current fwd region, not overlapping oldest/rev batch
+    const gapBottom=ALL[gapFwdEnd]?ALL[gapFwdEnd][0]:0;
+    const fi=items.filter(r=>r[0]>gapBottom);
+    if(!fi.length){fwdDone=true;fwdCursor=null;return;}
+    const insertAt=gapFwdEnd;
+    ALL.splice(insertAt,0,...fi);
+    gapFwdEnd+=fi.length;      // fwd boundary advances
+    oldestInsertIdx+=fi.length; // rev/oldest region shifts down
+    addToCalCounts(fi);
+    fwdCursor=d.has_more?d.next_cursor:null;
+    if(!fwdCursor) fwdDone=true;
+    if(fwdDone&&revDone) allLoaded=true;
+    rebuildAfterSplice(insertAt,fi.length);
+  }catch(e){console.warn('loadFwd',e);}
+  finally{gapLoading=false;}
+}
+
+async function loadRev(){
+  if(gapLoading||revDone||revCursor==null) return;
+  gapLoading=true;
+  try{
+    const d=await(await fetch(`/api/feed?after=${revCursor}&limit=50`)).json();
+    const items=d.items||[];
+    if(!items.length){revDone=true;return;}
+    // Only insert items strictly older than the end of the fwd region
+    const fwdTail=gapFwdEnd>0?ALL[gapFwdEnd-1][0]:Infinity;
+    const fi=items.filter(r=>r[0]<fwdTail);
+    if(!fi.length){revDone=true;return;}
+    // Rev items go at gapFwdEnd (between fwd region and oldest batch)
+    const insertAt=gapFwdEnd;
+    ALL.splice(insertAt,0,...fi);
+    // gapFwdEnd stays fixed — rev items live between gapFwdEnd and oldestInsertIdx
+    oldestInsertIdx+=fi.length;
+    addToCalCounts(fi);
+    // fi is newest-first; fi[0][0] is the newest timestamp in this batch → new upper bound
+    revCursor=fi[0][0];
+    if(!d.has_more) revDone=true;
+    if(fwdDone&&revDone) allLoaded=true;
+    rebuildAfterSplice(insertAt,fi.length);
+  }catch(e){console.warn('loadRev',e);}
+  finally{gapLoading=false;}
+}
+
+function checkGapLoad(visIdx){
+  if(gapLoading||isFiltered||monthMode) return;
+  if(fwdDone&&revDone) return;
+  // distFwd: how far visIdx is below the end of the forward region (positive = approaching from below)
+  const distFwd=gapFwdEnd-visIdx;
+  // distRev: how far visIdx is above the start of the oldest/rev region (positive = approaching from above)
+  const distRev=visIdx-oldestInsertIdx;
+  if(!fwdDone&&fwdCursor&&distFwd>=1&&distFwd<=GAP_NEAR){loadFwd();return;}
+  if(!revDone&&revCursor!=null){
+    // visIdx from getIndexFromScrollTop can be wildly overestimated when oldest
+    // region is bottom-anchored far from the sequential region — use physical
+    // proximity as a fallback trigger.
+    const sc=document.getElementById('feedScroll');
+    const physNear=oldestInsertIdx<ALL.length&&
+      Math.abs(sc.scrollTop-(pos[oldestInsertIdx]||0))<sc.clientHeight*3;
+    if((distRev>=0&&distRev<=GAP_NEAR)||physNear) loadRev();
+  }
 }
 
 
@@ -1478,56 +1690,67 @@ function onSearch(q){
 window.addEventListener('resize',()=>{lastR=[-1,-1];renderVis();});
 
 (async function init(){
-  const PG=200;
+  const PG=100;
 
-  // 1. Lightweight fetch: get static feed_meta.json (no D1 call)
+  // 1. Static feed_meta.json — no D1 call, instant calendar render
   try{
     const meta=await(await fetch('/feed_meta.json')).json();
     YM_IDX=meta.ym_index||{};
-    const tot=meta.total||0;
-    document.getElementById('badge').textContent=tot.toLocaleString()+' check-ins';
+    META_TOTAL=meta.total||0;
+    FIRST_TS=meta.first_ts||null;
+    document.getElementById('badge').textContent=META_TOTAL.toLocaleString()+' check-ins';
     renderCal();
-  }catch(e){
-    console.warn('Could not load feed_meta.json, calendar may be incomplete', e);
+  }catch(e){console.warn('feed_meta.json error',e);}
+
+  // 2. Parallel: 100 newest + 100 oldest — only these two D1 fetches at init
+  let newestData={items:[],has_more:false,next_cursor:null};
+  let oldestData={items:[]};
+  try{
+    [newestData,oldestData]=await Promise.all([
+      fetch(`/api/feed?limit=${PG}`).then(r=>r.json()),
+      fetch(`/api/feed?oldest=1&limit=${PG}`).then(r=>r.json()),
+    ]);
+  }catch(e){console.warn('init fetch',e);}
+
+  const newestItems=newestData.items||[];
+  const oldestItems=oldestData.items||[];
+
+  if(!newestData.has_more){
+    // Entire dataset fits in PG rows (or the fetch includes everything)
+    ALL.push(...newestItems);
+    gapFwdEnd=newestItems.length;
+    oldestInsertIdx=newestItems.length;
+    fwdDone=true; revDone=true; allLoaded=true;
+  } else {
+    // Newest and oldest are distinct regions with a gap in between
+    const fwdTs=newestData.next_cursor; // oldest timestamp in fwd batch = gap upper boundary
+    // Deduplicate: only keep oldest items strictly older than the fwd tail
+    const uniqueOldest=fwdTs?oldestItems.filter(r=>r[0]<fwdTs):[];
+    ALL.push(...newestItems,...uniqueOldest);
+    gapFwdEnd=newestItems.length;
+    oldestInsertIdx=newestItems.length;
+    fwdCursor=fwdTs||null;
+    fwdDone=!fwdCursor;
+    // revCursor starts at the newest item of the oldest batch; ?after=revCursor fills upward
+    revCursor=uniqueOldest.length?ALL[oldestInsertIdx][0]:null;
+    revDone=!uniqueOldest.length||(oldestItems.length<PG);
+    if(fwdDone&&revDone) allLoaded=true;
   }
 
-  // 2. First page — render immediately
-  let firstData={items:[],has_more:false,total:0};
-  try{firstData=await(await fetch(`/api/feed?offset=0&limit=${PG}`)).json();}catch(e){}
-  const firstItems=firstData.items||[];
-  ALL.push(...firstItems);
-  addToCalCounts(firstItems,0);
+  addToCalCounts(newestItems);
+  if(oldestInsertIdx<ALL.length) addToCalCounts(ALL.slice(oldestInsertIdx));
+
+  // Set totalH BEFORE buildPos so the bottom-anchor logic sees a non-zero value
+  const fullH=META_TOTAL>0?META_TOTAL*AVG_ITEM_H:totalH;
+  totalH=fullH;
   buildPos(ALL);
-  document.getElementById('vsSizer').style.height=totalH+'px';
+  document.getElementById('vsSizer').style.height=totalH||pos[ALL.length-1]+ITEM_STEP+'px';
   if(!Object.keys(YM_IDX).length) renderCal();
   renderVis();
   if(ALL.length) activate(0,false);
 
-  // Handle ?q= URL param after first page is ready
   const _q=new URLSearchParams(location.search).get('q');
   if(_q){const _inp=document.getElementById('srch');if(_inp){_inp.value=_q;onSearch(_q);}}
-
-  // 3. Background: progressively fetch remaining pages
-  const total=firstData.total||0;
-  let offset=ALL.length;
-  while(offset<total){
-    let d={items:[],has_more:false};
-    try{d=await(await fetch(`/api/feed?offset=${offset}&limit=${PG}`)).json();}catch(e){break;}
-    const items=d.items||[];
-    if(!items.length) break;
-    const prev=ALL.length;
-    ALL.push(...items);
-    addToCalCounts(items,prev);
-    offset=ALL.length;
-    if(!isFiltered&&!monthMode){
-      buildPos(ALL);
-      document.getElementById('vsSizer').style.height=totalH+'px';
-      lastR=[-1,-1];
-      renderVis();
-    }
-    document.getElementById('badge').textContent=(isFiltered?DATA.length:ALL.length).toLocaleString()+' check-ins';
-    if(!d.has_more) break;
-  }
 })();
 
 </script>
@@ -1572,6 +1795,7 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   });
 })();
 </script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "096ba3d9093f4c629948d81ef8438a34"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 
 </html>
