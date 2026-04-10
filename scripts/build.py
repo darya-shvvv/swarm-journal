@@ -152,6 +152,15 @@ if __name__ == "__main__":
                         help="Write slim trips metadata JSON to this path "
                              "(used by sync_to_d1.py; excludes checkins/coords arrays). "
                              "Defaults to trips_meta.json in the current directory.")
+    # R2 and D1 sync flags (uncommented)
+    parser.add_argument("--sync-to-r2",  action="store_true",
+                        help="Sync photos to Cloudflare R2 bucket after building")
+    parser.add_argument("--sync-to-d1",  action="store_true",
+                        help="Sync trips metadata to Cloudflare D1 after building")
+    parser.add_argument("--r2-bucket",   default="foursquare-photos",
+                        help="R2 bucket name (default: foursquare-photos)")
+    parser.add_argument("--d1-db",       default="swarmdata",
+                        help="D1 database name (default: swarmdata)")
     args = parser.parse_args()
 
     if not os.path.exists(args.input):
@@ -343,6 +352,53 @@ if __name__ == "__main__":
                 cid = c.get("checkin_id", "")
                 c["photos"] = _photos_by_checkin.get(cid, [])
             t["photo_count"] = sum(len(c.get("photos", [])) for c in t.get("checkins", []))
+
+    # ── R2 Sync: Upload photos to Cloudflare R2 ─────────────────────────────
+    if args.sync_to_r2 and _photos_by_checkin and _pix_dir_uri:
+        try:
+            import subprocess
+            log.info("Syncing photos to Cloudflare R2 bucket: %s", args.r2_bucket)
+            
+            # Check if AWS CLI is installed
+            result = subprocess.run(["aws", "--version"], capture_output=True, text=True)
+            if result.returncode != 0:
+                log.error("AWS CLI not found. Please install it to sync to R2.")
+            else:
+                # Get R2 credentials from environment
+                r2_access_key = os.environ.get("R2_ACCESS_KEY_ID")
+                r2_secret_key = os.environ.get("R2_SECRET_ACCESS_KEY")
+                r2_account_id = os.environ.get("R2_ACCOUNT_ID")
+                
+                if not all([r2_access_key, r2_secret_key, r2_account_id]):
+                    log.warning("R2 credentials not set in environment. Skipping R2 sync.")
+                    log.info("Set R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ACCOUNT_ID environment variables")
+                else:
+                    # Configure AWS CLI for R2
+                    subprocess.run(["aws", "configure", "set", "aws_access_key_id", r2_access_key], check=False)
+                    subprocess.run(["aws", "configure", "set", "aws_secret_access_key", r2_secret_key], check=False)
+                    subprocess.run(["aws", "configure", "set", "default.region", "auto"], check=False)
+                    
+                    # Sync photos
+                    r2_endpoint = f"https://{r2_account_id}.r2.cloudflarestorage.com"
+                    pix_local_dir = Path(args.photos).parent / "pix"
+                    
+                    if pix_local_dir.exists():
+                        cmd = [
+                            "aws", "s3", "sync",
+                            str(pix_local_dir),
+                            f"s3://{args.r2_bucket}/pix/",
+                            "--endpoint-url", r2_endpoint,
+                            "--only-show-errors"
+                        ]
+                        result = subprocess.run(cmd, capture_output=True, text=True)
+                        if result.returncode == 0:
+                            log.info("✓ R2 sync completed successfully")
+                        else:
+                            log.error("R2 sync failed: %s", result.stderr)
+                    else:
+                        log.warning("No pix directory found at %s", pix_local_dir)
+        except Exception as e:
+            log.error("R2 sync failed: %s", e)
 
     # ── Load tips for recent section ─────────────────────────────────────────
     # Resolve tips.json next to the input CSV so CI (private-data/checkins.csv →
@@ -617,6 +673,61 @@ if __name__ == "__main__":
               "{{RATINGS_COUNTS}}":        ratings_counts_json,
               "{{LISTS_COUNT}}":           str(len(json.loads(_lists_data_json))),
           })
+
+    # ── D1 Sync: Push trips metadata to Cloudflare D1 ────────────────────────
+    if args.sync_to_d1 and args.trips_out:
+        try:
+            import subprocess
+            log.info("Syncing trips metadata to Cloudflare D1 database: %s", args.d1_db)
+            
+            # Check if Wrangler is installed
+            result = subprocess.run(["npx", "wrangler", "--version"], capture_output=True, text=True)
+            if result.returncode != 0:
+                log.error("Wrangler not found. Please install it: npm install -g wrangler")
+            else:
+                # Get D1 credentials from environment
+                cf_token = os.environ.get("CF_D1_TOKEN")
+                cf_account_id = os.environ.get("CF_ACCOUNT_ID")
+                cf_d1_db_id = os.environ.get("CF_D1_DATABASE_ID")
+                
+                if not all([cf_token, cf_account_id, cf_d1_db_id]):
+                    log.warning("D1 credentials not set in environment. Skipping D1 sync.")
+                    log.info("Set CF_D1_TOKEN, CF_ACCOUNT_ID, CF_D1_DATABASE_ID environment variables")
+                else:
+                    # Use sync_to_d1.py script for full sync
+                    sync_script = _SCRIPT_DIR / "sync_to_d1.py"
+                    if sync_script.exists():
+                        cmd = [
+                            "python", str(sync_script),
+                            "--csv", args.input,
+                            "--trips", args.trips_out,
+                            "--full-sync"
+                        ]
+                        
+                        # Add optional files if they exist
+                        tips_file = Path(args.input).resolve().parent / "tips.json"
+                        if tips_file.exists():
+                            cmd.extend(["--tips", str(tips_file)])
+                        
+                        ratings_file = Path(args.input).resolve().parent / "venueRatings.json"
+                        if ratings_file.exists():
+                            cmd.extend(["--ratings", str(ratings_file)])
+                        
+                        lists_file = Path(args.input).resolve().parent / "lists.json"
+                        if lists_file.exists():
+                            cmd.extend(["--lists", str(lists_file)])
+                        
+                        log.info("Running: %s", " ".join(cmd))
+                        result = subprocess.run(cmd, capture_output=True, text=True)
+                        if result.returncode == 0:
+                            log.info("✓ D1 sync completed successfully")
+                            log.info(result.stdout)
+                        else:
+                            log.error("D1 sync failed: %s", result.stderr)
+                    else:
+                        log.error("sync_to_d1.py not found at %s", sync_script)
+        except Exception as e:
+            log.error("D1 sync failed: %s", e)
 
     if args.cat_list:
         save_category_list(rows, os.path.join(args.output_dir, "category_list.txt"))
