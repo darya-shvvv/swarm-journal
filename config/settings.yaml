@@ -1,24 +1,25 @@
-# Dashboard configuration
-# Edit this file to customise behaviour without touching Python code.
-
 trip_detection:
-  home_city: Minsk         # check-ins in this city are treated as "home" (not part of a trip)
+  home_city: Minsk         # default/fallback
   min_checkins: 5          # minimum check-ins outside home to count as a real trip
-  # Optional: path to a hand-curated trips YAML override file.
-  # When set, the automatic detection is skipped and these dates are used instead.
-  # trips_override_file: trips_manual.yaml
+  
+  # Time-based home city periods (inclusive start, exclusive end)
+  home_periods:
+    - start: ~              # beginning of time
+      end: 1763136000       # 2025-11-14 00:00:00 UTC (14.11.2025)
+      city: Hrodna
+    - start: 1763136000     # 2025-11-14 00:00:00 UTC
+      end: ~                # future
+      city: Minsk
 
 dashboard:
   title: "Check-in Journal"
   subtitle_source: "Foursquare"
-  foursquare_user_id: "29447180"   # used for Swarm checkin links
+  foursquare_user_id: "29447180"
 
 output:
   index_html: index.html
   trips_html: trips.html
 
-# Override the "first visit" year for a country in the New Countries by Year timeline.
-# Covers both legacy and current API spellings of the same country.
 new_country_year_overrides:
   "Türkiye": 2020
   "Turkey":  2020

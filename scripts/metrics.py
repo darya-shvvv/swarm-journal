@@ -124,6 +124,31 @@ def _localise(d: datetime, lat: float | None, lng: float | None, country: str = 
         return d
 
 
+# ── Home city helper with time-based periods ───────────────────────────────────
+
+def get_home_city_for_timestamp(ts: int, home_periods: list[dict[str, Any]]) -> str:
+    """
+    Determine which city was "home" at a given timestamp.
+    
+    Args:
+        ts: Unix timestamp
+        home_periods: List of dicts with 'start', 'end', 'city'
+                      start/end can be None for open boundaries
+    
+    Returns:
+        City name string
+    """
+    for period in home_periods:
+        start_ok = period.get('start') is None or ts >= period['start']
+        end_ok = period.get('end') is None or ts < period['end']
+        
+        if start_ok and end_ok:
+            return period['city']
+    
+    # Fallback to last period's city or "Minsk"
+    return home_periods[-1]['city'] if home_periods else "Minsk"
+
+
 # ── Trip detection ─────────────────────────────────────────────────────────────
 
 # Home-city venue categories that mark the start/end of a journey.
@@ -154,6 +179,7 @@ def _is_home_transport(row: dict, home_city: str) -> bool:
 def detect_trips(
     rows: list[dict],
     home_city: str = "Minsk",
+    home_periods: list[dict[str, Any]] | None = None,
     min_checkins: int = 5,
     trip_names: dict[str, str] | None = None,
     trip_exclude: set[int] | None = None,
@@ -163,6 +189,10 @@ def detect_trips(
 ) -> list[dict]:
     """
     Detect trips as consecutive non-home sequences of check-ins.
+    
+    If home_periods is provided (time-based home city periods), it overrides
+    the single home_city parameter. Each check-in's home city is determined
+    by its timestamp.
 
     trip_names: optional dict mapping str(start_ts) → custom trip name.
     Each trip is extended by one check-in on each side if the immediately
@@ -177,10 +207,18 @@ def detect_trips(
         key=lambda r: int(r["date"]),
     )
 
+    # Determine home city for each check-in based on timestamp
+    def get_home(row: dict) -> str:
+        if home_periods:
+            ts = int(row["date"])
+            return get_home_city_for_timestamp(ts, home_periods)
+        return home_city
+
+    # Split into trips based on per-check-in home city
     raw_trips: list[list[dict]] = []
     current: list[dict] = []
     for row in valid:
-        if row.get("city", "").strip() != home_city:
+        if row.get("city", "").strip() != get_home(row):
             current.append(row)
         else:
             if current:
@@ -218,11 +256,14 @@ def detect_trips(
     # extension may legitimately push them over (e.g. 4 non-home + 1 hub = 5).
     raw_trips = [t for t in raw_trips if len(t) >= max(1, min_checkins - 1)]
 
-    extended: list[list[dict]] = []
+    extended: list[tuple[list[dict], list[str], int]] = []
     for trip_rows in raw_trips:
         ext = list(trip_rows)
         fp = pos[id(trip_rows[0])]
         lp = pos[id(trip_rows[-1])]
+
+        # Get home city for the trip start (used for hub detection)
+        trip_home_city = get_home(trip_rows[0])
 
         # --- Departure ---
         # Scan backward through home-city AND blank-city rows within 24 h.
@@ -248,8 +289,8 @@ def detect_trips(
             row_city = valid[i].get("city", "").strip()
             if trip_start_ts - int(valid[i]["date"]) > _24H:
                 break
-            if row_city == home_city:
-                if _is_home_transport(valid[i], home_city):
+            if row_city == trip_home_city:
+                if _is_home_transport(valid[i], trip_home_city):
                     if dep_hub is None:
                         dep_hub = i  # first hub found (nearest to trip start)
                     else:
@@ -294,7 +335,7 @@ def detect_trips(
                 if trip_start_ts - row_ts > _24H:
                     break
                 row_city = valid[i].get("city", "").strip()
-                if row_city == home_city or row_city == "":
+                if row_city == trip_home_city or row_city == "":
                     cat = valid[i].get("category", "").strip()
                     row_date = datetime.fromtimestamp(row_ts, tz=timezone.utc).date()
                     if row_date == trip_start_utc_date:
@@ -330,7 +371,7 @@ def detect_trips(
             if int(valid[i]["date"]) - trip_end_ts > _24H:
                 break
             row_city = valid[i].get("city", "").strip()
-            if row_city == home_city and _is_home_transport(valid[i], home_city):
+            if row_city == trip_home_city and _is_home_transport(valid[i], trip_home_city):
                 arr_hub = i  # nearest hub — stop here
                 break
             i += 1
@@ -349,9 +390,9 @@ def detect_trips(
                 if int(valid[i]["date"]) - trip_end_ts > _24H:
                     break
                 row_city = valid[i].get("city", "").strip()
-                if row_city not in ("", home_city):
+                if row_city not in ("", trip_home_city):
                     break  # hit a different city — stop
-                if row_city == home_city:
+                if row_city == trip_home_city:
                     cat = valid[i].get("category", "").strip()
                     if cat == "Home (private)":
                         break  # already home — no Neighborhood extension needed
@@ -416,7 +457,7 @@ def detect_trips(
                 if current_start_ts - row_ts > _BIKE_DEP_WINDOW:
                     break
                 row_city = row.get("city", "").strip()
-                if row_city == home_city:
+                if row_city == trip_home_city:
                     bike_window.insert(0, j)  # keep in chronological order
                     j -= 1
                 elif row_city == "":
@@ -481,11 +522,11 @@ def detect_trips(
                 break
             row_city = valid[j].get("city", "").strip()
             row_cat  = valid[j].get("category", "").strip()
-            if row_city and row_city != home_city and row_cat not in _ROADSIDE_CATS:
+            if row_city and row_city != trip_home_city and row_cat not in _ROADSIDE_CATS:
                 break  # non-home city → new trip
             if row_cat in _NIGHTLIFE_CATS:
                 break  # afterparty → stop before it
-            if row_city == home_city and row_cat == "Home (private)":
+            if row_city == trip_home_city and row_cat == "Home (private)":
                 home_idx = j
                 break
             j += 1
@@ -626,6 +667,7 @@ def process(
     rows: list[dict],
     mappings: dict[str, Any],
     home_city: str = "Minsk",
+    home_periods: list[dict[str, Any]] | None = None,
     min_trip_checkins: int = 5,
     trip_names: dict[str, str] | None = None,
     trip_exclude: set[int] | None = None,
@@ -1111,11 +1153,21 @@ def process(
     ])
 
     # ── Trips ─────────────────────────────────────────────────────────────────
-    trips = detect_trips(rows, home_city=home_city, min_checkins=min_trip_checkins, trip_names=trip_names, trip_exclude=trip_exclude, trip_end_overrides=trip_end_overrides, trip_start_overrides=trip_start_overrides, trip_tags=trip_tags)
+    trips = detect_trips(
+        rows, 
+        home_city=home_city, 
+        home_periods=home_periods,
+        min_checkins=min_trip_checkins, 
+        trip_names=trip_names, 
+        trip_exclude=trip_exclude, 
+        trip_end_overrides=trip_end_overrides, 
+        trip_start_overrides=trip_start_overrides, 
+        trip_tags=trip_tags
+    )
 
     # ── Trip analytics (Group 3) ───────────────────────────────────────────────
     if trips:
-        _HOME_LAT, _HOME_LNG = 53.9045, 27.5615  # Minsk
+        _HOME_LAT, _HOME_LNG = 53.9045, 27.5615  # Minsk (fallback for distance calcs)
 
         # Duration histogram
         _dur_buckets = [1, 3, 7, 14, 28, 999]
