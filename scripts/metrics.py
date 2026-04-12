@@ -124,31 +124,6 @@ def _localise(d: datetime, lat: float | None, lng: float | None, country: str = 
         return d
 
 
-# ── Home city helper with time-based periods ───────────────────────────────────
-
-def get_home_city_for_timestamp(ts: int, home_periods: list[dict[str, Any]]) -> str:
-    """
-    Determine which city was "home" at a given timestamp.
-    
-    Args:
-        ts: Unix timestamp
-        home_periods: List of dicts with 'start', 'end', 'city'
-                      start/end can be None for open boundaries
-    
-    Returns:
-        City name string
-    """
-    for period in home_periods:
-        start_ok = period.get('start') is None or ts >= period['start']
-        end_ok = period.get('end') is None or ts < period['end']
-        
-        if start_ok and end_ok:
-            return period['city']
-    
-    # Fallback to last period's city or "Minsk"
-    return home_periods[-1]['city'] if home_periods else "Minsk"
-
-
 # ── Trip detection ─────────────────────────────────────────────────────────────
 
 # Home-city venue categories that mark the start/end of a journey.
@@ -179,7 +154,6 @@ def _is_home_transport(row: dict, home_city: str) -> bool:
 def detect_trips(
     rows: list[dict],
     home_city: str = "Minsk",
-    home_periods: list[dict[str, Any]] | None = None,
     min_checkins: int = 5,
     trip_names: dict[str, str] | None = None,
     trip_exclude: set[int] | None = None,
@@ -189,10 +163,6 @@ def detect_trips(
 ) -> list[dict]:
     """
     Detect trips as consecutive non-home sequences of check-ins.
-    
-    If home_periods is provided (time-based home city periods), it overrides
-    the single home_city parameter. Each check-in's home city is determined
-    by its timestamp.
 
     trip_names: optional dict mapping str(start_ts) → custom trip name.
     Each trip is extended by one check-in on each side if the immediately
@@ -207,18 +177,10 @@ def detect_trips(
         key=lambda r: int(r["date"]),
     )
 
-    # Determine home city for each check-in based on timestamp
-    def get_home(row: dict) -> str:
-        if home_periods:
-            ts = int(row["date"])
-            return get_home_city_for_timestamp(ts, home_periods)
-        return home_city
-
-    # Split into trips based on per-check-in home city
     raw_trips: list[list[dict]] = []
     current: list[dict] = []
     for row in valid:
-        if row.get("city", "").strip() != get_home(row):
+        if row.get("city", "").strip() != home_city:
             current.append(row)
         else:
             if current:
@@ -256,14 +218,11 @@ def detect_trips(
     # extension may legitimately push them over (e.g. 4 non-home + 1 hub = 5).
     raw_trips = [t for t in raw_trips if len(t) >= max(1, min_checkins - 1)]
 
-    extended: list[tuple[list[dict], list[str], int]] = []
+    extended: list[list[dict]] = []
     for trip_rows in raw_trips:
         ext = list(trip_rows)
         fp = pos[id(trip_rows[0])]
         lp = pos[id(trip_rows[-1])]
-
-        # Get home city for the trip start (used for hub detection)
-        trip_home_city = get_home(trip_rows[0])
 
         # --- Departure ---
         # Scan backward through home-city AND blank-city rows within 24 h.
@@ -289,8 +248,8 @@ def detect_trips(
             row_city = valid[i].get("city", "").strip()
             if trip_start_ts - int(valid[i]["date"]) > _24H:
                 break
-            if row_city == trip_home_city:
-                if _is_home_transport(valid[i], trip_home_city):
+            if row_city == home_city:
+                if _is_home_transport(valid[i], home_city):
                     if dep_hub is None:
                         dep_hub = i  # first hub found (nearest to trip start)
                     else:
@@ -335,7 +294,7 @@ def detect_trips(
                 if trip_start_ts - row_ts > _24H:
                     break
                 row_city = valid[i].get("city", "").strip()
-                if row_city == trip_home_city or row_city == "":
+                if row_city == home_city or row_city == "":
                     cat = valid[i].get("category", "").strip()
                     row_date = datetime.fromtimestamp(row_ts, tz=timezone.utc).date()
                     if row_date == trip_start_utc_date:
@@ -371,7 +330,7 @@ def detect_trips(
             if int(valid[i]["date"]) - trip_end_ts > _24H:
                 break
             row_city = valid[i].get("city", "").strip()
-            if row_city == trip_home_city and _is_home_transport(valid[i], trip_home_city):
+            if row_city == home_city and _is_home_transport(valid[i], home_city):
                 arr_hub = i  # nearest hub — stop here
                 break
             i += 1
@@ -390,9 +349,9 @@ def detect_trips(
                 if int(valid[i]["date"]) - trip_end_ts > _24H:
                     break
                 row_city = valid[i].get("city", "").strip()
-                if row_city not in ("", trip_home_city):
+                if row_city not in ("", home_city):
                     break  # hit a different city — stop
-                if row_city == trip_home_city:
+                if row_city == home_city:
                     cat = valid[i].get("category", "").strip()
                     if cat == "Home (private)":
                         break  # already home — no Neighborhood extension needed
@@ -457,7 +416,7 @@ def detect_trips(
                 if current_start_ts - row_ts > _BIKE_DEP_WINDOW:
                     break
                 row_city = row.get("city", "").strip()
-                if row_city == trip_home_city:
+                if row_city == home_city:
                     bike_window.insert(0, j)  # keep in chronological order
                     j -= 1
                 elif row_city == "":
@@ -522,11 +481,11 @@ def detect_trips(
                 break
             row_city = valid[j].get("city", "").strip()
             row_cat  = valid[j].get("category", "").strip()
-            if row_city and row_city != trip_home_city and row_cat not in _ROADSIDE_CATS:
+            if row_city and row_city != home_city and row_cat not in _ROADSIDE_CATS:
                 break  # non-home city → new trip
             if row_cat in _NIGHTLIFE_CATS:
                 break  # afterparty → stop before it
-            if row_city == trip_home_city and row_cat == "Home (private)":
+            if row_city == home_city and row_cat == "Home (private)":
                 home_idx = j
                 break
             j += 1
@@ -646,8 +605,6 @@ def detect_trips(
                 "checkin_count":  len(trip_rows),
                 "unique_places":  len(seen_v),
                 "checkins":       checkins,
-                "coords":         [[c["lat"], c["lng"]] for c in checkins if c["lat"] and c["lng"]],
-                "unique_pts":     unique_pts,
                 "top_cats":       [[c, n] for c, n in trip_cats.most_common(10)],
                 "tags":           _resolved_tags if _resolved_tags else (trip_tags or {}).get(int(trip_rows[0]["date"]), []),
             }
@@ -667,7 +624,6 @@ def process(
     rows: list[dict],
     mappings: dict[str, Any],
     home_city: str = "Minsk",
-    home_periods: list[dict[str, Any]] | None = None,
     min_trip_checkins: int = 5,
     trip_names: dict[str, str] | None = None,
     trip_exclude: set[int] | None = None,
@@ -795,28 +751,74 @@ def process(
             explorer[display_name] = [[d["name"], d["city"], d["count"], d["vid"]] for d in top50]
     explorer_cats = [k for k in explorer_groups if k in explorer]
 
-    # ── Unique places ─────────────────────────────────────────────────────────
-    seen_ids: set[str] = set()
-    seen_coords: set[tuple] = set()
-    unique_places: list = []
+    # ── Unique places (enriched: lat, lng, name, count, years, cat, city) ──
+    # First pass: accumulate per-venue stats keyed by venue_id
+    _vp: dict = {}  # venue_id → {lat, lng, name, count, last_ts, years, category, city}
+    _vp_coord: dict = {}  # (lat3,lng3) → same shape, for no-id rows
     for r in rows:
         vid = r.get("venue_id", "").strip()
         try:
-            lat, lng = round(float(r["lat"]), 5), round(float(r["lng"]), 5)
+            lat_f, lng_f = float(r["lat"]), float(r["lng"])
             has_coords = True
         except (ValueError, KeyError, TypeError):
             has_coords = False
-
+        ts = int(r["date"]) if r.get("date") else 0
+        yr = datetime.fromtimestamp(ts, tz=timezone.utc).year if ts else None
+        raw_cat = r.get("category", "").strip()
         if vid:
-            if vid not in seen_ids:
-                seen_ids.add(vid)
-                if has_coords:
-                    unique_places.append([lat, lng, r.get("venue", "").strip()])
+            if vid not in _vp:
+                _vp[vid] = {
+                    "lat": lat_f if has_coords else 0.0,
+                    "lng": lng_f if has_coords else 0.0,
+                    "name": r.get("venue", "").strip(),
+                    "count": 0, "last_ts": 0, "years": set(),
+                    "cat": raw_cat,
+                    "city": r.get("city", "").strip(),
+                    "has_coords": has_coords,
+                }
+            e = _vp[vid]
+            e["count"] += 1
+            if ts > e["last_ts"]:
+                e["last_ts"] = ts
+            if yr:
+                e["years"].add(yr)
+            if not e["cat"] and raw_cat:
+                e["cat"] = raw_cat
+            if not e["city"] and r.get("city", "").strip():
+                e["city"] = r.get("city", "").strip()
         elif has_coords:
-            key = (lat, lng)
-            if key not in seen_coords:
-                seen_coords.add(key)
-                unique_places.append([lat, lng, r.get("venue", "").strip()])
+            key = (round(lat_f, 3), round(lng_f, 3))
+            if key not in _vp_coord:
+                _vp_coord[key] = {
+                    "lat": lat_f, "lng": lng_f,
+                    "name": r.get("venue", "").strip(),
+                    "count": 0, "last_ts": 0, "years": set(),
+                    "cat": raw_cat,
+                    "city": r.get("city", "").strip(),
+                    "has_coords": True,
+                }
+            e = _vp_coord[key]
+            e["count"] += 1
+            if ts > e["last_ts"]:
+                e["last_ts"] = ts
+            if yr:
+                e["years"].add(yr)
+
+    seen_ids: set[str] = set(_vp.keys())
+    seen_coords: set[tuple] = set(_vp_coord.keys())
+    unique_places: list = []
+    for e in _vp.values():
+        if not e["has_coords"]:
+            continue
+        unique_places.append([
+            round(e["lat"], 5), round(e["lng"], 5),
+            e["name"], e["count"], sorted(e["years"]), e["cat"], e["city"],
+        ])
+    for e in _vp_coord.values():
+        unique_places.append([
+            round(e["lat"], 5), round(e["lng"], 5),
+            e["name"], e["count"], sorted(e["years"]), e["cat"], e["city"],
+        ])
 
     unique_count = len(seen_ids) + len(seen_coords)
 
@@ -847,10 +849,10 @@ def process(
         except (ValueError, KeyError, TypeError):
             pass
 
-    # ── Venues heatmap: one point per ~111m cell, weight = log(visit count) ──
-    # Grouping at 3dp merges GPS micro-jitter; log dampens Minsk dominance.
+    # ── Venues heatmap + per-year + per-catgroup ─────────────────────────────
     import math as _math
-    _vh: dict = {}  # venue_id → (lat, lng, count)
+    # _vh: venue_id → [lat, lng, total_count, {year: count}, cat_group]
+    _vh: dict = {}
     for r in rows:
         vid = r.get("venue_id", "").strip()
         if not vid:
@@ -859,14 +861,55 @@ def process(
             lat_f, lng_f = float(r["lat"]), float(r["lng"])
         except (ValueError, KeyError, TypeError):
             continue
+        ts = int(r["date"]) if r.get("date") else 0
+        yr = datetime.fromtimestamp(ts, tz=timezone.utc).year if ts else 0
+        cg = categorize(r.get("category", "").strip()) or ""
         if vid not in _vh:
-            _vh[vid] = [lat_f, lng_f, 0]
+            _vh[vid] = [lat_f, lng_f, 0, {}, cg]
         _vh[vid][2] += 1
+        if yr:
+            _vh[vid][3][yr] = _vh[vid][3].get(yr, 0) + 1
+        if not _vh[vid][4] and cg:
+            _vh[vid][4] = cg
+
     _vh_max = _math.log1p(max(v[2] for v in _vh.values())) if _vh else 1.0
+
     venues_heatmap: list = [
         [v[0], v[1], round(_math.log1p(v[2]) / _vh_max, 4)]
         for v in _vh.values()
     ]
+
+    # Per-year heatmaps: {year: [[lat, lng, w], ...]}
+    _yr_counts: dict[int, dict] = {}  # year → {vid: count}
+    for vid, v in _vh.items():
+        for yr, cnt in v[3].items():
+            if yr not in _yr_counts:
+                _yr_counts[yr] = {}
+            _yr_counts[yr][vid] = cnt
+    venues_by_year: dict = {}
+    for yr, vc in _yr_counts.items():
+        _max = _math.log1p(max(vc.values())) if vc else 1.0
+        venues_by_year[str(yr)] = [
+            [_vh[vid][0], _vh[vid][1], round(_math.log1p(cnt) / _max, 4)]
+            for vid, cnt in vc.items()
+        ]
+
+    # Per-catgroup heatmaps: {catgroup: [[lat, lng, w], ...]}
+    _cg_counts: dict[str, dict] = {}  # catgroup → {vid: count}
+    for vid, v in _vh.items():
+        cg = v[4]
+        if not cg:
+            continue
+        if cg not in _cg_counts:
+            _cg_counts[cg] = {}
+        _cg_counts[cg][vid] = v[2]
+    venues_by_catgrp: dict = {}
+    for cg, vc in _cg_counts.items():
+        _max = _math.log1p(max(vc.values())) if vc else 1.0
+        venues_by_catgrp[cg] = [
+            [_vh[vid][0], _vh[vid][1], round(_math.log1p(cnt) / _max, 4)]
+            for vid, cnt in vc.items()
+        ]
 
     # ── Companions ────────────────────────────────────────────────────────────
     comp_raw: Counter = Counter()
@@ -1153,21 +1196,11 @@ def process(
     ])
 
     # ── Trips ─────────────────────────────────────────────────────────────────
-    trips = detect_trips(
-        rows, 
-        home_city=home_city, 
-        home_periods=home_periods,
-        min_checkins=min_trip_checkins, 
-        trip_names=trip_names, 
-        trip_exclude=trip_exclude, 
-        trip_end_overrides=trip_end_overrides, 
-        trip_start_overrides=trip_start_overrides, 
-        trip_tags=trip_tags
-    )
+    trips = detect_trips(rows, home_city=home_city, min_checkins=min_trip_checkins, trip_names=trip_names, trip_exclude=trip_exclude, trip_end_overrides=trip_end_overrides, trip_start_overrides=trip_start_overrides, trip_tags=trip_tags)
 
     # ── Trip analytics (Group 3) ───────────────────────────────────────────────
     if trips:
-        _HOME_LAT, _HOME_LNG = 53.9045, 27.5615  # Minsk (fallback for distance calcs)
+        _HOME_LAT, _HOME_LNG = 53.9045, 27.5615  # Minsk
 
         # Duration histogram
         _dur_buckets = [1, 3, 7, 14, 28, 999]
@@ -1313,10 +1346,13 @@ def process(
         "venues":             venues_list,
         "cat_groups":         cat_groups.most_common(),
         "explorer_cats":      explorer_cats,
+        "explorer_groups":    explorer_groups,
         "explorer":           explorer,
         "unique_places":      unique_places,
         "all_coords":         all_coords,
         "venues_heatmap":     venues_heatmap,
+        "venues_by_year":     venues_by_year,
+        "venues_by_catgrp":   venues_by_catgrp,
         "companions":         companions,
         "solo_vs_group_by_year": solo_vs_group_by_year,
         "solo_vs_group_totals":  solo_vs_group_totals,

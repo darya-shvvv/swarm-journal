@@ -6,17 +6,17 @@ Repository guidance for Claude Code.
 
 ### Build dashboard (recommended Python)
 ```bash
-/c/Users/toouur/AppData/Local/Programs/Python/Python312/python.exe scripts/build.py \
-  --input C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv \
+/c/Users/dshvvv/AppData/Local/Programs/Python/Python312/python.exe scripts/build.py \
+  --input C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
   --config-dir config --output-dir .
 ```
 
 ### Build with photos
 ```bash
-/c/Users/toouur/AppData/Local/Programs/Python/Python312/python.exe scripts/build.py \
-  --input C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv \
+/c/Users/dshvvv/AppData/Local/Programs/Python/Python312/python.exe scripts/build.py \
+  --input C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
   --config-dir config --output-dir . \
-  --photos C:/Users/toouur/Documents/GitHub/foursquare-data/photos.json \
+  --photos C:/Users/dshvvv/Documents/GitHub/foursquare-data/photos.json \
   --pix-url "https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix"
 ```
 
@@ -34,12 +34,12 @@ python scripts/fetch_tips.py --full --sweep --csv data/checkins.csv --out data/t
 
 ### Fetch photos from export
 ```bash
-/c/Users/toouur/AppData/Local/Programs/Python/Python312/python.exe scripts/fetch_photos.py \
+/c/Users/dshvvv/AppData/Local/Programs/Python/Python312/python.exe scripts/fetch_photos.py \
   --token "$FOURSQUARE_TOKEN" \
   --export path/to/export/photos/ \
-  --csv C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv \
-  --photos C:/Users/toouur/Documents/GitHub/foursquare-data/photos.json \
-  --pix-dir C:/Users/toouur/Documents/GitHub/foursquare-data/pix/
+  --csv C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
+  --photos C:/Users/dshvvv/Documents/GitHub/foursquare-data/photos.json \
+  --pix-dir C:/Users/dshvvv/Documents/GitHub/foursquare-data/pix/
 ```
 
 ### D1 sync (manual / local)
@@ -48,10 +48,10 @@ export CF_D1_TOKEN=your_token
 export CF_ACCOUNT_ID=your_account_id
 export CF_D1_DATABASE_ID=52210bd9-a019-415e-8f12-6a73b42278f9
 python scripts/sync_to_d1.py \
-  --csv     C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv \
-  --tips    C:/Users/toouur/Documents/GitHub/foursquare-data/tips.json \
-  --ratings C:/Users/toouur/Documents/GitHub/foursquare-data/venueRatings.json \
-  --lists   C:/Users/toouur/Documents/GitHub/foursquare-data/lists.json \
+  --csv     C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
+  --tips    C:/Users/dshvvv/Documents/GitHub/foursquare-data/tips.json \
+  --ratings C:/Users/dshvvv/Documents/GitHub/foursquare-data/venueRatings.json \
+  --lists   C:/Users/dshvvv/Documents/GitHub/foursquare-data/lists.json \
   --trips   trips_meta.json
 ```
 
@@ -62,10 +62,10 @@ need to be removed (un-rated venues, deleted tips, list overhaul).
 ```bash
 # Force resync individual tables (combine as needed):
 python scripts/sync_to_d1.py \
-  --csv     C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv \
-  --tips    C:/Users/toouur/Documents/GitHub/foursquare-data/tips.json \
-  --ratings C:/Users/toouur/Documents/GitHub/foursquare-data/venueRatings.json \
-  --lists   C:/Users/toouur/Documents/GitHub/foursquare-data/lists.json \
+  --csv     C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
+  --tips    C:/Users/dshvvv/Documents/GitHub/foursquare-data/tips.json \
+  --ratings C:/Users/dshvvv/Documents/GitHub/foursquare-data/venueRatings.json \
+  --lists   C:/Users/dshvvv/Documents/GitHub/foursquare-data/lists.json \
   --trips   trips_meta.json \
   --force-ratings --force-tips --force-trips --force-lists
 # Or via GitHub Actions: Actions → "Force resync D1 tables" → tick the tables to reset
@@ -77,17 +77,17 @@ Run after `sync_venue_changes.py` patches a new CSV snapshot. This applies targe
 ```bash
 # 1. Diff old vs new snapshot, patch tips.json, write diffs JSON
 python scripts/sync_venue_changes.py \
-  --old C:/Users/toouur/Documents/GitHub/foursquare-data/archive/checkins_PREV.csv \
-  --new C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv \
-  --tips C:/Users/toouur/Documents/GitHub/foursquare-data/tips.json \
+  --old C:/Users/dshvvv/Documents/GitHub/foursquare-data/archive/checkins_PREV.csv \
+  --new C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
+  --tips C:/Users/dshvvv/Documents/GitHub/foursquare-data/tips.json \
   --out  /tmp/venue_diffs.json
 
 # 2. Apply diffs to D1 (targeted UPDATE + venue_changes audit table)
 python scripts/sync_to_d1.py \
-  --csv     C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv \
-  --tips    C:/Users/toouur/Documents/GitHub/foursquare-data/tips.json \
-  --ratings C:/Users/toouur/Documents/GitHub/foursquare-data/venueRatings.json \
-  --lists   C:/Users/toouur/Documents/GitHub/foursquare-data/lists.json \
+  --csv     C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
+  --tips    C:/Users/dshvvv/Documents/GitHub/foursquare-data/tips.json \
+  --ratings C:/Users/dshvvv/Documents/GitHub/foursquare-data/venueRatings.json \
+  --lists   C:/Users/dshvvv/Documents/GitHub/foursquare-data/lists.json \
   --trips   trips_meta.json \
   --venue-changes /tmp/venue_diffs.json
 ```
@@ -107,7 +107,7 @@ python -m http.server 8000
 
 - Site is static HTML generated by scripts and committed to repo.
 - Primary private data repo:
-  `C:\Users\toouur\Documents\GitHub\foursquare-data`
+  `C:\Users\dshvvv\Documents\GitHub\foursquare-data`
   (contains `checkins.csv`, `tips.json`, `photos.json`, `pix/`).
 - Main orchestrator: `scripts/build.py`.
 - Core pipeline:

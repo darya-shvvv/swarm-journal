@@ -228,7 +228,7 @@ def main() -> None:
     else:
         candidates = [
             Path("data/venueRatings.json"),
-            Path("C:/Users/toouur/Documents/GitHub/foursquare-data/venueRatings.json"),
+            Path("C:/Users/dshvvv/Documents/GitHub/foursquare-data/venueRatings.json"),
         ]
         out_path = next((p for p in candidates if p.exists()), candidates[0])
 
@@ -249,7 +249,7 @@ def main() -> None:
         else:
             csv_candidates = [
                 Path("data/checkins.csv"),
-                Path("C:/Users/toouur/Documents/GitHub/foursquare-data/checkins.csv"),
+                Path("C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv"),
             ]
             csv_path = next((p for p in csv_candidates if p.exists()), csv_candidates[0])
 

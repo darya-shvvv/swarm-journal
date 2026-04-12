@@ -135,7 +135,7 @@ def main() -> None:
     else:
         candidates = [
             Path("data/venueRatings.json"),
-            Path("C:/Users/toouur/Documents/GitHub/foursquare-data/venueRatings.json"),
+            Path("C:/Users/dshvvv/Documents/GitHub/foursquare-data/venueRatings.json"),
         ]
         out_path = next((p for p in candidates if p.exists()), candidates[0])
 

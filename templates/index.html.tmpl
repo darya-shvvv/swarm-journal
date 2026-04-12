@@ -53,6 +53,7 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
 .card.full{grid-column:1/-1;}
 .card-title{font-family:'DM Mono',monospace;font-size:0.62rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .card-title em{opacity:0.5;font-style:normal;}
+.section-insight{display:block;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--muted);font-style:italic;margin-top:-10px;margin-bottom:14px;line-height:1.5;}
 
 /* ── TABS ── */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;}
@@ -98,6 +99,15 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
 .map-wrap{position:relative;}
 #map{height:600px;border-radius:8px;}
 .map-status{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(11,13,19,0.9);border:1px solid var(--border);border-radius:8px;padding:7px 16px;font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--gold);pointer-events:none;transition:opacity 0.5s;white-space:nowrap;z-index:999;}
+.map-filters{display:flex;flex-direction:column;gap:7px;padding:10px 0 8px;margin-bottom:6px;border-bottom:1px solid var(--border);}
+.map-filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.map-filter-lbl{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap;min-width:52px;flex-shrink:0;}
+.mf-pill{padding:4px 11px;border-radius:14px;font-size:.68rem;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--muted);transition:all .15s;white-space:nowrap;}
+.mf-pill.active{background:rgba(232,184,109,.12);border-color:var(--gold);color:var(--gold);}
+.mf-pill:hover:not(.active){border-color:rgba(232,184,109,.35);color:var(--text);}
+.map-dot-popup .leaflet-popup-content-wrapper{background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.55);color:var(--text);}
+.map-dot-popup .leaflet-popup-tip{background:var(--card);}
+.map-dot-popup .leaflet-popup-content{margin:10px 14px;}
 
 /* ── GITHUB CALENDAR HEATMAP ── */
 .heatmap-outer{overflow-x:auto;padding-bottom:8px;}
@@ -482,6 +492,7 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
 <div class="grid">
   <div class="card full" id="s-timeline">
     <div class="card-title">Travel Timeline <em>&middot; trips away from Minsk &middot; click a bar for details</em></div>
+    <span class="section-insight" id="insight-timeline"></span>
     <div id="timelineCont"></div>
   </div>
 
@@ -509,6 +520,7 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
         <div class="tab" onclick="switchCountryTab('places',this)">By Unique Places</div>
       </div>
     </div>
+    <span class="section-insight" id="insight-countries"></span>
     <div class="pane active" id="pane-checkins"><div class="country-table" id="countriesCheckins"></div></div>
     <div class="pane" id="pane-places"><div class="country-table" id="countriesPlaces"></div></div>
   </div>
@@ -522,6 +534,7 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
         <div class="tab" id="tabCityWorld" onclick="switchCityTab('world',this)">World Cities</div>
       </div>
     </div>
+    <span class="section-insight" id="insight-cities"></span>
 
     <!-- Tab: By check-ins -->
     <div id="paneCityCheckins" class="city-pane">
@@ -571,6 +584,7 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
 
   <div class="card" id="s-venues">
     <div class="card-title">Top 500 Venues <em>&middot;&nbsp;unique by venue&nbsp;&middot;&nbsp; scroll &amp; search</em> <a href="venues.html" style="font-size:.65rem;color:var(--gold);text-decoration:none;font-family:'DM Mono',monospace;opacity:.8;">↗ full list</a></div>
+    <span class="section-insight" id="insight-venues"></span>
     <input class="search-box" type="text" placeholder="Search venues..." oninput="filterList('venuesList',this.value)">
     <div class="bar-list" id="venuesList"></div>
   </div>
@@ -601,6 +615,17 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
         <div class="tab" id="tabCountries" onclick="switchMap('countries')">Countries &middot; flags</div>
       </div>
     </div>
+    <span class="section-insight" id="insight-map"></span>
+    <div class="map-filters" id="mapFilters" style="display:none">
+      <div class="map-filter-row">
+        <span class="map-filter-lbl">Year</span>
+        <div id="mapYearPills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+      <div class="map-filter-row">
+        <span class="map-filter-lbl">Category</span>
+        <div id="mapCatPills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+    </div>
     <div class="map-wrap">
       <div id="map" style="display:block"></div>
       <div id="cityMap" style="display:none;height:600px;border-radius:8px;"></div>
@@ -612,6 +637,74 @@ header .sub{margin-top:8px;font-family:'DM Mono',monospace;font-size:0.72rem;let
 
 <script>
 const S={{STATS}};
+
+// ── Section insight lines ───────────────────────────────────────────────────
+(function(){
+  function si(id, txt){ var el=document.getElementById(id); if(el) el.textContent=txt; }
+
+  // Timeline insight — S.by_year: [['2012',251],…], S.trips_count, S.by_dow: [[0,N],…]
+  var byYear = S.by_year || [];
+  if (byYear.length) {
+    var first = byYear[0];
+    var peak  = byYear.reduce(function(a,b){ return b[1]>a[1]?b:a; });
+    var ratio = first[1] > 0 ? Math.round(peak[1] / first[1]) : 1;
+    var DOW   = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    var dow   = S.by_dow || [];
+    var peakD = dow.length ? dow.reduce(function(a,b){ return b[1]>a[1]?b:a; }) : [5,0];
+    si('insight-timeline',
+      first[0] + ' started with ' + first[1].toLocaleString() + ' check-ins. '
+      + peak[0] + ' peaked at ' + peak[1].toLocaleString() + ' — ' + ratio + '× more active. '
+      + S.trips_count + ' trips documented, ' + (DOW[peakD[0]] || 'Saturday') + 's most logged.');
+  }
+
+  // Countries insight — S.countries: [['Belarus',22703],…], S.new_country_by_year
+  var ctr = S.countries || [];
+  if (ctr.length) {
+    var topCtry    = ctr[0];
+    var topCtryPct = Math.round(topCtry[1] / (S.total||1) * 100);
+    var ncyLen     = (S.new_country_by_year || []).length;
+    si('insight-countries',
+      ctr.length + ' countries — roughly 1 in 3 on Earth. '
+      + topCtry[0] + ' anchors ' + topCtryPct + '% of all check-ins. '
+      + ncyLen + ' years brought at least one first-time stamp somewhere new.');
+  }
+
+  // Cities insight — S.cities: [['Minsk',19319,'Belarus'],…]
+  var cities = S.cities || [];
+  if (cities.length && ctr.length) {
+    var topCity    = cities[0];
+    var cityPct    = Math.round(topCity[1] / (S.total||1) * 100);
+    si('insight-cities',
+      cities.length.toLocaleString() + ' cities across ' + ctr.length + ' countries. '
+      + topCity[0] + ' holds ' + cityPct + '% of all check-ins — '
+      + 'the gravitational center around which ' + (cities.length - 1).toLocaleString() + ' others orbit.');
+  }
+
+  // Venues insight — S.solo_vs_group_totals: [solo,group], S.venue_loyalty: [[name,city,[yrs],visits],…]
+  var svt     = S.solo_vs_group_totals || [0,0];
+  var soloPct = svt[0]+svt[1] > 0 ? Math.round(svt[0] / (svt[0]+svt[1]) * 100) : 77;
+  var vl      = S.venue_loyalty || [];
+  var loyal   = vl[0];
+  var venLine = (S.unique_places_count||0).toLocaleString() + ' unique places discovered. ';
+  if (loyal && loyal[2]) {
+    venLine += '\u201c' + loyal[0] + '\u201d: ' + loyal[3].toLocaleString()
+      + ' visits across ' + loyal[2].length + ' consecutive years. ';
+  }
+  venLine += soloPct + '% of all check-ins: solo.';
+  si('insight-venues', venLine);
+
+  // Map insight — S.total_km, S.by_hour: [[h,N],…], S.cat_groups: [['Nature',N],…]
+  var earthX = Math.round((S.total_km||0) / 40075);
+  var bh     = S.by_hour || [];
+  var peakH  = bh.length ? bh.reduce(function(a,b){ return b[1]>a[1]?b:a; }) : [13,0];
+  var cg     = S.cat_groups || [];
+  var topCat = cg[0] || ['Nature & Outdoors', 15193];
+  si('insight-map',
+    Math.round(S.total_km||0).toLocaleString() + '\u202fkm traveled — ' + earthX + '\u00d7 around Earth. '
+    + 'Peak hour: ' + peakH[0] + ':00. '
+    + 'Top category: ' + topCat[0] + ' (' + topCat[1].toLocaleString() + ' check-ins).');
+})();
+
 // Update map tab labels with actual counts
 document.getElementById('tabHeat').textContent='Heatmap · '+S.total.toLocaleString()+' check-ins';
 document.getElementById('tabDots').textContent='Dots · '+S.unique_places_count.toLocaleString()+' unique places';
@@ -1769,7 +1862,8 @@ const map=L.map('map',{preferCanvas:true}).setView([30,15],2);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
   attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
 const status=document.getElementById('mapStatus');
-let heatLayer=null,dotLayer=null,cityDotLayer=null,currentMode='heat';
+let heatLayer=null,dotLayerFull=null,dotLayerFilt=null,cityDotLayer=null,currentMode='heat';
+let mfYear='all',mfCat='all';
 
 // Heatmap: pre-computed p75-capped weights from Python (one point per ~330m cell).
 // radius=14, blur=10 keeps individual cities distinct at world zoom.
@@ -1781,18 +1875,101 @@ heatLayer=L.heatLayer(S.venues_heatmap,{
 status.textContent='Heatmap · '+S.unique_places.length.toLocaleString()+' unique places';
 setTimeout(()=>status.style.opacity='0',2800);
 
+function _dotMarker(p){
+  // p = [lat, lng, name, count, years[], cat, city]
+  const nm=esc(p[2]||''),cnt=p[3]||1,yrs=Array.isArray(p[4])?p[4]:[],cat=esc(p[5]||''),city=esc(p[6]||'');
+  const yrLabel=yrs.length>1?yrs[0]+'\u2013'+yrs[yrs.length-1]:yrs.length===1?String(yrs[0]):'';
+  const popup='<div style="font-family:\'DM Sans\',sans-serif;min-width:130px;max-width:200px">'
+    +'<div style="font-weight:600;font-size:.84rem;line-height:1.3;margin-bottom:3px">'+nm+'</div>'
+    +(city?'<div style="font-size:.71rem;color:#a0a8c0;margin-bottom:1px">'+city+'</div>':'')
+    +(cat?'<div style="font-size:.71rem;color:#a0a8c0;margin-bottom:4px">'+cat+'</div>':'')
+    +'<div style="display:flex;gap:10px;font-size:.72rem">'
+    +'<span style="color:#e8b86d;font-weight:600">'+cnt.toLocaleString()+' visit'+(cnt===1?'':'s')+'</span>'
+    +(yrLabel?'<span style="color:#a0a8c0">'+yrLabel+'</span>':'')
+    +'</div></div>';
+  return L.circleMarker([p[0],p[1]],{radius:3,color:'#e8b86d',fillColor:'#e8b86d',fillOpacity:0.65,weight:0})
+    .bindPopup(popup,{maxWidth:220,className:'map-dot-popup'});
+}
+
 function buildDots(){
-  if(dotLayer)return; status.style.opacity='1';
-  const pts=S.unique_places; let i=0; dotLayer=L.layerGroup();
+  if(dotLayerFull){_showDotLayer();return;}
+  status.style.opacity='1';
+  const pts=S.unique_places; let i=0; dotLayerFull=L.layerGroup();
   function chunk(){
     const end=Math.min(i+3000,pts.length);
-    for(;i<end;i++) L.circleMarker([pts[i][0],pts[i][1]],{radius:3,color:'#e8b86d',fillColor:'#e8b86d',fillOpacity:0.65,weight:0})
-      .bindTooltip(esc(pts[i][2]||''),{direction:'top',opacity:0.9}).addTo(dotLayer);
+    for(;i<end;i++) _dotMarker(pts[i]).addTo(dotLayerFull);
     status.textContent='Plotting '+i.toLocaleString()+' / '+pts.length.toLocaleString()+'...';
     if(i<pts.length)requestAnimationFrame(chunk);
-    else{if(currentMode==='dots')dotLayer.addTo(map);status.style.opacity='0';}
+    else{_showDotLayer();status.style.opacity='0';}
   }
   requestAnimationFrame(chunk);
+}
+
+function _showDotLayer(){
+  if(currentMode!=='dots')return;
+  if(mfYear==='all'&&mfCat==='all'){
+    if(dotLayerFilt){try{map.removeLayer(dotLayerFilt);}catch(e){}}
+    dotLayerFull.addTo(map);
+  } else {
+    _applyDotFilter();
+  }
+}
+
+let _explorerCatSets=null;
+function _getExplorerCatSets(){
+  if(_explorerCatSets)return _explorerCatSets;
+  _explorerCatSets={};
+  const eg=S.explorer_groups||{};
+  for(const[k,v]of Object.entries(eg))_explorerCatSets[k]=new Set(v);
+  return _explorerCatSets;
+}
+function _applyDotFilter(){
+  if(dotLayerFull)try{map.removeLayer(dotLayerFull);}catch(e){}
+  if(dotLayerFilt)try{map.removeLayer(dotLayerFilt);}catch(e){}
+  const catSets=_getExplorerCatSets();
+  const pts=S.unique_places.filter(p=>{
+    const yrOk=mfYear==='all'||(Array.isArray(p[4])&&p[4].includes(+mfYear));
+    const catOk=mfCat==='all'||(catSets[mfCat]&&catSets[mfCat].has(p[5]));
+    return yrOk&&catOk;
+  });
+  dotLayerFilt=L.layerGroup();
+  pts.forEach(p=>_dotMarker(p).addTo(dotLayerFilt));
+  if(currentMode==='dots')dotLayerFilt.addTo(map);
+  const parts=[];
+  if(mfCat!=='all')parts.push(mfCat);
+  if(mfYear!=='all')parts.push('visited in '+mfYear);
+  status.textContent=pts.length.toLocaleString()+' places'+(parts.length?' · '+parts.join(' · '):'');
+  status.style.opacity='1';setTimeout(()=>status.style.opacity='0',3000);
+}
+
+// ── Map dots filters (year / category) ────────────────────────────────────────
+function _setPillActive(container,val){
+  container.querySelectorAll('.mf-pill').forEach(el=>el.classList.toggle('active',el.dataset.val===val));
+}
+
+function buildMapFilters(){
+  const yc=document.getElementById('mapYearPills');
+  if(yc&&!yc.childNodes.length){
+    const years=(S.by_year||[]).map(r=>r[0]).sort((a,b)=>a-b);
+    [['all','All'],...years.map(y=>[String(y),String(y)])].forEach(([v,l])=>{
+      const b=document.createElement('button');
+      b.className='mf-pill'+(v==='all'?' active':'');
+      b.textContent=l;b.dataset.val=v;
+      b.onclick=function(){if(mfYear===v)return;mfYear=v;_setPillActive(yc,v);_showDotLayer();};
+      yc.appendChild(b);
+    });
+  }
+  const cc=document.getElementById('mapCatPills');
+  if(cc&&!cc.childNodes.length){
+    const cats=S.explorer_cats||[];
+    [['all','All'],...cats.map(c=>[c,c])].forEach(([v,l])=>{
+      const b=document.createElement('button');
+      b.className='mf-pill'+(v==='all'?' active':'');
+      b.textContent=l;b.dataset.val=v;
+      b.onclick=function(){if(mfCat===v)return;mfCat=v;_setPillActive(cc,v);_showDotLayer();};
+      cc.appendChild(b);
+    });
+  }
 }
 
 // ── Countries flag map ─────────────────────────────────────────────────────
@@ -1858,17 +2035,21 @@ function switchMap(mode){
   document.getElementById('map').style.display=        (mode==='heat'||mode==='dots')?'block':'none';
   document.getElementById('cityMap').style.display=    mode==='citymap'?'block':'none';
   document.getElementById('countriesMap').style.display=mode==='countries'?'block':'none';
+  const mf=document.getElementById('mapFilters');
+  if(mf)mf.style.display=mode==='dots'?'flex':'none';
 
   if(mode==='heat'){
-    if(dotLayer)map.removeLayer(dotLayer);
+    if(dotLayerFull)try{map.removeLayer(dotLayerFull);}catch(e){}
+    if(dotLayerFilt)try{map.removeLayer(dotLayerFilt);}catch(e){}
     if(cityDotLayer)map.removeLayer(cityDotLayer);
     heatLayer.addTo(map);
     status.textContent='Heatmap · '+S.unique_places.length.toLocaleString()+' unique places';
     status.style.opacity='1';setTimeout(()=>status.style.opacity='0',2500);
   } else if(mode==='dots'){
-    map.removeLayer(heatLayer);
+    try{map.removeLayer(heatLayer);}catch(e){}
     if(cityDotLayer)map.removeLayer(cityDotLayer);
-    if(dotLayer)dotLayer.addTo(map);else buildDots();
+    buildMapFilters();
+    buildDots();
   } else if(mode==='citymap'){
     setTimeout(()=>{buildCityMap();cityMapInst.invalidateSize();},50);
   } else {
@@ -2132,48 +2313,70 @@ function buildCityMap(){
 
 // ── Global Search ────────────────────────────────────────────────────────────
 (function(){
-  let _idx=null, _activeItem=-1;
-
-  function _loadIdx(){
-    if(_idx!==null) return Promise.resolve(_idx);
-    return fetch('search-index.json').then(r=>r.json()).then(d=>{_idx=d;return d;}).catch(()=>{_idx=[];return [];});
-  }
+  let _debounce=null;
+  const _cache=new Map(), TTL=5*60*1000;
 
   function _typeIcon(t){return{venue:'📍',city:'🏙',trip:'✈',tip:'💬',companion:'👤'}[t]||'🔍';}
-  function _typePage(t,id,name){
-    if(t==='venue') return 'venues.html#v-'+(id||'');
-    if(t==='city')  return 'world_cities.html';
-    if(t==='trip')  return 'trips.html';
-    if(t==='tip')   return 'tips.html';
+
+  function _typePage(t,id){
+    if(t==='venue')     return '#s-venues';
+    if(t==='city')      return '#s-cities';
+    if(t==='trip')      return 'trips.html'+(id?'#trip-'+id:'');
+    if(t==='tip')       return 'tips.html';
     if(t==='companion') return 'companions.html';
-    return 'search.html?q='+encodeURIComponent(name||'');
+    return '#';
   }
 
-  function _render(items){
+  function _render(data){
     const el=document.getElementById('gsResults');
-    if(!items||!items.length){el.innerHTML='<div class="gs-empty">No results</div>';el.style.display='';return;}
-    const byType={};
-    items.slice(0,30).forEach(it=>{(byType[it.type]=byType[it.type]||[]).push(it);});
+    const order=['venue','city','trip','tip','companion'];
     const labels={venue:'Venues',city:'Cities',trip:'Trips',tip:'Tips',companion:'People'};
-    let html='';
-    Object.entries(byType).forEach(([t,list])=>{
-      html+=`<div class="gs-section-hd">${labels[t]||t}</div>`;
-      list.slice(0,8).forEach((it,i)=>{
-        const sub=[it.city,it.country].filter(Boolean).join(', ')||it.sub||'';
-        html+=`<a class="gs-item" href="${_typePage(t,it.id,it.name)}" onclick="closeSearch()"><span class="gs-item-icon">${_typeIcon(t)}</span><div class="gs-item-body"><div class="gs-item-name">${it.name||''}</div>${sub?`<div class="gs-item-sub">${sub}</div>`:''}</div></a>`;
+    let html='',any=false;
+    order.forEach(t=>{
+      const list=(data[t]||[]).slice(0,8);
+      if(!list.length) return;
+      any=true;
+      html+=`<div class="gs-section-hd">${labels[t]}</div>`;
+      list.forEach(it=>{
+        const name=it.n||'';
+        const sub=[it.c,it.co].filter(Boolean).join(', ')||it.tx||'';
+        const href=_typePage(t,it.id);
+        html+=`<a class="gs-item" href="${esc(href)}" data-gs-t="${t}" data-gs-n="${esc(name)}"><span class="gs-item-icon">${_typeIcon(t)}</span><div class="gs-item-body"><div class="gs-item-name">${esc(name)}</div>${sub?`<div class="gs-item-sub">${esc(sub)}</div>`:''}</div></a>`;
       });
     });
-    el.innerHTML=html;el.style.display='';
+    if(!any) html='<div class="gs-empty">No results</div>';
+    el.innerHTML=html; el.style.display='';
   }
+
+  // Click delegation: venue/city navigate within this page; others follow href
+  document.getElementById('gsResults').addEventListener('click',function(e){
+    const a=e.target.closest('a[data-gs-t]');
+    if(!a) return;
+    const t=a.dataset.gsT, name=a.dataset.gsN;
+    if(t==='venue'){
+      e.preventDefault(); closeSearch();
+      const box=document.querySelector('#s-venues .search-box');
+      if(box){box.value=name; filterList('venuesList',name);}
+      document.getElementById('s-venues')?.scrollIntoView({behavior:'smooth',block:'start'});
+    } else if(t==='city'){
+      e.preventDefault(); closeSearch();
+      const box=document.querySelector('#s-cities .search-box');
+      if(box){box.value=name; filterList('citiesList',name);}
+      document.getElementById('s-cities')?.scrollIntoView({behavior:'smooth',block:'start'});
+    } else {
+      closeSearch();
+    }
+  });
 
   function _search(q){
     const el=document.getElementById('gsResults');
     if(!q||q.length<2){el.style.display='none';el.innerHTML='';return;}
-    _loadIdx().then(idx=>{
-      const lq=q.toLowerCase();
-      const hits=idx.filter(it=>(it.name||'').toLowerCase().includes(lq)||(it.city||'').toLowerCase().includes(lq)||(it.country||'').toLowerCase().includes(lq));
-      _render(hits);
-    });
+    const now=Date.now(), hit=_cache.get(q);
+    if(hit&&now-hit.ts<TTL){_render(hit.data);return;}
+    fetch('/api/search?q='+encodeURIComponent(q))
+      .then(r=>r.json())
+      .then(d=>{_cache.set(q,{ts:Date.now(),data:d});_render(d);})
+      .catch(()=>{el.innerHTML='<div class="gs-empty">Search unavailable</div>';el.style.display='';});
   }
 
   window.openSearch=function(){
@@ -2183,14 +2386,17 @@ function buildCityMap(){
   window.closeSearch=function(){
     document.getElementById('gsOverlay').classList.remove('open');
     document.getElementById('gsInput').value='';
-    document.getElementById('gsResults').style.display='none';
-    document.getElementById('gsResults').innerHTML='';
+    const el=document.getElementById('gsResults');
+    el.style.display='none'; el.innerHTML='';
   };
   document.addEventListener('keydown',function(e){
     if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();window.openSearch();}
     if(e.key==='Escape'&&document.getElementById('gsOverlay').classList.contains('open')) window.closeSearch();
   });
-  document.getElementById('gsInput').addEventListener('input',function(){_search(this.value.trim());});
+  document.getElementById('gsInput').addEventListener('input',function(){
+    clearTimeout(_debounce);
+    _debounce=setTimeout(()=>_search(this.value.trim()),300);
+  });
   document.getElementById('gsInput').addEventListener('keydown',function(e){
     if(e.key==='Enter'&&this.value.trim()) location.href='search.html?q='+encodeURIComponent(this.value.trim());
     if(e.key==='Escape') window.closeSearch();
@@ -2244,7 +2450,7 @@ function buildCityMap(){
   };
 })();
 </script>
-<footer style="text-align:center;padding:24px 20px 32px;font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--muted);">Designed by <a href="https://t.me/toouur" style="color:var(--gold);text-decoration:none;" target="_blank" rel="noopener">@toouur</a></footer>
+<footer style="text-align:center;padding:24px 20px 32px;font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--muted);">Designed by <a href="https://t.me/darya_shvvv" style="color:var(--gold);text-decoration:none;" target="_blank" rel="noopener">@darya_shvvv</a></footer>
 <!-- Photo lightbox for recent photos section -->
 <div id="rcGallery" onclick="if(event.target===this)rcgClose()">
   <img id="rcGallery-img" src="" alt="">
@@ -2319,6 +2525,5 @@ function buildCityMap(){
   });
 })();
 </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "096ba3d9093f4c629948d81ef8438a34"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

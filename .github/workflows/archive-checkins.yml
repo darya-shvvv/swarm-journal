@@ -9,7 +9,7 @@
 #
 # Required secrets (same as update-dashboard):
 #   FOURSQUARE_TOKEN  — Foursquare OAuth token
-#   DATA_REPO_PAT     — Fine-grained PAT with Contents read/write on toouur/foursquare-data
+#   DATA_REPO_PAT     — Fine-grained PAT with Contents read/write on darya-shvvv/foursquare-data
 
 name: Archive check-in snapshot
 
@@ -30,7 +30,7 @@ jobs:
       # ── 2. Checkout private data repo ────────────────────────────────────
       - uses: actions/checkout@v4
         with:
-          repository: toouur/foursquare-data
+          repository: darya-shvvv/foursquare-data
           token: ${{ secrets.DATA_REPO_PAT }}
           path: private-data
 

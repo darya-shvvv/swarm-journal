@@ -39,6 +39,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .topnav a{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);text-decoration:none;transition:color .2s;}
 .topnav a:hover{color:var(--gold);}
 .topnav-current{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--text);}
+.page-insight{padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);font-style:italic;border-bottom:1px solid var(--border);background:var(--card);line-height:1.5;flex-shrink:0;}
 .gs-btn{font-family:'DM Mono',monospace;font-size:.60rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:7px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;white-space:nowrap;}
 .gs-btn:hover{border-color:var(--gold);color:var(--gold);}
 .gs-btn kbd{font-family:'DM Mono',monospace;font-size:.52rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:1px 5px;letter-spacing:0;}
@@ -130,6 +131,40 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .vc-date{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);white-space:nowrap;margin-left:auto;flex-shrink:0;}
 .vc-dist{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--teal);white-space:nowrap;flex-shrink:0;margin-left:auto;}
 
+/* ── Add-venue panel (fixed bottom sheet) ── */
+#addVenueBar{position:fixed;bottom:0;left:0;right:0;z-index:600;max-height:62vh;background:var(--card);border-top:2px solid rgba(78,201,176,.4);border-radius:14px 14px 0 0;box-shadow:0 -8px 32px rgba(0,0,0,.6);display:flex;flex-direction:column;overflow:hidden;}
+@media(min-width:700px){#addVenueBar{left:300px;right:54px;}}
+.avb-header{display:flex;align-items:center;padding:9px 14px 7px;border-bottom:1px solid var(--border);flex-shrink:0;gap:8px;}
+.avb-title{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;color:var(--teal);flex:1;}
+.avb-close-btn{font-size:.78rem;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--muted);cursor:pointer;padding:2px 8px;line-height:1.5;transition:all .15s;}
+.avb-close-btn:hover{border-color:#ef4444;color:#ef4444;}
+.avb-controls{padding:8px 10px 4px;flex-shrink:0;}
+.avb-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.venue-srch-input{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:6px 10px;color:var(--text);font-size:.75rem;outline:none;font-family:'DM Sans',sans-serif;}
+.venue-srch-input:focus{border-color:var(--teal);}
+.avb-near-btn{font-family:'DM Mono',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.avb-near-btn:hover,.avb-near-btn.active{border-color:var(--teal);color:var(--teal);background:rgba(78,201,176,.08);}
+.avb-search-btn{font-family:'DM Mono',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.06em;padding:6px 12px;background:var(--teal);border:1px solid var(--teal);border-radius:6px;color:#0d1117;cursor:pointer;transition:all .15s;width:100%;}
+.avb-cat-hint{font-size:.65rem;color:var(--muted);padding:2px 2px 4px;line-height:1.4;}
+.avb-select{flex:1;min-width:0;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:5px 8px;color:var(--text);font-size:.65rem;font-family:'DM Mono',monospace;outline:none;cursor:pointer;}
+.avb-select:focus{border-color:var(--teal);}
+#vsearchResults{flex:1;overflow-y:auto;padding:4px 10px 12px;display:flex;flex-direction:column;gap:4px;}
+#vsearchResults::-webkit-scrollbar{width:3px;}
+#vsearchResults::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px;}
+.vsearch-result{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--card2);border:1px solid var(--border);border-radius:8px;}
+.vsearch-result-body{flex:1;min-width:0;}
+.vsearch-result-name{font-size:.80rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.vsearch-result-meta{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.vsearch-add-btn{font-family:'DM Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.06em;padding:4px 9px;background:transparent;border:1px solid rgba(78,201,176,.5);border-radius:5px;color:var(--teal);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.vsearch-add-btn:hover{background:rgba(78,201,176,.1);border-color:var(--teal);}
+.vsearch-add-btn:disabled{opacity:.4;cursor:default;}
+.add-venue-btn{font-family:'DM Mono',monospace;font-size:.50rem;text-transform:uppercase;letter-spacing:.07em;padding:3px 9px;background:transparent;border:1px solid rgba(78,201,176,.45);border-radius:5px;color:var(--teal);cursor:pointer;transition:all .15s;margin-top:5px;display:inline-block;}
+.add-venue-btn:hover,.add-venue-btn.active{border-color:var(--teal);background:rgba(78,201,176,.09);}
+.vc-custom{border-color:rgba(78,201,176,.25);}
+.vc-custom-tag{font-family:'DM Mono',monospace;font-size:.46rem;color:var(--teal);border:1px solid rgba(78,201,176,.4);border-radius:3px;padding:1px 4px;margin-left:4px;vertical-align:middle;white-space:nowrap;line-height:1.4;}
+.vc-remove-btn{font-family:'DM Mono',monospace;font-size:.50rem;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;background:transparent;border:1px solid rgba(239,68,68,.4);border-radius:4px;color:#ef4444;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.vc-remove-btn:hover{background:rgba(239,68,68,.1);border-color:#ef4444;}
+
 /* ── Geolocation ── */
 #geobar{padding:5px 10px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;display:flex;align-items:center;gap:8px;}
 .locate-btn{font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
@@ -164,6 +199,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="gs-overlay" id="gsOverlay" onclick="if(event.target===this)gsClose()">
   <div class="gs-modal"><div class="gs-input-wrap"><span class="gs-icon">⌕</span><input class="gs-input" id="gsInput" type="text" placeholder="Search venues, cities, trips…" autocomplete="off" spellcheck="false"><span class="gs-esc-hint" onclick="gsClose()">esc</span></div></div>
 </div>
+<div class="page-insight" id="page-insight"></div>
   <div class="content">
     <div class="lists-panel" id="listsPanel">
       <div class="lists-search-wrap">
@@ -184,6 +220,259 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
           <button class="locate-btn" id="locateBtn" onclick="geoLocate()">📍 Locate me</button>
           <span id="locateStatus"></span>
         </div>
+        <div id="addVenueBar" style="display:none;">
+          <div class="avb-header">
+            <span class="avb-title">Add Venue to List</span>
+            <button class="avb-close-btn" onclick="toggleAddBar()">&#x2715;</button>
+          </div>
+          <div class="avb-controls">
+            <div class="avb-row">
+              <input class="venue-srch-input" id="venueSearchInput" type="text" placeholder="Type to search venues…" autocomplete="off" spellcheck="false">
+              <button class="avb-near-btn" id="avbNearBtn" onclick="_vsearchNearby()">&#x1F4CD; Nearby</button>
+            </div>
+            <div class="avb-row">
+              <input class="venue-srch-input" id="vsCityInput" type="text" placeholder="City / country (optional)" autocomplete="off" spellcheck="false" style="flex:1;">
+            </div>
+            <div class="avb-row">
+              <button class="avb-search-btn" id="avbSearchBtn" onclick="_vsearchManual()">&#x1F50D; Search</button>
+            </div>
+            <div class="avb-row">
+              <select class="avb-select" id="vsCatSelect" onchange="_vsearchIfActive();document.getElementById('vsCatHint').style.display=this.value?'block':'none';">
+                <option value="">All categories</option>
+                <optgroup label="☕ Dining &amp; Drinking">
+                  <option value="13000">All Dining &amp; Drinking</option>
+                  <option value="13032">Cafe, Coffee &amp; Tea</option>
+                  <option value="13035">Coffee Shop</option>
+                  <option value="13036">Tea Room</option>
+                  <option value="13065">Restaurant (all)</option>
+                  <option value="13068">American Restaurant</option>
+                  <option value="13099">Chinese Restaurant</option>
+                  <option value="13148">French Restaurant</option>
+                  <option value="13165">German Restaurant</option>
+                  <option value="13177">Greek Restaurant</option>
+                  <option value="13199">Indian Restaurant</option>
+                  <option value="13263">Japanese Restaurant</option>
+                  <option value="13289">Korean Restaurant</option>
+                  <option value="13236">Italian Restaurant</option>
+                  <option value="13297">Latin American Restaurant</option>
+                  <option value="13302">Mediterranean Restaurant</option>
+                  <option value="13303">Mexican Restaurant</option>
+                  <option value="13309">Middle Eastern Restaurant</option>
+                  <option value="13338">Seafood Restaurant</option>
+                  <option value="13345">Spanish Restaurant</option>
+                  <option value="13352">Thai Restaurant</option>
+                  <option value="13356">Turkish Restaurant</option>
+                  <option value="13379">Vietnamese Restaurant</option>
+                  <option value="13377">Vegan &amp; Vegetarian</option>
+                  <option value="13145">Fast Food</option>
+                  <option value="13064">Pizzeria</option>
+                  <option value="13276">Sushi</option>
+                  <option value="13272">Ramen</option>
+                  <option value="13383">Steakhouse</option>
+                  <option value="13026">BBQ</option>
+                  <option value="13031">Burger Joint</option>
+                  <option value="13003">Bar (all)</option>
+                  <option value="13007">Beer Garden</option>
+                  <option value="13006">Beer Bar</option>
+                  <option value="13009">Cocktail Bar</option>
+                  <option value="13016">Lounge</option>
+                  <option value="13018">Pub</option>
+                  <option value="13019">Rooftop Bar</option>
+                  <option value="13025">Wine Bar</option>
+                  <option value="13022">Sports Bar</option>
+                  <option value="13389">Irish Pub</option>
+                  <option value="13029">Brewery</option>
+                  <option value="13387">Winery</option>
+                  <option value="13050">Distillery</option>
+                  <option value="13002">Bakery</option>
+                  <option value="13001">Bagel Shop</option>
+                  <option value="13028">Breakfast Spot</option>
+                  <option value="13043">Donut Shop</option>
+                  <option value="13040">Dessert Shop</option>
+                  <option value="13046">Ice Cream Parlor</option>
+                  <option value="13059">Juice Bar</option>
+                  <option value="13381">Smoothie Shop</option>
+                  <option value="13054">Food Truck</option>
+                  <option value="13053">Food Stand</option>
+                  <option value="13052">Food Court</option>
+                  <option value="13062">Night Market</option>
+                </optgroup>
+                <optgroup label="🎭 Arts &amp; Entertainment">
+                  <option value="10000">All Arts &amp; Entertainment</option>
+                  <option value="10004">Art Gallery</option>
+                  <option value="10027">Museum</option>
+                  <option value="10028">Art Museum</option>
+                  <option value="10030">History Museum</option>
+                  <option value="10031">Science Museum</option>
+                  <option value="10044">Planetarium</option>
+                  <option value="10035">Performing Arts Venue</option>
+                  <option value="10037">Concert Hall</option>
+                  <option value="10039">Music Venue</option>
+                  <option value="10043">Theater</option>
+                  <option value="10042">Opera House</option>
+                  <option value="10024">Movie Theater</option>
+                  <option value="10032">Night Club</option>
+                  <option value="10010">Comedy Club</option>
+                  <option value="10021">Karaoke Box</option>
+                  <option value="10001">Amusement Park</option>
+                  <option value="10055">Water Park</option>
+                  <option value="10006">Bowling Alley</option>
+                  <option value="10045">Pool Hall</option>
+                  <option value="10003">Arcade</option>
+                  <option value="10015">Escape Room</option>
+                  <option value="10054">VR Cafe</option>
+                  <option value="10008">Casino</option>
+                  <option value="10051">Stadium</option>
+                  <option value="10002">Aquarium</option>
+                  <option value="10056">Zoo</option>
+                  <option value="10047">Public Art</option>
+                </optgroup>
+                <optgroup label="🌿 Landmarks &amp; Outdoors">
+                  <option value="16000">All Landmarks &amp; Outdoors</option>
+                  <option value="16032">Park</option>
+                  <option value="16039">Urban Park</option>
+                  <option value="16034">National Park</option>
+                  <option value="16035">Natural Park</option>
+                  <option value="16003">Beach</option>
+                  <option value="16017">Garden</option>
+                  <option value="16005">Botanical Garden</option>
+                  <option value="16019">Hiking Trail</option>
+                  <option value="16004">Bike Trail</option>
+                  <option value="16020">Historic Site</option>
+                  <option value="16026">Monument</option>
+                  <option value="16025">Memorial Site</option>
+                  <option value="16011">Castle</option>
+                  <option value="16031">Palace</option>
+                  <option value="16046">Scenic Lookout</option>
+                  <option value="16053">Waterfront</option>
+                  <option value="16018">Harbor or Marina</option>
+                  <option value="16027">Mountain</option>
+                  <option value="16023">Lake</option>
+                  <option value="16043">River</option>
+                  <option value="16052">Waterfall</option>
+                  <option value="16015">Forest</option>
+                  <option value="16028">Nature Preserve</option>
+                  <option value="16008">Campground</option>
+                  <option value="16006">Bridge</option>
+                </optgroup>
+                <optgroup label="🛍️ Retail">
+                  <option value="17000">All Retail</option>
+                  <option value="17114">Shopping Mall</option>
+                  <option value="17115">Shopping Plaza</option>
+                  <option value="17069">Grocery Store</option>
+                  <option value="17142">Supermarket</option>
+                  <option value="17065">Farmers Market</option>
+                  <option value="17144">Market</option>
+                  <option value="17057">Food &amp; Beverage Retail</option>
+                  <option value="17039">Fashion (all)</option>
+                  <option value="17043">Clothing Store</option>
+                  <option value="17048">Shoe Store</option>
+                  <option value="17045">Jewelry Store</option>
+                  <option value="17023">Electronics Store</option>
+                  <option value="17018">Bookstore</option>
+                  <option value="17030">Cosmetics Store</option>
+                  <option value="17035">Drugstore</option>
+                  <option value="17145">Pharmacy</option>
+                  <option value="17082">Furniture &amp; Home</option>
+                  <option value="17089">Gift Store</option>
+                  <option value="17116">Souvenir Store</option>
+                  <option value="17054">Flea Market</option>
+                  <option value="17002">Antique Store</option>
+                  <option value="17138">Vintage &amp; Thrift</option>
+                  <option value="17056">Flower Store</option>
+                  <option value="17098">Music Store</option>
+                  <option value="17091">Hobby Store</option>
+                  <option value="17135">Toy Store</option>
+                </optgroup>
+                <optgroup label="🏃 Sports &amp; Recreation">
+                  <option value="18000">All Sports &amp; Recreation</option>
+                  <option value="18021">Gym &amp; Studio</option>
+                  <option value="18077">Gym</option>
+                  <option value="18028">Yoga Studio</option>
+                  <option value="18027">Pilates Studio</option>
+                  <option value="18025">Dance Studio</option>
+                  <option value="18024">Cycle Studio</option>
+                  <option value="18022">Boxing Gym</option>
+                  <option value="18023">Climbing Gym</option>
+                  <option value="18036">Martial Arts Dojo</option>
+                  <option value="18075">Swimming Pool</option>
+                  <option value="18073">Swimming</option>
+                  <option value="18045">Tennis</option>
+                  <option value="18016">Golf</option>
+                  <option value="18018">Golf Course</option>
+                  <option value="18006">Basketball</option>
+                  <option value="18062">Soccer</option>
+                  <option value="18058">Snow Sports</option>
+                  <option value="18061">Ski Resort</option>
+                  <option value="18067">Water Sports</option>
+                  <option value="18054">Skating</option>
+                  <option value="18048">Recreation Center</option>
+                  <option value="18081">Sauna</option>
+                  <option value="18039">Race Track</option>
+                </optgroup>
+                <optgroup label="✈️ Travel &amp; Hotels">
+                  <option value="19000">All Travel</option>
+                  <option value="19009">Lodging (all)</option>
+                  <option value="19014">Hotel</option>
+                  <option value="19018">Resort</option>
+                  <option value="19013">Hostel</option>
+                  <option value="19010">Bed &amp; Breakfast</option>
+                  <option value="19012">Cabin</option>
+                  <option value="19019">Vacation Rental</option>
+                  <option value="19030">Transport Hub</option>
+                  <option value="19031">Airport</option>
+                  <option value="19042">Bus Station</option>
+                  <option value="19046">Metro Station</option>
+                  <option value="19047">Rail Station</option>
+                  <option value="19028">Tourist Information</option>
+                  <option value="19029">Tour Provider</option>
+                  <option value="19020">Parking</option>
+                  <option value="19007">Fuel Station</option>
+                  <option value="19006">EV Charging Station</option>
+                  <option value="19055">Travel Agency</option>
+                </optgroup>
+                <optgroup label="🏥 Health &amp; Wellness">
+                  <option value="15000">All Health &amp; Medicine</option>
+                  <option value="15014">Hospital</option>
+                  <option value="15007">Dentist</option>
+                  <option value="15027">Physician</option>
+                  <option value="15054">Veterinarian</option>
+                  <option value="15053">Urgent Care</option>
+                  <option value="15026">Physical Therapy</option>
+                  <option value="11073">Spa</option>
+                  <option value="11070">Massage Clinic</option>
+                  <option value="11064">Hair Salon</option>
+                  <option value="11062">Barbershop</option>
+                  <option value="11071">Nail Salon</option>
+                </optgroup>
+                <optgroup label="🏛️ Community">
+                  <option value="12000">All Community &amp; Gov</option>
+                  <option value="12080">Library</option>
+                  <option value="12009">Education</option>
+                  <option value="12013">College &amp; University</option>
+                  <option value="12057">School</option>
+                  <option value="12064">Government Building</option>
+                  <option value="12066">City Hall</option>
+                  <option value="12075">Post Office</option>
+                  <option value="12098">Spiritual Center</option>
+                  <option value="12101">Church</option>
+                  <option value="12106">Mosque</option>
+                  <option value="12110">Synagogue</option>
+                  <option value="12004">Community Center</option>
+                  <option value="12003">Cemetery</option>
+                  <option value="12094">Residential Building</option>
+                </optgroup>
+              </select>
+              <select class="avb-select" id="vsSortSelect" onchange="_vsearchIfActive()">
+                <option value="RELEVANCE">Relevance</option>
+                <option value="POPULARITY">Most Popular</option>
+                <option value="DISTANCE">Nearest</option>
+              </select>
+            </div>
+          <div id="vsCatHint" style="display:none;" class="avb-cat-hint">Results filtered by category name after search. Add a venue name above for best results.</div>
+          </div>
+          <div id="vsearchResults"></div>
+        </div>
         <div id="map" style="display:none;"></div>
         <div class="venues-scroll" id="venuesScroll"></div>
       </div>
@@ -195,12 +484,33 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <script>
 const LISTS = LISTS_DATA_PLACEHOLDER;
 
+(function(){
+  var el = document.getElementById('page-insight');
+  if (!el || !LISTS.length) return;
+  var totalVenues = LISTS.reduce(function(s,l){return s+(l.count||0);}, 0);
+  var top = LISTS.slice().sort(function(a,b){return (b.count||0)-(a.count||0);})[0];
+  el.textContent = LISTS.length.toLocaleString() + ' curated lists, '
+    + totalVenues.toLocaleString() + ' venue entries total. '
+    + 'Largest: \u201c' + (top.name||'') + '\u201d with ' + (top.count||0) + ' spots.';
+})();
+
 const CTRY_CODE = {"Belarus":"by","Moldova":"md","Poland":"pl","Russia":"ru","Ukraine":"ua","Germany":"de","France":"fr","Italy":"it","Spain":"es","Turkey":"tr","Türkiye":"tr","Sweden":"se","Denmark":"dk","Norway":"no","Finland":"fi","Austria":"at","Switzerland":"ch","Netherlands":"nl","Belgium":"be","Portugal":"pt","Czech Republic":"cz","Czechia":"cz","Hungary":"hu","Slovakia":"sk","Romania":"ro","Bulgaria":"bg","Croatia":"hr","Slovenia":"si","Serbia":"rs","Bosnia and Herzegovina":"ba","Montenegro":"me","North Macedonia":"mk","Albania":"al","Kosovo":"xk","Estonia":"ee","Latvia":"lv","Lithuania":"lt","Greece":"gr","Cyprus":"cy","Malta":"mt","Iceland":"is","Ireland":"ie","United Kingdom":"gb","Georgia":"ge","Armenia":"am","Azerbaijan":"az","Kazakhstan":"kz","Uzbekistan":"uz","Kyrgyzstan":"kg","Tajikistan":"tj","Turkmenistan":"tm","Mongolia":"mn","China":"cn","Japan":"jp","South Korea":"kr","Taiwan":"tw","India":"in","Thailand":"th","Vietnam":"vn","Indonesia":"id","Singapore":"sg","Malaysia":"my","Pakistan":"pk","Nepal":"np","Qatar":"qa","UAE":"ae","United Arab Emirates":"ae","Saudi Arabia":"sa","Jordan":"jo","Israel":"il","Iraq":"iq","Lebanon":"lb","Iran":"ir","Egypt":"eg","Morocco":"ma","Tunisia":"tn","South Africa":"za","United States":"us","Canada":"ca","Mexico":"mx","Brazil":"br","Argentina":"ar","Chile":"cl","Colombia":"co","Peru":"pe","Australia":"au","New Zealand":"nz","Holy See (Vatican City State)":"va","San Marino":"sm","Monaco":"mc"};
 function flagHtml(c){const code=(CTRY_CODE[c]||'').toLowerCase();return code?`<span class="fi fi-${code}"></span>`:''}
 const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 const CAT_ICON={'Coffee Shop':['☕','#6F4E37'],'Café':['☕','#6F4E37'],'Bakery':['🥐','#C8860A'],'Restaurant':['🍽️','#C0392B'],'Fast Food Restaurant':['🍔','#E67E22'],'Pizzeria':['🍕','#E74C3C'],'Burger Joint':['🍔','#D35400'],'Italian Restaurant':['🍝','#C0392B'],'Kebab Restaurant':['🌯','#E67E22'],'Cafeteria':['🥣','#D4A017'],'Corporate Cafeteria':['🥣','#D4A017'],'Food Court':['🍱','#E67E22'],'Grocery Store':['🛒','#27AE60'],'Supermarket':['🛒','#219A52'],'Convenience Store':['🏪','#2ECC71'],'Market':['🛒','#27AE60'],'Gourmet Store':['🧀','#F39C12'],'Candy Store':['🍬','#F06292'],'Farmers Market':['🥦','#27AE60'],'Bar':['🍺','#F39C12'],'Beer Bar':['🍺','#E67E22'],'Pub':['🍻','#D4A017'],'Hookah Bar':['💨','#8E44AD'],'Cocktail Bar':['🍸','#E74C3C'],'Wine Bar':['🍷','#922B21'],'Wine Store':['🍷','#7B241C'],'Liquor Store':['🥃','#784212'],'Lounge':['🛋️','#5D6D7E'],'Gastropub':['🍖','#CA6F1E'],'Brewery':['🍻','#BA4A00'],'Nightclub':['🎵','#6C3483'],'Night Club':['🎵','#6C3483'],'Karaoke Bar':['🎤','#7D3C98'],'Beer Garden':['🍻','#D4A017'],'Beach Bar':['🍹','#2980B9'],'Dive Bar':['🍺','#7B241C'],'Sports Bar':['📺','#2C3E50'],'Rock Club':['🎸','#6C3483'],'Hotel Bar':['🍸','#2C3E50'],'Irish Pub':['🍀','#27AE60'],'Beer Store':['🍺','#D4A017'],'Speakeasy':['🥃','#4A235A'],'Whisky Bar':['🥃','#784212'],'Buffet':['🍱','#E67E22'],'Brasserie':['🍺','#D4A017'],'Hotel':['🏨','#2C3E50'],'Hostel':['🛏️','#34495E'],'Bed and Breakfast':['🛏️','#4A235A'],'Inn':['🏠','#2E4053'],'Apartment or Condo':['🏠','#1A5276'],'Home (private)':['🏠','#17202A'],'Resort':['🏖️','#2980B9'],'Lodging':['🛏️','#5D6D7E'],'Metro Station':['🚇','#2980B9'],'Rail Station':['🚉','#1A5276'],'Train':['🚂','#E74C3C'],'Tram Station':['🚃','#2471A3'],'Light Rail Station':['🚈','#2980B9'],'Platform':['🚉','#1F618D'],'Bus Line':['🚌','#27AE60'],'Bus Station':['🚌','#1E8449'],'Bus Stop':['🚏','#239B56'],'Airport Terminal':['✈️','#2471A3'],'International Airport':['✈️','#154360'],'Airport Gate':['✈️','#1A5276'],'Airport':['✈️','#154360'],'Airport Lounge':['🛋️','#21618C'],'Travel Lounge':['🛋️','#21618C'],'Plane':['✈️','#2980B9'],'Boat or Ferry':['⛴️','#117A65'],'Border Crossing':['🛂','#717D7E'],'Taxi':['🚕','#F4D03F'],'Parking':['🅿️','#2980B9'],'Fuel Station':['⛽','#E67E22'],'Cable Car':['🚡','#8E44AD'],'Ski Chairlift':['🚡','#2980B9'],'Marine Terminal':['⚓','#1A5276'],'Port':['🚢','#154360'],'Harbor or Marina':['⛵','#2980B9'],'Pier':['🎣','#2471A3'],'Travel and Transportation':['✈️','#2980B9'],'Transportation Service':['🚐','#27AE60'],'Park':['🌳','#1E8449'],'Plaza':['🏛️','#2E86C1'],'Pedestrian Plaza':['🚶','#2E86C1'],'Beach':['🏖️','#F39C12'],'Mountain':['⛰️','#7F8C8D'],'Hiking Trail':['🥾','#6E2F1A'],'Garden':['🌸','#1E8449'],'Scenic Lookout':['🔭','#1A5276'],'Waterfront':['🌊','#2471A3'],'River':['🌊','#2980B9'],'Lake':['🏞️','#2471A3'],'Island':['🏝️','#27AE60'],'Bike Trail':['🚴','#E67E22'],'Other Great Outdoors':['🌲','#186A3B'],'Cemetery':['🪦','#5D6D7E'],'Ski Area':['⛷️','#85C1E9'],'Bridge':['🌉','#626567'],'Fountain':['⛲','#5DADE2'],'National Park':['🌲','#186A3B'],'Nature Preserve':['🌿','#1E8449'],'Forest':['🌲','#186A3B'],'Botanical Garden':['🌺','#1E8449'],'Waterfall':['💦','#2980B9'],'Canal':['🚤','#2471A3'],'Bay':['🌊','#2980B9'],'Campground':['⛺','#186A3B'],'Playground':['🛝','#E74C3C'],'Tree':['🌳','#1E8449'],'Lighthouse':['🔦','#F39C12'],'Volcano':['🌋','#E74C3C'],'Cave':['🦇','#616A6B'],'Field':['🌾','#27AE60'],'Hill':['⛰️','#784212'],'Vineyard':['🍇','#922B21'],'Farm':['🚜','#27AE60'],'Museum':['🏛️','#7D3C98'],'Art Museum':['🎨','#884EA0'],'History Museum':['📜','#6E2F1A'],'Art Gallery':['🖼️','#7D3C98'],'Monument':['🗽','#626567'],'Historic and Protected Site':['🏰','#784212'],'Castle':['🏰','#6E2F1A'],'Palace':['🏯','#784212'],'Public Art':['🎨','#7D3C98'],'Street Art':['🎨','#8E44AD'],'Theater':['🎭','#922B21'],'Concert Hall':['🎼','#922B21'],'Movie Theater':['🎬','#C0392B'],'Cultural Center':['🎭','#7D3C98'],'Exhibit':['🖼️','#7D3C98'],'Exhibition':['🖼️','#8E44AD'],'Science Museum':['🔬','#1A5276'],'Amusement Park':['🎡','#E74C3C'],'Memorial Site':['🕯️','#626567'],'Library':['📚','#1A5276'],'Amphitheater':['🎭','#8E44AD'],'Music Venue':['🎸','#8E44AD'],'Opera House':['🎭','#6C3483'],'Attraction':['⭐','#D4A017'],'Zoo':['🦁','#D4A017'],'Aquarium':['🐠','#2980B9'],'Casino':['🎲','#C0392B'],'Escape Room':['🔐','#8E44AD'],'Event Space':['🎪','#C0392B'],'Church':['⛪','#7D3C98'],'Mosque':['🕌','#117A65'],'Temple':['🛕','#B9770E'],'Monastery':['🙏','#6E2F1A'],'Synagogue':['✡️','#1A5276'],'Shrine':['⛩️','#C0392B'],'Buddhist Temple':['☸️','#D4A017'],'Hindu Temple':['🛕','#E67E22'],'Shopping Mall':['🛍️','#E91E63'],'Department Store':['🏬','#C0392B'],'Clothing Store':['👔','#8E44AD'],'Shoe Store':['👟','#D35400'],'Electronics Store':['💻','#2471A3'],'Mobile Phone Store':['📱','#2E86C1'],'Bookstore':['📚','#1A5276'],'Furniture and Home Store':['🛋️','#784212'],'Cosmetics Store':['💄','#F06292'],'Bicycle Store':['🚲','#27AE60'],'Big Box Store':['📦','#7F8C8D'],'Flea Market':['🏷️','#D35400'],'Hardware Store':['🔧','#7F8C8D'],'Miscellaneous Store':['🏪','#E67E22'],'Souvenir Store':['🛍️','#D4A017'],'Gift Store':['🎁','#E91E8C'],'Jewelry Store':['💍','#D4A017'],'Antique Store':['🏺','#D4A017'],'Outdoor Supply Store':['⛺','#27AE60'],'Sporting Goods Retail':['⚽','#27AE60'],'Fruit and Vegetable Store':['🥦','#27AE60'],'Butcher':['🥩','#C0392B'],'Fish Market':['🐟','#2980B9'],'Pharmacy':['💊','#27AE60'],'Drugstore':['💊','#27AE60'],'Health Food Store':['🥗','#1E8449'],'Gym':['💪','#E74C3C'],'Bath House':['♨️','#1ABC9C'],'Spa':['💆','#1ABC9C'],'Medical Center':['🏥','#E74C3C'],'Hospital':['🏥','#E74C3C'],'Yoga Studio':['🧘','#27AE60'],'Hair Salon':['✂️','#F06292'],'Swimming Pool':['🏊','#2980B9'],'Sauna':['♨️','#E74C3C'],'Bank':['🏦','#1A5276'],'Office':['🏢','#2C3E50'],'Post Office':['📮','#E74C3C'],'Police Station':['👮','#2471A3'],'City Hall':['🏛️','#1A5276'],'Government Building':['🏛️','#154360'],'University':['🎓','#154360'],'Business Center':['🏢','#2C3E50'],'Coworking Space':['💻','#2C3E50'],'Embassy or Consulate':['🏛️','#1A5276'],'Chinese Restaurant':['🥢','#C0392B'],'Japanese Restaurant':['🍱','#C0392B'],'Korean Restaurant':['🍚','#E74C3C'],'Vietnamese Restaurant':['🍜','#27AE60'],'Thai Restaurant':['🍛','#F39C12'],'Indian Restaurant':['🍛','#E67E22'],'Turkish Restaurant':['🌯','#C0392B'],'Greek Restaurant':['🫒','#27AE60'],'French Restaurant':['🥐','#2980B9'],'Spanish Restaurant':['🥘','#E74C3C'],'German Restaurant':['🍺','#C8860A'],'Mexican Restaurant':['🌮','#27AE60'],'American Restaurant':['🍔','#E67E22'],'Middle Eastern Restaurant':['🧆','#D35400'],'Russian Restaurant':['🥟','#C0392B'],'Ukrainian Restaurant':['🌻','#F39C12'],'Belarusian Restaurant':['🥟','#27AE60'],'Eastern European Restaurant':['🍲','#C0392B'],'Diner':['🍳','#E67E22'],'Bistro':['🍽️','#C0392B'],'Dessert Shop':['🍰','#F06292'],'Ice Cream Parlor':['🍦','#F06292'],'Pastry Shop':['🥐','#C8860A'],'Coffee Roaster':['☕','#4A235A'],'Cafe, Coffee, and Tea House':['☕','#6F4E37'],'Blini House':['🫓','#C8860A'],'Pelmeni House':['🥟','#C8860A'],'Dumpling Restaurant':['🥟','#E67E22'],'Ramen Restaurant':['🍜','#E74C3C'],'Sushi Restaurant':['🍣','#C0392B'],'Steak House':['🥩','#922B21'],'Steakhouse':['🥩','#922B21'],'Seafood Restaurant':['🦐','#2980B9'],'Food Truck':['🚚','#E67E22'],'BBQ Joint':['🔥','#C0392B'],'Vegan and Vegetarian Restaurant':['🥦','#27AE60'],'Breakfast Spot':['🥞','#F39C12'],'Tea Room':['🫖','#27AE60'],'Bubble Tea Shop':['🧋','#8E44AD'],'Hot Dog Joint':['🌭','#E67E22'],'Taco Restaurant':['🌮','#27AE60'],'Trattoria':['🍝','#C0392B'],'Deli':['🥪','#D4A017'],'Sandwich Spot':['🥪','#D4A017'],'Shawarma Restaurant':['🌯','#D35400'],'Doner Restaurant':['🌯','#E67E22'],'Romanian Restaurant':['🥘','#C0392B'],'Polish Restaurant':['🥟','#C0392B'],'Modern European Restaurant':['🍽️','#C0392B'],'Asian Restaurant':['🥢','#C0392B'],'Noodle Restaurant':['🍜','#E67E22'],'Bagel Shop':['🥯','#C8860A'],'Comfort Food Restaurant':['🥘','#D4A017'],'Winery':['🍇','#922B21'],'Christmas Market':['🎄','#27AE60']};
-function catIcon(cat){const e=CAT_ICON[cat||''];return e?{em:e[0],bg:e[1]}:{em:'📍',bg:'#4a5270'};}
+// Sorted longest-key-first so substring fallback prefers most-specific match
+const _CAT_IC_NORM=Object.entries(CAT_ICON).map(([k,v])=>[k.toLowerCase().trim(),v]).sort((a,b)=>b[0].length-a[0].length);
+function catIcon(cat){
+  if(!cat) return {em:'📍',bg:'#4a5270'};
+  // 1. Exact match
+  const e=CAT_ICON[cat]; if(e) return {em:e[0],bg:e[1]};
+  // 2. Case-insensitive / whitespace-normalised match, or subcategory suffix match
+  // e.g. "Specialty Coffee Shop" → "Coffee Shop"; "Third Wave Coffee Shop" → "Coffee Shop"
+  const n=cat.toLowerCase().trim();
+  for(const [k,v] of _CAT_IC_NORM) if(n===k||n.includes(k)) return {em:v[0],bg:v[1]};
+  return {em:'📍',bg:'#4a5270'};
+}
 
 const RATING_EMOJI={'like':'❤️','neutral':'😐','dislike':'💔'};
 
@@ -208,7 +518,7 @@ const RATING_EMOJI={'like':'❤️','neutral':'😐','dislike':'💔'};
 let _sortMode = 'updated';
 let filteredLists = [];
 let selIdx = -1;
-let map = null, mapMarkers = [];
+let map = null, mapMarkers = [], venueMarkerMap = {};
 let userLat = null, userLng = null, userMarker = null;
 
 function haversine(a,b,c,d){
@@ -311,6 +621,13 @@ function selectList(idx){
   const lst = LISTS[idx];
   if(!lst) return;
 
+  // Reset add bar for new list
+  _customListId = lst.id;
+  _addBarOpen = false;
+  document.getElementById('addVenueBar').style.display = 'none';
+  document.getElementById('vsearchResults').innerHTML = '';
+  document.getElementById('venueSearchInput').value = '';
+
   document.getElementById('detailEmpty').style.display = 'none';
   const dc = document.getElementById('detailContent');
   dc.style.display = 'flex';
@@ -327,7 +644,8 @@ function selectList(idx){
       <span>${lst.count} venues</span>
       <span class="dh-visited">✓ ${visitedCount} visited</span>
       ${withCoords?`<span>${withCoords} on map</span>`:''}
-    </div>`;
+    </div>
+    <button class="add-venue-btn" id="addVenueToggle" onclick="toggleAddBar()">+ Add venue</button>`;
 
   // Map
   const mapEl = document.getElementById('map');
@@ -339,14 +657,16 @@ function selectList(idx){
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
     }
     mapMarkers.forEach(m=>map.removeLayer(m));
-    mapMarkers = [];
+    mapMarkers = []; venueMarkerMap = {};
     const bounds = [];
     (lst.venues||[]).forEach((v,vi)=>{
       if(!v.lat||!v.lng) return;
       const col = v.visited ? '#4ec9b0' : '#e8b86d';
-      const m = L.circleMarker([parseFloat(v.lat),parseFloat(v.lng)],{radius:5,fillColor:col,fillOpacity:.75,color:col,weight:1}).addTo(map);
+      const m = L.circleMarker([parseFloat(v.lat),parseFloat(v.lng)],{radius:5,fillColor:col,fillOpacity:.75,color:col,weight:1,_baseCol:col}).addTo(map);
       const loc = [v.nci||v.city,v.nc||v.country].filter(Boolean).join(', ');
-      m.bindPopup(`<b>${esc(v.n||'')}</b><br><span style="font-size:.75rem;color:#9ca3af;">${esc(loc)}</span>`,{maxWidth:200});
+      const fsqLink = v.u ? `<br><a href="${esc(v.u)}" target="_blank" rel="noopener" style="font-size:.72rem;color:#4ec9b0;">Foursquare ↗</a>` : '';
+      m.bindPopup(`<b>${esc(v.n||'')}</b><br><span style="font-size:.75rem;color:#9ca3af;">${esc(loc)}</span>${fsqLink}`,{maxWidth:220});
+      venueMarkerMap[vi] = m;
       mapMarkers.push(m);
       bounds.push([parseFloat(v.lat),parseFloat(v.lng)]);
     });
@@ -379,7 +699,7 @@ function selectList(idx){
       ? `<span class="vc-sep">·</span><span class="vc-loc">${flag}${locStr?`<span class="vc-loc-text">${locStr}</span>`:''}</span>`
       : '';
     const dateHtml = v.ld ? `<span class="vc-date">${v.ld}</span>` : '';
-    return `<div class="vcard" id="lvc_${vi}" onclick="selectVenue(${vi},${idx})">
+    return `<div class="vcard" id="lvc_${vi}" onclick="selectVenue(${vi},${idx})" onmouseenter="hoverVenueMarker(${vi})" onmouseleave="unhoverVenueMarker(${vi})">
       <div class="vc-head">
         <div class="vc-cat-icon" style="background:${bg}22;border:1px solid ${bg}55">${em}</div>
         <div class="vc-name">${nameLabel}${visitBadge}${closedBadge}</div>
@@ -393,6 +713,7 @@ function selectList(idx){
     </div>`;
   }).join('');
   if(userLat!==null) updateDistances();
+  _loadCustomVenues(lst.id);
 }
 
 function selectVenue(vi, listIdx){
@@ -400,12 +721,352 @@ function selectVenue(vi, listIdx){
   const el = document.getElementById('lvc_'+vi);
   if(el){el.classList.add('sel');}
   if(!map) return;
-  const m = mapMarkers[vi];
+  const m = venueMarkerMap[vi];
   if(m){
     map.panTo(m.getLatLng(),{animate:true});
     m.openPopup();
   }
 }
+
+function hoverVenueMarker(vi){
+  const m = venueMarkerMap[vi];
+  if(m) m.setStyle({radius:9,weight:2,color:'#fff',fillOpacity:1});
+}
+function unhoverVenueMarker(vi){
+  const m = venueMarkerMap[vi];
+  if(m){
+    const col = m.options._baseCol || '#e8b86d';
+    m.setStyle({radius:5,weight:1,color:col,fillOpacity:.75});
+  }
+}
+
+// ── Custom venue overlay ──────────────────────────────────────────────────────
+let _customListId = null;
+let _addBarOpen = false;
+let _vsearchTimer = null;
+let _vsearchVenues = [];
+let _vsearchMode = ''; // '' = text, 'nearby' = geo mode
+let _vsearchAbort = null; // AbortController for in-flight request
+let _vsearchCursor = null; // FSQ pagination cursor for current search
+let _vsearchLastArgs = null; // {q, lat, lng} for "Load more"
+const _vsearchCache = new Map(); // key → {results, nextCursor, ts}
+const _VCACHE_TTL = 5 * 60 * 1000; // 5 min
+
+function toggleAddBar() {
+  _addBarOpen = !_addBarOpen;
+  const bar = document.getElementById('addVenueBar');
+  bar.style.display = _addBarOpen ? 'flex' : 'none';
+  const btn = document.getElementById('addVenueToggle');
+  if (btn) btn.classList.toggle('active', _addBarOpen);
+  if (_addBarOpen) {
+    setTimeout(() => document.getElementById('venueSearchInput').focus(), 50);
+    // Auto-load nearby if location already known
+    if (userLat !== null) {
+      _vsearchMode = 'nearby';
+      const nb = document.getElementById('avbNearBtn');
+      if (nb) nb.classList.add('active');
+      _vsearch('', userLat, userLng);
+    }
+  } else {
+    document.getElementById('vsearchResults').innerHTML = '';
+    document.getElementById('venueSearchInput').value = '';
+    document.getElementById('vsCityInput').value = '';
+    _vsearchMode = '';
+    _vsearchCursor = null;
+    _vsearchLastArgs = null;
+    const nb = document.getElementById('avbNearBtn');
+    if (nb) { nb.textContent = '\u{1F4CD} Nearby'; nb.classList.remove('active'); }
+  }
+}
+
+document.getElementById('venueSearchInput').addEventListener('input', function() {
+  clearTimeout(_vsearchTimer);
+  _vsearchMode = '';
+  const nb = document.getElementById('avbNearBtn');
+  if (nb) nb.classList.remove('active');
+  const q = this.value.trim();
+  if (!q) { document.getElementById('vsearchResults').innerHTML = ''; return; }
+  _vsearchTimer = setTimeout(() => _vsearch(q), 600);
+});
+
+document.getElementById('vsCityInput').addEventListener('input', function() {
+  clearTimeout(_vsearchTimer);
+  const q = (document.getElementById('venueSearchInput').value || '').trim();
+  if (q.length >= 2 || _vsearchMode === 'nearby') {
+    _vsearchTimer = setTimeout(() => {
+      if (_vsearchMode === 'nearby') _vsearch('', userLat, userLng);
+      else _vsearch(q);
+    }, 600);
+  }
+});
+
+function _vsearchManual() {
+  clearTimeout(_vsearchTimer);
+  if (_vsearchMode === 'nearby' && userLat !== null) {
+    _vsearch('', userLat, userLng);
+  } else {
+    const q = (document.getElementById('venueSearchInput').value || '').trim();
+    _vsearchMode = '';
+    const nb = document.getElementById('avbNearBtn');
+    if (nb) nb.classList.remove('active');
+    _vsearch(q);
+  }
+}
+
+function _vsearchIfActive() {
+  clearTimeout(_vsearchTimer);
+  if (_vsearchMode === 'nearby') {
+    _vsearchTimer = setTimeout(() => _vsearch('', userLat, userLng), 400);
+  } else {
+    const q = (document.getElementById('venueSearchInput').value || '').trim();
+    if (q.length >= 2) _vsearchTimer = setTimeout(() => _vsearch(q), 400);
+  }
+}
+
+function _vsearchNearby() {
+  const nb = document.getElementById('avbNearBtn');
+  if (userLat !== null) {
+    _vsearchMode = 'nearby';
+    if (nb) nb.classList.add('active');
+    _vsearch('', userLat, userLng);
+    return;
+  }
+  if (!navigator.geolocation) {
+    document.getElementById('vsearchResults').innerHTML = '<div style="font-size:.72rem;color:var(--muted);padding:6px 4px">Geolocation not supported</div>';
+    return;
+  }
+  if (nb) nb.textContent = '\u23F3 Locating\u2026';
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    userLat = pos.coords.latitude; userLng = pos.coords.longitude;
+    const locBtn = document.getElementById('locateBtn');
+    if (locBtn) locBtn.classList.add('located');
+    document.getElementById('locateStatus').textContent = 'Located \u2713';
+    if (map) {
+      if (userMarker) map.removeLayer(userMarker);
+      const icon = L.divIcon({html:'<div class="geo-dot"></div><div class="geo-ring"></div>',className:'geo-marker',iconSize:[20,20],iconAnchor:[10,10]});
+      userMarker = L.marker([userLat, userLng], {icon}).addTo(map);
+      userMarker.bindPopup('<b>You are here</b>');
+    }
+    if (nb) { nb.textContent = '\u{1F4CD} Nearby'; nb.classList.add('active'); }
+    _vsearchMode = 'nearby';
+    _vsearch('', userLat, userLng);
+  }, function(e) {
+    if (nb) nb.textContent = '\u{1F4CD} Nearby';
+    document.getElementById('vsearchResults').innerHTML = '<div style="font-size:.72rem;color:var(--muted);padding:6px 4px">' + (e.code===1?'Location permission denied':'Location unavailable') + '</div>';
+  }, {enableHighAccuracy:true, timeout:10000});
+}
+
+async function _vsearch(q, lat, lng) {
+  _vsearchCursor = null;
+  _vsearchLastArgs = {q, lat, lng};
+  _vsearchVenues = [];
+  await _vsearchFetch(q, lat, lng, null, false);
+}
+
+async function _vsearchLoadMore() {
+  if (!_vsearchCursor || !_vsearchLastArgs) return;
+  const {q, lat, lng} = _vsearchLastArgs;
+  await _vsearchFetch(q, lat, lng, _vsearchCursor, true);
+}
+
+async function _vsearchFetch(q, lat, lng, cursor, append) {
+  const el = document.getElementById('vsearchResults');
+  const catSel = document.getElementById('vsCatSelect');
+  const sortSel = document.getElementById('vsSortSelect');
+  const cityEl = document.getElementById('vsCityInput');
+  const cat  = catSel  ? catSel.value  : '';
+  const sort = sortSel ? sortSel.value : 'RELEVANCE';
+  const near = (cityEl ? cityEl.value.trim() : '');
+  const ll = lat != null && lng != null ? lat + ',' + lng : null;
+  // FSQ API ignores the `categories` param server-side; work around it:
+  // use the category label as the text query so FSQ text-ranks relevant venues,
+  // then apply client-side name filter below on a larger result set.
+  const catLabel = (catSel && catSel.value)
+    ? catSel.options[catSel.selectedIndex].text.trim().toLowerCase()
+    : '';
+  // When text + category are both present, combine them so FSQ ranks both signals.
+  // When only category is selected, use its label as the sole text query.
+  const catText = catLabel ? catSel.options[catSel.selectedIndex].text.trim() : '';
+  const effectiveQ = q && catText ? q + ' ' + catText : (q || catText);
+
+  // For non-cursor fetch, check cache (cursor pages are not cached)
+  if (!cursor) {
+    const cacheKey = JSON.stringify({effectiveQ, ll, near, catLabel, sort});
+    const cached = _vsearchCache.get(cacheKey);
+    if (cached && (Date.now() - cached.ts) < _VCACHE_TTL) {
+      _vsearchVenues = cached.results;
+      _vsearchCursor = cached.nextCursor || null;
+      _vsearchRender(append);
+      return;
+    }
+  }
+
+  if (!append) {
+    el.innerHTML = '<div style="font-size:.72rem;color:var(--muted);padding:6px 4px">Searching\u2026</div>';
+  } else {
+    const lb = document.getElementById('vsearchLoadMore');
+    if (lb) { lb.disabled = true; lb.textContent = '\u2026'; }
+  }
+
+  if (_vsearchAbort) _vsearchAbort.abort();
+  _vsearchAbort = new AbortController();
+  try {
+    const p = new URLSearchParams();
+    if (effectiveQ) p.set('q', effectiveQ);
+    if (ll) p.set('ll', ll);
+    else if (near) p.set('near', near);
+    // FSQ ignores `categories` param server-side; omit it, use effectiveQ for bias instead.
+    // When cat filter is active, fetch 50 results so client-side filter has more candidates.
+    p.set('limit', catLabel ? '50' : '12');
+    if (sort && sort !== 'RELEVANCE') p.set('sort', sort);
+    if (cursor) p.set('cursor', cursor);
+    const res = await fetch('/api/search-venues?' + p.toString(), { signal: _vsearchAbort.signal });
+    const data = await res.json();
+    const raw = data.results || [];
+    const newVenues = catLabel
+      ? raw.filter(v => (v.categories || []).some(c => {
+          const n = (c.name || '').toLowerCase();
+          return n === catLabel || n.includes(catLabel) || catLabel.includes(n);
+        }))
+      : raw;
+    _vsearchCursor = catLabel ? null : (data.nextCursor || null);
+    if (append) {
+      const offset = _vsearchVenues.length;
+      _vsearchVenues = _vsearchVenues.concat(newVenues);
+      _vsearchRender(true, offset);
+    } else {
+      _vsearchVenues = newVenues;
+      if (!cursor) {
+        const cacheKey = JSON.stringify({effectiveQ, ll, near, catLabel, sort});
+        _vsearchCache.set(cacheKey, { results: _vsearchVenues, nextCursor: _vsearchCursor, ts: Date.now() });
+      }
+      _vsearchRender(false);
+    }
+  } catch(err) {
+    if (err.name === 'AbortError') return;
+    if (!append) {
+      el.innerHTML = '<div style="font-size:.72rem;color:var(--muted);padding:6px 4px">Search failed</div>';
+    }
+    _vsearchVenues = append ? _vsearchVenues : [];
+  }
+}
+
+function _vsearchRender(append, appendOffset) {
+  const el = document.getElementById('vsearchResults');
+  if (!_vsearchVenues.length) {
+    el.innerHTML = '<div style="font-size:.72rem;color:var(--muted);padding:6px 4px">No results</div>';
+    return;
+  }
+  const renderFrom = append ? (appendOffset || 0) : 0;
+  const newHtml = _vsearchVenues.slice(renderFrom).map((v, idx) => {
+    const i = renderFrom + idx;
+    const c0 = (v.categories || [])[0];
+    const loc = v.location || {};
+    const cityPart = loc.locality || loc.city || '';
+    const metaParts = [c0 ? c0.name : '', [cityPart, loc.country||''].filter(Boolean).join(', ')].filter(Boolean);
+    return `<div class="vsearch-result">
+      <div class="vsearch-result-body">
+        <div class="vsearch-result-name">${esc(v.name||'')}</div>
+        ${metaParts.length?`<div class="vsearch-result-meta">${esc(metaParts.join(' \u00b7 '))}</div>`:''}
+      </div>
+      <button class="vsearch-add-btn" data-vi="${i}" onclick="_addCustomVenue(${i})">+ Add</button>
+    </div>`;
+  }).join('');
+
+  // Remove existing "Load more" button before re-adding
+  const existing = document.getElementById('vsearchLoadMore');
+  if (existing) existing.remove();
+
+  if (append) {
+    el.insertAdjacentHTML('beforeend', newHtml);
+  } else {
+    el.innerHTML = newHtml;
+  }
+
+  if (_vsearchCursor) {
+    el.insertAdjacentHTML('beforeend',
+      '<button id="vsearchLoadMore" class="avb-near-btn" style="width:100%;margin-top:6px;justify-content:center" onclick="_vsearchLoadMore()">Load more</button>');
+  }
+}
+
+async function _addCustomVenue(vi) {
+  if (!_customListId) return;
+  const v = _vsearchVenues[vi];
+  if (!v) return;
+  const btn = document.querySelector(`.vsearch-add-btn[data-vi="${vi}"]`);
+  if (btn) { btn.disabled = true; btn.textContent = '\u2026'; }
+  const geo = (v.geocodes || {}).main || {};
+  const loc = v.location || {};
+  const cat = (v.categories || [])[0];
+  const resp = await fetch('/api/custom-list', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      listId: _customListId,
+      venueId: v.fsq_id,
+      venueName: v.name,
+      lat: geo.latitude ?? null,
+      lng: geo.longitude ?? null,
+      category: cat ? cat.name : null,
+      address: loc.formatted_address || loc.address || null,
+    })
+  });
+  if (resp.ok) {
+    if (btn) btn.textContent = '\u2713';
+    _loadCustomVenues(_customListId);
+  } else {
+    if (btn) { btn.disabled = false; btn.textContent = '+ Add'; }
+  }
+}
+
+async function _removeCustomVenue(venueId) {
+  if (!_customListId) return;
+  await fetch('/api/custom-list?listId=' + encodeURIComponent(_customListId) +
+    '&venueId=' + encodeURIComponent(venueId), { method: 'DELETE' });
+  _loadCustomVenues(_customListId);
+}
+
+async function _loadCustomVenues(listId) {
+  try {
+    const res = await fetch('/api/custom-list?listId=' + encodeURIComponent(listId));
+    if (!res.ok) return;
+    const venues = await res.json();
+    _renderCustomVenues(venues);
+  } catch { /* offline or no function — silent */ }
+}
+
+function _renderCustomVenues(customs) {
+  document.querySelectorAll('.vc-custom-card').forEach(el => el.remove());
+  // Update the count in the detail header to reflect custom additions
+  const lst = selIdx >= 0 ? filteredLists[selIdx] : null;
+  const countEl = document.querySelector('#detailHeader .dh-meta span:first-child');
+  if (countEl && lst) {
+    const base = lst.count || 0;
+    countEl.textContent = (base + customs.length) + ' venues';
+  }
+  if (!customs.length) return;
+  const scroll = document.getElementById('venuesScroll');
+  const frag = document.createDocumentFragment();
+  customs.forEach(v => {
+    const { em, bg } = catIcon(v.category || '');
+    const addrHtml = v.address ? `<span class="vc-sep">\u00b7</span><span class="vc-loc"><span class="vc-loc-text">${esc(v.address)}</span></span>` : '';
+    const fsqUrl = `https://foursquare.com/v/${encodeURIComponent(v.venue_id)}`;
+    const nameHtml = `<a href="${fsqUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(v.venue_name)}</a><span class="vc-custom-tag">ADDED</span>`;
+    const div = document.createElement('div');
+    div.className = 'vcard vc-custom vc-custom-card';
+    div.innerHTML = `<div class="vc-head">
+      <div class="vc-cat-icon" style="background:${bg}22;border:1px solid ${bg}55">${em}</div>
+      <div class="vc-name">${nameHtml}</div>
+      <button class="vc-remove-btn" onclick="_removeCustomVenue('${esc(v.venue_id)}')">Remove</button>
+    </div>
+    <div class="vc-foot">
+      ${v.category ? `<span class="vc-cat">${esc(v.category)}</span>` : ''}${addrHtml}
+    </div>`;
+    frag.appendChild(div);
+  });
+  scroll.prepend(frag);
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 _applySortFilter('');
 renderListItems();
@@ -451,6 +1112,5 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   });
 })();
 </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "096ba3d9093f4c629948d81ef8438a34"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

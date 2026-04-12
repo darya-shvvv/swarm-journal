@@ -5,7 +5,7 @@ compatibility_date = "2025-09-27"
 [vars]
 # Public variable — set to "owner/repo" for your repository.
 # Example: GITHUB_REPO = "alice/foursquare-dashboard"
-GITHUB_REPO = "toouur/foursquare-dashboard"
+GITHUB_REPO = "darya-shvvv/swarm-journal"
 
 [triggers]
 crons = ["* * * * *"]   # every minute

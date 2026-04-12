@@ -45,7 +45,7 @@ jobs:
       # ── 2. Checkout private data repo ────────────────────────────────────
       - uses: actions/checkout@v4
         with:
-          repository: toouur/foursquare-data
+          repository: darya-shvvv/foursquare-data
           token: ${{ secrets.DATA_REPO_PAT }}
           path: private-data
 
