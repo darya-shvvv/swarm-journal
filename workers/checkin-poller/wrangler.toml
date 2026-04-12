@@ -14,4 +14,4 @@ crons = ["* * * * *"]   # every minute
 # then paste the returned id below.
 [[kv_namespaces]]
 binding = "POLLER_KV"
-id      = "768683f5960249edb6ef20961eb7072c"
+id      = "286530ae3fdf4e7f821cf4704467842c"
