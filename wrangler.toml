@@ -5,7 +5,7 @@
 #   Pages → swarm-journal → Settings → Functions → D1 database bindings
 #   Variable name: DB  |  D1 database: swarmdata (f119d621-2747-4a09-a63f-7cc2d1819)
 
-name                    = "4sq"
+name                    = "swarm-journal"
 pages_build_output_dir  = "."
 compatibility_date      = "2025-01-01"
 
