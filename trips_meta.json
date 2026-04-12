@@ -1,198 +1,135 @@
 [
   {
     "id": 1,
-    "name": "Hrodna, Belarus 🚂",
-    "start_date": "2025-02-08",
-    "end_date": "2025-02-08",
-    "start_ts": 1739005007,
+    "name": "Minsk, Belarus 🚂",
+    "start_date": "2025-02-22",
+    "end_date": "2025-02-23",
+    "start_ts": 1740215608,
     "start_year": 2025,
-    "duration": 1,
-    "checkin_count": 31,
-    "unique_places": 31,
+    "duration": 2,
+    "checkin_count": 56,
+    "unique_places": 54,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna"
+      "Minsk"
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Metro Station",
+        8
+      ],
+      [
+        "Road",
+        6
+      ],
+      [
+        "Outdoor Sculpture",
+        5
+      ],
+      [
+        "Neighborhood",
+        5
+      ],
       [
         "Plaza",
         3
       ],
       [
-        "Church",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Bridge",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        2
-      ],
-      [
-        "Rail Station",
-        1
-      ],
-      [
-        "Sculpture Garden",
-        1
-      ],
-      [
         "Monument",
-        1
+        2
       ],
       [
         "Coffee Shop",
+        2
+      ],
+      [
+        "Street Art",
+        2
+      ],
+      [
+        "Park",
+        2
+      ],
+      [
+        "Supermarket",
         1
       ]
     ]
   },
   {
     "id": 2,
-    "name": "Hrodna, Belarus 🚂",
-    "start_date": "2025-03-07",
-    "end_date": "2025-03-10",
-    "start_ts": 1741352839,
+    "name": "Minsk, Belarus 🚂",
+    "start_date": "2025-03-09",
+    "end_date": "2025-03-20",
+    "start_ts": 1741552666,
     "start_year": 2025,
-    "duration": 4,
-    "checkin_count": 26,
-    "unique_places": 23,
+    "duration": 12,
+    "checkin_count": 64,
+    "unique_places": 58,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
       "Minsk",
       "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Park",
-        3
+        "Metro Station",
+        9
+      ],
+      [
+        "Road",
+        7
+      ],
+      [
+        "Plaza",
+        5
+      ],
+      [
+        "Coffee Shop",
+        4
+      ],
+      [
+        "Neighborhood",
+        4
       ],
       [
         "Bus Line",
         3
       ],
       [
-        "Home (private)",
-        3
-      ],
-      [
-        "Supermarket",
+        "Bus Station",
         2
       ],
       [
-        "Big Box Store",
+        "Rail Station",
         2
       ],
       [
         "Monument",
-        1
+        2
       ],
       [
-        "Café",
-        1
-      ],
-      [
-        "Shopping Mall",
-        1
-      ],
-      [
-        "Clothing Store",
-        1
-      ],
-      [
-        "Jewelry Store",
-        1
+        "Supermarket",
+        2
       ]
     ]
   },
   {
     "id": 3,
-    "name": "Hrodna, Belarus 🚗",
-    "start_date": "2025-04-12",
-    "end_date": "2025-04-14",
-    "start_ts": 1744448721,
+    "name": "Russia & Belarus 🚂",
+    "start_date": "2025-04-13",
+    "end_date": "2025-04-29",
+    "start_ts": 1744576136,
     "start_year": 2025,
-    "duration": 3,
-    "checkin_count": 30,
-    "unique_places": 29,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Hrodna",
-      "Minsk",
-      "Strachanyaty"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Plaza",
-        4
-      ],
-      [
-        "Supermarket",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Park",
-        3
-      ],
-      [
-        "Home (private)",
-        2
-      ],
-      [
-        "Road",
-        2
-      ],
-      [
-        "Other Great Outdoors",
-        2
-      ],
-      [
-        "Church",
-        2
-      ],
-      [
-        "Taxi",
-        2
-      ],
-      [
-        "Coffee Shop",
-        1
-      ]
-    ]
-  },
-  {
-    "id": 4,
-    "name": "Russia & Belarus 🚌",
-    "start_date": "2025-04-16",
-    "end_date": "2025-04-22",
-    "start_ts": 1744815048,
-    "start_year": 2025,
-    "duration": 7,
-    "checkin_count": 251,
-    "unique_places": 225,
+    "duration": 17,
+    "checkin_count": 404,
+    "unique_places": 353,
     "countries": [
       "Russia",
       "Belarus"
@@ -200,6 +137,7 @@
     "cities": [
       "Saint Petersburg",
       "Minsk",
+      "Strachanyaty",
       "Vitebsk",
       "Lobok",
       "Moscow",
@@ -210,222 +148,214 @@
     "tags": [],
     "top_cats": [
       [
-        "Bridge",
-        27
+        "Metro Station",
+        44
       ],
       [
         "Road",
+        40
+      ],
+      [
+        "Bridge",
+        29
+      ],
+      [
+        "Park",
         27
       ],
       [
-        "Metro Station",
-        19
-      ],
-      [
         "Plaza",
-        18
+        25
       ],
       [
         "Monument",
-        17
+        23
       ],
       [
         "Historic and Protected Site",
         13
       ],
       [
-        "Park",
-        10
+        "Neighborhood",
+        11
+      ],
+      [
+        "Outdoor Sculpture",
+        9
       ],
       [
         "Church",
-        8
-      ],
-      [
-        "River",
-        7
-      ],
-      [
-        "Inn",
-        6
+        9
       ]
     ]
   },
   {
-    "id": 5,
-    "name": "Hrodna, Belarus 🚂",
-    "start_date": "2025-04-29",
-    "end_date": "2025-05-24",
-    "start_ts": 1745927165,
+    "id": 4,
+    "name": "Minsk, Belarus 🚌",
+    "start_date": "2025-05-24",
+    "end_date": "2025-05-29",
+    "start_ts": 1748037147,
     "start_year": 2025,
-    "duration": 26,
-    "checkin_count": 144,
-    "unique_places": 77,
+    "duration": 6,
+    "checkin_count": 173,
+    "unique_places": 161,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
-      "Minsk"
+      "Minsk",
+      "Machulishchy",
+      "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
+        "Metro Station",
+        21
+      ],
+      [
         "Road",
-        22
+        18
       ],
       [
-        "Jewelry Store",
-        17
-      ],
-      [
-        "Big Box Store",
-        13
-      ],
-      [
-        "Shopping Mall",
-        12
-      ],
-      [
-        "Bus Line",
-        9
-      ],
-      [
-        "Bridge",
-        8
+        "Monument",
+        10
       ],
       [
         "Plaza",
+        9
+      ],
+      [
+        "Bus Line",
+        8
+      ],
+      [
+        "Park",
         7
       ],
       [
-        "Pharmacy",
+        "Bus Stop",
+        6
+      ],
+      [
+        "Bridge",
+        6
+      ],
+      [
+        "Outdoor Sculpture",
         5
       ],
       [
-        "Clothing Store",
-        5
-      ],
-      [
-        "Healthcare Clinic",
+        "Shopping Mall",
         4
       ]
     ]
   },
   {
-    "id": 6,
-    "name": "Hrodna, Belarus 🚌",
-    "start_date": "2025-05-29",
-    "end_date": "2025-06-21",
-    "start_ts": 1748534162,
+    "id": 5,
+    "name": "Skidel, Belarus 🚂",
+    "start_date": "2025-06-06",
+    "end_date": "2025-06-06",
+    "start_ts": 1749211028,
     "start_year": 2025,
-    "duration": 24,
-    "checkin_count": 255,
-    "unique_places": 182,
+    "duration": 1,
+    "checkin_count": 27,
+    "unique_places": 27,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
-      "Baranovichi",
-      "Slonim",
-      "Skidel",
-      "Minsk",
-      "Strachanyaty",
-      "Masty",
-      "Lavno",
-      "Shchuchin"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Road",
-        42
-      ],
-      [
-        "Bus Station",
-        13
-      ],
-      [
-        "Plaza",
-        13
-      ],
-      [
-        "Monument",
-        13
-      ],
-      [
-        "Park",
-        13
-      ],
-      [
-        "Big Box Store",
-        12
-      ],
-      [
-        "Jewelry Store",
-        12
-      ],
-      [
-        "City",
-        10
-      ],
-      [
-        "Bus Line",
-        8
-      ],
-      [
-        "Bus Stop",
-        8
-      ]
-    ]
-  },
-  {
-    "id": 7,
-    "name": "Hrodna, Belarus 🚗",
-    "start_date": "2025-06-21",
-    "end_date": "2025-07-06",
-    "start_ts": 1750530468,
-    "start_year": 2025,
-    "duration": 16,
-    "checkin_count": 80,
-    "unique_places": 53,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Hrodna",
-      "Minsk",
       "Skidel"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Big Box Store",
+        "Road",
+        8
+      ],
+      [
+        "City",
+        4
+      ],
+      [
+        "Church",
+        3
+      ],
+      [
+        "Memorial Site",
+        2
+      ],
+      [
+        "Historic and Protected Site",
+        2
+      ],
+      [
+        "Rail Station",
+        1
+      ],
+      [
+        "Monument",
+        1
+      ],
+      [
+        "Fountain",
+        1
+      ],
+      [
+        "Outdoor Sculpture",
+        1
+      ],
+      [
+        "Café",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Baranovichi, Belarus 🚌",
+    "start_date": "2025-06-14",
+    "end_date": "2025-06-15",
+    "start_ts": 1749891519,
+    "start_year": 2025,
+    "duration": 2,
+    "checkin_count": 81,
+    "unique_places": 75,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Baranovichi",
+      "Slonim"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Monument",
         11
       ],
       [
-        "Jewelry Store",
-        9
-      ],
-      [
-        "Shopping Mall",
-        7
-      ],
-      [
         "Road",
-        6
+        10
+      ],
+      [
+        "Park",
+        9
       ],
       [
         "Plaza",
         5
       ],
       [
-        "Park",
-        5
+        "Lake",
+        3
       ],
       [
-        "Home (private)",
+        "Bus Line",
+        3
+      ],
+      [
+        "Historic and Protected Site",
         3
       ],
       [
@@ -433,7 +363,7 @@
         3
       ],
       [
-        "Supermarket",
+        "Church",
         3
       ],
       [
@@ -443,22 +373,187 @@
     ]
   },
   {
-    "id": 8,
-    "name": "Hrodna, Belarus 🚂",
-    "start_date": "2025-07-08",
-    "end_date": "2025-09-06",
-    "start_ts": 1751990268,
+    "id": 7,
+    "name": "Masty, Belarus 🚗",
+    "start_date": "2025-06-17",
+    "end_date": "2025-06-17",
+    "start_ts": 1750138724,
     "start_year": 2025,
-    "duration": 61,
-    "checkin_count": 502,
-    "unique_places": 215,
+    "duration": 1,
+    "checkin_count": 6,
+    "unique_places": 6,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
-      "Lida",
+      "Masty",
+      "Skidel",
+      "Lavno",
+      "Shchuchin"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Farm",
+        1
+      ],
+      [
+        "City",
+        1
+      ],
+      [
+        "Park",
+        1
+      ],
+      [
+        "Bridge",
+        1
+      ],
+      [
+        "Grocery Store",
+        1
+      ],
+      [
+        "Fuel Station",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Minsk, Belarus 🚂",
+    "start_date": "2025-07-06",
+    "end_date": "2025-07-08",
+    "start_ts": 1751772832,
+    "start_year": 2025,
+    "duration": 3,
+    "checkin_count": 67,
+    "unique_places": 59,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
       "Minsk",
+      "Skidel"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Park",
+        9
+      ],
+      [
+        "Metro Station",
+        6
+      ],
+      [
+        "Bus Stop",
+        5
+      ],
+      [
+        "Road",
+        4
+      ],
+      [
+        "Monument",
+        3
+      ],
+      [
+        "Historic and Protected Site",
+        3
+      ],
+      [
+        "Waterfront",
+        3
+      ],
+      [
+        "Supermarket",
+        3
+      ],
+      [
+        "Neighborhood",
+        3
+      ],
+      [
+        "Plaza",
+        3
+      ]
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Lida, Belarus 🚌",
+    "start_date": "2025-08-10",
+    "end_date": "2025-08-10",
+    "start_ts": 1754820095,
+    "start_year": 2025,
+    "duration": 1,
+    "checkin_count": 24,
+    "unique_places": 24,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Lida"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Monument",
+        5
+      ],
+      [
+        "Outdoor Sculpture",
+        3
+      ],
+      [
+        "Temple",
+        2
+      ],
+      [
+        "Road",
+        2
+      ],
+      [
+        "Shopping Mall",
+        2
+      ],
+      [
+        "Lake",
+        2
+      ],
+      [
+        "Bus Station",
+        1
+      ],
+      [
+        "City",
+        1
+      ],
+      [
+        "BBQ Joint",
+        1
+      ],
+      [
+        "Plaza",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Vawkavysk, Belarus 🚂",
+    "start_date": "2025-08-24",
+    "end_date": "2025-08-24",
+    "start_ts": 1756038404,
+    "start_year": 2025,
+    "duration": 1,
+    "checkin_count": 17,
+    "unique_places": 17,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
       "Vawkavysk",
       "Skidel",
       "Zel’va",
@@ -468,116 +563,73 @@
     "tags": [],
     "top_cats": [
       [
-        "Bus Line",
-        55
+        "Rail Station",
+        2
       ],
       [
         "Bus Station",
-        47
-      ],
-      [
-        "Road",
-        38
-      ],
-      [
-        "Bus Stop",
-        37
-      ],
-      [
-        "Big Box Store",
-        37
-      ],
-      [
-        "Jewelry Store",
-        34
-      ],
-      [
-        "Shopping Mall",
-        28
-      ],
-      [
-        "Plaza",
-        17
-      ],
-      [
-        "Other Great Outdoors",
-        17
-      ],
-      [
-        "Bridge",
-        13
-      ]
-    ]
-  },
-  {
-    "id": 9,
-    "name": "Domoshany, Belarus 🚂",
-    "start_date": "2025-09-06",
-    "end_date": "2025-09-07",
-    "start_ts": 1757168992,
-    "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 11,
-    "unique_places": 8,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Domoshany",
-      "Minsk"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Rail Station",
-        4
-      ],
-      [
-        "Neighborhood",
         2
       ],
       [
-        "Trailer Park",
-        2
-      ],
-      [
-        "Train",
+        "Town",
         1
       ],
       [
-        "Bath House",
+        "Church",
         1
       ],
       [
         "City",
         1
+      ],
+      [
+        "Pizzeria",
+        1
+      ],
+      [
+        "Plaza",
+        1
+      ],
+      [
+        "Other Great Outdoors",
+        1
+      ],
+      [
+        "Park",
+        1
+      ],
+      [
+        "Event Space",
+        1
       ]
     ]
   },
   {
-    "id": 10,
-    "name": "Russia & Belarus 🚌",
-    "start_date": "2025-09-12",
+    "id": 11,
+    "name": "Russia & Belarus 🚂",
+    "start_date": "2025-09-06",
     "end_date": "2025-09-18",
-    "start_ts": 1757699412,
+    "start_ts": 1757129662,
     "start_year": 2025,
-    "duration": 7,
-    "checkin_count": 382,
-    "unique_places": 346,
+    "duration": 13,
+    "checkin_count": 535,
+    "unique_places": 461,
     "countries": [
       "Russia",
       "Belarus"
     ],
     "cities": [
       "Saint Petersburg",
+      "Minsk",
       "Vyborg",
       "Peterhof",
       "Kronshtadt",
       "Pushkin",
       "Lomonosov",
-      "Minsk",
+      "Domoshany",
       "Lobok",
       "Petrodvorets",
+      "Skidel",
       "Vitebsk",
       "Moscow",
       "Pskov",
@@ -588,281 +640,255 @@
     "tags": [],
     "top_cats": [
       [
+        "Park",
+        39
+      ],
+      [
         "Monument",
-        33
+        39
       ],
       [
         "Metro Station",
-        26
-      ],
-      [
-        "Park",
-        26
-      ],
-      [
-        "Historic and Protected Site",
-        25
+        36
       ],
       [
         "Plaza",
-        24
-      ],
-      [
-        "Bridge",
-        20
-      ],
-      [
-        "Fountain",
-        20
+        31
       ],
       [
         "Road",
-        17
+        27
       ],
       [
-        "Outdoor Sculpture",
-        14
+        "Historic and Protected Site",
+        27
+      ],
+      [
+        "Bridge",
+        25
+      ],
+      [
+        "Fountain",
+        25
+      ],
+      [
+        "Neighborhood",
+        21
       ],
       [
         "Bus Line",
-        11
+        19
       ]
     ]
   },
   {
-    "id": 11,
-    "name": "Hrodna, Belarus 🚂",
-    "start_date": "2025-09-18",
+    "id": 12,
+    "name": "Minsk, Belarus 🚂",
+    "start_date": "2025-09-29",
     "end_date": "2025-09-29",
-    "start_ts": 1758197397,
+    "start_ts": 1759116840,
     "start_year": 2025,
-    "duration": 12,
-    "checkin_count": 104,
-    "unique_places": 71,
+    "duration": 1,
+    "checkin_count": 14,
+    "unique_places": 14,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
       "Minsk",
       "Skidel"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Bus Station",
-        9
+        "Shopping Mall",
+        2
       ],
       [
         "Bus Line",
-        9
+        2
       ],
       [
-        "Bus Stop",
-        8
+        "Train",
+        1
       ],
       [
-        "Big Box Store",
-        7
-      ],
-      [
-        "Plaza",
-        5
-      ],
-      [
-        "Shopping Mall",
-        5
-      ],
-      [
-        "Road",
-        5
-      ],
-      [
-        "Jewelry Store",
-        5
+        "City",
+        1
       ],
       [
         "Rail Station",
-        4
+        1
       ],
       [
-        "Park",
-        4
-      ]
-    ]
-  },
-  {
-    "id": 12,
-    "name": "Hrodna, Belarus 🚌",
-    "start_date": "2025-09-29",
-    "end_date": "2025-10-11",
-    "start_ts": 1759151680,
-    "start_year": 2025,
-    "duration": 13,
-    "checkin_count": 84,
-    "unique_places": 56,
-    "countries": [
-      "Belarus"
-    ],
-    "cities": [
-      "Hrodna",
-      "Minsk",
-      "Strachanyaty"
-    ],
-    "tags": [],
-    "top_cats": [
-      [
-        "Bus Station",
-        13
-      ],
-      [
-        "Big Box Store",
-        8
-      ],
-      [
-        "Jewelry Store",
-        7
+        "Food Court",
+        1
       ],
       [
         "Bus Stop",
-        6
+        1
       ],
       [
-        "Bus Line",
-        4
+        "Hair Salon",
+        1
       ],
       [
-        "Plaza",
-        4
+        "Bakery",
+        1
       ],
       [
-        "Road",
-        4
-      ],
-      [
-        "Neighborhood",
-        3
-      ],
-      [
-        "Monument",
-        3
-      ],
-      [
-        "Park",
-        3
+        "Hiking Trail",
+        1
       ]
     ]
   },
   {
     "id": 13,
-    "name": "Hrodna, Belarus 🚂",
-    "start_date": "2025-10-13",
-    "end_date": "2025-10-26",
-    "start_ts": 1760370698,
+    "name": "Minsk, Belarus 🚂",
+    "start_date": "2025-10-10",
+    "end_date": "2025-10-13",
+    "start_ts": 1760128586,
     "start_year": 2025,
-    "duration": 14,
-    "checkin_count": 144,
-    "unique_places": 110,
+    "duration": 4,
+    "checkin_count": 92,
+    "unique_places": 83,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
-      "Navahrudak",
-      "Lida",
       "Minsk",
       "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Monument",
-        13
-      ],
-      [
-        "Bus Station",
+        "Park",
         12
       ],
       [
-        "Plaza",
-        9
+        "Neighborhood",
+        6
       ],
       [
-        "Jewelry Store",
-        9
+        "Monument",
+        6
+      ],
+      [
+        "Road",
+        6
+      ],
+      [
+        "Bus Line",
+        5
+      ],
+      [
+        "Street Art",
+        4
+      ],
+      [
+        "Bus Stop",
+        3
+      ],
+      [
+        "Plaza",
+        2
+      ],
+      [
+        "Business Center",
+        2
+      ],
+      [
+        "Taxi",
+        2
+      ]
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Navahrudak, Belarus 🚂",
+    "start_date": "2025-10-19",
+    "end_date": "2025-10-19",
+    "start_ts": 1760859573,
+    "start_year": 2025,
+    "duration": 1,
+    "checkin_count": 64,
+    "unique_places": 64,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Navahrudak",
+      "Lida"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Monument",
+        12
       ],
       [
         "Outdoor Sculpture",
         9
       ],
       [
-        "Big Box Store",
-        8
+        "Plaza",
+        4
       ],
       [
-        "Bus Line",
-        7
+        "Historic and Protected Site",
+        3
       ],
       [
-        "Road",
-        6
+        "Church",
+        3
+      ],
+      [
+        "Temple",
+        3
       ],
       [
         "City",
-        5
+        2
+      ],
+      [
+        "Bus Station",
+        2
       ],
       [
         "Park",
-        5
+        2
+      ],
+      [
+        "Castle",
+        2
       ]
     ]
   },
   {
-    "id": 14,
-    "name": "Hrodna, Belarus 🚂",
-    "start_date": "2025-10-27",
-    "end_date": "2025-11-14",
-    "start_ts": 1761581176,
+    "id": 15,
+    "name": "Minsk, Belarus 🚂",
+    "start_date": "2025-10-25",
+    "end_date": "2025-10-27",
+    "start_ts": 1761424770,
     "start_year": 2025,
-    "duration": 19,
-    "checkin_count": 113,
-    "unique_places": 55,
+    "duration": 3,
+    "checkin_count": 68,
+    "unique_places": 67,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
       "Minsk",
       "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Big Box Store",
-        14
-      ],
-      [
-        "Jewelry Store",
-        14
-      ],
-      [
-        "Bus Station",
-        14
-      ],
-      [
-        "Road",
-        13
-      ],
-      [
-        "Bus Stop",
-        12
-      ],
-      [
-        "Bus Line",
+        "Park",
         6
       ],
       [
-        "Plaza",
+        "Bus Line",
         5
       ],
       [
@@ -870,17 +896,98 @@
         4
       ],
       [
-        "Bridge",
+        "Monument",
+        4
+      ],
+      [
+        "Outdoor Sculpture",
+        4
+      ],
+      [
+        "Neighborhood",
+        4
+      ],
+      [
+        "Road",
         3
       ],
       [
-        "Rail Station",
+        "Plaza",
+        3
+      ],
+      [
+        "Tram Station",
+        3
+      ],
+      [
+        "Waterfront",
         2
       ]
     ]
   },
   {
-    "id": 15,
+    "id": 16,
+    "name": "Minsk, Belarus 🚗",
+    "start_date": "2025-11-14",
+    "end_date": "2025-11-15",
+    "start_ts": 1763114344,
+    "start_year": 2025,
+    "duration": 2,
+    "checkin_count": 14,
+    "unique_places": 14,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Minsk",
+      "Strachanyaty"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Park",
+        3
+      ],
+      [
+        "Bus Stop",
+        2
+      ],
+      [
+        "Fuel Station",
+        1
+      ],
+      [
+        "City",
+        1
+      ],
+      [
+        "Home (private)",
+        1
+      ],
+      [
+        "Bus Line",
+        1
+      ],
+      [
+        "Shopping Mall",
+        1
+      ],
+      [
+        "Supermarket",
+        1
+      ],
+      [
+        "Sushi Restaurant",
+        1
+      ],
+      [
+        "Lake",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 17,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2025-11-25",
     "end_date": "2025-11-26",
@@ -941,7 +1048,7 @@
     ]
   },
   {
-    "id": 16,
+    "id": 18,
     "name": "Russia & Belarus 🚌",
     "start_date": "2026-01-16",
     "end_date": "2026-01-19",
@@ -1009,7 +1116,7 @@
     ]
   },
   {
-    "id": 17,
+    "id": 19,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-01-22",
     "end_date": "2026-01-23",
@@ -1070,7 +1177,7 @@
     ]
   },
   {
-    "id": 18,
+    "id": 20,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-02-12",
     "end_date": "2026-02-12",
@@ -1132,7 +1239,7 @@
     ]
   },
   {
-    "id": 19,
+    "id": 21,
     "name": "Russia & Belarus 🚌",
     "start_date": "2026-02-26",
     "end_date": "2026-03-01",
@@ -1199,7 +1306,7 @@
     ]
   },
   {
-    "id": 20,
+    "id": 22,
     "name": "Gomel, Belarus 🚂",
     "start_date": "2026-03-14",
     "end_date": "2026-03-16",
@@ -1260,7 +1367,7 @@
     ]
   },
   {
-    "id": 21,
+    "id": 23,
     "name": "Minsk, Belarus 🚂",
     "start_date": "2026-04-03",
     "end_date": "2026-04-04",
@@ -1321,7 +1428,7 @@
     ]
   },
   {
-    "id": 22,
+    "id": 24,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-04-07",
     "end_date": "2026-04-08",
