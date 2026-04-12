@@ -151,9 +151,35 @@ def _is_home_transport(row: dict, home_city: str) -> bool:
     )
 
 
+def get_home_city_for_timestamp(
+    ts: int, home_periods: list[dict[str, Any]]
+) -> str:
+    """
+    Determine which city was "home" at a given timestamp.
+    
+    Args:
+        ts: Unix timestamp
+        home_periods: List of dicts with 'start', 'end', 'city'
+                      start/end can be None for open boundaries
+    
+    Returns:
+        City name string
+    """
+    for period in home_periods:
+        start_ok = period.get('start') is None or ts >= period['start']
+        end_ok = period.get('end') is None or ts < period['end']
+        
+        if start_ok and end_ok:
+            return period['city']
+    
+    # Fallback to last period's city or "Minsk"
+    return home_periods[-1]['city'] if home_periods else "Minsk"
+
+
 def detect_trips(
     rows: list[dict],
     home_city: str = "Minsk",
+    home_periods: list[dict[str, Any]] | None = None,
     min_checkins: int = 5,
     trip_names: dict[str, str] | None = None,
     trip_exclude: set[int] | None = None,
@@ -177,10 +203,17 @@ def detect_trips(
         key=lambda r: int(r["date"]),
     )
 
+    # Determine home city for each check-in based on timestamp
+    def get_home(row: dict) -> str:
+        if home_periods:
+            ts = int(row["date"])
+            return get_home_city_for_timestamp(ts, home_periods)
+        return home_city
+
     raw_trips: list[list[dict]] = []
     current: list[dict] = []
     for row in valid:
-        if row.get("city", "").strip() != home_city:
+        if row.get("city", "").strip() != get_home(row):
             current.append(row)
         else:
             if current:
@@ -624,6 +657,7 @@ def process(
     rows: list[dict],
     mappings: dict[str, Any],
     home_city: str = "Minsk",
+    home_periods: list[dict[str, Any]] | None = None,
     min_trip_checkins: int = 5,
     trip_names: dict[str, str] | None = None,
     trip_exclude: set[int] | None = None,
@@ -1196,7 +1230,17 @@ def process(
     ])
 
     # ── Trips ─────────────────────────────────────────────────────────────────
-    trips = detect_trips(rows, home_city=home_city, min_checkins=min_trip_checkins, trip_names=trip_names, trip_exclude=trip_exclude, trip_end_overrides=trip_end_overrides, trip_start_overrides=trip_start_overrides, trip_tags=trip_tags)
+    trips = detect_trips(
+        rows,
+        home_city=home_city,
+        home_periods=home_periods,
+        min_checkins=min_trip_checkins,
+        trip_names=trip_names,
+        trip_exclude=trip_exclude,
+        trip_end_overrides=trip_end_overrides,
+        trip_start_overrides=trip_start_overrides,
+        trip_tags=trip_tags
+    )
 
     # ── Trip analytics (Group 3) ───────────────────────────────────────────────
     if trips:

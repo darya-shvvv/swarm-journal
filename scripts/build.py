@@ -164,6 +164,7 @@ if __name__ == "__main__":
 
     home_city     = args.home_city     or trip_cfg.get("home_city",    "Minsk")
     min_checkins  = args.min_checkins  or trip_cfg.get("min_checkins", 5)
+    home_periods  = trip_cfg.get("home_periods", [])  # ADDED: load time-based home periods
     fs_user_id    = settings.get("dashboard", {}).get("foursquare_user_id", "")
 
     log.info("Loading mappings from %s …", config_dir)
@@ -237,8 +238,22 @@ if __name__ == "__main__":
         for k, v in settings.get("new_country_year_overrides", {}).items()
     }
 
-    log.info("Computing metrics (home=%s, min_checkins=%d) …", home_city, min_checkins)
-    data, trips = process(rows, mappings, home_city=home_city, min_trip_checkins=min_checkins, trip_names=trip_names, trip_exclude=trip_exclude, trip_end_overrides=trip_end_overrides, trip_start_overrides=trip_start_overrides, trip_tags=trip_tags, new_country_year_overrides=nc_yr_overrides)
+    log.info("Computing metrics (home=%s, min_checkins=%d, home_periods=%d) …", 
+             home_city, min_checkins, len(home_periods))
+    
+    # UPDATED: Pass home_periods to process()
+    data, trips = process(
+        rows, mappings,
+        home_city=home_city,
+        home_periods=home_periods,
+        min_trip_checkins=min_checkins,
+        trip_names=trip_names,
+        trip_exclude=trip_exclude,
+        trip_end_overrides=trip_end_overrides,
+        trip_start_overrides=trip_start_overrides,
+        trip_tags=trip_tags,
+        new_country_year_overrides=nc_yr_overrides
+    )
 
     # Write per-year / per-catgrp heatmap layers as a separate static file.
     # Remove from data dict so they don't bloat index.html.
