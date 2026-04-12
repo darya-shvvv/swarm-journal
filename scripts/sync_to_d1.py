@@ -68,6 +68,18 @@ def _str(v) -> str | None:
     return s or None
 
 
+def _file_exists(filepath: str | None, name: str) -> bool:
+    """Check if a file exists and log appropriately."""
+    if not filepath:
+        print(f"  {name}: no file provided", flush=True)
+        return False
+    path = Path(filepath)
+    if not path.exists():
+        print(f"  {name}: file not found at {filepath} – skipping", flush=True)
+        return False
+    return True
+
+
 # -- SQL templates ------------------------------------------------------------
 
 SQL_CHECKINS_NEW = (
@@ -181,7 +193,8 @@ def parse_checkins(csv_path: str):
 
 
 def parse_tips(tips_path: str):
-    tips = json.load(open(tips_path, encoding="utf-8"))
+    with open(tips_path, encoding="utf-8") as f:
+        tips = json.load(f)
     return [[
         t.get("id"), _int(t.get("ts")),
         _str(t.get("text")),
@@ -197,7 +210,8 @@ def parse_tips(tips_path: str):
 
 
 def parse_ratings(ratings_path: str):
-    data = json.load(open(ratings_path, encoding="utf-8"))
+    with open(ratings_path, encoding="utf-8") as f:
+        data = json.load(f)
     rows = []
     for key, label in (("venueLikes", "like"), ("venueOkays", "okay"), ("venueDislikes", "dislike")):
         for v in data.get(key) or []:
@@ -208,7 +222,8 @@ def parse_ratings(ratings_path: str):
 
 
 def parse_trips(trips_path: str):
-    data = json.load(open(trips_path, encoding="utf-8"))
+    with open(trips_path, encoding="utf-8") as f:
+        data = json.load(f)
     rows = []
     for t in data:
         rows.append([
@@ -230,7 +245,8 @@ def parse_trips(trips_path: str):
 
 
 def parse_lists(lists_path: str, visited_vids: set):
-    data = json.load(open(lists_path, encoding="utf-8"))
+    with open(lists_path, encoding="utf-8") as f:
+        data = json.load(f)
     raw = data.get("items") or (data if isinstance(data, list) else [])
     list_rows, lv_rows = [], []
     for lst in raw:
@@ -387,7 +403,8 @@ def _sync_lists_diff(list_rows: list, lv_rows: list) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Incremental D1 sync for CI")
     ap.add_argument("--csv",     required=True)
-    ap.add_argument("--tips",    required=True)
+    ap.add_argument("--tips",    default=None,
+                    help="Path to tips.json (optional)")
     ap.add_argument("--ratings", default=None,
                     help="Path to venueRatings.json (optional; required if --ratings-changed or --force-ratings)")
     ap.add_argument("--lists",   default=None,
@@ -474,56 +491,63 @@ def main() -> None:
         ]
         d1.batch_upsert(SQL_VENUES, venue_rows, label="venues   ")
 
-    # Tips
+    # Tips - FIXED: graceful handling
     if args.force_tips:
         print("  tips     : FORCE full resync — wiping and reinserting", flush=True)
         d1.query("DELETE FROM tips")
-        tip_rows = parse_tips(args.tips)
-        d1.batch_upsert(SQL_TIPS, tip_rows, label="tips     ")
-        changed = True
+        if _file_exists(args.tips, "tips"):
+            tip_rows = parse_tips(args.tips)
+            d1.batch_upsert(SQL_TIPS, tip_rows, label="tips     ")
+            changed = True
+        else:
+            print("  tips     : no data to sync", flush=True)
     elif args.tips_changed == "true":
-        tip_rows = parse_tips(args.tips)
-        d1.batch_upsert(SQL_TIPS, tip_rows, label="tips     ")
-        changed = True
+        if _file_exists(args.tips, "tips"):
+            tip_rows = parse_tips(args.tips)
+            d1.batch_upsert(SQL_TIPS, tip_rows, label="tips     ")
+            changed = True
+        else:
+            print("  tips     : skipped (no data)", flush=True)
     else:
         print("  tips     : skipped (no new tips this run)", flush=True)
 
-    # Ratings
-    # CI path: INSERT OR IGNORE (append-only; likes only, deletions handled by --force-ratings)
-    # Force path: DELETE + full INSERT OR REPLACE (use after data export comparison)
+    # Ratings - FIXED: graceful handling
     if args.force_ratings:
-        if not args.ratings:
-            sys.exit("--force-ratings requires --ratings")
         print("  ratings  : FORCE full resync — wiping and reinserting", flush=True)
         d1.query("DELETE FROM ratings")
-        rating_rows = parse_ratings(args.ratings)
-        d1.batch_upsert(SQL_RATINGS, rating_rows, label="ratings  ")
-        changed = True
+        if _file_exists(args.ratings, "ratings"):
+            rating_rows = parse_ratings(args.ratings)
+            d1.batch_upsert(SQL_RATINGS, rating_rows, label="ratings  ")
+            changed = True
+        else:
+            print("  ratings  : no data to sync", flush=True)
     elif args.ratings_changed == "true":
-        if not args.ratings:
-            sys.exit("--ratings-changed=true requires --ratings")
-        rating_rows = parse_ratings(args.ratings)
-        d1.batch_upsert(SQL_RATINGS_IGNORE, rating_rows, label="ratings  ")
-        changed = True
+        if _file_exists(args.ratings, "ratings"):
+            rating_rows = parse_ratings(args.ratings)
+            d1.batch_upsert(SQL_RATINGS_IGNORE, rating_rows, label="ratings  ")
+            changed = True
+        else:
+            print("  ratings  : skipped (no data)", flush=True)
     else:
         print("  ratings  : skipped (no new ratings this run)", flush=True)
 
-    # Trips
+    # Trips - FIXED: graceful handling
     if args.force_trips:
-        if not args.trips or not Path(args.trips).exists():
-            sys.exit(f"--force-trips requires --trips pointing to an existing file (got: {args.trips!r})")
         print("  trips    : FORCE full resync — wiping and reinserting", flush=True)
-        d1.query("DELETE FROM trips")
-        trip_rows = parse_trips(args.trips)
-        d1.batch_upsert(SQL_TRIPS, trip_rows, label="trips    ")
-        changed = True
-    elif args.trips_changed == "true" and args.trips:
-        if Path(args.trips).exists():
+        if _file_exists(args.trips, "trips"):
+            d1.query("DELETE FROM trips")
             trip_rows = parse_trips(args.trips)
             d1.batch_upsert(SQL_TRIPS, trip_rows, label="trips    ")
             changed = True
         else:
-            print(f"  trips    : file not found: {args.trips}", flush=True)
+            print("  trips    : no data to sync", flush=True)
+    elif args.trips_changed == "true" and args.trips:
+        if _file_exists(args.trips, "trips"):
+            trip_rows = parse_trips(args.trips)
+            d1.batch_upsert(SQL_TRIPS, trip_rows, label="trips    ")
+            changed = True
+        else:
+            print("  trips    : skipped (no data)", flush=True)
     else:
         print("  trips    : skipped (no new check-ins this run)", flush=True)
 
@@ -567,25 +591,25 @@ def main() -> None:
     elif args.venue_changes:
         print(f"  venue_changes: file not found: {args.venue_changes}", flush=True)
 
-    # Lists
-    # Force path: full wipe + reinsert (manual, post-export)
-    # CI path: smart diff — delete removed lists/items, upsert current state
+    # Lists - FIXED: graceful handling
     if args.force_lists:
-        if not args.lists:
-            sys.exit("--force-lists requires --lists")
         print("  lists    : FORCE full resync — wiping and reinserting", flush=True)
-        d1.query("DELETE FROM list_venues")
-        d1.query("DELETE FROM lists")
-        list_rows, lv_rows = parse_lists(args.lists, visited_vids)
-        d1.batch_upsert(SQL_LISTS,       list_rows, label="lists    ")
-        d1.batch_upsert(SQL_LIST_VENUES, lv_rows,   label="list_venues")
-        changed = True
+        if _file_exists(args.lists, "lists"):
+            d1.query("DELETE FROM list_venues")
+            d1.query("DELETE FROM lists")
+            list_rows, lv_rows = parse_lists(args.lists, visited_vids)
+            d1.batch_upsert(SQL_LISTS,       list_rows, label="lists    ")
+            d1.batch_upsert(SQL_LIST_VENUES, lv_rows,   label="list_venues")
+            changed = True
+        else:
+            print("  lists    : no data to sync", flush=True)
     elif args.lists_changed == "true":
-        if not args.lists:
-            sys.exit("--lists-changed=true requires --lists")
-        list_rows, lv_rows = parse_lists(args.lists, visited_vids)
-        _sync_lists_diff(list_rows, lv_rows)
-        changed = True
+        if _file_exists(args.lists, "lists"):
+            list_rows, lv_rows = parse_lists(args.lists, visited_vids)
+            _sync_lists_diff(list_rows, lv_rows)
+            changed = True
+        else:
+            print("  lists    : skipped (no data)", flush=True)
     else:
         print("  lists    : skipped (no new check-ins this run)", flush=True)
 
