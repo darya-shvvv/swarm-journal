@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Minsk, Belarus 🚂",
+    "name": "Minsk - first visit 🚂",
     "start_date": "2025-02-22",
     "end_date": "2025-02-23",
     "start_ts": 1740215608,
@@ -122,7 +122,7 @@
   },
   {
     "id": 3,
-    "name": "Russia & Belarus 🚂",
+    "name": "Russia & Belarus - big adventure 🚂",
     "start_date": "2025-04-13",
     "end_date": "2025-04-29",
     "start_ts": 1744576136,
@@ -191,7 +191,7 @@
   },
   {
     "id": 4,
-    "name": "Minsk, Belarus 🚌",
+    "name": "Minsk with a friend 🚌",
     "start_date": "2025-05-24",
     "end_date": "2025-05-29",
     "start_ts": 1748037147,
@@ -253,7 +253,7 @@
   },
   {
     "id": 5,
-    "name": "Skidel, Belarus 🚂",
+    "name": "Skidel dash 🚂",
     "start_date": "2025-06-06",
     "end_date": "2025-06-06",
     "start_ts": 1749211028,
@@ -313,7 +313,7 @@
   },
   {
     "id": 6,
-    "name": "Baranovichi, Belarus 🚌",
+    "name": "Baranovichi explore 🚌",
     "start_date": "2025-06-14",
     "end_date": "2025-06-15",
     "start_ts": 1749891519,
@@ -374,7 +374,7 @@
   },
   {
     "id": 7,
-    "name": "Masty, Belarus 🚗",
+    "name": "Masty region road trip 🚗",
     "start_date": "2025-06-17",
     "end_date": "2025-06-17",
     "start_ts": 1750138724,
@@ -421,7 +421,7 @@
   },
   {
     "id": 8,
-    "name": "Minsk, Belarus 🚂",
+    "name": "Minsk midsummer vibes 🚂",
     "start_date": "2025-07-06",
     "end_date": "2025-07-08",
     "start_ts": 1751772832,
@@ -482,7 +482,7 @@
   },
   {
     "id": 9,
-    "name": "Lida, Belarus 🚌",
+    "name": "Lida day trip 🚌",
     "start_date": "2025-08-10",
     "end_date": "2025-08-10",
     "start_ts": 1754820095,
@@ -542,7 +542,7 @@
   },
   {
     "id": 10,
-    "name": "Vawkavysk, Belarus 🚂",
+    "name": "Vawkavysk & around 🚂",
     "start_date": "2025-08-24",
     "end_date": "2025-08-24",
     "start_ts": 1756038404,
@@ -606,7 +606,7 @@
   },
   {
     "id": 11,
-    "name": "Russia & Belarus 🚂",
+    "name": "Russia & Belarus - September 🚂",
     "start_date": "2025-09-06",
     "end_date": "2025-09-18",
     "start_ts": 1757129662,
@@ -683,7 +683,7 @@
   },
   {
     "id": 12,
-    "name": "Minsk, Belarus 🚂",
+    "name": "Minsk quick visit 🚂",
     "start_date": "2025-09-29",
     "end_date": "2025-09-29",
     "start_ts": 1759116840,
@@ -744,7 +744,7 @@
   },
   {
     "id": 13,
-    "name": "Minsk, Belarus 🚂",
+    "name": "Minsk October long weekend 🚂",
     "start_date": "2025-10-10",
     "end_date": "2025-10-13",
     "start_ts": 1760128586,
@@ -805,7 +805,7 @@
   },
   {
     "id": 14,
-    "name": "Navahrudak, Belarus 🚂",
+    "name": "Navahrudak castles 🚂",
     "start_date": "2025-10-19",
     "end_date": "2025-10-19",
     "start_ts": 1760859573,
@@ -866,7 +866,7 @@
   },
   {
     "id": 15,
-    "name": "Minsk, Belarus 🚂",
+    "name": "Minsk end of October 🚂",
     "start_date": "2025-10-25",
     "end_date": "2025-10-27",
     "start_ts": 1761424770,
@@ -927,7 +927,7 @@
   },
   {
     "id": 16,
-    "name": "Minsk, Belarus 🚗",
+    "name": "Minsk - after the move 🚗",
     "start_date": "2025-11-14",
     "end_date": "2025-11-15",
     "start_ts": 1763114344,
@@ -988,7 +988,7 @@
   },
   {
     "id": 17,
-    "name": "Hrodna, Belarus 🚂",
+    "name": "Hrodna - new home base 🚂",
     "start_date": "2025-11-25",
     "end_date": "2025-11-26",
     "start_ts": 1764043452,
@@ -1049,7 +1049,7 @@
   },
   {
     "id": 18,
-    "name": "Russia & Belarus 🚌",
+    "name": "Russia & Belarus - January winter 🚌",
     "start_date": "2026-01-16",
     "end_date": "2026-01-19",
     "start_ts": 1768589915,
@@ -1117,7 +1117,7 @@
   },
   {
     "id": 19,
-    "name": "Hrodna, Belarus 🚂",
+    "name": "Hrodna January weekend 🚂",
     "start_date": "2026-01-22",
     "end_date": "2026-01-23",
     "start_ts": 1769053585,
@@ -1178,7 +1178,7 @@
   },
   {
     "id": 20,
-    "name": "Hrodna, Belarus 🚂",
+    "name": "Hrodna February quick 🚂",
     "start_date": "2026-02-12",
     "end_date": "2026-02-12",
     "start_ts": 1770868553,
@@ -1240,7 +1240,7 @@
   },
   {
     "id": 21,
-    "name": "Russia & Belarus 🚌",
+    "name": "Moscow city escape 🚌",
     "start_date": "2026-02-26",
     "end_date": "2026-03-01",
     "start_ts": 1772133788,
@@ -1307,7 +1307,7 @@
   },
   {
     "id": 22,
-    "name": "Gomel, Belarus 🚂",
+    "name": "Gomel lynx city 🚂",
     "start_date": "2026-03-14",
     "end_date": "2026-03-16",
     "start_ts": 1773460114,
@@ -1368,7 +1368,7 @@
   },
   {
     "id": 23,
-    "name": "Minsk, Belarus 🚂",
+    "name": "Minsk spring return 🚂",
     "start_date": "2026-04-03",
     "end_date": "2026-04-04",
     "start_ts": 1775230601,
@@ -1429,7 +1429,7 @@
   },
   {
     "id": 24,
-    "name": "Hrodna, Belarus 🚂",
+    "name": "Hrodna April weekend 🚂",
     "start_date": "2026-04-07",
     "end_date": "2026-04-08",
     "start_ts": 1775534128,
