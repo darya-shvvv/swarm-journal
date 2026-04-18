@@ -1496,8 +1496,8 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 8,
-    "unique_places": 8,
+    "checkin_count": 10,
+    "unique_places": 10,
     "countries": [
       "Belarus"
     ],
@@ -1509,6 +1509,10 @@
     "top_cats": [
       [
         "Rail Station",
+        2
+      ],
+      [
+        "Monument",
         2
       ],
       [
@@ -1524,15 +1528,15 @@
         1
       ],
       [
-        "Monument",
-        1
-      ],
-      [
         "City",
         1
       ],
       [
         "Road",
+        1
+      ],
+      [
+        "Rest Area",
         1
       ]
     ]
