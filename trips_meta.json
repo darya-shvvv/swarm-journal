@@ -1496,14 +1496,15 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 18,
-    "unique_places": 18,
+    "checkin_count": 19,
+    "unique_places": 19,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Maladzyechna",
-      "Minsk"
+      "Minsk",
+      "Спадар"
     ],
     "tags": [],
     "top_cats": [
