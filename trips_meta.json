@@ -1496,8 +1496,8 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 7,
-    "unique_places": 7,
+    "checkin_count": 8,
+    "unique_places": 8,
     "countries": [
       "Belarus"
     ],
@@ -1529,6 +1529,10 @@
       ],
       [
         "City",
+        1
+      ],
+      [
+        "Road",
         1
       ]
     ]
