@@ -1496,16 +1496,18 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 34,
-    "unique_places": 34,
+    "checkin_count": 43,
+    "unique_places": 43,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Maladzyechna",
       "Minsk",
+      "Zarechye",
       "Спадар",
-      "Zarechye"
+      "Minsk District",
+      "Ждановичи"
     ],
     "tags": [],
     "top_cats": [
@@ -1514,12 +1516,16 @@
         7
       ],
       [
+        "Rail Station",
+        4
+      ],
+      [
         "Park",
         4
       ],
       [
-        "Rail Station",
-        3
+        "Beach",
+        4
       ],
       [
         "Platform",
@@ -1543,10 +1549,6 @@
       ],
       [
         "Road",
-        1
-      ],
-      [
-        "Rest Area",
         1
       ]
     ]
