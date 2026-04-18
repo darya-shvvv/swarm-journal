@@ -1496,8 +1496,8 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 16,
-    "unique_places": 16,
+    "checkin_count": 17,
+    "unique_places": 17,
     "countries": [
       "Belarus"
     ],
@@ -1517,6 +1517,10 @@
       ],
       [
         "Plaza",
+        2
+      ],
+      [
+        "Church",
         2
       ],
       [
@@ -1541,10 +1545,6 @@
       ],
       [
         "Coffee Shop",
-        1
-      ],
-      [
-        "Sculpture Garden",
         1
       ]
     ]
