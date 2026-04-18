@@ -1496,15 +1496,16 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 33,
-    "unique_places": 33,
+    "checkin_count": 34,
+    "unique_places": 34,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Maladzyechna",
       "Minsk",
-      "Спадар"
+      "Спадар",
+      "Zarechye"
     ],
     "tags": [],
     "top_cats": [
@@ -1518,7 +1519,7 @@
       ],
       [
         "Rail Station",
-        2
+        3
       ],
       [
         "Platform",
