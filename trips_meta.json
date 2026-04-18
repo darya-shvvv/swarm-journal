@@ -1496,8 +1496,8 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 11,
-    "unique_places": 11,
+    "checkin_count": 13,
+    "unique_places": 13,
     "countries": [
       "Belarus"
     ],
@@ -1508,11 +1508,15 @@
     "tags": [],
     "top_cats": [
       [
+        "Monument",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
       [
-        "Monument",
+        "Plaza",
         2
       ],
       [
@@ -1521,10 +1525,6 @@
       ],
       [
         "Train",
-        1
-      ],
-      [
-        "Plaza",
         1
       ],
       [
