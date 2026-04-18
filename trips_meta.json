@@ -1496,8 +1496,8 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 24,
-    "unique_places": 24,
+    "checkin_count": 25,
+    "unique_places": 25,
     "countries": [
       "Belarus"
     ],
@@ -1513,15 +1513,15 @@
         5
       ],
       [
+        "Park",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
       [
         "Plaza",
-        2
-      ],
-      [
-        "Park",
         2
       ],
       [
