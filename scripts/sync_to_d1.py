@@ -39,6 +39,7 @@ import csv
 import json
 import os
 import sys
+import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -128,8 +129,8 @@ SQL_TRIPS = (
 )
 SQL_VENUE_CHANGES = (
     "INSERT OR REPLACE INTO venue_changes "
-    "(venue_id,field,old_value,new_value,detected_at) "
-    "VALUES (?,?,?,?,?)"
+    "(venue_id,field,old_value,new_value,detected_at,venue_name,action) "
+    "VALUES (?,?,?,?,?,?,?)"
 )
 
 
@@ -438,6 +439,11 @@ def main() -> None:
                     help="DELETE FROM trips then full INSERT OR REPLACE (manual resync)")
     ap.add_argument("--force-lists",   dest="force_lists",   action="store_true",
                     help="DELETE FROM lists + list_venues then full INSERT OR REPLACE (manual resync)")
+    ap.add_argument("--force-checkins", dest="force_checkins", action="store_true",
+                    help="DELETE FROM checkins + venues then full reinsert (use after stale-row cleanup)")
+    ap.add_argument("--delete-checkin-rows", dest="delete_checkin_rows", default=None,
+                    help='JSON file with list of {"venue_id","date"} pairs to DELETE from checkins; '
+                         "also prunes orphaned venue_ids from venues table")
     args = ap.parse_args()
 
     token = args.token or os.environ.get("CF_D1_TOKEN", "")
@@ -460,36 +466,49 @@ def main() -> None:
             counts_before[tbl] = 0
     print(f"D1 sync: counts before = {counts_before}", flush=True)
 
-    # Get current max checkin date from D1
-    result = d1.query("SELECT MAX(date) AS max_date FROM checkins")
-    max_date = (result[0].get("max_date") or 0) if result else 0
-    print(f"D1 sync: last known checkin timestamp = {max_date}", flush=True)
-
-    # Parse CSV
+    # Parse CSV (always needed)
     all_checkin_rows, venue_meta = parse_checkins(args.csv)
     visited_vids = {r[2] for r in all_checkin_rows if r[2]}  # index 2 = venue_id
 
-    # Only rows newer than what D1 already has
-    new_checkin_rows = [r for r in all_checkin_rows if r[1] > max_date]
-    new_venue_ids    = {r[2] for r in new_checkin_rows if r[2]}
-
-    print(f"D1 sync: {len(new_checkin_rows)} new check-ins, "
-          f"{len(new_venue_ids)} venues to update", flush=True)
-
-    changed = bool(new_checkin_rows)
-
-    # Upsert checkins (INSERT OR IGNORE -- safe to re-run)
-    if new_checkin_rows:
-        d1.batch_upsert(SQL_CHECKINS_NEW, new_checkin_rows, label="checkins (new)")
-
-    # Upsert only affected venues
-    if new_venue_ids:
-        venue_rows = [
+    if args.force_checkins:
+        print("  checkins : FORCE full resync — wiping checkins + venues and reinserting", flush=True)
+        d1.query("DELETE FROM checkins")
+        d1.query("DELETE FROM venues")
+        d1.batch_upsert(SQL_CHECKINS_NEW, all_checkin_rows, label="checkins ")
+        all_venue_rows = [
             [vid, m["name"] or None, m["category"] or None, m["lat"], m["lng"],
              m["city"] or None, m["country"] or None, m["count"], m["first_ts"] or None, m["last_ts"] or None]
-            for vid, m in venue_meta.items() if vid in new_venue_ids
+            for vid, m in venue_meta.items()
         ]
-        d1.batch_upsert(SQL_VENUES, venue_rows, label="venues   ")
+        d1.batch_upsert(SQL_VENUES, all_venue_rows, label="venues   ")
+        changed = True
+    else:
+        # Get current max checkin date from D1
+        result = d1.query("SELECT MAX(date) AS max_date FROM checkins")
+        max_date = (result[0].get("max_date") or 0) if result else 0
+        print(f"D1 sync: last known checkin timestamp = {max_date}", flush=True)
+
+        # Only rows newer than what D1 already has
+        new_checkin_rows = [r for r in all_checkin_rows if r[1] > max_date]
+        new_venue_ids    = {r[2] for r in new_checkin_rows if r[2]}
+
+        print(f"D1 sync: {len(new_checkin_rows)} new check-ins, "
+              f"{len(new_venue_ids)} venues to update", flush=True)
+
+        changed = bool(new_checkin_rows)
+
+        # Upsert checkins (INSERT OR IGNORE -- safe to re-run)
+        if new_checkin_rows:
+            d1.batch_upsert(SQL_CHECKINS_NEW, new_checkin_rows, label="checkins (new)")
+
+        # Upsert only affected venues
+        if new_venue_ids:
+            venue_rows = [
+                [vid, m["name"] or None, m["category"] or None, m["lat"], m["lng"],
+                 m["city"] or None, m["country"] or None, m["count"], m["first_ts"] or None, m["last_ts"] or None]
+                for vid, m in venue_meta.items() if vid in new_venue_ids
+            ]
+            d1.batch_upsert(SQL_VENUES, venue_rows, label="venues   ")
 
     # Tips - FIXED: graceful handling
     if args.force_tips:
@@ -563,8 +582,12 @@ def main() -> None:
             field = rec.get("field")
             if vid and field in ALLOWED_FIELDS:
                 by_venue.setdefault(vid, []).append(rec)
-        if by_venue:
-            print(f"  venue_changes: applying {len(diffs)} diff(s) across {len(by_venue)} venue(s)", flush=True)
+        # Separate merge records (field='venue_id') from metadata field updates
+        merge_diffs = [r for r in diffs if r.get("field") == "venue_id" and r.get("venue_id") and r.get("new_value")]
+
+        if by_venue or merge_diffs:
+            print(f"  venue_changes: applying {len(diffs)} diff(s) across {len(by_venue)} venue(s)"
+                  + (f", {len(merge_diffs)} merge(s)" if merge_diffs else ""), flush=True)
             # Field mappings: checkins and tips share the same column names for venue metadata
             # venues table uses 'name' instead of 'venue' for the venue name
             VENUE_TABLE_FIELD = {"venue": "name", "city": "city", "country": "country",
@@ -579,10 +602,40 @@ def main() -> None:
                 # Update venues table row (column 'name' instead of 'venue')
                 v_clauses = ", ".join(f"{VENUE_TABLE_FIELD[r['field']]}=?" for r in recs)
                 d1.query(f"UPDATE venues SET {v_clauses} WHERE id=?", set_vals + [vid])
+            # Venue merges: reassign checkins + tips to new venue_id
+            for r in merge_diffs:
+                old_vid = r["venue_id"]
+                new_vid = r["new_value"]
+                d1.query("UPDATE checkins SET venue_id=? WHERE venue_id=?", [new_vid, old_vid])
+                d1.query("UPDATE tips SET venue_id=? WHERE venue_id=?", [new_vid, old_vid])
             # Audit log
+            def _derive_action(field: str) -> str:
+                if field == "venue":
+                    return "renamed"
+                if field in ("lat", "lng", "city", "country", "address"):
+                    return "relocated"
+                if field == "category":
+                    return "recategorized"
+                return "updated"
+
             vc_rows = [
-                [r["venue_id"], r["field"], r.get("old_value"), r.get("new_value"), r.get("detected_at", 0)]
+                [
+                    r["venue_id"], r["field"], r.get("old_value"), r.get("new_value"),
+                    r.get("detected_at", 0),
+                    venue_meta.get(r["venue_id"], {}).get("name", ""),
+                    _derive_action(r["field"]),
+                ]
                 for r in diffs if r.get("venue_id") and r.get("field") in ALLOWED_FIELDS
+            ]
+            # Merge audit rows — use venue_name from the diff record (old vid not in venue_meta)
+            vc_rows += [
+                [
+                    r["venue_id"], "venue_id", r.get("old_value"), r.get("new_value"),
+                    r.get("detected_at", 0),
+                    r.get("venue_name", ""),
+                    "merged",
+                ]
+                for r in merge_diffs
             ]
             d1.batch_upsert(SQL_VENUE_CHANGES, vc_rows, label="venue_changes")
             changed = True
@@ -590,6 +643,34 @@ def main() -> None:
             print("  venue_changes: no valid diffs found", flush=True)
     elif args.venue_changes:
         print(f"  venue_changes: file not found: {args.venue_changes}", flush=True)
+
+    # Targeted checkin row deletion + orphaned venue pruning
+    if args.delete_checkin_rows and os.path.exists(args.delete_checkin_rows):
+        pairs = json.load(open(args.delete_checkin_rows, encoding="utf-8"))
+        deleted_checkins = 0
+        now_ts = int(time.time())
+        vc_merge_rows = []
+        for p in pairs:
+            vid  = str(p.get("venue_id", ""))
+            date = p.get("date")
+            vname = str(p.get("venue_name", ""))
+            d1.query("DELETE FROM checkins WHERE venue_id=? AND date=?", [vid, date])
+            deleted_checkins += 1
+            vc_merge_rows.append([vid, "venue_id", vid, None, now_ts, vname, "merged"])
+        print(f"  checkins : deleted {deleted_checkins} stale row(s) by (venue_id, date)", flush=True)
+        if vc_merge_rows:
+            d1.batch_upsert(SQL_VENUE_CHANGES, vc_merge_rows, label="venue_changes(merged)")
+        # Prune venue_ids from venues table that no longer appear in checkins
+        stale_vids = [str(p["venue_id"]) for p in pairs]
+        pruned = 0
+        for vid in stale_vids:
+            res = d1.query("SELECT COUNT(*) AS n FROM checkins WHERE venue_id=?", [vid])
+            if res and res[0].get("n", 1) == 0:
+                d1.query("DELETE FROM venues WHERE id=?", [vid])
+                pruned += 1
+        if pruned:
+            print(f"  venues   : pruned {pruned} orphaned venue_id(s)", flush=True)
+        changed = True
 
     # Lists - FIXED: graceful handling
     if args.force_lists:
@@ -619,7 +700,8 @@ def main() -> None:
     if args.force_tips:    force_resynced.add("tips")
     if args.force_ratings: force_resynced.add("ratings")
     if args.force_trips:   force_resynced.add("trips")
-    if args.force_lists:   force_resynced.update(("lists", "list_venues"))
+    if args.force_lists:     force_resynced.update(("lists", "list_venues"))
+    if args.force_checkins:  force_resynced.update(("checkins", "venues"))
 
     in_gha = os.environ.get("GITHUB_ACTIONS") == "true"
     alerts: list[str] = []
