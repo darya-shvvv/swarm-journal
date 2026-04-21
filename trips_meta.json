@@ -487,8 +487,8 @@
     "start_ts": 1751772832,
     "start_year": 2025,
     "duration": 3,
-    "checkin_count": 67,
-    "unique_places": 59,
+    "checkin_count": 68,
+    "unique_places": 60,
     "countries": [
       "Belarus"
     ],
@@ -705,7 +705,7 @@
       ],
       [
         "Monument",
-        39
+        38
       ],
       [
         "Metro Station",
@@ -721,7 +721,7 @@
       ],
       [
         "Historic and Protected Site",
-        27
+        26
       ],
       [
         "Bridge",
@@ -1324,10 +1324,6 @@
     "tags": [],
     "top_cats": [
       [
-        "Monument",
-        33
-      ],
-      [
         "Plaza",
         27
       ],
@@ -1336,12 +1332,16 @@
         26
       ],
       [
+        "Monument",
+        26
+      ],
+      [
         "Metro Station",
         22
       ],
       [
         "Park",
-        13
+        12
       ],
       [
         "Bus Line",
@@ -1352,15 +1352,15 @@
         7
       ],
       [
+        "Tower",
+        7
+      ],
+      [
         "Shopping Mall",
         4
       ],
       [
         "Home (private)",
-        4
-      ],
-      [
-        "Fountain",
         4
       ]
     ]
@@ -1565,7 +1565,6 @@
       "Maladzyechna",
       "Minsk",
       "Zarechye",
-      "Спадар",
       "Minsk District"
     ],
     "tags": [],
