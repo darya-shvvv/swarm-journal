@@ -67,8 +67,8 @@
     "start_ts": 1741552666,
     "start_year": 2025,
     "duration": 3,
-    "checkin_count": 38,
-    "unique_places": 36,
+    "checkin_count": 39,
+    "unique_places": 37,
     "countries": [
       "Belarus"
     ],
@@ -123,13 +123,13 @@
   {
     "id": 3,
     "name": "Minsk, Belarus 🚌",
-    "start_date": "2025-03-11",
+    "start_date": "2025-03-18",
     "end_date": "2025-03-20",
-    "start_ts": 1741709697,
+    "start_ts": 1742302587,
     "start_year": 2025,
-    "duration": 10,
-    "checkin_count": 26,
-    "unique_places": 25,
+    "duration": 3,
+    "checkin_count": 25,
+    "unique_places": 24,
     "countries": [
       "Belarus"
     ],
@@ -159,10 +159,6 @@
         2
       ],
       [
-        "Platform",
-        1
-      ],
-      [
         "Cafeteria",
         1
       ],
@@ -176,6 +172,10 @@
       ],
       [
         "Big Box Store",
+        1
+      ],
+      [
+        "Restaurant",
         1
       ]
     ]
