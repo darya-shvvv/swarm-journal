@@ -215,6 +215,7 @@
   "Pinski Rayon": "Pinsk"  # ok — single checkin at 52.11,26.12, inside Pinsk city
   "Novogrudok": "Navahrudak"   # added manually to resolve
   "Volkovysk": "Vawkavysk" # added manually to resolve
+  "Пекари (Волковысский р-н)": "Vawkavysk"  # ok — village Pekary in Vawkavysk district
   # ══ BELARUS / SMARHON ══
   "Smarhon'": "Smarhon"  # ok — apostrophe variant
   "Smarhoń": "Smarhon"  # ok — diacritic form
@@ -953,6 +954,7 @@
   "Murino": "Saint Petersburg"  # ok — suburb of SPb
   "Kudrovo": "Saint Petersburg"  # ok — suburb of SPb
   "gorod Petrodvorets": "Saint Petersburg"  # ok — Peterhof = part of SPb
+  "Petrodvorets": "Peterhof"  # ok — Soviet-era name for Peterhof
   "Свердловское": "Saint Petersburg"  # ok — 23km south of SPb centre, within SPb agglomeration
   "Петергоф": "Peterhof"  # ok — kept as Peterhof (palace destination)
   "Пушкин": "Pushkin"  # ok — kept as Pushkin (Tsarskoye Selo)
