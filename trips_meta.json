@@ -63,12 +63,12 @@
     "id": 2,
     "name": "Minsk - second visit 🚂",
     "start_date": "2025-03-09",
-    "end_date": "2025-03-20",
+    "end_date": "2025-03-11",
     "start_ts": 1741552666,
     "start_year": 2025,
-    "duration": 12,
-    "checkin_count": 64,
-    "unique_places": 58,
+    "duration": 3,
+    "checkin_count": 38,
+    "unique_places": 36,
     "countries": [
       "Belarus"
     ],
@@ -79,35 +79,27 @@
     "tags": [],
     "top_cats": [
       [
-        "Metro Station",
-        9
-      ],
-      [
         "Road",
-        7
-      ],
-      [
-        "Plaza",
         5
       ],
       [
-        "Coffee Shop",
+        "Plaza",
         4
-      ],
-      [
-        "Neighborhood",
-        4
-      ],
-      [
-        "Bus Line",
-        3
-      ],
-      [
-        "Bus Station",
-        2
       ],
       [
         "Rail Station",
+        2
+      ],
+      [
+        "Coffee Shop",
+        2
+      ],
+      [
+        "Bus Line",
+        2
+      ],
+      [
+        "Neighborhood",
         2
       ],
       [
@@ -115,13 +107,81 @@
         2
       ],
       [
-        "Supermarket",
+        "Metro Station",
         2
+      ],
+      [
+        "Park",
+        2
+      ],
+      [
+        "Fuel Station",
+        1
       ]
     ]
   },
   {
     "id": 3,
+    "name": "Minsk, Belarus 🚌",
+    "start_date": "2025-03-11",
+    "end_date": "2025-03-20",
+    "start_ts": 1741709697,
+    "start_year": 2025,
+    "duration": 10,
+    "checkin_count": 26,
+    "unique_places": 25,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Minsk"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Metro Station",
+        7
+      ],
+      [
+        "Road",
+        2
+      ],
+      [
+        "Coffee Shop",
+        2
+      ],
+      [
+        "Neighborhood",
+        2
+      ],
+      [
+        "Street Art",
+        2
+      ],
+      [
+        "Platform",
+        1
+      ],
+      [
+        "Cafeteria",
+        1
+      ],
+      [
+        "Bank",
+        1
+      ],
+      [
+        "Gastropub",
+        1
+      ],
+      [
+        "Big Box Store",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 4,
     "name": "First vacation - big adventure in SPB 🚂",
     "start_date": "2025-04-13",
     "end_date": "2025-04-29",
@@ -190,7 +250,7 @@
     ]
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "Minsk for a seminar 🚌",
     "start_date": "2025-05-24",
     "end_date": "2025-05-29",
@@ -252,7 +312,7 @@
     ]
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "Skidel countryside 🚂",
     "start_date": "2025-06-06",
     "end_date": "2025-06-06",
@@ -312,7 +372,7 @@
     ]
   },
   {
-    "id": 6,
+    "id": 7,
     "name": "Baranovichi animal party 🚌",
     "start_date": "2025-06-14",
     "end_date": "2025-06-15",
@@ -373,7 +433,7 @@
     ]
   },
   {
-    "id": 7,
+    "id": 8,
     "name": "Masty - bridge in the air 🚗",
     "start_date": "2025-06-17",
     "end_date": "2025-06-17",
@@ -420,15 +480,15 @@
     ]
   },
   {
-    "id": 8,
+    "id": 9,
     "name": "Minsk midsummer vibes 🚂",
     "start_date": "2025-07-06",
     "end_date": "2025-07-08",
     "start_ts": 1751772832,
     "start_year": 2025,
     "duration": 3,
-    "checkin_count": 67,
-    "unique_places": 59,
+    "checkin_count": 68,
+    "unique_places": 60,
     "countries": [
       "Belarus"
     ],
@@ -481,7 +541,7 @@
     ]
   },
   {
-    "id": 9,
+    "id": 10,
     "name": "Lida day trip 🚌",
     "start_date": "2025-08-10",
     "end_date": "2025-08-10",
@@ -541,7 +601,7 @@
     ]
   },
   {
-    "id": 10,
+    "id": 11,
     "name": "Vawkavysk & around 🚂",
     "start_date": "2025-08-24",
     "end_date": "2025-08-24",
@@ -605,7 +665,7 @@
     ]
   },
   {
-    "id": 11,
+    "id": 12,
     "name": "Second vacation - exploring SPB region 🚂",
     "start_date": "2025-09-06",
     "end_date": "2025-09-18",
@@ -645,7 +705,7 @@
       ],
       [
         "Monument",
-        39
+        38
       ],
       [
         "Metro Station",
@@ -661,7 +721,7 @@
       ],
       [
         "Historic and Protected Site",
-        27
+        26
       ],
       [
         "Bridge",
@@ -682,7 +742,7 @@
     ]
   },
   {
-    "id": 12,
+    "id": 13,
     "name": "Minsk hair coloring 🚂",
     "start_date": "2025-09-29",
     "end_date": "2025-09-29",
@@ -743,7 +803,7 @@
     ]
   },
   {
-    "id": 13,
+    "id": 14,
     "name": "Minsk for a bachelor party 🚂",
     "start_date": "2025-10-10",
     "end_date": "2025-10-13",
@@ -804,7 +864,7 @@
     ]
   },
   {
-    "id": 14,
+    "id": 15,
     "name": "Navahrudak - Lida castles 🚂",
     "start_date": "2025-10-19",
     "end_date": "2025-10-19",
@@ -865,7 +925,7 @@
     ]
   },
   {
-    "id": 15,
+    "id": 16,
     "name": "Minsk end of October 🚂",
     "start_date": "2025-10-25",
     "end_date": "2025-10-27",
@@ -926,7 +986,7 @@
     ]
   },
   {
-    "id": 16,
+    "id": 17,
     "name": "Minsk - move to the man 🚗",
     "start_date": "2025-11-14",
     "end_date": "2025-11-15",
@@ -987,7 +1047,7 @@
     ]
   },
   {
-    "id": 17,
+    "id": 18,
     "name": "Hrodna - teeth therapy 🚂",
     "start_date": "2025-11-25",
     "end_date": "2025-11-26",
@@ -1048,7 +1108,7 @@
     ]
   },
   {
-    "id": 18,
+    "id": 19,
     "name": "Big weekend - winter SPB 🚌",
     "start_date": "2026-01-16",
     "end_date": "2026-01-19",
@@ -1116,7 +1176,7 @@
     ]
   },
   {
-    "id": 19,
+    "id": 20,
     "name": "Hrodna - teeth therapy #2 🚂",
     "start_date": "2026-01-22",
     "end_date": "2026-01-23",
@@ -1177,7 +1237,7 @@
     ]
   },
   {
-    "id": 20,
+    "id": 21,
     "name": "Hrodna - to fix a bracket 🚂",
     "start_date": "2026-02-12",
     "end_date": "2026-02-12",
@@ -1239,7 +1299,7 @@
     ]
   },
   {
-    "id": 21,
+    "id": 22,
     "name": "В Москве на патриках 🚌",
     "start_date": "2026-02-26",
     "end_date": "2026-03-01",
@@ -1264,10 +1324,6 @@
     "tags": [],
     "top_cats": [
       [
-        "Monument",
-        33
-      ],
-      [
         "Plaza",
         27
       ],
@@ -1276,12 +1332,16 @@
         26
       ],
       [
+        "Monument",
+        26
+      ],
+      [
         "Metro Station",
         22
       ],
       [
         "Park",
-        13
+        12
       ],
       [
         "Bus Line",
@@ -1292,21 +1352,21 @@
         7
       ],
       [
+        "Tower",
+        7
+      ],
+      [
         "Shopping Mall",
         4
       ],
       [
         "Home (private)",
         4
-      ],
-      [
-        "Fountain",
-        4
       ]
     ]
   },
   {
-    "id": 22,
+    "id": 23,
     "name": "Gomel city of lynx 🚂",
     "start_date": "2026-03-14",
     "end_date": "2026-03-16",
@@ -1367,7 +1427,7 @@
     ]
   },
   {
-    "id": 23,
+    "id": 24,
     "name": "Bath session #1 🚂",
     "start_date": "2026-04-03",
     "end_date": "2026-04-04",
@@ -1428,7 +1488,7 @@
     ]
   },
   {
-    "id": 24,
+    "id": 25,
     "name": "Hrodna - teeth therapy #3 🚂",
     "start_date": "2026-04-07",
     "end_date": "2026-04-08",
@@ -1489,7 +1549,7 @@
     ]
   },
   {
-    "id": 25,
+    "id": 26,
     "name": "Maladzyechna, Belarus 🚂",
     "start_date": "2026-04-18",
     "end_date": "2026-04-18",
@@ -1505,9 +1565,7 @@
       "Maladzyechna",
       "Minsk",
       "Zarechye",
-      "Спадар",
-      "Minsk District",
-      "Ждановичи"
+      "Minsk District"
     ],
     "tags": [],
     "top_cats": [
