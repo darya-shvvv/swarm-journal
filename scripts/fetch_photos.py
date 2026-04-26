@@ -130,14 +130,18 @@ def main() -> None:
 
     # Load existing photos.json
     if photos_path.exists():
-        photos_by_checkin: dict[str, list[str]] = json.loads(
-            photos_path.read_text(encoding="utf-8")
-        )
+        try:
+            photos_by_checkin: dict[str, list[str]] = json.loads(
+                photos_path.read_text(encoding="utf-8")
+            )
+        except (json.JSONDecodeError, ValueError):
+            print(f"Warning: {photos_path} is corrupt or empty — starting fresh", file=sys.stderr)
+            photos_by_checkin = {}
     else:
         photos_by_checkin = {}
 
     # Load check-in IDs from CSV (preserve insertion order → newest first after sort)
-    with open(args.csv, encoding="utf-8") as fh:
+    with open(args.csv, encoding="utf-8-sig") as fh:
         rows = list(csv.DictReader(fh))
 
     # Sort newest first so new check-ins are processed first

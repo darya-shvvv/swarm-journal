@@ -66,7 +66,7 @@ def resolve_token(cli_token: str | None) -> str:
 def load_existing(csv_path: Path) -> list[dict]:
     if not csv_path.exists():
         return []
-    with open(csv_path, encoding="utf-8", newline="") as fh:
+    with open(csv_path, encoding="utf-8-sig", newline="") as fh:
         return list(csv.DictReader(fh))
 
 
