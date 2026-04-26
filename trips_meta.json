@@ -1608,5 +1608,75 @@
         1
       ]
     ]
+  },
+  {
+    "id": 27,
+    "name": "Russia + Uzbekistan + 1 more 🚌",
+    "start_date": "2026-04-24",
+    "end_date": "2026-04-26",
+    "start_ts": 1777058776,
+    "start_year": 2026,
+    "duration": 3,
+    "checkin_count": 96,
+    "unique_places": 95,
+    "countries": [
+      "Russia",
+      "Uzbekistan",
+      "Belarus"
+    ],
+    "cities": [
+      "Moscow",
+      "Urganch",
+      "Urgench",
+      "Smolensk Region",
+      "Minsk",
+      "Ургенч",
+      "Kopyś",
+      "Tashkent",
+      "уй"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Monument",
+        13
+      ],
+      [
+        "Metro Station",
+        8
+      ],
+      [
+        "Event Space",
+        6
+      ],
+      [
+        "Plaza",
+        4
+      ],
+      [
+        "Park",
+        4
+      ],
+      [
+        "Fountain",
+        4
+      ],
+      [
+        "Bus Line",
+        3
+      ],
+      [
+        "Border Crossing",
+        3
+      ],
+      [
+        "Road",
+        3
+      ],
+      [
+        "Rail Station",
+        3
+      ]
+    ]
   }
 ]
