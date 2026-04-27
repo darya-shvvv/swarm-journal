@@ -1611,14 +1611,14 @@
   },
   {
     "id": 27,
-    "name": "Russia + Uzbekistan + 1 more 🚂",
+    "name": "Russia + Uzbekistan + 1 more 🚌",
     "start_date": "2026-04-24",
     "end_date": "2026-04-27",
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 103,
-    "unique_places": 100,
+    "checkin_count": 104,
+    "unique_places": 101,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1629,8 +1629,8 @@
       "Urgench",
       "Smolensk Region",
       "Minsk",
-      "Kopyś",
-      "Khiva"
+      "Khiva",
+      "Kopyś"
     ],
     "tags": [],
     "top_cats": [
