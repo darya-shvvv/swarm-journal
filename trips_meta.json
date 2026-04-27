@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 105,
-    "unique_places": 102,
+    "checkin_count": 107,
+    "unique_places": 104,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1627,8 +1627,8 @@
     "cities": [
       "Moscow",
       "Urgench",
-      "Smolensk Region",
       "Khiva",
+      "Smolensk Region",
       "Minsk",
       "Kopyś"
     ],
@@ -1652,7 +1652,7 @@
       ],
       [
         "Park",
-        4
+        5
       ],
       [
         "Fountain",
