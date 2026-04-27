@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 128,
-    "unique_places": 125,
+    "checkin_count": 131,
+    "unique_places": 128,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1630,9 +1630,9 @@
       "Khiva",
       "Smolensk Region",
       "Minsk",
+      "Хива",
       "Kopyś",
-      "Jiva",
-      "Хива"
+      "Jiva"
     ],
     "tags": [],
     "top_cats": [
@@ -1642,7 +1642,7 @@
       ],
       [
         "Historic and Protected Site",
-        12
+        15
       ],
       [
         "Metro Station",
