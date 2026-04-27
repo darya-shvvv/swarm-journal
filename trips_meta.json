@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 121,
-    "unique_places": 118,
+    "checkin_count": 124,
+    "unique_places": 121,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1641,11 +1641,11 @@
         15
       ],
       [
-        "Metro Station",
-        8
+        "Historic and Protected Site",
+        9
       ],
       [
-        "Historic and Protected Site",
+        "Metro Station",
         8
       ],
       [
