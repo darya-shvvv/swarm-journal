@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 140,
+    "checkin_count": 141,
     "unique_places": 137,
     "countries": [
       "Uzbekistan",
@@ -1626,8 +1626,8 @@
     ],
     "cities": [
       "Moscow",
-      "Urgench",
       "Khiva",
+      "Urgench",
       "Хива",
       "Smolensk Region",
       "Minsk",
@@ -1638,7 +1638,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        17
+        18
       ],
       [
         "Monument",
