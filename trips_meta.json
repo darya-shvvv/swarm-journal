@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 117,
-    "unique_places": 114,
+    "checkin_count": 119,
+    "unique_places": 116,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1644,11 +1644,11 @@
         8
       ],
       [
-        "Event Space",
-        6
+        "Historic and Protected Site",
+        7
       ],
       [
-        "Historic and Protected Site",
+        "Event Space",
         6
       ],
       [
