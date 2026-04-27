@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 114,
-    "unique_places": 111,
+    "checkin_count": 115,
+    "unique_places": 112,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1648,15 +1648,15 @@
         6
       ],
       [
+        "Historic and Protected Site",
+        6
+      ],
+      [
         "Plaza",
         5
       ],
       [
         "Park",
-        5
-      ],
-      [
-        "Historic and Protected Site",
         5
       ],
       [
