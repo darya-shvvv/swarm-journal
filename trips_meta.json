@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 113,
-    "unique_places": 110,
+    "checkin_count": 114,
+    "unique_places": 111,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1656,15 +1656,15 @@
         5
       ],
       [
+        "Historic and Protected Site",
+        5
+      ],
+      [
         "Fountain",
         4
       ],
       [
         "Rail Station",
-        4
-      ],
-      [
-        "Historic and Protected Site",
         4
       ],
       [
