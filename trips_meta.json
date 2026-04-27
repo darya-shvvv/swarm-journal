@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 119,
-    "unique_places": 116,
+    "checkin_count": 120,
+    "unique_places": 117,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1664,15 +1664,15 @@
         4
       ],
       [
+        "Outdoor Sculpture",
+        4
+      ],
+      [
         "Rail Station",
         4
       ],
       [
         "Bus Line",
-        3
-      ],
-      [
-        "Border Crossing",
         3
       ]
     ]
