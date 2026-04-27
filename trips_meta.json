@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 120,
-    "unique_places": 117,
+    "checkin_count": 121,
+    "unique_places": 118,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1631,7 +1631,8 @@
       "Smolensk Region",
       "Minsk",
       "Kopyś",
-      "Jiva"
+      "Jiva",
+      "Хива"
     ],
     "tags": [],
     "top_cats": [
@@ -1645,7 +1646,7 @@
       ],
       [
         "Historic and Protected Site",
-        7
+        8
       ],
       [
         "Event Space",
