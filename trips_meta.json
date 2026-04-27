@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 107,
-    "unique_places": 104,
+    "checkin_count": 109,
+    "unique_places": 106,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1630,7 +1630,8 @@
       "Khiva",
       "Smolensk Region",
       "Minsk",
-      "Kopyś"
+      "Kopyś",
+      "Jiva"
     ],
     "tags": [],
     "top_cats": [
