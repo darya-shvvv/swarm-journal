@@ -144,7 +144,7 @@
   "1723975796": "Pryluky",
   "1723977548": "Atolino",
 
-  "_comment_urgench_2026": "2026-04-26 Urgench trip: blank/corrupt city rows GPS-assigned to wrong centroid or empty",
+  "_comment_urgench_khiva_2026": "2026-04-26/27 Urgench+Khiva trip: blank/corrupt city rows",
   "1777162260": "Urgench",
   "1777162277": "Urgench",
   "1777197493": "Urgench",
@@ -152,5 +152,8 @@
   "1777202895": "Urgench",
   "1777205211": "Urgench",
   "1777206291": "Urgench",
-  "1777209412": "Urgench"
+  "1777209412": "Urgench",
+  "1777272616": "Urgench",
+  "1777278276": "Khiva",
+  "1777305083": "Khiva"
 }
