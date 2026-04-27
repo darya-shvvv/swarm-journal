@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 112,
-    "unique_places": 109,
+    "checkin_count": 113,
+    "unique_places": 110,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1664,15 +1664,15 @@
         4
       ],
       [
+        "Historic and Protected Site",
+        4
+      ],
+      [
         "Bus Line",
         3
       ],
       [
         "Border Crossing",
-        3
-      ],
-      [
-        "City",
         3
       ]
     ]
