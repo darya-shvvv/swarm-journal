@@ -1611,17 +1611,17 @@
   },
   {
     "id": 27,
-    "name": "Russia + Uzbekistan + 1 more 🚌",
+    "name": "Uzbekistan + Russia + 1 more 🚌",
     "start_date": "2026-04-24",
     "end_date": "2026-04-27",
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 136,
-    "unique_places": 133,
+    "checkin_count": 137,
+    "unique_places": 134,
     "countries": [
-      "Russia",
       "Uzbekistan",
+      "Russia",
       "Belarus"
     ],
     "cities": [
@@ -1637,11 +1637,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Monument",
-        16
+        "Historic and Protected Site",
+        17
       ],
       [
-        "Historic and Protected Site",
+        "Monument",
         16
       ],
       [
