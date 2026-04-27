@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 115,
-    "unique_places": 112,
+    "checkin_count": 116,
+    "unique_places": 113,
     "countries": [
       "Russia",
       "Uzbekistan",
@@ -1637,7 +1637,7 @@
     "top_cats": [
       [
         "Monument",
-        14
+        15
       ],
       [
         "Metro Station",
