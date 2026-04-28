@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 168,
+    "checkin_count": 169,
     "unique_places": 157,
     "countries": [
       "Uzbekistan",
@@ -1625,8 +1625,8 @@
       "Belarus"
     ],
     "cities": [
-      "Moscow",
       "Khiva",
+      "Moscow",
       "Urgench",
       "Smolensk Region",
       "Minsk",
@@ -1673,8 +1673,8 @@
         4
       ],
       [
-        "Bus Line",
-        3
+        "Tower",
+        4
       ]
     ]
   }
