@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 151,
-    "unique_places": 143,
+    "checkin_count": 152,
+    "unique_places": 144,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1630,13 +1630,14 @@
       "Urgench",
       "Smolensk Region",
       "Minsk",
-      "Kopyś"
+      "Kopyś",
+      "ヒヴァ"
     ],
     "tags": [],
     "top_cats": [
       [
         "Historic and Protected Site",
-        26
+        27
       ],
       [
         "Monument",
