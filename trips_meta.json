@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 155,
-    "unique_places": 146,
+    "checkin_count": 156,
+    "unique_places": 147,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1631,7 +1631,8 @@
       "Smolensk Region",
       "Minsk",
       "Kopyś",
-      "ヒヴァ"
+      "ヒヴァ",
+      "Xiva"
     ],
     "tags": [],
     "top_cats": [
