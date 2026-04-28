@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 172,
-    "unique_places": 160,
+    "checkin_count": 182,
+    "unique_places": 169,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1632,13 +1632,14 @@
       "Minsk",
       "Kopyś",
       "ヒヴァ",
-      "Xiva"
+      "Xiva",
+      "Hive"
     ],
     "tags": [],
     "top_cats": [
       [
         "Historic and Protected Site",
-        39
+        43
       ],
       [
         "Monument",
@@ -1649,12 +1650,12 @@
         8
       ],
       [
-        "Park",
+        "Plaza",
         7
       ],
       [
-        "Plaza",
-        6
+        "Park",
+        7
       ],
       [
         "Event Space",
@@ -1665,15 +1666,15 @@
         5
       ],
       [
+        "Mosque",
+        5
+      ],
+      [
         "Fountain",
         4
       ],
       [
         "Rail Station",
-        4
-      ],
-      [
-        "Tower",
         4
       ]
     ]
