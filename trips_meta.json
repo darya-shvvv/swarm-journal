@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 216,
-    "unique_places": 179,
+    "checkin_count": 217,
+    "unique_places": 180,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1630,8 +1630,8 @@
       "Urgench",
       "Smolensk Region",
       "Minsk",
-      "Kopyś",
-      "Bukhara"
+      "Bukhara",
+      "Kopyś"
     ],
     "tags": [],
     "top_cats": [
@@ -1653,7 +1653,7 @@
       ],
       [
         "Park",
-        7
+        8
       ],
       [
         "Event Space",
