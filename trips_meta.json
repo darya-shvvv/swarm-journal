@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 6,
-    "checkin_count": 204,
+    "checkin_count": 206,
     "unique_places": 174,
     "countries": [
       "Uzbekistan",
@@ -1636,7 +1636,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        57
+        58
       ],
       [
         "Monument",
@@ -1659,15 +1659,15 @@
         6
       ],
       [
+        "Tower",
+        6
+      ],
+      [
         "Outdoor Sculpture",
         5
       ],
       [
         "Mosque",
-        5
-      ],
-      [
-        "Tower",
         5
       ],
       [
