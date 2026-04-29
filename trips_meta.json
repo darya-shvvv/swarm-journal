@@ -1613,12 +1613,12 @@
     "id": 27,
     "name": "Uzbekistan + Russia + 1 more 🚂",
     "start_date": "2026-04-24",
-    "end_date": "2026-04-29",
+    "end_date": "2026-04-30",
     "start_ts": 1777058776,
     "start_year": 2026,
-    "duration": 6,
-    "checkin_count": 215,
-    "unique_places": 178,
+    "duration": 7,
+    "checkin_count": 216,
+    "unique_places": 179,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1630,7 +1630,8 @@
       "Urgench",
       "Smolensk Region",
       "Minsk",
-      "Kopyś"
+      "Kopyś",
+      "Bukhara"
     ],
     "tags": [],
     "top_cats": [
@@ -1659,15 +1660,15 @@
         6
       ],
       [
+        "Rail Station",
+        6
+      ],
+      [
         "Tower",
         6
       ],
       [
         "Outdoor Sculpture",
-        5
-      ],
-      [
-        "Rail Station",
         5
       ],
       [
