@@ -1611,14 +1611,14 @@
   },
   {
     "id": 27,
-    "name": "Uzbekistan + Russia + 1 more 🚌",
+    "name": "Uzbekistan + Russia + 1 more 🚂",
     "start_date": "2026-04-24",
     "end_date": "2026-04-29",
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 6,
-    "checkin_count": 213,
-    "unique_places": 176,
+    "checkin_count": 214,
+    "unique_places": 177,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1667,12 +1667,12 @@
         5
       ],
       [
-        "Mosque",
+        "Rail Station",
         5
       ],
       [
-        "Fountain",
-        4
+        "Mosque",
+        5
       ]
     ]
   }
