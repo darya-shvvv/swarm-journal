@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 270,
-    "unique_places": 232,
+    "checkin_count": 271,
+    "unique_places": 233,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1668,11 +1668,11 @@
         7
       ],
       [
-        "Event Space",
+        "Road",
         6
       ],
       [
-        "Outdoor Sculpture",
+        "Event Space",
         6
       ]
     ]
