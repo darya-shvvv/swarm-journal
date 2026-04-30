@@ -1613,12 +1613,12 @@
     "id": 27,
     "name": "Uzbekistan + Russia + 1 more 🚌",
     "start_date": "2026-04-24",
-    "end_date": "2026-04-30",
+    "end_date": "2026-05-01",
     "start_ts": 1777058776,
     "start_year": 2026,
-    "duration": 7,
-    "checkin_count": 279,
-    "unique_places": 240,
+    "duration": 8,
+    "checkin_count": 281,
+    "unique_places": 242,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1626,8 +1626,8 @@
     ],
     "cities": [
       "Khiva",
-      "Moscow",
       "Bukhara",
+      "Moscow",
       "Urgench",
       "Smolensk Region",
       "Minsk",
@@ -1637,7 +1637,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        89
+        90
       ],
       [
         "Monument",
