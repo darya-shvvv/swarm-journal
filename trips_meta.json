@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 234,
-    "unique_places": 197,
+    "checkin_count": 236,
+    "unique_places": 199,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1664,16 +1664,16 @@
         6
       ],
       [
+        "History Museum",
+        6
+      ],
+      [
         "Rail Station",
         6
       ],
       [
         "Tower",
         6
-      ],
-      [
-        "Fountain",
-        5
       ]
     ]
   }
