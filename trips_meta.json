@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 8,
-    "checkin_count": 305,
-    "unique_places": 250,
+    "checkin_count": 306,
+    "unique_places": 251,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1649,7 +1649,7 @@
       ],
       [
         "Mosque",
-        11
+        12
       ],
       [
         "History Museum",
