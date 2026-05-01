@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 8,
-    "checkin_count": 279,
+    "checkin_count": 280,
     "unique_places": 241,
     "countries": [
       "Uzbekistan",
@@ -1626,8 +1626,8 @@
     ],
     "cities": [
       "Khiva",
-      "Moscow",
       "Bukhara",
+      "Moscow",
       "Urgench",
       "Smolensk Region",
       "Minsk",
