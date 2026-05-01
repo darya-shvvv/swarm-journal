@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 324,
-    "unique_places": 263,
+    "checkin_count": 326,
+    "unique_places": 265,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1629,9 +1629,9 @@
       "Bukhara",
       "Moscow",
       "Urgench",
+      "Samarkand",
       "Smolensk Region",
       "Minsk",
-      "Samarkand",
       "Kopyś"
     ],
     "tags": [],
@@ -1669,12 +1669,12 @@
         8
       ],
       [
-        "Tower",
+        "Taxi",
         8
       ],
       [
-        "Outdoor Sculpture",
-        7
+        "Tower",
+        8
       ]
     ]
   }
