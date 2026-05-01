@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 8,
-    "checkin_count": 290,
+    "checkin_count": 292,
     "unique_places": 247,
     "countries": [
       "Uzbekistan",
@@ -1637,7 +1637,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        93
+        94
       ],
       [
         "Monument",
@@ -1652,15 +1652,15 @@
         10
       ],
       [
+        "History Museum",
+        9
+      ],
+      [
         "Metro Station",
         8
       ],
       [
         "Park",
-        8
-      ],
-      [
-        "History Museum",
         8
       ],
       [
