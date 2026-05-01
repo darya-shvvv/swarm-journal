@@ -1613,12 +1613,12 @@
     "id": 27,
     "name": "Uzbekistan + Russia + 1 more 🚌",
     "start_date": "2026-04-24",
-    "end_date": "2026-05-01",
+    "end_date": "2026-05-02",
     "start_ts": 1777058776,
     "start_year": 2026,
-    "duration": 8,
-    "checkin_count": 322,
-    "unique_places": 261,
+    "duration": 9,
+    "checkin_count": 323,
+    "unique_places": 262,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1631,7 +1631,8 @@
       "Urgench",
       "Smolensk Region",
       "Minsk",
-      "Kopyś"
+      "Kopyś",
+      "Samarkand"
     ],
     "tags": [],
     "top_cats": [
@@ -1664,15 +1665,15 @@
         8
       ],
       [
+        "Rail Station",
+        8
+      ],
+      [
         "Tower",
         8
       ],
       [
         "Outdoor Sculpture",
-        7
-      ],
-      [
-        "Rail Station",
         7
       ]
     ]
