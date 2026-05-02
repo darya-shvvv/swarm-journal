@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 355,
-    "unique_places": 294,
+    "checkin_count": 356,
+    "unique_places": 295,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1658,7 +1658,7 @@
       ],
       [
         "History Museum",
-        9
+        10
       ],
       [
         "Metro Station",
