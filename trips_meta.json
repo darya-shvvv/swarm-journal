@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 331,
-    "unique_places": 270,
+    "checkin_count": 333,
+    "unique_places": 272,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1646,7 +1646,7 @@
       ],
       [
         "Plaza",
-        16
+        17
       ],
       [
         "Mosque",
