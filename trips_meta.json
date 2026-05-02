@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 329,
-    "unique_places": 268,
+    "checkin_count": 331,
+    "unique_places": 270,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1638,7 +1638,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        107
+        108
       ],
       [
         "Monument",
@@ -1646,7 +1646,7 @@
       ],
       [
         "Plaza",
-        15
+        16
       ],
       [
         "Mosque",
