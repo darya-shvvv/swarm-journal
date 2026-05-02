@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 345,
-    "unique_places": 284,
+    "checkin_count": 346,
+    "unique_places": 285,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1638,7 +1638,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        112
+        113
       ],
       [
         "Monument",
