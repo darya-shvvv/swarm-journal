@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 410,
+    "checkin_count": 411,
     "unique_places": 340,
     "countries": [
       "Uzbekistan",
@@ -1667,15 +1667,15 @@
         9
       ],
       [
+        "Taxi",
+        9
+      ],
+      [
         "Metro Station",
         8
       ],
       [
         "Fountain",
-        8
-      ],
-      [
-        "Outdoor Sculpture",
         8
       ]
     ]
