@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 382,
-    "unique_places": 319,
+    "checkin_count": 384,
+    "unique_places": 321,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1654,7 +1654,7 @@
       ],
       [
         "Park",
-        13
+        14
       ],
       [
         "History Museum",
