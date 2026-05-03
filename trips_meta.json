@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 384,
-    "unique_places": 321,
+    "checkin_count": 386,
+    "unique_places": 323,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1632,7 +1632,8 @@
       "Urgench",
       "Smolensk Region",
       "Minsk",
-      "Kopyś"
+      "Kopyś",
+      "萨马堪德"
     ],
     "tags": [],
     "top_cats": [
@@ -1665,15 +1666,15 @@
         8
       ],
       [
+        "Road",
+        8
+      ],
+      [
+        "Outdoor Sculpture",
+        8
+      ],
+      [
         "Rail Station",
-        8
-      ],
-      [
-        "Taxi",
-        8
-      ],
-      [
-        "Tower",
         8
       ]
     ]
