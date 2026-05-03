@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 388,
-    "unique_places": 324,
+    "checkin_count": 389,
+    "unique_places": 325,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1633,7 +1633,8 @@
       "Smolensk Region",
       "Minsk",
       "Kopyś",
-      "萨马堪德"
+      "萨马堪德",
+      "Semerkand"
     ],
     "tags": [],
     "top_cats": [
