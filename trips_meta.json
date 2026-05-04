@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 11,
-    "checkin_count": 431,
-    "unique_places": 351,
+    "checkin_count": 432,
+    "unique_places": 352,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1632,7 +1632,8 @@
       "Urgench",
       "Smolensk Region",
       "Minsk",
-      "Kopyś"
+      "Kopyś",
+      "Tashkent"
     ],
     "tags": [],
     "top_cats": [
