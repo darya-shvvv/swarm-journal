@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 11,
-    "checkin_count": 429,
+    "checkin_count": 430,
     "unique_places": 351,
     "countries": [
       "Uzbekistan",
@@ -1626,8 +1626,8 @@
     ],
     "cities": [
       "Khiva",
-      "Bukhara",
       "Samarkand",
+      "Bukhara",
       "Moscow",
       "Urgench",
       "Smolensk Region",
@@ -1665,11 +1665,11 @@
         10
       ],
       [
-        "Fountain",
-        9
+        "Taxi",
+        10
       ],
       [
-        "Taxi",
+        "Fountain",
         9
       ],
       [
