@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 11,
-    "checkin_count": 432,
-    "unique_places": 352,
+    "checkin_count": 434,
+    "unique_places": 354,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1631,9 +1631,9 @@
       "Moscow",
       "Urgench",
       "Smolensk Region",
+      "Tashkent",
       "Minsk",
-      "Kopyś",
-      "Tashkent"
+      "Kopyś"
     ],
     "tags": [],
     "top_cats": [
@@ -1662,19 +1662,19 @@
         11
       ],
       [
+        "Taxi",
+        11
+      ],
+      [
         "Road",
         10
       ],
       [
-        "Taxi",
+        "Rail Station",
         10
       ],
       [
         "Fountain",
-        9
-      ],
-      [
-        "Rail Station",
         9
       ]
     ]
