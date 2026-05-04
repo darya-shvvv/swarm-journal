@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 11,
-    "checkin_count": 422,
-    "unique_places": 348,
+    "checkin_count": 423,
+    "unique_places": 349,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1662,7 +1662,7 @@
       ],
       [
         "Road",
-        9
+        10
       ],
       [
         "Fountain",
