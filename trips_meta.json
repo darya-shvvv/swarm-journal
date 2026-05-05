@@ -1617,7 +1617,7 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 12,
-    "checkin_count": 474,
+    "checkin_count": 475,
     "unique_places": 392,
     "countries": [
       "Uzbekistan",
@@ -1663,15 +1663,15 @@
         14
       ],
       [
+        "Taxi",
+        12
+      ],
+      [
         "Road",
         11
       ],
       [
         "History Museum",
-        11
-      ],
-      [
-        "Taxi",
         11
       ],
       [
