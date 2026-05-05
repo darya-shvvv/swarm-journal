@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 12,
-    "checkin_count": 436,
-    "unique_places": 356,
+    "checkin_count": 437,
+    "unique_places": 357,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1666,16 +1666,16 @@
         11
       ],
       [
+        "Metro Station",
+        10
+      ],
+      [
         "Road",
         10
       ],
       [
         "Rail Station",
         10
-      ],
-      [
-        "Metro Station",
-        9
       ]
     ]
   }
