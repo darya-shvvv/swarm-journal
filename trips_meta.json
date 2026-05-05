@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 12,
-    "checkin_count": 461,
-    "unique_places": 380,
+    "checkin_count": 472,
+    "unique_places": 391,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1629,12 +1629,12 @@
       "Samarkand",
       "Bukhara",
       "Moscow",
-      "Urgench",
       "Tashkent",
+      "Urgench",
+      "Тоshkent",
       "Smolensk Region",
       "Minsk",
-      "Kopyś",
-      "Тоshkent"
+      "Kopyś"
     ],
     "tags": [],
     "top_cats": [
@@ -1644,15 +1644,15 @@
       ],
       [
         "Monument",
-        29
+        30
       ],
       [
         "Park",
-        25
+        26
       ],
       [
         "Plaza",
-        24
+        25
       ],
       [
         "Mosque",
@@ -1660,7 +1660,7 @@
       ],
       [
         "Metro Station",
-        12
+        14
       ],
       [
         "Road",
@@ -1675,7 +1675,7 @@
         11
       ],
       [
-        "Rail Station",
+        "Fountain",
         10
       ]
     ]
