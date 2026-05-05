@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 12,
-    "checkin_count": 452,
-    "unique_places": 371,
+    "checkin_count": 453,
+    "unique_places": 372,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1633,7 +1633,8 @@
       "Tashkent",
       "Smolensk Region",
       "Minsk",
-      "Kopyś"
+      "Kopyś",
+      "Тоshkent"
     ],
     "tags": [],
     "top_cats": [
@@ -1655,7 +1656,7 @@
       ],
       [
         "Mosque",
-        18
+        19
       ],
       [
         "Metro Station",
