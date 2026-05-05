@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 12,
-    "checkin_count": 435,
-    "unique_places": 355,
+    "checkin_count": 436,
+    "unique_places": 356,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1674,7 +1674,7 @@
         10
       ],
       [
-        "Fountain",
+        "Metro Station",
         9
       ]
     ]
