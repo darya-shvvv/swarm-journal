@@ -1617,8 +1617,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 13,
-    "checkin_count": 482,
-    "unique_places": 399,
+    "checkin_count": 493,
+    "unique_places": 410,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1631,9 +1631,9 @@
       "Moscow",
       "Tashkent",
       "Urgench",
+      "Minsk",
       "Тоshkent",
       "Smolensk Region",
-      "Minsk",
       "Kopyś"
     ],
     "tags": [],
@@ -1647,12 +1647,12 @@
         30
       ],
       [
-        "Park",
-        26
+        "Plaza",
+        27
       ],
       [
-        "Plaza",
-        25
+        "Park",
+        26
       ],
       [
         "Mosque",
