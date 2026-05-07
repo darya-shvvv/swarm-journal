@@ -1098,6 +1098,7 @@
   # ══ UZBEKISTAN ══
   "Ташкент": "Tashkent"  # ok — Cyrillic
   "Тошкент": "Tashkent"  # ok — Uzbek Cyrillic
+  "Тоshkent": "Tashkent"  # ok — mixed Cyrillic/Latin (Т+о in Cyrillic, shkent in Latin)
   "Самарканд": "Samarkand"  # ok — Cyrillic → canonical English Samarkand
   "Samarqand": "Samarkand"  # ok — Uzbek-alphabet spelling; canonical English = Samarkand
   "Semerkand": "Samarkand"  # ok — Turkish spelling
