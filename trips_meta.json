@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 54,
-    "unique_places": 54,
+    "checkin_count": 55,
+    "unique_places": 55,
     "countries": [
       "Belarus"
     ],
@@ -1723,15 +1723,15 @@
         3
       ],
       [
+        "Historic and Protected Site",
+        3
+      ],
+      [
         "Bus Line",
         2
       ],
       [
         "Bus Stop",
-        2
-      ],
-      [
-        "Historic and Protected Site",
         2
       ],
       [
