@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 6,
-    "unique_places": 6,
+    "checkin_count": 7,
+    "unique_places": 7,
     "countries": [
       "Belarus"
     ],
@@ -1699,11 +1699,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Bus Line",
-        1
+        "Road",
+        2
       ],
       [
-        "Road",
+        "Bus Line",
         1
       ],
       [
