@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 7,
-    "unique_places": 7,
+    "checkin_count": 8,
+    "unique_places": 8,
     "countries": [
       "Belarus"
     ],
@@ -1720,6 +1720,10 @@
       ],
       [
         "Coffee Shop",
+        1
+      ],
+      [
+        "Plaza",
         1
       ]
     ]
