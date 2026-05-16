@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 30,
-    "unique_places": 30,
+    "checkin_count": 32,
+    "unique_places": 32,
     "countries": [
       "Belarus"
     ],
@@ -1698,6 +1698,10 @@
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Monument",
+        3
+      ],
       [
         "Plaza",
         3
@@ -1715,11 +1719,11 @@
         2
       ],
       [
-        "Monument",
+        "Bus Stop",
         2
       ],
       [
-        "Bus Stop",
+        "Historic and Protected Site",
         2
       ],
       [
@@ -1732,10 +1736,6 @@
       ],
       [
         "Shopping Mall",
-        1
-      ],
-      [
-        "Coffee Shop",
         1
       ]
     ]
