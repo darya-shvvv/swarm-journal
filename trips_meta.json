@@ -1683,12 +1683,12 @@
     "id": 28,
     "name": "Mogilev, Belarus 🚗",
     "start_date": "2026-05-16",
-    "end_date": "2026-05-16",
+    "end_date": "2026-05-17",
     "start_ts": 1778911145,
     "start_year": 2026,
-    "duration": 1,
-    "checkin_count": 60,
-    "unique_places": 60,
+    "duration": 2,
+    "checkin_count": 61,
+    "unique_places": 61,
     "countries": [
       "Belarus"
     ],
@@ -1707,16 +1707,16 @@
         8
       ],
       [
+        "Road",
+        5
+      ],
+      [
         "Plaza",
         5
       ],
       [
         "Outdoor Sculpture",
         5
-      ],
-      [
-        "Road",
-        4
       ],
       [
         "Neighborhood",
