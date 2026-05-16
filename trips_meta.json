@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 23,
-    "unique_places": 23,
+    "checkin_count": 24,
+    "unique_places": 24,
     "countries": [
       "Belarus"
     ],
@@ -1698,6 +1698,10 @@
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Neighborhood",
+        3
+      ],
       [
         "Bus Line",
         2
@@ -1716,10 +1720,6 @@
       ],
       [
         "Bus Stop",
-        2
-      ],
-      [
-        "Neighborhood",
         2
       ],
       [
