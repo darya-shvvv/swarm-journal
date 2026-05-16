@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 37,
-    "unique_places": 37,
+    "checkin_count": 38,
+    "unique_places": 38,
     "countries": [
       "Belarus"
     ],
@@ -1698,6 +1698,10 @@
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Park",
+        4
+      ],
       [
         "Road",
         3
@@ -1712,10 +1716,6 @@
       ],
       [
         "Neighborhood",
-        3
-      ],
-      [
-        "Park",
         3
       ],
       [
