@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 26,
-    "unique_places": 26,
+    "checkin_count": 27,
+    "unique_places": 27,
     "countries": [
       "Belarus"
     ],
@@ -1723,6 +1723,10 @@
         2
       ],
       [
+        "Park",
+        2
+      ],
+      [
         "City",
         1
       ],
@@ -1732,10 +1736,6 @@
       ],
       [
         "Coffee Shop",
-        1
-      ],
-      [
-        "Supermarket",
         1
       ]
     ]
