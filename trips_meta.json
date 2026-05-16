@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 17,
-    "unique_places": 17,
+    "checkin_count": 18,
+    "unique_places": 18,
     "countries": [
       "Belarus"
     ],
@@ -1708,6 +1708,10 @@
       ],
       [
         "Bus Stop",
+        2
+      ],
+      [
+        "Neighborhood",
         2
       ],
       [
@@ -1732,10 +1736,6 @@
       ],
       [
         "Supermarket",
-        1
-      ],
-      [
-        "Neighborhood",
         1
       ]
     ]
