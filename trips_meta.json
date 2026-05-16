@@ -1678,5 +1678,50 @@
         10
       ]
     ]
+  },
+  {
+    "id": 28,
+    "name": "Mogilev, Belarus 🚗",
+    "start_date": "2026-05-16",
+    "end_date": "2026-05-16",
+    "start_ts": 1778911145,
+    "start_year": 2026,
+    "duration": 1,
+    "checkin_count": 6,
+    "unique_places": 6,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Mogilev",
+      "Minsk"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Bus Line",
+        1
+      ],
+      [
+        "Road",
+        1
+      ],
+      [
+        "Monument",
+        1
+      ],
+      [
+        "City",
+        1
+      ],
+      [
+        "Shopping Mall",
+        1
+      ],
+      [
+        "Coffee Shop",
+        1
+      ]
+    ]
   }
 ]
