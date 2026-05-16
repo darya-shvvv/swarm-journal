@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 28,
-    "unique_places": 28,
+    "checkin_count": 30,
+    "unique_places": 30,
     "countries": [
       "Belarus"
     ],
@@ -1698,6 +1698,10 @@
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Plaza",
+        3
+      ],
       [
         "Neighborhood",
         3
@@ -1712,10 +1716,6 @@
       ],
       [
         "Monument",
-        2
-      ],
-      [
-        "Plaza",
         2
       ],
       [
