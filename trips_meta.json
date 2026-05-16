@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 43,
-    "unique_places": 43,
+    "checkin_count": 44,
+    "unique_places": 44,
     "countries": [
       "Belarus"
     ],
@@ -1703,16 +1703,16 @@
         5
       ],
       [
+        "Road",
+        4
+      ],
+      [
         "Monument",
         4
       ],
       [
         "Plaza",
         4
-      ],
-      [
-        "Road",
-        3
       ],
       [
         "Neighborhood",
