@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 109,
-    "unique_places": 94,
+    "checkin_count": 111,
+    "unique_places": 96,
     "countries": [
       "Belarus"
     ],
@@ -1732,11 +1732,11 @@
         3
       ],
       [
-        "Coffee Shop",
+        "City",
         2
       ],
       [
-        "Bus Stop",
+        "Coffee Shop",
         2
       ]
     ]
