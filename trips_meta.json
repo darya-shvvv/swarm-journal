@@ -1687,14 +1687,15 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 83,
-    "unique_places": 68,
+    "checkin_count": 84,
+    "unique_places": 69,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Mogilev",
-      "Minsk"
+      "Minsk",
+      "Mahilioŭ"
     ],
     "tags": [],
     "top_cats": [
