@@ -1687,8 +1687,8 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 92,
-    "unique_places": 77,
+    "checkin_count": 94,
+    "unique_places": 79,
     "countries": [
       "Belarus"
     ],
@@ -1700,20 +1700,20 @@
     "tags": [],
     "top_cats": [
       [
+        "Park",
+        13
+      ],
+      [
         "Monument",
         12
       ],
       [
-        "Park",
-        12
+        "Road",
+        9
       ],
       [
         "Outdoor Sculpture",
         9
-      ],
-      [
-        "Road",
-        8
       ],
       [
         "Plaza",
