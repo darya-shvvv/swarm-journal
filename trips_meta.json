@@ -1687,7 +1687,7 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 63,
+    "checkin_count": 64,
     "unique_places": 63,
     "countries": [
       "Belarus"
@@ -1735,8 +1735,8 @@
         2
       ],
       [
-        "City",
-        1
+        "Home (private)",
+        2
       ]
     ]
   }
