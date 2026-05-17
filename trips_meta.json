@@ -1687,7 +1687,7 @@
     "start_ts": 1778911145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 66,
+    "checkin_count": 67,
     "unique_places": 63,
     "countries": [
       "Belarus"
@@ -1723,11 +1723,11 @@
         4
       ],
       [
-        "Neighborhood",
-        3
+        "Historic and Protected Site",
+        4
       ],
       [
-        "Historic and Protected Site",
+        "Neighborhood",
         3
       ],
       [
