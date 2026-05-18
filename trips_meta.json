@@ -1749,8 +1749,8 @@
     "start_ts": 1779077168,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 25,
-    "unique_places": 25,
+    "checkin_count": 27,
+    "unique_places": 27,
     "countries": [
       "Belarus",
       "Беларусь"
@@ -1772,6 +1772,10 @@
         2
       ],
       [
+        "City",
+        2
+      ],
+      [
         "Road",
         2
       ],
@@ -1781,10 +1785,6 @@
       ],
       [
         "Train",
-        1
-      ],
-      [
-        "City",
         1
       ],
       [
