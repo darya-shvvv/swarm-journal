@@ -1743,16 +1743,17 @@
   },
   {
     "id": 29,
-    "name": "Hrodna, Belarus 🚂",
+    "name": "Belarus & Беларусь 🚂",
     "start_date": "2026-05-18",
     "end_date": "2026-05-18",
     "start_ts": 1779077168,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 13,
-    "unique_places": 13,
+    "checkin_count": 14,
+    "unique_places": 14,
     "countries": [
-      "Belarus"
+      "Belarus",
+      "Беларусь"
     ],
     "cities": [
       "Hrodna",
