@@ -1749,8 +1749,8 @@
     "start_ts": 1779077168,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 10,
-    "unique_places": 10,
+    "checkin_count": 11,
+    "unique_places": 11,
     "countries": [
       "Belarus"
     ],
@@ -1794,6 +1794,10 @@
       ],
       [
         "Other Great Outdoors",
+        1
+      ],
+      [
+        "Flower Store",
         1
       ]
     ]
