@@ -1749,8 +1749,8 @@
     "start_ts": 1779077168,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 7,
-    "unique_places": 7,
+    "checkin_count": 8,
+    "unique_places": 8,
     "countries": [
       "Belarus"
     ],
@@ -1782,6 +1782,10 @@
       ],
       [
         "Pharmacy",
+        1
+      ],
+      [
+        "Dentist",
         1
       ]
     ]
