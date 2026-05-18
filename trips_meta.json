@@ -1749,15 +1749,16 @@
     "start_ts": 1779077168,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 23,
-    "unique_places": 23,
+    "checkin_count": 24,
+    "unique_places": 24,
     "countries": [
       "Belarus",
       "Беларусь"
     ],
     "cities": [
       "Hrodna",
-      "Minsk"
+      "Minsk",
+      "Lida"
     ],
     "tags": [],
     "top_cats": [
@@ -1767,6 +1768,10 @@
       ],
       [
         "Rail Station",
+        2
+      ],
+      [
+        "Road",
         2
       ],
       [
@@ -1795,10 +1800,6 @@
       ],
       [
         "Other Great Outdoors",
-        1
-      ],
-      [
-        "Flower Store",
         1
       ]
     ]
