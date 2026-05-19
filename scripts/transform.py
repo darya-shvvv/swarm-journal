@@ -212,6 +212,8 @@ def apply_transforms(
         # returned by Foursquare for some check-ins → canonical "Turkey")
         if row.get("country") == "Türkiye":
             row["country"] = "Turkey"
+        if row.get("country") == "Беларусь":
+            row["country"] = "Belarus"
 
         # Per-timestamp city override (city_fixes.json) — applied before
         # city_merge and blank-city inference so manual assignments win.
