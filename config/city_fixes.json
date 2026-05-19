@@ -160,8 +160,20 @@
   "1777370579": "Khiva",
   "1777384655": "Khiva",
   "1777386988": "Khiva",
+  "1777466218": "Khiva",
 
-  "_comment_samarkand_bukhara_2026": "2026-04-28/30 Samarkand/Bukhara trip: blank city rows GPS-resolved",
+  "_comment_samarkand_bukhara_2026": "2026-04-28/30 Bukhara+Samarkand trip: blank city rows GPS-resolved",
+  "1777492054": "Bukhara",
+  "1777535033": "Bukhara",
+  "1777537156": "Bukhara",
+  "1777538312": "Bukhara",
+  "1777547616": "Bukhara",
+  "1777558689": "Bukhara",
+  "1777559180": "Bukhara",
+  "1777560935": "Bukhara",
+  "1777563978": "Bukhara",
+  "1777572337": "Bukhara",
+  "1777621781": "Bukhara",
   "1777630966": "Bukhara",
   "1777645549": "Bukhara",
   "1777649621": "Bukhara",
@@ -175,7 +187,19 @@
   "1777795964": "Samarkand",
   "1777802479": "Samarkand",
   "1777803609": "Samarkand",
+  "1777819452": "Samarkand",
+  "1777819724": "Samarkand",
+  "1777878457": "Samarkand",
+  "1777879057": "Samarkand",
 
-  "_comment_tashkent_2026": "2026-05-02 Tashkent trip: 1 blank-city check-in GPS-resolved to Tashkent",
-  "1777917759": "Tashkent"
+  "_comment_tashkent_2026": "2026-05-02/05 Tashkent trips: blank-city check-ins GPS-resolved to Tashkent",
+  "1777917759": "Tashkent",
+  "1778020256": "Tashkent",
+
+  "_comment_mogilev_2026": "2026-05 Mogilev trip: blank/corrupt city rows GPS-resolved",
+  "1778911145": "Minsk",
+  "1778920376": "Mogilev",
+  "1778929266": "Mogilev",
+  "1778932935": "Mogilev",
+  "1778953271": "Mogilev"
 }
