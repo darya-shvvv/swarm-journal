@@ -162,6 +162,7 @@
   "Могилев": "Mogilev"  # ok — variant
   "Магiлёў": "Mogilev"  # ok — Belarusian Cyrillic
   "Магілёў": "Mogilev"  # ok — variant Belarusian
+  "Mahilioŭ": "Mogilev"  # ok — Belarusian Latin transliteration
   "Mar'ina Horka": "Maryina Horka"  # ok — apostrophe form
   "Mscislaŭ": "Mstsislaw"  # ok — Belarusian Latin
   "Новогрудок": "Navahrudak"  # ok — Cyrillic → Navahrudak
