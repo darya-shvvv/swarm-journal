@@ -257,8 +257,8 @@
     "start_ts": 1748037147,
     "start_year": 2025,
     "duration": 6,
-    "checkin_count": 173,
-    "unique_places": 161,
+    "checkin_count": 174,
+    "unique_places": 162,
     "countries": [
       "Belarus"
     ],
@@ -1304,8 +1304,8 @@
     "start_ts": 1772133788,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 210,
-    "unique_places": 205,
+    "checkin_count": 211,
+    "unique_places": 206,
     "countries": [
       "Russia",
       "Belarus"
@@ -1315,6 +1315,7 @@
       "Minsk",
       "Khimki",
       "Borisov",
+      "Zhodzina",
       "Muravnichi",
       "Vitebsk Region",
       "Smolensk Region"
@@ -1322,12 +1323,12 @@
     "tags": [],
     "top_cats": [
       [
-        "Plaza",
+        "Road",
         27
       ],
       [
-        "Road",
-        26
+        "Plaza",
+        27
       ],
       [
         "Monument",
@@ -1617,8 +1618,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 13,
-    "checkin_count": 492,
-    "unique_places": 410,
+    "checkin_count": 496,
+    "unique_places": 412,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1639,7 +1640,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        130
+        138
       ],
       [
         "Monument",
@@ -1647,7 +1648,7 @@
       ],
       [
         "Plaza",
-        27
+        26
       ],
       [
         "Park",
@@ -1655,7 +1656,7 @@
       ],
       [
         "Mosque",
-        22
+        23
       ],
       [
         "Metro Station",
@@ -1670,7 +1671,7 @@
         11
       ],
       [
-        "History Museum",
+        "Pedestrian Plaza",
         11
       ],
       [
@@ -1743,7 +1744,7 @@
   },
   {
     "id": 29,
-    "name": "Belarus & Беларусь 🚂",
+    "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-05-18",
     "end_date": "2026-05-18",
     "start_ts": 1779077168,
@@ -1752,8 +1753,7 @@
     "checkin_count": 27,
     "unique_places": 27,
     "countries": [
-      "Belarus",
-      "Беларусь"
+      "Belarus"
     ],
     "cities": [
       "Hrodna",
