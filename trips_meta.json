@@ -257,8 +257,8 @@
     "start_ts": 1748037147,
     "start_year": 2025,
     "duration": 6,
-    "checkin_count": 174,
-    "unique_places": 162,
+    "checkin_count": 172,
+    "unique_places": 160,
     "countries": [
       "Belarus"
     ],
@@ -487,8 +487,8 @@
     "start_ts": 1751772832,
     "start_year": 2025,
     "duration": 3,
-    "checkin_count": 67,
-    "unique_places": 59,
+    "checkin_count": 66,
+    "unique_places": 58,
     "countries": [
       "Belarus"
     ],
@@ -1304,8 +1304,8 @@
     "start_ts": 1772133788,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 211,
-    "unique_places": 206,
+    "checkin_count": 209,
+    "unique_places": 204,
     "countries": [
       "Russia",
       "Belarus"
@@ -1314,8 +1314,6 @@
       "Moscow",
       "Minsk",
       "Khimki",
-      "Borisov",
-      "Zhodzina",
       "Muravnichi",
       "Vitebsk Region",
       "Smolensk Region"
@@ -1323,16 +1321,16 @@
     "tags": [],
     "top_cats": [
       [
-        "Road",
-        27
-      ],
-      [
         "Plaza",
         27
       ],
       [
         "Monument",
         26
+      ],
+      [
+        "Road",
+        25
       ],
       [
         "Metro Station",
@@ -1618,8 +1616,8 @@
     "start_ts": 1777058776,
     "start_year": 2026,
     "duration": 13,
-    "checkin_count": 496,
-    "unique_places": 412,
+    "checkin_count": 486,
+    "unique_places": 404,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1640,7 +1638,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        138
+        135
       ],
       [
         "Monument",
@@ -1648,15 +1646,15 @@
       ],
       [
         "Plaza",
-        26
-      ],
-      [
-        "Park",
         25
       ],
       [
+        "Park",
+        24
+      ],
+      [
         "Mosque",
-        23
+        22
       ],
       [
         "Metro Station",
