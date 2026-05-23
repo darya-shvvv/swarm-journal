@@ -1554,16 +1554,14 @@
     "start_ts": 1776490358,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 43,
-    "unique_places": 43,
+    "checkin_count": 34,
+    "unique_places": 34,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Maladzyechna",
-      "Minsk",
-      "Zarechye",
-      "Minsk District"
+      "Minsk"
     ],
     "tags": [],
     "top_cats": [
@@ -1572,16 +1570,12 @@
         7
       ],
       [
-        "Rail Station",
-        4
-      ],
-      [
         "Park",
         4
       ],
       [
-        "Beach",
-        4
+        "Rail Station",
+        3
       ],
       [
         "Platform",
@@ -1605,6 +1599,10 @@
       ],
       [
         "Road",
+        1
+      ],
+      [
+        "Rest Area",
         1
       ]
     ]
@@ -1633,7 +1631,8 @@
       "Urgench",
       "Minsk",
       "Smolensk Region",
-      "Kopyś"
+      "Tolochyn",
+      "Gagarin"
     ],
     "tags": [],
     "top_cats": [
@@ -1757,7 +1756,7 @@
       "Hrodna",
       "Minsk",
       "Lida",
-      "Strachanyaty"
+      "Valozhyn"
     ],
     "tags": [],
     "top_cats": [
