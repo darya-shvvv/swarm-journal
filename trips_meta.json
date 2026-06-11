@@ -1810,8 +1810,8 @@
     "start_ts": 1781150333,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 9,
-    "unique_places": 9,
+    "checkin_count": 10,
+    "unique_places": 10,
     "countries": [
       "Belarus"
     ],
@@ -1823,6 +1823,10 @@
     "top_cats": [
       [
         "Rail Station",
+        2
+      ],
+      [
+        "Home (private)",
         2
       ],
       [
@@ -1839,10 +1843,6 @@
       ],
       [
         "Plaza",
-        1
-      ],
-      [
-        "Home (private)",
         1
       ],
       [
