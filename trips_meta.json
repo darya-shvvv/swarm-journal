@@ -1810,8 +1810,8 @@
     "start_ts": 1781150333,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 23,
-    "unique_places": 21,
+    "checkin_count": 24,
+    "unique_places": 22,
     "countries": [
       "Belarus"
     ],
@@ -1827,6 +1827,10 @@
         3
       ],
       [
+        "Bridge",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
@@ -1836,10 +1840,6 @@
       ],
       [
         "Big Box Store",
-        2
-      ],
-      [
-        "Bridge",
         2
       ],
       [
