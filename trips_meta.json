@@ -1806,11 +1806,11 @@
     "id": 30,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-06-11",
-    "end_date": "2026-06-11",
+    "end_date": "2026-06-12",
     "start_ts": 1781150333,
     "start_year": 2026,
-    "duration": 1,
-    "checkin_count": 12,
+    "duration": 2,
+    "checkin_count": 14,
     "unique_places": 12,
     "countries": [
       "Belarus"
@@ -1827,7 +1827,15 @@
         2
       ],
       [
+        "City",
+        2
+      ],
+      [
         "Home (private)",
+        2
+      ],
+      [
+        "Bridge",
         2
       ],
       [
@@ -1836,10 +1844,6 @@
       ],
       [
         "Train",
-        1
-      ],
-      [
-        "City",
         1
       ],
       [
@@ -1852,10 +1856,6 @@
       ],
       [
         "Big Box Store",
-        1
-      ],
-      [
-        "Bridge",
         1
       ],
       [
