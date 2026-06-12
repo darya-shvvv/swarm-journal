@@ -1810,8 +1810,8 @@
     "start_ts": 1781150333,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 18,
-    "unique_places": 16,
+    "checkin_count": 20,
+    "unique_places": 18,
     "countries": [
       "Belarus"
     ],
@@ -1843,6 +1843,10 @@
         2
       ],
       [
+        "Park",
+        2
+      ],
+      [
         "Platform",
         1
       ],
@@ -1856,10 +1860,6 @@
       ],
       [
         "Dentist",
-        1
-      ],
-      [
-        "Farm",
         1
       ]
     ]
