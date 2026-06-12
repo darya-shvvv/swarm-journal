@@ -1810,8 +1810,8 @@
     "start_ts": 1781150333,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 16,
-    "unique_places": 14,
+    "checkin_count": 17,
+    "unique_places": 15,
     "countries": [
       "Belarus"
     ],
@@ -1835,6 +1835,10 @@
         2
       ],
       [
+        "Big Box Store",
+        2
+      ],
+      [
         "Bridge",
         2
       ],
@@ -1852,10 +1856,6 @@
       ],
       [
         "Dentist",
-        1
-      ],
-      [
-        "Big Box Store",
         1
       ],
       [
