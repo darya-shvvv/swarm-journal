@@ -1810,8 +1810,8 @@
     "start_ts": 1781150333,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 34,
-    "unique_places": 32,
+    "checkin_count": 35,
+    "unique_places": 33,
     "countries": [
       "Belarus"
     ],
@@ -1847,6 +1847,10 @@
         2
       ],
       [
+        "Neighborhood",
+        2
+      ],
+      [
         "Park",
         2
       ],
@@ -1856,10 +1860,6 @@
       ],
       [
         "Platform",
-        1
-      ],
-      [
-        "Train",
         1
       ]
     ]
