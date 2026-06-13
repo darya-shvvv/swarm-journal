@@ -1810,8 +1810,8 @@
     "start_ts": 1781150333,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 43,
-    "unique_places": 40,
+    "checkin_count": 48,
+    "unique_places": 45,
     "countries": [
       "Belarus"
     ],
@@ -1824,15 +1824,15 @@
     "tags": [],
     "top_cats": [
       [
-        "City",
-        3
-      ],
-      [
         "Plaza",
-        3
+        6
       ],
       [
         "Home (private)",
+        4
+      ],
+      [
+        "City",
         3
       ],
       [
