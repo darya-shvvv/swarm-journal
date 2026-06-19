@@ -1864,5 +1864,46 @@
         2
       ]
     ]
+  },
+  {
+    "id": 31,
+    "name": "Belarus & Russia 🚌",
+    "start_date": "2026-06-19",
+    "end_date": "2026-06-20",
+    "start_ts": 1781891107,
+    "start_year": 2026,
+    "duration": 2,
+    "checkin_count": 6,
+    "unique_places": 6,
+    "countries": [
+      "Belarus",
+      "Russia"
+    ],
+    "cities": [
+      "Minsk",
+      "Zhodzina",
+      "Orsha",
+      "Vitebsk",
+      "Lobok"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Bus Station",
+        3
+      ],
+      [
+        "Bus Line",
+        1
+      ],
+      [
+        "Road",
+        1
+      ],
+      [
+        "Border Crossing",
+        1
+      ]
+    ]
   }
 ]
