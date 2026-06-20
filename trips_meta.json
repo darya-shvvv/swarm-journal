@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 40,
-    "unique_places": 40,
+    "checkin_count": 41,
+    "unique_places": 41,
     "countries": [
       "Russia",
       "Belarus"
@@ -1892,11 +1892,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Bridge",
-        5
+        "Metro Station",
+        6
       ],
       [
-        "Metro Station",
+        "Bridge",
         5
       ],
       [
