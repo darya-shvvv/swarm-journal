@@ -1873,27 +1873,27 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 9,
-    "unique_places": 9,
+    "checkin_count": 10,
+    "unique_places": 10,
     "countries": [
       "Belarus",
       "Russia"
     ],
     "cities": [
       "Minsk",
+      "Saint Petersburg",
       "Zhodzina",
       "Orsha",
       "Vitebsk",
       "Lobok",
       "Pskov",
-      "Moscow",
-      "Saint Petersburg"
+      "Moscow"
     ],
     "tags": [],
     "top_cats": [
       [
         "Bus Station",
-        3
+        4
       ],
       [
         "Bus Line",
