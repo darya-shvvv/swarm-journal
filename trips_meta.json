@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 53,
-    "unique_places": 53,
+    "checkin_count": 54,
+    "unique_places": 54,
     "countries": [
       "Russia",
       "Belarus"
@@ -1896,12 +1896,12 @@
         7
       ],
       [
-        "Metro Station",
+        "Road",
         6
       ],
       [
-        "Road",
-        5
+        "Metro Station",
+        6
       ],
       [
         "Bus Station",
