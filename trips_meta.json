@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 11,
-    "unique_places": 11,
+    "checkin_count": 12,
+    "unique_places": 12,
     "countries": [
       "Russia",
       "Belarus"
@@ -1921,6 +1921,10 @@
       ],
       [
         "Bridge",
+        1
+      ],
+      [
+        "Other Great Outdoors",
         1
       ]
     ]
