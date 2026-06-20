@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 51,
-    "unique_places": 51,
+    "checkin_count": 53,
+    "unique_places": 53,
     "countries": [
       "Russia",
       "Belarus"
@@ -1893,7 +1893,7 @@
     "top_cats": [
       [
         "Bridge",
-        6
+        7
       ],
       [
         "Metro Station",
@@ -1916,6 +1916,10 @@
         2
       ],
       [
+        "River",
+        2
+      ],
+      [
         "Monument",
         2
       ],
@@ -1926,10 +1930,6 @@
       [
         "Scenic Lookout",
         2
-      ],
-      [
-        "Bus Line",
-        1
       ]
     ]
   }
