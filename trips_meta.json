@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 48,
-    "unique_places": 48,
+    "checkin_count": 49,
+    "unique_places": 49,
     "countries": [
       "Russia",
       "Belarus"
@@ -1924,11 +1924,11 @@
         2
       ],
       [
-        "Bus Line",
-        1
+        "Scenic Lookout",
+        2
       ],
       [
-        "Border Crossing",
+        "Bus Line",
         1
       ]
     ]
