@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 32,
-    "unique_places": 32,
+    "checkin_count": 34,
+    "unique_places": 34,
     "countries": [
       "Russia",
       "Belarus"
@@ -1908,6 +1908,10 @@
         3
       ],
       [
+        "Monument",
+        2
+      ],
+      [
         "Bus Line",
         1
       ],
@@ -1925,10 +1929,6 @@
       ],
       [
         "City",
-        1
-      ],
-      [
-        "Other Great Outdoors",
         1
       ]
     ]
