@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 45,
-    "unique_places": 45,
+    "checkin_count": 47,
+    "unique_places": 47,
     "countries": [
       "Russia",
       "Belarus"
@@ -1920,15 +1920,15 @@
         2
       ],
       [
+        "Island",
+        2
+      ],
+      [
         "Bus Line",
         1
       ],
       [
         "Border Crossing",
-        1
-      ],
-      [
-        "Fuel Station",
         1
       ]
     ]
