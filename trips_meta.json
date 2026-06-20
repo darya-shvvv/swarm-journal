@@ -1867,21 +1867,21 @@
   },
   {
     "id": 31,
-    "name": "Belarus & Russia 🚌",
+    "name": "Russia & Belarus 🚌",
     "start_date": "2026-06-19",
     "end_date": "2026-06-20",
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 10,
-    "unique_places": 10,
+    "checkin_count": 11,
+    "unique_places": 11,
     "countries": [
-      "Belarus",
-      "Russia"
+      "Russia",
+      "Belarus"
     ],
     "cities": [
-      "Minsk",
       "Saint Petersburg",
+      "Minsk",
       "Zhodzina",
       "Orsha",
       "Vitebsk",
@@ -1917,6 +1917,10 @@
       ],
       [
         "City",
+        1
+      ],
+      [
+        "Bridge",
         1
       ]
     ]
