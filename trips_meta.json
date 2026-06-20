@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 29,
-    "unique_places": 29,
+    "checkin_count": 30,
+    "unique_places": 30,
     "countries": [
       "Russia",
       "Belarus"
@@ -1892,11 +1892,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Bus Station",
-        4
+        "Bridge",
+        5
       ],
       [
-        "Bridge",
+        "Bus Station",
         4
       ],
       [
