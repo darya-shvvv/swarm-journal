@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 109,
-    "unique_places": 99,
+    "checkin_count": 111,
+    "unique_places": 101,
     "countries": [
       "Russia",
       "Belarus"
@@ -1909,10 +1909,14 @@
       ],
       [
         "Monument",
-        8
+        9
       ],
       [
         "Supermarket",
+        5
+      ],
+      [
+        "Park",
         5
       ],
       [
@@ -1921,10 +1925,6 @@
       ],
       [
         "Bus Line",
-        4
-      ],
-      [
-        "Park",
         4
       ],
       [
