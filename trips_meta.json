@@ -1873,7 +1873,7 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 65,
+    "checkin_count": 66,
     "unique_places": 62,
     "countries": [
       "Russia",
@@ -1892,11 +1892,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Road",
-        7
+        "Bridge",
+        8
       ],
       [
-        "Bridge",
+        "Road",
         7
       ],
       [
