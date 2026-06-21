@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 132,
-    "unique_places": 121,
+    "checkin_count": 133,
+    "unique_places": 122,
     "countries": [
       "Russia",
       "Belarus"
@@ -1893,7 +1893,7 @@
     "top_cats": [
       [
         "Bridge",
-        18
+        19
       ],
       [
         "Road",
