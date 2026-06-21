@@ -1869,12 +1869,12 @@
     "id": 31,
     "name": "Russia & Belarus 🚌",
     "start_date": "2026-06-19",
-    "end_date": "2026-06-21",
+    "end_date": "2026-06-22",
     "start_ts": 1781891107,
     "start_year": 2026,
-    "duration": 3,
-    "checkin_count": 131,
-    "unique_places": 120,
+    "duration": 4,
+    "checkin_count": 132,
+    "unique_places": 121,
     "countries": [
       "Russia",
       "Belarus"
