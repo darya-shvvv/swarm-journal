@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 124,
-    "unique_places": 114,
+    "checkin_count": 125,
+    "unique_places": 115,
     "countries": [
       "Russia",
       "Belarus"
@@ -1896,11 +1896,11 @@
         18
       ],
       [
-        "Road",
-        12
+        "Plaza",
+        13
       ],
       [
-        "Plaza",
+        "Road",
         12
       ],
       [
