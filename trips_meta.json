@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 97,
-    "unique_places": 88,
+    "checkin_count": 99,
+    "unique_places": 89,
     "countries": [
       "Russia",
       "Belarus"
@@ -1904,11 +1904,11 @@
         9
       ],
       [
-        "Monument",
-        8
+        "Plaza",
+        9
       ],
       [
-        "Plaza",
+        "Monument",
         8
       ],
       [
