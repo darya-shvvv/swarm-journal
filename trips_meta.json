@@ -1873,7 +1873,7 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 168,
+    "checkin_count": 169,
     "unique_places": 153,
     "countries": [
       "Russia",
@@ -1896,11 +1896,11 @@
         22
       ],
       [
-        "Road",
-        17
+        "Metro Station",
+        18
       ],
       [
-        "Metro Station",
+        "Road",
         17
       ],
       [
