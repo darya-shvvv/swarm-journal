@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 173,
-    "unique_places": 155,
+    "checkin_count": 174,
+    "unique_places": 156,
     "countries": [
       "Russia",
       "Belarus"
@@ -1924,12 +1924,12 @@
         5
       ],
       [
-        "Neighborhood",
+        "Bus Line",
         5
       ],
       [
-        "Bus Line",
-        4
+        "Neighborhood",
+        5
       ]
     ]
   }
