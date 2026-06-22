@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 151,
-    "unique_places": 138,
+    "checkin_count": 152,
+    "unique_places": 139,
     "countries": [
       "Russia",
       "Belarus"
@@ -1901,7 +1901,7 @@
       ],
       [
         "Metro Station",
-        15
+        16
       ],
       [
         "Plaza",
