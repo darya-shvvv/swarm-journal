@@ -1873,8 +1873,8 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 175,
-    "unique_places": 157,
+    "checkin_count": 176,
+    "unique_places": 158,
     "countries": [
       "Russia",
       "Belarus"
@@ -1882,11 +1882,11 @@
     "cities": [
       "Saint Petersburg",
       "Minsk",
+      "Pskov",
       "Zhodzina",
       "Orsha",
       "Vitebsk",
       "Lobok",
-      "Pskov",
       "Moscow",
       "Zaplyusye"
     ],
@@ -1917,12 +1917,12 @@
         7
       ],
       [
-        "Supermarket",
+        "Bus Station",
         6
       ],
       [
-        "Bus Station",
-        5
+        "Supermarket",
+        6
       ],
       [
         "Bus Line",
