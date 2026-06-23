@@ -1869,11 +1869,11 @@
     "id": 31,
     "name": "Russia & Belarus 🚌",
     "start_date": "2026-06-19",
-    "end_date": "2026-06-22",
+    "end_date": "2026-06-23",
     "start_ts": 1781891107,
     "start_year": 2026,
-    "duration": 4,
-    "checkin_count": 176,
+    "duration": 5,
+    "checkin_count": 177,
     "unique_places": 158,
     "countries": [
       "Russia",
@@ -1882,11 +1882,11 @@
     "cities": [
       "Saint Petersburg",
       "Minsk",
+      "Lobok",
       "Pskov",
       "Zhodzina",
       "Orsha",
       "Vitebsk",
-      "Lobok",
       "Moscow",
       "Zaplyusye"
     ],
