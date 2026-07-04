@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 71,
-    "unique_places": 71,
+    "checkin_count": 72,
+    "unique_places": 72,
     "countries": [
       "Belarus"
     ],
@@ -1990,7 +1990,7 @@
         2
       ],
       [
-        "Church",
+        "Bus Line",
         2
       ]
     ]
