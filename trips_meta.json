@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 47,
-    "unique_places": 47,
+    "checkin_count": 49,
+    "unique_places": 49,
     "countries": [
       "Belarus"
     ],
@@ -1954,12 +1954,12 @@
     "tags": [],
     "top_cats": [
       [
-        "Monument",
+        "Park",
         6
       ],
       [
-        "Park",
-        5
+        "Monument",
+        6
       ],
       [
         "Outdoor Sculpture",
@@ -1974,6 +1974,10 @@
         3
       ],
       [
+        "Road",
+        3
+      ],
+      [
         "River",
         3
       ],
@@ -1983,10 +1987,6 @@
       ],
       [
         "Bridge",
-        2
-      ],
-      [
-        "Road",
         2
       ],
       [
