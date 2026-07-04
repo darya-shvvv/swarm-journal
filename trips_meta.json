@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 35,
-    "unique_places": 35,
+    "checkin_count": 37,
+    "unique_places": 37,
     "countries": [
       "Belarus"
     ],
@@ -1966,6 +1966,10 @@
         3
       ],
       [
+        "Outdoor Sculpture",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
@@ -1975,10 +1979,6 @@
       ],
       [
         "Road",
-        2
-      ],
-      [
-        "Outdoor Sculpture",
         2
       ],
       [
