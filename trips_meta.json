@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 28,
-    "unique_places": 28,
+    "checkin_count": 29,
+    "unique_places": 29,
     "countries": [
       "Belarus"
     ],
@@ -1955,7 +1955,7 @@
     "top_cats": [
       [
         "Park",
-        3
+        4
       ],
       [
         "Memorial Site",
