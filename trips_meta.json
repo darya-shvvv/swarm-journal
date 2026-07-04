@@ -1938,12 +1938,12 @@
     "id": 32,
     "name": "Vitebsk, Belarus 🚂",
     "start_date": "2026-07-04",
-    "end_date": "2026-07-04",
+    "end_date": "2026-07-05",
     "start_ts": 1783136332,
     "start_year": 2026,
-    "duration": 1,
-    "checkin_count": 73,
-    "unique_places": 73,
+    "duration": 2,
+    "checkin_count": 74,
+    "unique_places": 74,
     "countries": [
       "Belarus"
     ],
