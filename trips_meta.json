@@ -1933,5 +1933,50 @@
         5
       ]
     ]
+  },
+  {
+    "id": 32,
+    "name": "Vitebsk, Belarus 🚂",
+    "start_date": "2026-07-04",
+    "end_date": "2026-07-04",
+    "start_ts": 1783136332,
+    "start_year": 2026,
+    "duration": 1,
+    "checkin_count": 7,
+    "unique_places": 7,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Vitebsk",
+      "Minsk"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Rail Station",
+        2
+      ],
+      [
+        "Platform",
+        1
+      ],
+      [
+        "Train",
+        1
+      ],
+      [
+        "City",
+        1
+      ],
+      [
+        "Grocery Store",
+        1
+      ],
+      [
+        "Apartment or Condo",
+        1
+      ]
+    ]
   }
 ]
