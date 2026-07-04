@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 61,
-    "unique_places": 61,
+    "checkin_count": 63,
+    "unique_places": 63,
     "countries": [
       "Belarus"
     ],
@@ -1955,7 +1955,7 @@
     "top_cats": [
       [
         "Park",
-        10
+        11
       ],
       [
         "Monument",
@@ -1974,6 +1974,10 @@
         4
       ],
       [
+        "Bridge",
+        3
+      ],
+      [
         "Memorial Site",
         3
       ],
@@ -1983,10 +1987,6 @@
       ],
       [
         "Rail Station",
-        2
-      ],
-      [
-        "Bridge",
         2
       ],
       [
