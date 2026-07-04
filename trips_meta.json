@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 29,
-    "unique_places": 29,
+    "checkin_count": 30,
+    "unique_places": 30,
     "countries": [
       "Belarus"
     ],
@@ -1978,6 +1978,10 @@
         2
       ],
       [
+        "River",
+        2
+      ],
+      [
         "Platform",
         1
       ],
@@ -1987,10 +1991,6 @@
       ],
       [
         "City",
-        1
-      ],
-      [
-        "Grocery Store",
         1
       ]
     ]
