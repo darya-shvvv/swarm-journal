@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 12,
-    "unique_places": 12,
+    "checkin_count": 13,
+    "unique_places": 13,
     "countries": [
       "Belarus"
     ],
@@ -1954,11 +1954,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Rail Station",
-        2
+        "Park",
+        3
       ],
       [
-        "Park",
+        "Rail Station",
         2
       ],
       [
