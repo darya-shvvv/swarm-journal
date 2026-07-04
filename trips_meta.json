@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 8,
-    "unique_places": 8,
+    "checkin_count": 9,
+    "unique_places": 9,
     "countries": [
       "Belarus"
     ],
@@ -1979,6 +1979,10 @@
       ],
       [
         "Park",
+        1
+      ],
+      [
+        "Bridge",
         1
       ]
     ]
