@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 42,
-    "unique_places": 42,
+    "checkin_count": 43,
+    "unique_places": 43,
     "countries": [
       "Belarus"
     ],
@@ -1974,6 +1974,10 @@
         3
       ],
       [
+        "River",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
@@ -1983,10 +1987,6 @@
       ],
       [
         "Road",
-        2
-      ],
-      [
-        "River",
         2
       ],
       [
