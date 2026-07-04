@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 43,
-    "unique_places": 43,
+    "checkin_count": 46,
+    "unique_places": 46,
     "countries": [
       "Belarus"
     ],
@@ -1954,11 +1954,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Park",
-        5
+        "Monument",
+        6
       ],
       [
-        "Monument",
+        "Park",
         5
       ],
       [
@@ -1966,11 +1966,11 @@
         4
       ],
       [
-        "Memorial Site",
-        3
+        "Plaza",
+        4
       ],
       [
-        "Plaza",
+        "Memorial Site",
         3
       ],
       [
@@ -1990,8 +1990,8 @@
         2
       ],
       [
-        "Platform",
-        1
+        "Church",
+        2
       ]
     ]
   }
