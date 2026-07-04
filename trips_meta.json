@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 66,
-    "unique_places": 66,
+    "checkin_count": 68,
+    "unique_places": 68,
     "countries": [
       "Belarus"
     ],
@@ -1970,19 +1970,19 @@
         5
       ],
       [
+        "Bridge",
+        4
+      ],
+      [
         "Road",
         4
       ],
       [
-        "Bridge",
-        3
+        "River",
+        4
       ],
       [
         "Memorial Site",
-        3
-      ],
-      [
-        "River",
         3
       ],
       [
