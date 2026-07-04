@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 56,
-    "unique_places": 56,
+    "checkin_count": 59,
+    "unique_places": 59,
     "countries": [
       "Belarus"
     ],
@@ -1959,11 +1959,15 @@
       ],
       [
         "Monument",
-        8
+        9
       ],
       [
         "Plaza",
-        5
+        6
+      ],
+      [
+        "Road",
+        4
       ],
       [
         "Outdoor Sculpture",
@@ -1971,10 +1975,6 @@
       ],
       [
         "Memorial Site",
-        3
-      ],
-      [
-        "Road",
         3
       ],
       [
