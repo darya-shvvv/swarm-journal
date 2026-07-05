@@ -1942,7 +1942,7 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 117,
+    "checkin_count": 118,
     "unique_places": 103,
     "countries": [
       "Belarus"
@@ -1986,11 +1986,11 @@
         4
       ],
       [
-        "Memorial Site",
+        "Rail Station",
         3
       ],
       [
-        "Sculpture Garden",
+        "Memorial Site",
         3
       ]
     ]
