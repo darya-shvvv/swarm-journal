@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 107,
-    "unique_places": 93,
+    "checkin_count": 108,
+    "unique_places": 94,
     "countries": [
       "Belarus"
     ],
@@ -1955,7 +1955,7 @@
     "top_cats": [
       [
         "Park",
-        16
+        17
       ],
       [
         "Monument",
