@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 114,
-    "unique_places": 100,
+    "checkin_count": 115,
+    "unique_places": 101,
     "countries": [
       "Belarus"
     ],
@@ -1978,15 +1978,15 @@
         6
       ],
       [
+        "Bus Line",
+        4
+      ],
+      [
         "River",
         4
       ],
       [
         "Memorial Site",
-        3
-      ],
-      [
-        "Bus Line",
         3
       ],
       [
