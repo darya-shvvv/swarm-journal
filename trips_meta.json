@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 106,
-    "unique_places": 92,
+    "checkin_count": 107,
+    "unique_places": 93,
     "countries": [
       "Belarus"
     ],
@@ -1986,11 +1986,11 @@
         3
       ],
       [
-        "Rail Station",
-        2
+        "Bus Line",
+        3
       ],
       [
-        "Apartment or Condo",
+        "Rail Station",
         2
       ]
     ]
