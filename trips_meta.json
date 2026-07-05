@@ -1942,7 +1942,7 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 74,
+    "checkin_count": 75,
     "unique_places": 74,
     "countries": [
       "Belarus"
@@ -1990,7 +1990,7 @@
         2
       ],
       [
-        "Bus Line",
+        "Apartment or Condo",
         2
       ]
     ]
