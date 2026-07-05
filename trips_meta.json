@@ -1942,7 +1942,7 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 86,
+    "checkin_count": 88,
     "unique_places": 83,
     "countries": [
       "Belarus"
@@ -1959,11 +1959,11 @@
       ],
       [
         "Monument",
-        10
+        11
       ],
       [
         "Plaza",
-        10
+        11
       ],
       [
         "Outdoor Sculpture",
