@@ -1942,8 +1942,8 @@
     "start_ts": 1783136332,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 111,
-    "unique_places": 97,
+    "checkin_count": 113,
+    "unique_places": 99,
     "countries": [
       "Belarus"
     ],
@@ -1959,7 +1959,7 @@
       ],
       [
         "Monument",
-        13
+        14
       ],
       [
         "Plaza",
@@ -1990,8 +1990,8 @@
         3
       ],
       [
-        "Rail Station",
-        2
+        "Sculpture Garden",
+        3
       ]
     ]
   }
