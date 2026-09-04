@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 11,
-    "unique_places": 11,
+    "checkin_count": 12,
+    "unique_places": 12,
     "countries": [
       "Belarus"
     ],
@@ -2023,6 +2023,10 @@
         2
       ],
       [
+        "Road",
+        2
+      ],
+      [
         "Platform",
         1
       ],
@@ -2036,10 +2040,6 @@
       ],
       [
         "Café",
-        1
-      ],
-      [
-        "Road",
         1
       ],
       [
