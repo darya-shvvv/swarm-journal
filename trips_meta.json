@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 9,
-    "unique_places": 9,
+    "checkin_count": 10,
+    "unique_places": 10,
     "countries": [
       "Belarus"
     ],
@@ -2044,6 +2044,10 @@
       ],
       [
         "Dentist",
+        1
+      ],
+      [
+        "Home (private)",
         1
       ]
     ]
