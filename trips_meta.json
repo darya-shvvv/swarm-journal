@@ -1994,5 +1994,50 @@
         3
       ]
     ]
+  },
+  {
+    "id": 33,
+    "name": "Hrodna, Belarus 🚂",
+    "start_date": "2026-09-04",
+    "end_date": "2026-09-04",
+    "start_ts": 1788494159,
+    "start_year": 2026,
+    "duration": 1,
+    "checkin_count": 7,
+    "unique_places": 7,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Hrodna",
+      "Minsk"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Rail Station",
+        2
+      ],
+      [
+        "Platform",
+        1
+      ],
+      [
+        "Train",
+        1
+      ],
+      [
+        "Plaza",
+        1
+      ],
+      [
+        "City",
+        1
+      ],
+      [
+        "Café",
+        1
+      ]
+    ]
   }
 ]
