@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 32,
-    "unique_places": 32,
+    "checkin_count": 33,
+    "unique_places": 33,
     "countries": [
       "Belarus"
     ],
@@ -2040,6 +2040,10 @@
         2
       ],
       [
+        "Lake",
+        2
+      ],
+      [
         "Outdoor Sculpture",
         2
       ],
@@ -2049,10 +2053,6 @@
       ],
       [
         "Train",
-        1
-      ],
-      [
-        "Café",
         1
       ]
     ]
