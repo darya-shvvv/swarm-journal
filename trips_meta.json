@@ -1997,20 +1997,20 @@
   },
   {
     "id": 33,
-    "name": "Lida, Belarus 🚂",
+    "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-09-04",
     "end_date": "2026-09-05",
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 42,
-    "unique_places": 39,
+    "checkin_count": 43,
+    "unique_places": 40,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Lida",
       "Hrodna",
+      "Lida",
       "Minsk"
     ],
     "tags": [],
