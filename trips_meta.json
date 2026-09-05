@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 33,
-    "unique_places": 33,
+    "checkin_count": 34,
+    "unique_places": 34,
     "countries": [
       "Belarus"
     ],
@@ -2040,6 +2040,10 @@
         2
       ],
       [
+        "Coffee Shop",
+        2
+      ],
+      [
         "Lake",
         2
       ],
@@ -2049,10 +2053,6 @@
       ],
       [
         "Platform",
-        1
-      ],
-      [
-        "Train",
         1
       ]
     ]
