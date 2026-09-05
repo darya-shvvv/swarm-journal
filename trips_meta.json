@@ -1997,20 +1997,20 @@
   },
   {
     "id": 33,
-    "name": "Hrodna, Belarus 🚂",
+    "name": "Lida, Belarus 🚂",
     "start_date": "2026-09-04",
     "end_date": "2026-09-05",
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 27,
-    "unique_places": 27,
+    "checkin_count": 30,
+    "unique_places": 30,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Hrodna",
       "Lida",
+      "Hrodna",
       "Minsk"
     ],
     "tags": [],
@@ -2021,6 +2021,10 @@
       ],
       [
         "Road",
+        4
+      ],
+      [
+        "Monument",
         3
       ],
       [
@@ -2036,7 +2040,7 @@
         2
       ],
       [
-        "Monument",
+        "Outdoor Sculpture",
         2
       ],
       [
@@ -2049,10 +2053,6 @@
       ],
       [
         "Café",
-        1
-      ],
-      [
-        "Dentist",
         1
       ]
     ]
