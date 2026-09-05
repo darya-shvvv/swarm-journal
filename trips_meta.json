@@ -2003,15 +2003,15 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 19,
-    "unique_places": 19,
+    "checkin_count": 20,
+    "unique_places": 20,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Hrodna",
-      "Minsk",
-      "Lida"
+      "Lida",
+      "Minsk"
     ],
     "tags": [],
     "top_cats": [
