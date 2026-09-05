@@ -1999,31 +1999,32 @@
     "id": 33,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-09-04",
-    "end_date": "2026-09-04",
+    "end_date": "2026-09-05",
     "start_ts": 1788494159,
     "start_year": 2026,
-    "duration": 1,
-    "checkin_count": 16,
-    "unique_places": 16,
+    "duration": 2,
+    "checkin_count": 17,
+    "unique_places": 17,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Hrodna",
-      "Minsk"
+      "Minsk",
+      "Lida"
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Road",
+        3
+      ],
       [
         "Rail Station",
         2
       ],
       [
         "Plaza",
-        2
-      ],
-      [
-        "Road",
         2
       ],
       [
