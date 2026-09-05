@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 37,
-    "unique_places": 36,
+    "checkin_count": 38,
+    "unique_places": 37,
     "countries": [
       "Belarus"
     ],
@@ -2036,6 +2036,10 @@
         2
       ],
       [
+        "Home (private)",
+        2
+      ],
+      [
         "Shopping Mall",
         2
       ],
@@ -2050,10 +2054,6 @@
       [
         "Outdoor Sculpture",
         2
-      ],
-      [
-        "Platform",
-        1
       ]
     ]
   }
