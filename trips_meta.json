@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 34,
-    "unique_places": 34,
+    "checkin_count": 36,
+    "unique_places": 36,
     "countries": [
       "Belarus"
     ],
@@ -2017,7 +2017,7 @@
     "top_cats": [
       [
         "Plaza",
-        4
+        5
       ],
       [
         "Road",
