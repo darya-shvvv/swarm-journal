@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 44,
-    "unique_places": 41,
+    "checkin_count": 45,
+    "unique_places": 42,
     "countries": [
       "Belarus"
     ],
@@ -2032,15 +2032,15 @@
         3
       ],
       [
+        "Shopping Mall",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
       [
         "Home (private)",
-        2
-      ],
-      [
-        "Shopping Mall",
         2
       ],
       [
