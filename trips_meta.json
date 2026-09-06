@@ -2003,8 +2003,8 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 50,
-    "unique_places": 44,
+    "checkin_count": 55,
+    "unique_places": 49,
     "countries": [
       "Belarus"
     ],
@@ -2028,16 +2028,16 @@
         4
       ],
       [
-        "Monument",
+        "City",
         4
       ],
       [
-        "City",
-        3
+        "Home (private)",
+        4
       ],
       [
-        "Home (private)",
-        3
+        "Monument",
+        4
       ],
       [
         "Shopping Mall",
