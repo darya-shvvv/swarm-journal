@@ -2003,7 +2003,7 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 47,
+    "checkin_count": 48,
     "unique_places": 43,
     "countries": [
       "Belarus"
@@ -2028,6 +2028,10 @@
         4
       ],
       [
+        "Rail Station",
+        3
+      ],
+      [
         "City",
         3
       ],
@@ -2038,10 +2042,6 @@
       [
         "Shopping Mall",
         3
-      ],
-      [
-        "Rail Station",
-        2
       ],
       [
         "Coffee Shop",
