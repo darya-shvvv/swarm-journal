@@ -2003,7 +2003,7 @@
     "start_ts": 1788494159,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 49,
+    "checkin_count": 50,
     "unique_places": 44,
     "countries": [
       "Belarus"
@@ -2024,12 +2024,12 @@
         6
       ],
       [
-        "Monument",
+        "Rail Station",
         4
       ],
       [
-        "Rail Station",
-        3
+        "Monument",
+        4
       ],
       [
         "City",
