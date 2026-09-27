@@ -2056,5 +2056,49 @@
         2
       ]
     ]
+  },
+  {
+    "id": 34,
+    "name": "Belarus & Russia 🚌",
+    "start_date": "2026-09-26",
+    "end_date": "2026-09-27",
+    "start_ts": 1790453145,
+    "start_year": 2026,
+    "duration": 2,
+    "checkin_count": 6,
+    "unique_places": 6,
+    "countries": [
+      "Belarus",
+      "Russia"
+    ],
+    "cities": [
+      "Minsk",
+      "Moscow",
+      "Saint Petersburg",
+      "Smolensk Region"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Bus Station",
+        2
+      ],
+      [
+        "Bus Line",
+        1
+      ],
+      [
+        "Bar",
+        1
+      ],
+      [
+        "Border Crossing",
+        1
+      ],
+      [
+        "Country",
+        1
+      ]
+    ]
   }
 ]
