@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 21,
-    "unique_places": 19,
+    "checkin_count": 22,
+    "unique_places": 20,
     "countries": [
       "Russia",
       "Turkey",
@@ -2075,8 +2075,8 @@
     "cities": [
       "Khimki",
       "Moscow",
-      "Minsk",
       "Istanbul",
+      "Minsk",
       "Saint Petersburg",
       "Smolensk Region"
     ],
