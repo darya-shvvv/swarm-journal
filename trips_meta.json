@@ -2059,21 +2059,21 @@
   },
   {
     "id": 34,
-    "name": "Belarus & Russia 🚌",
+    "name": "Russia & Belarus 🚌",
     "start_date": "2026-09-26",
     "end_date": "2026-09-27",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 6,
-    "unique_places": 6,
+    "checkin_count": 7,
+    "unique_places": 7,
     "countries": [
-      "Belarus",
-      "Russia"
+      "Russia",
+      "Belarus"
     ],
     "cities": [
-      "Minsk",
       "Moscow",
+      "Minsk",
       "Saint Petersburg",
       "Smolensk Region"
     ],
@@ -2097,6 +2097,10 @@
       ],
       [
         "Country",
+        1
+      ],
+      [
+        "Church",
         1
       ]
     ]
