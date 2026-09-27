@@ -2065,18 +2065,18 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 10,
-    "unique_places": 10,
+    "checkin_count": 13,
+    "unique_places": 13,
     "countries": [
       "Russia",
       "Belarus"
     ],
     "cities": [
       "Moscow",
+      "Khimki",
       "Minsk",
       "Saint Petersburg",
-      "Smolensk Region",
-      "Khimki"
+      "Smolensk Region"
     ],
     "tags": [],
     "top_cats": [
@@ -2114,6 +2114,10 @@
       ],
       [
         "International Airport",
+        1
+      ],
+      [
+        "Airport Service",
         1
       ]
     ]
