@@ -2059,22 +2059,24 @@
   },
   {
     "id": 34,
-    "name": "Russia & Belarus 🚌",
+    "name": "Russia + Turkey + 1 more 🚌",
     "start_date": "2026-09-26",
     "end_date": "2026-09-27",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 17,
-    "unique_places": 15,
+    "checkin_count": 21,
+    "unique_places": 19,
     "countries": [
       "Russia",
+      "Turkey",
       "Belarus"
     ],
     "cities": [
       "Khimki",
       "Moscow",
       "Minsk",
+      "Istanbul",
       "Saint Petersburg",
       "Smolensk Region"
     ],
@@ -2086,6 +2088,22 @@
       ],
       [
         "Bus Station",
+        2
+      ],
+      [
+        "Border Crossing",
+        2
+      ],
+      [
+        "Country",
+        2
+      ],
+      [
+        "International Airport",
+        2
+      ],
+      [
+        "Airport Terminal",
         2
       ],
       [
@@ -2101,23 +2119,7 @@
         1
       ],
       [
-        "Border Crossing",
-        1
-      ],
-      [
-        "Country",
-        1
-      ],
-      [
         "Church",
-        1
-      ],
-      [
-        "Coffee Shop",
-        1
-      ],
-      [
-        "City",
         1
       ]
     ]
