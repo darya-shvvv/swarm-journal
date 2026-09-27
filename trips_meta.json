@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 25,
-    "unique_places": 23,
+    "checkin_count": 26,
+    "unique_places": 24,
     "countries": [
       "Russia",
       "Turkey",
@@ -2103,6 +2103,10 @@
         2
       ],
       [
+        "City",
+        2
+      ],
+      [
         "International Airport",
         2
       ],
@@ -2116,10 +2120,6 @@
       ],
       [
         "Bus Line",
-        1
-      ],
-      [
-        "Bar",
         1
       ]
     ]
