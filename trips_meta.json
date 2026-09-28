@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 99,
+    "checkin_count": 100,
     "unique_places": 96,
     "countries": [
       "Turkey",
@@ -2092,7 +2092,7 @@
       ],
       [
         "Road",
-        9
+        10
       ],
       [
         "Metro Station",
