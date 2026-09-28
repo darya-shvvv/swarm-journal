@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 98,
+    "checkin_count": 99,
     "unique_places": 96,
     "countries": [
       "Turkey",
@@ -2095,16 +2095,16 @@
         9
       ],
       [
+        "Metro Station",
+        5
+      ],
+      [
         "Park",
         5
       ],
       [
         "Mosque",
         5
-      ],
-      [
-        "Metro Station",
-        4
       ],
       [
         "Monument",
