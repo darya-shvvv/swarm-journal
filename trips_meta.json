@@ -2059,17 +2059,17 @@
   },
   {
     "id": 34,
-    "name": "Russia + Turkey + 1 more 🚌",
+    "name": "Turkey + Russia + 1 more 🚌",
     "start_date": "2026-09-26",
     "end_date": "2026-09-28",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 31,
-    "unique_places": 29,
+    "checkin_count": 33,
+    "unique_places": 31,
     "countries": [
-      "Russia",
       "Turkey",
+      "Russia",
       "Belarus"
     ],
     "cities": [
@@ -2119,8 +2119,8 @@
         2
       ],
       [
-        "Bus Line",
-        1
+        "Neighborhood",
+        2
       ]
     ]
   }
