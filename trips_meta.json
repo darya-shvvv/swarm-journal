@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 66,
-    "unique_places": 64,
+    "checkin_count": 69,
+    "unique_places": 67,
     "countries": [
       "Turkey",
       "Russia",
@@ -2111,15 +2111,15 @@
         3
       ],
       [
+        "Monument",
+        3
+      ],
+      [
         "Bus Station",
         2
       ],
       [
         "Border Crossing",
-        2
-      ],
-      [
-        "Country",
         2
       ]
     ]
