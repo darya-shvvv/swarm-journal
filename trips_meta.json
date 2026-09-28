@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 3,
-    "checkin_count": 54,
-    "unique_places": 52,
+    "checkin_count": 57,
+    "unique_places": 55,
     "countries": [
       "Turkey",
       "Russia",
@@ -2087,12 +2087,12 @@
         6
       ],
       [
-        "Road",
-        5
+        "Plaza",
+        6
       ],
       [
-        "Plaza",
-        4
+        "Road",
+        5
       ],
       [
         "Airport Service",
@@ -2107,6 +2107,10 @@
         3
       ],
       [
+        "Mosque",
+        3
+      ],
+      [
         "Bus Station",
         2
       ],
@@ -2116,10 +2120,6 @@
       ],
       [
         "Country",
-        2
-      ],
-      [
-        "Coffee Shop",
         2
       ]
     ]
