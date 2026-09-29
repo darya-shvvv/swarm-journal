@@ -2059,14 +2059,14 @@
   },
   {
     "id": 34,
-    "name": "Turkey + Russia + 1 more ✈️",
+    "name": "Turkey + Russia + 1 more 🚌",
     "start_date": "2026-09-26",
     "end_date": "2026-09-29",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 164,
-    "unique_places": 157,
+    "checkin_count": 165,
+    "unique_places": 158,
     "countries": [
       "Turkey",
       "Russia",
