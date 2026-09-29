@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 127,
-    "unique_places": 122,
+    "checkin_count": 129,
+    "unique_places": 124,
     "countries": [
       "Turkey",
       "Russia",
@@ -2088,7 +2088,7 @@
       ],
       [
         "Plaza",
-        13
+        14
       ],
       [
         "Road",
@@ -2099,12 +2099,12 @@
         10
       ],
       [
-        "Historic and Protected Site",
+        "Park",
         8
       ],
       [
-        "Park",
-        7
+        "Historic and Protected Site",
+        8
       ],
       [
         "Metro Station",
