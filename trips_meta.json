@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 4,
-    "checkin_count": 125,
-    "unique_places": 120,
+    "checkin_count": 127,
+    "unique_places": 122,
     "countries": [
       "Turkey",
       "Russia",
@@ -2104,7 +2104,7 @@
       ],
       [
         "Park",
-        6
+        7
       ],
       [
         "Metro Station",
