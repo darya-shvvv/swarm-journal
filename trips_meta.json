@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 175,
+    "checkin_count": 177,
     "unique_places": 160,
     "countries": [
       "Turkey",
@@ -2105,7 +2105,7 @@
       ],
       [
         "Historic and Protected Site",
-        10
+        11
       ],
       [
         "Metro Station",
@@ -2116,11 +2116,11 @@
         5
       ],
       [
-        "Fountain",
-        4
+        "Waterfront",
+        5
       ],
       [
-        "Waterfront",
+        "Fountain",
         4
       ]
     ]
