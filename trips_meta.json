@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 224,
-    "unique_places": 207,
+    "checkin_count": 225,
+    "unique_places": 208,
     "countries": [
       "Turkey",
       "Russia",
@@ -2121,7 +2121,7 @@
       ],
       [
         "Monument",
-        5
+        6
       ]
     ]
   }
