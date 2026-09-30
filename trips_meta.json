@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 194,
-    "unique_places": 177,
+    "checkin_count": 195,
+    "unique_places": 178,
     "countries": [
       "Turkey",
       "Russia",
@@ -2092,11 +2092,11 @@
         20
       ],
       [
-        "Road",
-        12
+        "Park",
+        13
       ],
       [
-        "Park",
+        "Road",
         12
       ],
       [
