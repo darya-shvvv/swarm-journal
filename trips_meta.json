@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 189,
-    "unique_places": 172,
+    "checkin_count": 191,
+    "unique_places": 174,
     "countries": [
       "Turkey",
       "Russia",
@@ -2108,19 +2108,19 @@
         11
       ],
       [
+        "Metro Station",
+        7
+      ],
+      [
         "Other Great Outdoors",
         7
       ],
       [
-        "Metro Station",
+        "Waterfront",
         6
       ],
       [
         "Monument",
-        5
-      ],
-      [
-        "Waterfront",
         5
       ]
     ]
