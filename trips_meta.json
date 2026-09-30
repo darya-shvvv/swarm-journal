@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 231,
-    "unique_places": 213,
+    "checkin_count": 233,
+    "unique_places": 214,
     "countries": [
       "Turkey",
       "Russia",
@@ -2096,12 +2096,12 @@
         17
       ],
       [
-        "Mosque",
+        "Road",
         16
       ],
       [
-        "Road",
-        15
+        "Mosque",
+        16
       ],
       [
         "Historic and Protected Site",
