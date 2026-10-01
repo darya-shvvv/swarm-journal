@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 6,
-    "checkin_count": 248,
+    "checkin_count": 250,
     "unique_places": 217,
     "countries": [
       "Turkey",
@@ -2101,7 +2101,7 @@
       ],
       [
         "Mosque",
-        16
+        17
       ],
       [
         "Historic and Protected Site",
@@ -2121,7 +2121,7 @@
       ],
       [
         "Monument",
-        6
+        7
       ]
     ]
   }
