@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 6,
-    "checkin_count": 299,
-    "unique_places": 261,
+    "checkin_count": 301,
+    "unique_places": 263,
     "countries": [
       "Turkey",
       "Russia",
@@ -2120,8 +2120,8 @@
         8
       ],
       [
-        "Metro Station",
-        7
+        "Scenic Lookout",
+        8
       ]
     ]
   }
