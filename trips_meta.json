@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 6,
-    "checkin_count": 277,
-    "unique_places": 239,
+    "checkin_count": 279,
+    "unique_places": 241,
     "countries": [
       "Turkey",
       "Russia",
@@ -2085,7 +2085,7 @@
     "top_cats": [
       [
         "Plaza",
-        27
+        28
       ],
       [
         "Neighborhood",
@@ -2116,11 +2116,11 @@
         10
       ],
       [
-        "Metro Station",
-        7
+        "Monument",
+        8
       ],
       [
-        "Monument",
+        "Metro Station",
         7
       ]
     ]
