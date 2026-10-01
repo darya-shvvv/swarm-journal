@@ -2061,11 +2061,11 @@
     "id": 34,
     "name": "Turkey + Russia + 1 more 🚌",
     "start_date": "2026-09-26",
-    "end_date": "2026-10-01",
+    "end_date": "2026-10-02",
     "start_ts": 1790453145,
     "start_year": 2026,
-    "duration": 6,
-    "checkin_count": 306,
+    "duration": 7,
+    "checkin_count": 307,
     "unique_places": 264,
     "countries": [
       "Turkey",
@@ -2084,11 +2084,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Neighborhood",
-        30
+        "Plaza",
+        31
       ],
       [
-        "Plaza",
+        "Neighborhood",
         30
       ],
       [
