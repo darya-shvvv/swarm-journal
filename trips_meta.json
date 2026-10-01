@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 6,
-    "checkin_count": 293,
-    "unique_places": 255,
+    "checkin_count": 294,
+    "unique_places": 256,
     "countries": [
       "Turkey",
       "Russia",
@@ -2097,7 +2097,7 @@
       ],
       [
         "Road",
-        19
+        20
       ],
       [
         "Mosque",
