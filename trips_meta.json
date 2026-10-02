@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 337,
-    "unique_places": 280,
+    "checkin_count": 339,
+    "unique_places": 282,
     "countries": [
       "Turkey",
       "Russia",
@@ -2077,10 +2077,10 @@
       "Khimki",
       "Moscow",
       "Minsk",
+      "Eyüpsultan",
       "Saint Petersburg",
       "Smolensk Region",
-      "Balat",
-      "Eyüpsultan"
+      "Balat"
     ],
     "tags": [],
     "top_cats": [
@@ -2098,7 +2098,7 @@
       ],
       [
         "Road",
-        23
+        24
       ],
       [
         "Mosque",
