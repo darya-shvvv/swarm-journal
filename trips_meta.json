@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 340,
-    "unique_places": 283,
+    "checkin_count": 342,
+    "unique_places": 285,
     "countries": [
       "Turkey",
       "Russia",
@@ -2080,7 +2080,8 @@
       "Eyüpsultan",
       "Saint Petersburg",
       "Smolensk Region",
-      "Balat"
+      "Balat",
+      "Edirnekapı"
     ],
     "tags": [],
     "top_cats": [
@@ -2101,11 +2102,11 @@
         24
       ],
       [
-        "Mosque",
-        20
+        "Historic and Protected Site",
+        21
       ],
       [
-        "Historic and Protected Site",
+        "Mosque",
         20
       ],
       [
