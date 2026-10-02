@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 364,
+    "checkin_count": 365,
     "unique_places": 294,
     "countries": [
       "Turkey",
@@ -2094,12 +2094,12 @@
         34
       ],
       [
-        "Park",
+        "Road",
         28
       ],
       [
-        "Road",
-        27
+        "Park",
+        28
       ],
       [
         "Historic and Protected Site",
