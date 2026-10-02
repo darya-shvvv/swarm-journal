@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 328,
-    "unique_places": 272,
+    "checkin_count": 329,
+    "unique_places": 273,
     "countries": [
       "Turkey",
       "Russia",
@@ -2079,7 +2079,8 @@
       "Minsk",
       "Saint Petersburg",
       "Smolensk Region",
-      "Balat"
+      "Balat",
+      "Eyüpsultan"
     ],
     "tags": [],
     "top_cats": [
