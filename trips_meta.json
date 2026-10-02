@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 7,
-    "checkin_count": 333,
+    "checkin_count": 334,
     "unique_places": 277,
     "countries": [
       "Turkey",
@@ -2101,12 +2101,12 @@
         21
       ],
       [
-        "Historic and Protected Site",
+        "Mosque",
         20
       ],
       [
-        "Mosque",
-        19
+        "Historic and Protected Site",
+        20
       ],
       [
         "Waterfront",
