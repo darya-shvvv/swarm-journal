@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 8,
-    "checkin_count": 439,
+    "checkin_count": 440,
     "unique_places": 359,
     "countries": [
       "Turkey",
@@ -2096,7 +2096,7 @@
       ],
       [
         "Neighborhood",
-        38
+        39
       ],
       [
         "Road",
