@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 8,
-    "checkin_count": 385,
-    "unique_places": 306,
+    "checkin_count": 386,
+    "unique_places": 307,
     "countries": [
       "Turkey",
       "Russia",
@@ -2087,7 +2087,7 @@
     "top_cats": [
       [
         "Plaza",
-        39
+        40
       ],
       [
         "Neighborhood",
