@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 8,
-    "checkin_count": 404,
-    "unique_places": 324,
+    "checkin_count": 405,
+    "unique_places": 325,
     "countries": [
       "Turkey",
       "Russia",
@@ -2081,7 +2081,8 @@
       "Saint Petersburg",
       "Smolensk Region",
       "Balat",
-      "Edirnekapı"
+      "Edirnekapı",
+      "Küçükyalı Maltepe"
     ],
     "tags": [],
     "top_cats": [
@@ -2095,7 +2096,7 @@
       ],
       [
         "Park",
-        32
+        33
       ],
       [
         "Road",
