@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 483,
+    "checkin_count": 485,
     "unique_places": 387,
     "countries": [
       "Turkey",
@@ -2096,7 +2096,7 @@
       ],
       [
         "Plaza",
-        43
+        44
       ],
       [
         "Road",
@@ -2104,7 +2104,7 @@
       ],
       [
         "Waterfront",
-        29
+        30
       ],
       [
         "Historic and Protected Site",
