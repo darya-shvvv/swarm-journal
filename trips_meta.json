@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 507,
+    "checkin_count": 508,
     "unique_places": 391,
     "countries": [
       "Turkey",
@@ -2119,12 +2119,12 @@
         22
       ],
       [
-        "Scenic Lookout",
+        "Monument",
         14
       ],
       [
-        "Monument",
-        13
+        "Scenic Lookout",
+        14
       ]
     ]
   }
