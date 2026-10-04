@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 456,
-    "unique_places": 367,
+    "checkin_count": 458,
+    "unique_places": 369,
     "countries": [
       "Turkey",
       "Russia",
@@ -2104,7 +2104,7 @@
       ],
       [
         "Waterfront",
-        27
+        28
       ],
       [
         "Historic and Protected Site",
@@ -2124,7 +2124,7 @@
       ],
       [
         "Scenic Lookout",
-        10
+        11
       ]
     ]
   }
