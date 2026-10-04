@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 490,
+    "checkin_count": 492,
     "unique_places": 390,
     "countries": [
       "Turkey",
@@ -2087,11 +2087,11 @@
     "tags": [],
     "top_cats": [
       [
-        "Neighborhood",
-        46
+        "Park",
+        47
       ],
       [
-        "Park",
+        "Neighborhood",
         46
       ],
       [
@@ -2104,7 +2104,7 @@
       ],
       [
         "Waterfront",
-        30
+        31
       ],
       [
         "Historic and Protected Site",
