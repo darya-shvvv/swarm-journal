@@ -2059,18 +2059,19 @@
   },
   {
     "id": 34,
-    "name": "Turkey + Russia + 1 more 🚌",
+    "name": "Turkey + Russia + 2 more 🚌",
     "start_date": "2026-09-26",
     "end_date": "2026-10-05",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 526,
-    "unique_places": 400,
+    "checkin_count": 527,
+    "unique_places": 401,
     "countries": [
       "Turkey",
       "Russia",
-      "Belarus"
+      "Belarus",
+      "Moldova"
     ],
     "cities": [
       "Istanbul",
@@ -2082,7 +2083,8 @@
       "Smolensk Region",
       "Balat",
       "Edirnekapı",
-      "Küçükyalı Maltepe"
+      "Küçükyalı Maltepe",
+      "Chișinău"
     ],
     "tags": [],
     "top_cats": [
