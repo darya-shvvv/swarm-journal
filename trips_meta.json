@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 9,
-    "checkin_count": 516,
+    "checkin_count": 518,
     "unique_places": 394,
     "countries": [
       "Turkey",
@@ -2119,11 +2119,11 @@
         23
       ],
       [
-        "Monument",
+        "Metro Station",
         14
       ],
       [
-        "Scenic Lookout",
+        "Monument",
         14
       ]
     ]
