@@ -2065,27 +2065,28 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 529,
-    "unique_places": 403,
+    "checkin_count": 531,
+    "unique_places": 405,
     "countries": [
       "Turkey",
       "Russia",
-      "Belarus",
-      "Moldova"
+      "Moldova",
+      "Belarus"
     ],
     "cities": [
       "Istanbul",
       "Khimki",
       "Moscow",
+      "Chișinău",
       "Minsk",
       "Eyüpsultan",
-      "Chișinău",
       "Saint Petersburg",
       "Smolensk Region",
       "Balat",
       "Edirnekapı",
       "Küçükyalı Maltepe",
-      "Ialoveni"
+      "Ialoveni",
+      "Calarasi"
     ],
     "tags": [],
     "top_cats": [
