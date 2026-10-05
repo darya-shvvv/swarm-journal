@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 533,
+    "checkin_count": 534,
     "unique_places": 407,
     "countries": [
       "Turkey",
@@ -2076,8 +2076,8 @@
     "cities": [
       "Istanbul",
       "Khimki",
-      "Moscow",
       "Chișinău",
+      "Moscow",
       "Minsk",
       "Eyüpsultan",
       "Saint Petersburg",
