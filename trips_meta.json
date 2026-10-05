@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 10,
-    "checkin_count": 553,
-    "unique_places": 426,
+    "checkin_count": 554,
+    "unique_places": 427,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2124,7 +2124,7 @@
       ],
       [
         "Monument",
-        19
+        20
       ],
       [
         "Metro Station",
