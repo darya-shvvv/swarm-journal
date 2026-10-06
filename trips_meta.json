@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 11,
-    "checkin_count": 589,
-    "unique_places": 461,
+    "checkin_count": 592,
+    "unique_places": 464,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2116,16 +2116,16 @@
         25
       ],
       [
+        "Monument",
+        24
+      ],
+      [
         "Other Great Outdoors",
         24
       ],
       [
         "Mosque",
         23
-      ],
-      [
-        "Monument",
-        22
       ],
       [
         "Metro Station",
