@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 11,
-    "checkin_count": 592,
-    "unique_places": 464,
+    "checkin_count": 594,
+    "unique_places": 466,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2101,7 +2101,7 @@
       ],
       [
         "Plaza",
-        47
+        48
       ],
       [
         "Road",
@@ -2112,12 +2112,12 @@
         31
       ],
       [
-        "Historic and Protected Site",
+        "Monument",
         25
       ],
       [
-        "Monument",
-        24
+        "Historic and Protected Site",
+        25
       ],
       [
         "Other Great Outdoors",
