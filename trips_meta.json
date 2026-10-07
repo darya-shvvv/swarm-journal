@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 12,
-    "checkin_count": 656,
+    "checkin_count": 657,
     "unique_places": 516,
     "countries": [
       "Turkey",
@@ -2098,7 +2098,7 @@
       ],
       [
         "Neighborhood",
-        54
+        55
       ],
       [
         "Plaza",
