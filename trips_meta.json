@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 13,
-    "checkin_count": 664,
+    "checkin_count": 665,
     "unique_places": 519,
     "countries": [
       "Turkey",
@@ -2129,7 +2129,7 @@
         23
       ],
       [
-        "Metro Station",
+        "Bus Line",
         14
       ]
     ]
