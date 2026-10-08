@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 13,
-    "checkin_count": 667,
-    "unique_places": 520,
+    "checkin_count": 669,
+    "unique_places": 522,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2088,7 +2088,9 @@
       "Ialoveni",
       "Calarasi",
       "Chisnau",
-      "Buiucani"
+      "Buiucani",
+      "Trebujeni",
+      "Butuceni"
     ],
     "tags": [],
     "top_cats": [
@@ -2118,7 +2120,7 @@
       ],
       [
         "Historic and Protected Site",
-        26
+        27
       ],
       [
         "Other Great Outdoors",
