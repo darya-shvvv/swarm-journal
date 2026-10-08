@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 13,
-    "checkin_count": 669,
-    "unique_places": 522,
+    "checkin_count": 670,
+    "unique_places": 523,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2080,6 +2080,7 @@
       "Moscow",
       "Minsk",
       "Eyüpsultan",
+      "Butuceni",
       "Saint Petersburg",
       "Smolensk Region",
       "Balat",
@@ -2089,8 +2090,7 @@
       "Calarasi",
       "Chisnau",
       "Buiucani",
-      "Trebujeni",
-      "Butuceni"
+      "Trebujeni"
     ],
     "tags": [],
     "top_cats": [
