@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 14,
-    "checkin_count": 715,
+    "checkin_count": 718,
     "unique_places": 555,
     "countries": [
       "Turkey",
@@ -2097,7 +2097,7 @@
     "top_cats": [
       [
         "Park",
-        64
+        65
       ],
       [
         "Neighborhood",
@@ -2105,7 +2105,7 @@
       ],
       [
         "Plaza",
-        57
+        58
       ],
       [
         "Road",
@@ -2113,7 +2113,7 @@
       ],
       [
         "Monument",
-        41
+        42
       ],
       [
         "Waterfront",
