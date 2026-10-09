@@ -2059,14 +2059,14 @@
   },
   {
     "id": 34,
-    "name": "Turkey + Moldova + 2 more 🚌",
+    "name": "Turkey + Moldova + 2 more 🚂",
     "start_date": "2026-09-26",
     "end_date": "2026-10-09",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 14,
-    "checkin_count": 713,
-    "unique_places": 553,
+    "checkin_count": 715,
+    "unique_places": 555,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2133,7 +2133,7 @@
       ],
       [
         "Bus Line",
-        17
+        18
       ]
     ]
   }
