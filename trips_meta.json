@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 14,
-    "checkin_count": 710,
-    "unique_places": 550,
+    "checkin_count": 711,
+    "unique_places": 551,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2133,7 +2133,7 @@
       ],
       [
         "Bus Line",
-        16
+        17
       ]
     ]
   }
