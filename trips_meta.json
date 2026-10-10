@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 738,
-    "unique_places": 573,
+    "checkin_count": 739,
+    "unique_places": 574,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2114,7 +2114,7 @@
       ],
       [
         "Monument",
-        46
+        47
       ],
       [
         "Waterfront",
