@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 729,
-    "unique_places": 564,
+    "checkin_count": 730,
+    "unique_places": 565,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2081,6 +2081,7 @@
       "Butuceni",
       "Minsk",
       "Eyüpsultan",
+      "Bender",
       "Saint Petersburg",
       "Smolensk Region",
       "Balat",
@@ -2091,8 +2092,7 @@
       "Chisnau",
       "Buiucani",
       "Trebujeni",
-      "Brănești",
-      "Bender"
+      "Brănești"
     ],
     "tags": [],
     "top_cats": [
