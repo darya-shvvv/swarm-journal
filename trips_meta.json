@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 728,
-    "unique_places": 563,
+    "checkin_count": 729,
+    "unique_places": 564,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2091,7 +2091,8 @@
       "Chisnau",
       "Buiucani",
       "Trebujeni",
-      "Brănești"
+      "Brănești",
+      "Bender"
     ],
     "tags": [],
     "top_cats": [
