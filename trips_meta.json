@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 730,
-    "unique_places": 565,
+    "checkin_count": 732,
+    "unique_places": 567,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2078,10 +2078,10 @@
       "Chișinău",
       "Khimki",
       "Moscow",
+      "Bender",
       "Butuceni",
       "Minsk",
       "Eyüpsultan",
-      "Bender",
       "Saint Petersburg",
       "Smolensk Region",
       "Balat",
@@ -2114,7 +2114,7 @@
       ],
       [
         "Monument",
-        43
+        44
       ],
       [
         "Waterfront",
@@ -2122,7 +2122,7 @@
       ],
       [
         "Historic and Protected Site",
-        27
+        28
       ],
       [
         "Other Great Outdoors",
