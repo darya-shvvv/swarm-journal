@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 790,
-    "unique_places": 622,
+    "checkin_count": 793,
+    "unique_places": 625,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2102,20 +2102,20 @@
         71
       ],
       [
+        "Plaza",
+        63
+      ],
+      [
         "Neighborhood",
         62
       ],
       [
-        "Plaza",
-        62
-      ],
-      [
         "Monument",
-        59
+        60
       ],
       [
         "Road",
-        54
+        55
       ],
       [
         "Waterfront",
