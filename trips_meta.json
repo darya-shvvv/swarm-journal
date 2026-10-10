@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 784,
-    "unique_places": 616,
+    "checkin_count": 786,
+    "unique_places": 618,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2099,7 +2099,7 @@
     "top_cats": [
       [
         "Park",
-        70
+        71
       ],
       [
         "Neighborhood",
@@ -2115,7 +2115,7 @@
       ],
       [
         "Road",
-        52
+        53
       ],
       [
         "Waterfront",
