@@ -2065,7 +2065,7 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 797,
+    "checkin_count": 799,
     "unique_places": 629,
     "countries": [
       "Turkey",
@@ -2107,7 +2107,7 @@
       ],
       [
         "Neighborhood",
-        62
+        63
       ],
       [
         "Monument",
@@ -2115,7 +2115,7 @@
       ],
       [
         "Road",
-        55
+        56
       ],
       [
         "Waterfront",
