@@ -2059,14 +2059,14 @@
   },
   {
     "id": 34,
-    "name": "Turkey + Moldova + 2 more 🚌",
+    "name": "Turkey + Moldova + 2 more 🚂",
     "start_date": "2026-09-26",
     "end_date": "2026-10-10",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 15,
-    "checkin_count": 753,
-    "unique_places": 588,
+    "checkin_count": 754,
+    "unique_places": 589,
     "countries": [
       "Turkey",
       "Moldova",
