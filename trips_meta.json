@@ -2065,13 +2065,13 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 16,
-    "checkin_count": 832,
-    "unique_places": 652,
+    "checkin_count": 834,
+    "unique_places": 654,
     "countries": [
       "Turkey",
       "Moldova",
-      "Russia",
       "Azerbaijan",
+      "Russia",
       "Belarus"
     ],
     "cities": [
@@ -2129,7 +2129,7 @@
       ],
       [
         "Other Great Outdoors",
-        25
+        26
       ],
       [
         "Mosque",
