@@ -2059,19 +2059,20 @@
   },
   {
     "id": 34,
-    "name": "Turkey + Moldova + 2 more 🚌",
+    "name": "Turkey + Moldova + 3 more 🚌",
     "start_date": "2026-09-26",
     "end_date": "2026-10-11",
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 16,
-    "checkin_count": 818,
-    "unique_places": 639,
+    "checkin_count": 819,
+    "unique_places": 640,
     "countries": [
       "Turkey",
       "Moldova",
       "Russia",
-      "Belarus"
+      "Belarus",
+      "Azerbaijan"
     ],
     "cities": [
       "Istanbul",
@@ -2093,7 +2094,8 @@
       "Chisnau",
       "Buiucani",
       "Trebujeni",
-      "Brănești"
+      "Brănești",
+      "Baku"
     ],
     "tags": [],
     "top_cats": [
