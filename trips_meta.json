@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 16,
-    "checkin_count": 808,
-    "unique_places": 632,
+    "checkin_count": 810,
+    "unique_places": 633,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2083,12 +2083,12 @@
       "Butuceni",
       "Minsk",
       "Eyüpsultan",
+      "Ialoveni",
       "Saint Petersburg",
       "Smolensk Region",
       "Balat",
       "Edirnekapı",
       "Küçükyalı Maltepe",
-      "Ialoveni",
       "Calarasi",
       "Chisnau",
       "Buiucani",
@@ -2106,11 +2106,11 @@
         65
       ],
       [
-        "Neighborhood",
-        63
+        "Monument",
+        64
       ],
       [
-        "Monument",
+        "Neighborhood",
         63
       ],
       [
