@@ -2065,14 +2065,14 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 16,
-    "checkin_count": 821,
-    "unique_places": 642,
+    "checkin_count": 823,
+    "unique_places": 643,
     "countries": [
       "Turkey",
       "Moldova",
       "Russia",
-      "Belarus",
-      "Azerbaijan"
+      "Azerbaijan",
+      "Belarus"
     ],
     "cities": [
       "Istanbul",
@@ -2081,9 +2081,9 @@
       "Tiraspol",
       "Khimki",
       "Moscow",
+      "Baku",
       "Ialoveni",
       "Butuceni",
-      "Baku",
       "Minsk",
       "Eyüpsultan",
       "Saint Petersburg",
