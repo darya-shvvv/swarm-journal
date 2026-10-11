@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 16,
-    "checkin_count": 839,
-    "unique_places": 659,
+    "checkin_count": 841,
+    "unique_places": 661,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2078,8 +2078,8 @@
       "Istanbul",
       "Chișinău",
       "Bender",
-      "Tiraspol",
       "Baku",
+      "Tiraspol",
       "Khimki",
       "Moscow",
       "Ialoveni",
@@ -2109,7 +2109,7 @@
       ],
       [
         "Monument",
-        65
+        66
       ],
       [
         "Neighborhood",
@@ -2121,7 +2121,7 @@
       ],
       [
         "Historic and Protected Site",
-        31
+        32
       ],
       [
         "Waterfront",
