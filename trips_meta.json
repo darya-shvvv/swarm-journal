@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 16,
-    "checkin_count": 827,
-    "unique_places": 647,
+    "checkin_count": 829,
+    "unique_places": 649,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2079,8 +2079,8 @@
       "Chișinău",
       "Bender",
       "Tiraspol",
-      "Khimki",
       "Baku",
+      "Khimki",
       "Moscow",
       "Ialoveni",
       "Butuceni",
@@ -2105,7 +2105,7 @@
       ],
       [
         "Plaza",
-        65
+        66
       ],
       [
         "Monument",
@@ -2117,7 +2117,7 @@
       ],
       [
         "Road",
-        58
+        59
       ],
       [
         "Waterfront",
