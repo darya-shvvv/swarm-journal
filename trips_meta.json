@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 16,
-    "checkin_count": 851,
-    "unique_places": 671,
+    "checkin_count": 852,
+    "unique_places": 672,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2077,8 +2077,8 @@
     "cities": [
       "Istanbul",
       "Chișinău",
-      "Bender",
       "Baku",
+      "Bender",
       "Tiraspol",
       "Khimki",
       "Moscow",
@@ -2137,7 +2137,7 @@
       ],
       [
         "Bus Line",
-        21
+        22
       ]
     ]
   }
