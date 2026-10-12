@@ -2065,8 +2065,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 17,
-    "checkin_count": 881,
-    "unique_places": 695,
+    "checkin_count": 882,
+    "unique_places": 696,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2079,8 +2079,8 @@
       "Chișinău",
       "Baku",
       "Bender",
-      "Tiraspol",
       "Moscow",
+      "Tiraspol",
       "Khimki",
       "Ialoveni",
       "Butuceni",
@@ -2125,7 +2125,7 @@
       ],
       [
         "Waterfront",
-        31
+        32
       ],
       [
         "Other Great Outdoors",
