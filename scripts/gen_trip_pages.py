@@ -161,7 +161,7 @@ def _render_trip_page(trip: dict, checkins: list[dict],
 <title>{_esc(base_name)} – Trip Journal</title>
 <meta property="og:title" content="{_esc(base_name)} – Trip Journal">
 <meta property="og:description" content="{trip.get('checkin_count',0):,} check-ins · {trip.get('duration',0)} days · {', '.join(trip.get('countries',[])[:3])}">
-<meta property="og:url" content="https://4sq.pages.dev/trip-{tid}.html">
+<meta property="og:url" content="https://swarm-journal.pages.dev/trip-{tid}.html">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
