@@ -12,6 +12,7 @@ import json
 import logging
 import os
 import sys
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -1281,6 +1282,22 @@ if __name__ == "__main__":
         log.info("Injected %s into %d pages", _css_name, _n_linked)
     else:
         log.warning("assets/site.css not found — {{SITE_CSS_LINK}} left unsubstituted")
+
+    # ── No flights.csv → no flights.html: drop the FLIGHTS nav item ──────────
+    # Every page template carries a FLIGHTS side/bottom-nav link; without the
+    # FR24 export the page is never generated and the link would 404.
+    if not (Path(args.output_dir) / "flights.html").exists():
+        _fl_nav = re.compile(r'\s*<a href="flights\.html"><span class="sn-icon">✈</span>'
+                             r'<span class="sn-lbl">FLIGHTS</span></a>')
+        _n_fl = 0
+        for _html in Path(args.output_dir).glob("*.html"):
+            _txt = _html.read_text(encoding="utf-8")
+            _new = _fl_nav.sub("", _txt)
+            if _new != _txt:
+                _html.write_text(_new, encoding="utf-8")
+                _n_fl += 1
+        if _n_fl:
+            log.info("No flights.html — removed FLIGHTS nav link from %d pages", _n_fl)
 
     # ── PWA: manifest + service worker (versioned per build) ──────────────────
     # Render templates/{manifest.webmanifest,sw.js}.tmpl into the output root,

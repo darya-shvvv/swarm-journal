@@ -196,6 +196,54 @@ def load_mappings(config_dir: str | Path = "config") -> dict[str, Any]:
     }
 
 
+NEIGHBOUR_MAX_KM = 15.0
+
+
+def _fill_blank_from_neighbours(rows: list[dict]) -> int:
+    """
+    Last-resort blank-city fill: a row still without a city after fixes,
+    city_merge and the review-CSV resolver takes the (already normalised) city
+    of its nearest geotagged check-in in the same country, if that one lies
+    within NEIGHBOUR_MAX_KM. Covers new trips that the review CSV has never
+    seen (e.g. a whole Istanbul visit logged with an empty city). Country-level
+    pins ("Türkiye" at the country centroid) stay blank — nothing is that close.
+    """
+    def _ll(r):
+        try:
+            return float(r.get("lat") or ""), float(r.get("lng") or "")
+        except ValueError:
+            return None
+
+    by_cell: dict = defaultdict(list)   # (country, lat°, lng°) → [(lat, lng, city)]
+    for r in rows:
+        if r.get("city"):
+            p = _ll(r)
+            if p:
+                by_cell[(r.get("country", ""), math.floor(p[0]), math.floor(p[1]))].append((p[0], p[1], r["city"]))
+
+    filled = 0
+    for r in rows:
+        if r.get("city"):
+            continue
+        p = _ll(r)
+        if not p:
+            continue
+        country = r.get("country", "")
+        best_km, best_city = NEIGHBOUR_MAX_KM, None
+        clat, clng = math.floor(p[0]), math.floor(p[1])
+        for dlat in (-1, 0, 1):
+            for dlng in (-1, 0, 1):
+                for lat, lng, city in by_cell.get((country, clat + dlat, clng + dlng), ()):
+                    km = _haversine(p[0], p[1], lat, lng)
+                    if km < best_km:
+                        best_km, best_city = km, city
+        if best_city:
+            r["city"] = best_city
+            r["city_inferred"] = "1"
+            filled += 1
+    return filled
+
+
 # ── Row-level transforms ───────────────────────────────────────────────────────
 
 def apply_transforms(
@@ -314,6 +362,9 @@ def apply_transforms(
         # Validate date
         if ts and not ts.lstrip("-").isdigit():
             malformed_dates += 1
+
+    if blank_city_resolver is not None:
+        blank_filled += _fill_blank_from_neighbours(rows)
 
     if blank_filled:
         log.info("Blank-city inference filled %d rows", blank_filled)

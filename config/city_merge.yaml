@@ -684,6 +684,8 @@
   "Chişinău": "Chișinău"  # ok — ş variant
   "Chisinau": "Chișinău"  # ok — ASCII form
   "Кишинёв": "Chișinău"  # ok — Russian Cyrillic
+  "Chisnau": "Chișinău"  # ok — typo seen in Foursquare
+  "Buiucani": "Chișinău"  # ok — sector of Chișinău
   "Bălți": "Bălți"  # ok — canonical
   "Balti": "Bălți"  # ok — ASCII form
   "Călărași": "Calarasi"  # auto-added from city_merge_normalized_by_country.json
@@ -1023,6 +1025,10 @@
   "Fatih": "Istanbul"  # ok — district
   "Beyoğlu": "Istanbul"  # ok — district
   "Beşiktaş": "Istanbul"  # ok — district
+  "Balat": "Istanbul"  # ok — neighbourhood (Fatih)
+  "Edirnekapı": "Istanbul"  # ok — neighbourhood (Fatih)
+  "Eyüpsultan": "Istanbul"  # ok — district
+  "Küçükyalı Maltepe": "Istanbul"  # ok — neighbourhood (Maltepe)
   "Kadıköy": "Istanbul"  # ok — district (Asian side)
   "Üsküdar": "Istanbul"  # ok — district
   "Şişli": "Istanbul"  # ok — district
