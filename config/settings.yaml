@@ -20,6 +20,4 @@ output:
   index_html: index.html
   trips_html: trips.html
 
-new_country_year_overrides:
-  "Türkiye": 2020
-  "Turkey":  2020
+new_country_year_overrides: {}
