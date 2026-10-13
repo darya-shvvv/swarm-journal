@@ -1,27 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Trip Journal — Check-in Journal</title>
-<meta name="description" content="155 trips across 62 countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
+<meta name="description" content="{{TOTAL_TRIPS}} trips across {{COUNTRIES}} countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
 <link rel="canonical" href="https://4sq.pages.dev/trips.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Check-in Journal">
 <meta property="og:title" content="Trip Journal — Check-in Journal">
-<meta property="og:description" content="155 trips across 62 countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
+<meta property="og:description" content="{{TOTAL_TRIPS}} trips across {{COUNTRIES}} countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
 <meta property="og:url" content="https://4sq.pages.dev/trips.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Trip Journal — Check-in Journal">
-<meta name="twitter:description" content="155 trips across 62 countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
+<meta name="twitter:description" content="{{TOTAL_TRIPS}} trips across {{COUNTRIES}} countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="{{SITE_CSS_LINK}}">
 <style>
 :root{--bg:#0b0d13;--card:#12151f;--card2:#181c28;--border:#222738;--gold:#e8b86d;--teal:#4ecdc4;--muted:#4a5270;--text:#cdd5f0;--text2:#7a85a8;}
 body.light{--bg:#ddd8cf;--card:#f0ece3;--card2:#e5e0d7;--border:#aaa49a;--gold:#7a3e00;--teal:#155c58;--muted:#54576a;--text:#15172a;--text2:#373b58;}
@@ -52,16 +55,6 @@ a{color:inherit;}
 .gs-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;}
 .gs-input::placeholder{color:var(--muted);}
 .gs-esc-hint{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:2px 6px;cursor:pointer;flex-shrink:0;}
-.side-nav{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:4000;display:flex;flex-direction:column;gap:0;background:rgba(18,21,31,0.92);border:1px solid var(--border);border-right:none;border-radius:10px 0 0 10px;backdrop-filter:blur(10px);overflow:hidden;}
-.side-nav a,.side-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:52px;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);text-decoration:none;transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent;}
-.side-nav a:hover,.side-nav button:hover{background:rgba(255,255,255,.06);color:var(--text);}
-.side-nav a.active,.side-nav button.active{color:var(--gold);}
-.side-nav .sn-icon{font-size:.95rem;line-height:1;display:inline-block;transition:transform .15s;}
-.side-nav a:hover .sn-icon,.side-nav button:hover .sn-icon{transform:scale(1.28);}
-.side-nav .sn-lbl{font-family:'DM Mono',monospace;font-size:.42rem;text-transform:uppercase;letter-spacing:.05em;line-height:1;white-space:nowrap;}
-.side-nav .sn-sep{width:32px;height:1px;background:var(--border);margin:2px auto;}
-.side-nav .sn-sep--pages{width:36px;height:2px;background:var(--border);margin:3px auto;border-radius:1px;}
-@media(max-width:900px){.side-nav{display:none;}}
 
 /* ── VIEWS ── */
 #listView,#detailView{min-height:calc(100vh - 57px);}
@@ -127,12 +120,19 @@ a{color:inherit;}
 .tl-checkin{display:flex;gap:10px;align-items:flex-start;padding:5px 0;}
 .tl-checkin-time{font-family:'DM Mono',monospace;font-size:.60rem;color:var(--muted);flex-shrink:0;width:40px;}
 .tl-checkin-info{flex:1;min-width:0;}
-.tl-checkin-venue{font-size:.80rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tl-checkin-venue{font-size:.80rem;color:var(--text);display:flex;align-items:center;gap:6px;}
+.tl-venue-name{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tl-checkin-venue a{color:inherit;text-decoration:none;}
 .tl-checkin-venue a:hover{color:var(--gold);}
 .tl-checkin-sub{font-size:.65rem;color:var(--muted);}
+.tl-refurb{flex-shrink:0;margin-left:auto;display:inline-flex;align-items:center;gap:3px;background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:2px 6px;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.04em;white-space:nowrap;}
+.tl-no-fsq{flex-shrink:0;display:inline-flex;align-items:center;gap:3px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.4);color:#60a5fa;border-radius:5px;padding:2px 6px;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.04em;white-space:nowrap;margin-top:2px;}
+.tl-refurb-stack{flex-shrink:0;margin-left:auto;display:inline-flex;flex-direction:column;align-items:flex-end;}
 .tl-route-tip.leaflet-tooltip{background:rgba(11,13,19,.92);border:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.68rem;padding:3px 8px;border-radius:6px;white-space:nowrap;max-width:190px;overflow:hidden;text-overflow:ellipsis;}
 .tl-route-tip.leaflet-tooltip::before{border-top-color:var(--gold);}
+.mode-legend{background:rgba(11,13,19,.88);border:1px solid rgba(232,184,109,.25);border-radius:8px;padding:5px 9px;font-family:'DM Sans',sans-serif;font-size:.66rem;color:var(--text2);display:flex;gap:9px;flex-wrap:wrap;max-width:230px;}
+.mode-legend span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;}
+.mode-legend i{display:inline-block;width:14px;height:3px;border-radius:2px;}
 .map-dot-popup .leaflet-popup-content-wrapper{background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.55);color:var(--text);}
 .map-dot-popup .leaflet-popup-tip{background:var(--card);}
 .map-dot-popup .leaflet-popup-content{margin:8px 12px;}
@@ -191,6 +191,49 @@ a{color:inherit;}
 .nc-flag-item{display:flex;align-items:center;gap:3px;font-size:0.68rem;color:var(--text2);white-space:nowrap;}
 .nc-count{font-family:'DM Mono',monospace;font-size:0.60rem;color:var(--teal);flex-shrink:0;}
 .nc-list{max-height:420px;overflow-y:auto;padding-right:4px;}
+/* ── Home eras / gateways / seasons ── */
+.era-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;}
+.era-col{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px;min-width:0;}
+.era-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.era-city{font-size:1rem;font-weight:600;color:var(--text);}
+.era-span{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.06em;width:100%;}
+.era-refurb{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:2px 6px;white-space:nowrap;}
+.era-away{display:flex;flex-direction:column;gap:4px;}
+.era-away-num{font-family:'DM Mono',monospace;font-size:1.35rem;color:var(--teal);line-height:1;}
+.era-away-lbl{font-size:.6rem;color:var(--muted);}
+.era-bar{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;}
+.era-bar>i{display:block;height:100%;background:var(--teal);border-radius:3px;}
+.era-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;}
+.era-stat .v{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--text);}
+.era-stat .l{font-size:.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.era-fav{font-size:.68rem;color:var(--text2);display:flex;align-items:center;gap:5px;min-width:0;}
+.era-fav span.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.era-fav b{font-family:'DM Mono',monospace;font-weight:400;font-size:.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;flex-shrink:0;}
+.gw-list{display:flex;flex-direction:column;gap:5px;}
+.gw-row{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(90px,320px);align-items:center;gap:10px;padding:8px 10px;background:var(--card2);border:1px solid var(--border);border-radius:7px;}
+.gw-mode{font-size:1rem;text-align:center;}
+.gw-name{font-size:.78rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gw-sub{font-size:.6rem;color:var(--muted);margin-top:1px;display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;}
+.gw-bars{display:flex;flex-direction:column;gap:3px;}
+.gw-bar{display:grid;grid-template-columns:minmax(0,1fr) 26px;align-items:center;gap:6px;}
+.gw-track{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;}
+.gw-track>i{display:block;height:100%;border-radius:3px;}
+.gw-bar.o .gw-track>i{background:var(--teal);}
+.gw-bar.c .gw-track>i{background:var(--gold);}
+.gw-n{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text2);text-align:right;}
+.gw-legend{display:flex;gap:14px;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:-6px 0 12px;}
+.gw-legend i{display:inline-block;width:10px;height:5px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+.ts-wrap{overflow-x:auto;}
+.ts-grid{display:grid;grid-template-columns:38px repeat(12,minmax(18px,1fr));gap:3px;min-width:300px;}
+.ts-h,.ts-y{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);display:flex;align-items:center;}
+.ts-h{justify-content:center;padding-bottom:2px;}
+.ts-h.peak{color:var(--gold);}
+.ts-cell{height:18px;border-radius:3px;background:rgba(78,205,196,var(--a));}
+.ts-cell.z{background:var(--card2);}
+body.light .ts-cell{background:rgba(21,92,88,var(--a));}
+body.light .ts-cell.z{background:var(--card2);}
+.ts-tot{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--text2);text-align:center;padding-top:4px;}
+.ts-note{font-size:.66rem;color:var(--muted);margin-top:12px;line-height:1.5;}
 .nc-list::-webkit-scrollbar{width:3px;}
 .nc-list::-webkit-scrollbar-thumb{background:var(--border);}
 @media(max-width:900px){
@@ -211,6 +254,9 @@ a{color:inherit;}
   .ltrip-row{grid-template-columns:20px 1fr 40px;gap:5px;}
   .ltrip-year{display:none;}
   .ltrip-name{font-size:.72rem;}
+  .gw-row{grid-template-columns:22px minmax(0,1fr) 84px;gap:7px;padding:7px 8px;}
+  .ts-grid{grid-template-columns:30px repeat(12,minmax(16px,1fr));gap:2px;}
+  .ts-cell{height:15px;}
 }
 
 @media(max-width:900px){
@@ -339,6 +385,7 @@ function renderGrid(trips){
         <div class="tc-stat"><div class="tc-stat-v">${t.checkin_count.toLocaleString()}</div><div class="tc-stat-l">Check-ins</div></div>
         <div class="tc-stat"><div class="tc-stat-v">${t.unique_places.toLocaleString()}</div><div class="tc-stat-l">Places</div></div>
         <div class="tc-stat"><div class="tc-stat-v">${t.countries.length}</div><div class="tc-stat-l">Countries</div></div>
+        ${(t.km||0)>0?`<div class="tc-stat"><div class="tc-stat-v">${(t.km).toLocaleString()}</div><div class="tc-stat-l">km</div></div>`:''}
       </div>
       ${t.photo_count>0?`<span class="tc-photos-link" onclick="event.stopPropagation();showTrip(${t.id});setTimeout(scrollToPhotos,300)">📸 ${t.photo_count.toLocaleString()} photos</span>`:''}
     </a>`).join('');
@@ -454,7 +501,7 @@ function showTrip(id){
         return `<div class="tl-checkin" data-ts="${c.ts}">
           <div class="tl-checkin-time">${c.time}</div>
           <div class="tl-checkin-info">
-            <div class="tl-checkin-venue">${fsUrl?`<a href="${fsUrl}" target="_blank" rel="noopener">${c.venue}</a>`:c.venue}</div>
+            <div class="tl-checkin-venue"><span class="tl-venue-name">${fsUrl?`<a href="${fsUrl}" target="_blank" rel="noopener">${c.venue}</a>`:c.venue}</span>${c.refurbished?`<span class="tl-refurb-stack"><span class="tl-refurb" title="Reconstructed from travel history — not a live app check-in">↺ reconstructed</span>${!c.venue_id?`<span class="tl-no-fsq" title="No Foursquare venue data — location from diary only">✕ no fsq data</span>`:''}</span>`:''}</div>
             <div class="tl-checkin-sub">${[c.category,c.city,c.country].filter(Boolean).join(' · ')}</div>
             ${photosHtml}
           </div>
@@ -491,38 +538,135 @@ function showTrip(id){
       });
       uGroup.addTo(activeMap);
     }
-    // ── Scroll-driven route polyline ─────────────────────────────────────────
-    const routePts = t.checkins.filter(c=>c.lat&&c.lng).map(c=>({ts:c.ts,ll:[c.lat,c.lng],venue:c.venue||''}));
+    // ── Per-segment transport-mode route ─────────────────────────────────────
+    // checkin.m = arrival-mode char inferred at build time by
+    // scripts/transport_mode.py (W walk · B bike · C car · T train · U bus ·
+    // F ferry · P plane · G gap).  Styles mirror transport_mode.MODE_META.
+    const MODE_STYLE={
+      W:{c:'#7dc87d',d:'2 6', w:2,  l:'walked',i:'🚶'},
+      B:{c:'#5abf9e',d:'7 5', w:2,  l:'cycled',i:'🚴'},
+      C:{c:'#e8b86d',d:null,  w:1.6,l:'drove', i:'🚗'},
+      T:{c:'#6da8e8',d:null,  w:2.2,l:'train', i:'🚆'},
+      U:{c:'#c9a0e8',d:'10 5',w:1.8,l:'bus',   i:'🚌'},
+      F:{c:'#5bc8d8',d:'4 8', w:2,  l:'ferry', i:'⛴️'},
+      P:{c:'#e87a7a',d:'2 7', w:1.6,l:'flew',  i:'✈️'},
+      G:{c:'#666666',d:'1 7', w:1,  l:'gap',   i:''}
+    };
+    function gcArc(a,b){ // great-circle arc for flight segments
+      const r=Math.PI/180,la1=a[0]*r,lo1=a[1]*r,la2=b[0]*r,lo2=b[1]*r;
+      const d=2*Math.asin(Math.sqrt(Math.sin((la2-la1)/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin((lo2-lo1)/2)**2));
+      if(d<1e-6) return [a,b];
+      const pts=[],N=32;
+      for(let k=0;k<=N;k++){
+        const f=k/N,A=Math.sin((1-f)*d)/Math.sin(d),B=Math.sin(f*d)/Math.sin(d);
+        const x=A*Math.cos(la1)*Math.cos(lo1)+B*Math.cos(la2)*Math.cos(lo2);
+        const y=A*Math.cos(la1)*Math.sin(lo1)+B*Math.cos(la2)*Math.sin(lo2);
+        const z=A*Math.sin(la1)+B*Math.sin(la2);
+        pts.push([Math.atan2(z,Math.sqrt(x*x+y*y))/r,Math.atan2(y,x)/r]);
+      }
+      return pts;
+    }
+    function havKm(a,b){
+      const r=Math.PI/180,dla=(b[0]-a[0])*r,dlo=(b[1]-a[1])*r;
+      const h=Math.sin(dla/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dlo/2)**2;
+      return 6371*2*Math.asin(Math.sqrt(h));
+    }
+    const routePts = t.checkins.filter(c=>c.lat&&c.lng).map(c=>({ts:c.ts,ll:[c.lat,c.lng],venue:c.venue||'',m:c.m||''}));
     const tsToIdx = {};
     routePts.forEach((p,i)=>{ tsToIdx[p.ts]=i; });
-    let routeFull=null, routeActive=null, routeMarker=null, maxRouteIdx=-1;
-    if(routePts.length>1){
-      routeFull  = L.polyline(routePts.map(p=>p.ll),{color:'#e8b86d',weight:1.5,opacity:0.18}).addTo(activeMap);
-      routeActive= L.polyline([],{color:'#e8b86d',weight:2.5,opacity:0.9}).addTo(activeMap);
-      routeMarker= L.circleMarker(routePts[0].ll,{radius:5,fillColor:'#e8b86d',color:'#fff',weight:1.5,fillOpacity:1})
-        .bindTooltip(routePts[0].venue,{permanent:true,direction:'top',className:'tl-route-tip',offset:[0,-6]})
-        .addTo(activeMap);
-    }
+    let routeActive=null, routeMarker=null, maxRouteIdx=-1;
+    const segGeom=[null];   // segGeom[i] = drawn geometry of segment arriving at routePts[i]
+    let activePts=[];
+    const thisMap=activeMap;
+    // Segment drawing waits for routes.json so mode lines, tooltips and the
+    // progress line all share the same (routed when available) geometry.
+    ROUTES_P.then(()=>{
+      if(activeMap!==thisMap) return;          // trip closed / switched meanwhile
+      if(routePts.length>1){
+        const segGroup=L.layerGroup().addTo(activeMap);
+        const modesPresent=new Set();
+        for(let i=1;i<routePts.length;i++){
+          const A=routePts[i-1], B=routePts[i], m=B.m;
+          const rt=ROUTES[A.ts+'-'+B.ts];
+          let geom, km=havKm(A.ll,B.ll);
+          if(m==='P') geom=gcArc(A.ll,B.ll);
+          else if(rt&&m&&m!=='G'&&m!=='F'){
+            geom=decPoly(rt[0]); km=rt[1];
+            geom.unshift(A.ll); geom.push(B.ll);  // snap route ends to the dots
+          }
+          else geom=[A.ll,B.ll];
+          segGeom.push(geom);
+          if(!m) continue;                       // same place — no line
+          const st=MODE_STYLE[m]||MODE_STYLE.C;
+          const seg=L.polyline(geom,
+            {color:st.c,weight:st.w,opacity:m==='G'?0.15:0.55,dashArray:st.d,interactive:m!=='G'});
+          if(m!=='G'){
+            seg.bindTooltip(`${st.i} ${st.l} · ${km<10?km.toFixed(1):Math.round(km)} km`,{sticky:true,className:'tl-route-tip'});
+          }
+          seg.addTo(segGroup);
+          modesPresent.add(m);
+        }
+        const lgModes=[...modesPresent].filter(m=>m!=='G');
+        if(lgModes.length){
+          const lg=L.control({position:'bottomright'});
+          lg.onAdd=function(){
+            const div=L.DomUtil.create('div','mode-legend');
+            div.innerHTML=lgModes.map(m=>{const s=MODE_STYLE[m];return `<span><i style="background:${s.c}"></i>${s.i} ${s.l}</span>`;}).join('');
+            return div;
+          };
+          lg.addTo(activeMap);
+        }
+        routeActive= L.polyline([],{color:'#e8b86d',weight:2.5,opacity:0.9}).addTo(activeMap);
+        routeMarker= L.circleMarker(routePts[0].ll,{radius:5,fillColor:'#e8b86d',color:'#fff',weight:1.5,fillOpacity:1})
+          .bindTooltip(routePts[0].venue,{permanent:true,direction:'top',className:'tl-route-tip',offset:[0,-6]})
+          .addTo(activeMap);
+      }
+      if(activeObserver){activeObserver.disconnect();activeObserver=null;}
+      const tlEl=document.getElementById('detailTimeline');
+      activeObserver=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(!e.isIntersecting) return;
+          const ts=parseInt(e.target.dataset.ts);
+          if(ts in tsToIdx) advanceRoute(tsToIdx[ts]);
+        });
+      },{root:tlEl,threshold:0.1});
+      tlEl.querySelectorAll('.tl-checkin[data-ts]').forEach(el=>activeObserver.observe(el));
+    });
     function advanceRoute(idx){
       if(!routeActive||idx<=maxRouteIdx) return;
+      if(!activePts.length) activePts.push(routePts[0].ll);
+      // follow each segment's drawn geometry (routed path / flight arc),
+      // not point-to-point chords
+      for(let i=Math.max(1,maxRouteIdx+1);i<=idx;i++){
+        const g=segGeom[i];
+        for(let k=1;k<g.length;k++) activePts.push(g[k]);
+      }
       maxRouteIdx=idx;
-      const pts=routePts.slice(0,idx+1).map(p=>p.ll);
-      routeActive.setLatLngs(pts);
-      routeMarker.setLatLng(pts[pts.length-1]);
+      routeActive.setLatLngs(activePts);
+      routeMarker.setLatLng(routePts[idx].ll);
       const ven=routePts[idx].venue; if(ven) routeMarker.setTooltipContent(ven);
     }
-    if(activeObserver){activeObserver.disconnect();activeObserver=null;}
-    const tlEl=document.getElementById('detailTimeline');
-    activeObserver=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{
-        if(!e.isIntersecting) return;
-        const ts=parseInt(e.target.dataset.ts);
-        if(ts in tsToIdx) advanceRoute(tsToIdx[ts]);
-      });
-    },{root:tlEl,threshold:0.1});
-    tlEl.querySelectorAll('.tl-checkin[data-ts]').forEach(el=>activeObserver.observe(el));
   },50);
   window.scrollTo(0,0);
+}
+
+// ── Routed segment geometry ──────────────────────────────────────────────────
+// routes.json (built by scripts/route_paths.py): "tsA-tsB" → [polyline5, km].
+// Fetched once; segments without an entry fall back to straight lines.
+let ROUTES={};
+const ROUTES_P=fetch('routes.json').then(r=>r.ok?r.json():{}).then(j=>{ROUTES=j||{};}).catch(()=>{});
+function decPoly(s){ // polyline5 → [[lat,lng],…]
+  const pts=[];let i=0,lat=0,lng=0;
+  while(i<s.length){
+    for(let k=0;k<2;k++){
+      let sh=0,res=0,b;
+      do{b=s.charCodeAt(i++)-63;res|=(b&0x1f)<<sh;sh+=5;}while(b>=0x20);
+      const d=(res&1)?~(res>>1):(res>>1);
+      if(k)lng+=d;else lat+=d;
+    }
+    pts.push([lat/1e5,lng/1e5]);
+  }
+  return pts;
 }
 
 function showList(){
@@ -572,6 +716,23 @@ handleHash();
       <div class="card-title">New Countries by Year <em>&middot; first visit per country</em></div>
       <div class="nc-list" id="newCountryList"></div>
     </div>
+
+    <div class="card full" id="eraCard" hidden>
+      <div class="card-title">Home Eras <em>&middot; how you travelled from each home</em></div>
+      <div class="era-grid" id="eraGrid"></div>
+    </div>
+
+    <div class="card full" id="gwCard" hidden>
+      <div class="card-title">Gateways <em>&middot; stations &amp; airports that open and close trips</em></div>
+      <div class="gw-legend"><span><i style="background:var(--teal)"></i>trip starts</span><span><i style="background:var(--gold)"></i>trip ends</span></div>
+      <div class="gw-list" id="gwList"></div>
+    </div>
+
+    <div class="card full" id="tsCard" hidden>
+      <div class="card-title">Travel Seasons <em>&middot; days away per month</em></div>
+      <div class="ts-wrap"><div class="ts-grid" id="tsGrid"></div></div>
+      <div class="ts-note" id="tsNote"></div>
+    </div>
   </div>
 </div>
 
@@ -593,29 +754,7 @@ const S={{STATS}};
 })();
 (function(){
   // ISO2 for flag icons
-  const ISO2={
-    'Afghanistan':'af','Albania':'al','Algeria':'dz','Angola':'ao','Argentina':'ar',
-    'Armenia':'am','Australia':'au','Austria':'at','Azerbaijan':'az',
-    'Belarus':'by','Belgium':'be','Bolivia':'bo','Bosnia and Herzegovina':'ba',
-    'Brazil':'br','Bulgaria':'bg','Cambodia':'kh','Canada':'ca','Chile':'cl',
-    'China':'cn','Colombia':'co','Croatia':'hr','Cyprus':'cy','Czech Republic':'cz',
-    'Denmark':'dk','Ecuador':'ec','Egypt':'eg','Estonia':'ee','Finland':'fi',
-    'France':'fr','Georgia':'ge','Germany':'de','Greece':'gr','Hungary':'hu',
-    'Hong Kong':'hk','India':'in','Indonesia':'id','Iran':'ir','Iraq':'iq',
-    'Ireland':'ie','Israel':'il','Italy':'it','Japan':'jp','Kazakhstan':'kz',
-    'Kosovo':'xk','Kyrgyzstan':'kg','Latvia':'lv','Lithuania':'lt','Luxembourg':'lu',
-    'Macao':'mo','Malaysia':'my','Malta':'mt','Mexico':'mx','Moldova':'md',
-    'Montenegro':'me','Morocco':'ma','Myanmar':'mm','Netherlands':'nl',
-    'New Zealand':'nz','North Macedonia':'mk','Norway':'no','Oman':'om',
-    'Pakistan':'pk','Peru':'pe','Philippines':'ph','Poland':'pl','Portugal':'pt',
-    'Qatar':'qa','Romania':'ro','Russia':'ru','Serbia':'rs','Singapore':'sg',
-    'Slovakia':'sk','Slovenia':'si','South Korea':'kr','Spain':'es','Sweden':'se',
-    'Switzerland':'ch','Taiwan':'tw','Thailand':'th','Tunisia':'tn',
-    'Turkey':'tr','Türkiye':'tr','Ukraine':'ua','United Arab Emirates':'ae',
-    'United Kingdom':'gb','United States':'us','Uruguay':'uy','Uzbekistan':'uz','Tajikistan':'tj',
-    'Venezuela':'ve','Vietnam':'vn','Holy See (Vatican City State)':'va','Vatican City':'va',
-    'North Korea':'kp','Cuba':'cu','Iceland':'is','Sri Lanka':'lk','Liechtenstein':'li',
-  };
+  const ISO2={{CTRY_CODE_JSON}};
   function flagHtml(country,size){
     const c=(country||'').trim();
     const code=ISO2[c];
@@ -674,6 +813,76 @@ const S={{STATS}};
     }).join('')+'</div>';
   }
 
+  // ── Home Eras ─────────────────────────────────────────────────────────────
+  const eras=S.trip_eras||[];
+  const eraGrid=document.getElementById('eraGrid');
+  if(eraGrid&&eras.length){
+    const yr=d=>String(d||'').slice(0,4);
+    eraGrid.innerHTML=eras.map(e=>{
+      const span=yr(e.from)===yr(e.to)?yr(e.from):yr(e.from)+' – '+yr(e.to);
+      const days=e.days>=365?(e.days/365.25).toFixed(1)+' yrs':e.days+' days';
+      const refurb=e.reconstructed_pct>=50?'<span class="era-refurb" title="Pre-2012 travel is reconstructed from diaries and memory at day granularity">↺ reconstructed</span>':'';
+      const dest=e.top_dest?`<div class="era-fav"><b>Top abroad</b>${flagHtml(e.top_dest[0],'.95em')}<span class="t">${esc2(e.top_dest[0])} · ${e.top_dest[1]} trip${e.top_dest[1]===1?'':'s'}</span></div>`:'';
+      const gw=e.top_gateway?`<div class="era-fav"><b>Gateway</b>${e.top_gateway.mode}<span class="t" title="${esc2(e.top_gateway.venue)}">${esc2(e.top_gateway.venue)}</span></div>`:'';
+      return `<div class="era-col">
+        <div class="era-head">${flagHtml(e.country,'1.1em')}<span class="era-city">${esc2(e.city)}</span>${refurb}<div class="era-span">${span} · ${days}</div></div>
+        <div class="era-away"><div class="era-away-num">${e.away_pct}%</div><div class="era-away-lbl">of days away · ${e.days_away.toLocaleString()} days</div><div class="era-bar"><i style="width:${Math.min(100,e.away_pct)}%"></i></div></div>
+        <div class="era-stats">
+          <div class="era-stat"><div class="v">${e.trips}</div><div class="l">trips</div></div>
+          <div class="era-stat"><div class="v">${e.trips_per_year==null?'—':e.trips_per_year}</div><div class="l">per year</div></div>
+          <div class="era-stat"><div class="v">${e.avg_days}d</div><div class="l">avg trip</div></div>
+          <div class="era-stat"><div class="v">${e.median_days}d</div><div class="l">median trip</div></div>
+          <div class="era-stat"><div class="v">${e.countries}</div><div class="l">countries abroad</div></div>
+        </div>
+        ${dest}${gw}
+      </div>`;
+    }).join('');
+    document.getElementById('eraCard').hidden=false;
+  }
+
+  // ── Gateways ──────────────────────────────────────────────────────────────
+  const gws=S.trip_gateways||[];
+  const gwList=document.getElementById('gwList');
+  if(gwList&&gws.length){
+    const mx=Math.max(...gws.map(g=>Math.max(g.opened,g.closed)),1);
+    gwList.innerHTML=gws.map(g=>{
+      const yrs=g.first===g.last?g.first:g.first+'–'+g.last;
+      return `<div class="gw-row">
+        <div class="gw-mode">${g.mode}</div>
+        <div style="min-width:0"><div class="gw-name" title="${esc2(g.venue)}">${esc2(g.venue)}</div>
+          <div class="gw-sub">${flagHtml(g.country,'.9em')}<span>${esc2(g.city)} · ${yrs}</span></div></div>
+        <div class="gw-bars">
+          <div class="gw-bar o" title="${g.opened} trips started here"><div class="gw-track"><i style="width:${100*g.opened/mx}%"></i></div><div class="gw-n">${g.opened}</div></div>
+          <div class="gw-bar c" title="${g.closed} trips ended here"><div class="gw-track"><i style="width:${100*g.closed/mx}%"></i></div><div class="gw-n">${g.closed}</div></div>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('gwCard').hidden=false;
+  }
+
+  // ── Travel Seasons heatmap ────────────────────────────────────────────────
+  const ts=S.trip_seasonality||{};
+  const tsGrid=document.getElementById('tsGrid');
+  if(tsGrid&&ts.years&&ts.years.length){
+    const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const DIM=[31,29,31,30,31,30,31,31,30,31,30,31];
+    let h='<div></div>'+MON.map((m,i)=>`<div class="ts-h${i===ts.peak_month?' peak':''}">${m[0]}</div>`).join('');
+    ts.years.slice().reverse().forEach(y=>{
+      const row=ts.days[ts.years.indexOf(y)];
+      h+=`<div class="ts-y">${y}</div>`+row.map((d,m)=>{
+        const a=d?(0.18+0.82*Math.min(1,d/DIM[m])).toFixed(2):0;
+        return `<div class="ts-cell${d?'':' z'}" style="--a:${a}" title="${MON[m]} ${y} · ${d} day${d===1?'':'s'} away"></div>`;
+      }).join('');
+    });
+    h+='<div class="ts-y">Σ</div>'+ts.month_days.map((d,m)=>`<div class="ts-tot" title="${MON[m]}: ${d} days away in total, ${ts.starts[m]} trips started">${d}</div>`).join('');
+    tsGrid.innerHTML=h;
+    const startPeak=ts.starts.indexOf(Math.max(...ts.starts));
+    document.getElementById('tsNote').textContent=
+      `Most days away fall in ${MON[ts.peak_month]} (${ts.month_days[ts.peak_month]} days in total); `+
+      `most trips start in ${MON[startPeak]} (${ts.starts[startPeak]} trips). The stronger the colour, the more of that month was spent travelling.`;
+    document.getElementById('tsCard').hidden=false;
+  }
+
   // ── New Countries Timeline ────────────────────────────────────────────────
   const ncList=document.getElementById('newCountryList');
   if(ncList&&S.new_country_by_year){
@@ -705,6 +914,9 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   <a href="feed.html"><span class="sn-icon">📰</span><span class="sn-lbl">FEED</span></a>
   <a href="tips.html"><span class="sn-icon">💬</span><span class="sn-lbl">TIPS</span></a>
   <a href="ratings.html"><span class="sn-icon">⭐</span><span class="sn-lbl">RATED</span></a>
+  <a href="flights.html"><span class="sn-icon">✈</span><span class="sn-lbl">FLIGHTS</span></a>
+  <a href="years.html"><span class="sn-icon">🗓️</span><span class="sn-lbl">YEARS</span></a>
+  <a href="shouts.html"><span class="sn-icon">💭</span><span class="sn-lbl">SHOUTS</span></a>
   <a href="photos.html"><span class="sn-icon">📷</span><span class="sn-lbl">PHOTOS</span></a>
   <a class="active" href="trips.html"><span class="sn-icon">✈</span><span class="sn-lbl">TRIPS</span></a>
   <a href="lists.html"><span class="sn-icon">📋</span><span class="sn-lbl">LISTS</span></a>
@@ -733,5 +945,6 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   });
 })();
 </script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "096ba3d9093f4c629948d81ef8438a34"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

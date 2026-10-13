@@ -16,12 +16,14 @@
 <meta name="twitter:description" content="Travel companions ranked by shared check-ins, with country breakdown and yearly social mix analytics. Solo vs together trends over time.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600&family=DM+Mono&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css" integrity="sha512-uvXdJud8WaOlQFjlz9B15Yy2Au/bMAvz79F7Xa6OakCl2jvQPdHD0hb3dEqZRdSwG4/sknePXlE7GiarwA/9Wg==" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{{SITE_CSS_LINK}}">
 <style>
-:root{--bg:#0c0e14;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#6b7280;--gold:#e8b86d;--teal:#4ec9b0;}
+:root{--bg:#0c0e14;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#8b93a8;--gold:#e8b86d;--teal:#4ec9b0;}
 body.light{--bg:#ddd8cf;--card:#f0ece3;--card2:#e5e0d7;--border:#aaa49a;--gold:#7a3e00;--teal:#155c58;--muted:#54576a;--text:#15172a;--text2:#373b58;}
 body.light header{background:linear-gradient(160deg,#d6d1c8 0%,#dedad1 70%);}
 body.light .side-nav{background:rgba(220,215,208,0.97);}
@@ -47,16 +49,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .gs-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;}
 .gs-input::placeholder{color:var(--muted);}
 .gs-esc-hint{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:2px 6px;cursor:pointer;flex-shrink:0;}
-.side-nav{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:4000;display:flex;flex-direction:column;gap:0;background:rgba(18,21,31,0.92);border:1px solid var(--border);border-right:none;border-radius:10px 0 0 10px;backdrop-filter:blur(10px);overflow:hidden;}
-.side-nav a,.side-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:52px;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);text-decoration:none;transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent;}
-.side-nav a:hover,.side-nav button:hover{background:rgba(255,255,255,.06);color:var(--text);}
-.side-nav a.active,.side-nav button.active{color:var(--gold);}
-.side-nav .sn-icon{font-size:.95rem;line-height:1;display:inline-block;transition:transform .15s;}
-.side-nav a:hover .sn-icon,.side-nav button:hover .sn-icon{transform:scale(1.28);}
-.side-nav .sn-lbl{font-family:'DM Mono',monospace;font-size:.42rem;text-transform:uppercase;letter-spacing:.05em;line-height:1;white-space:nowrap;}
-.side-nav .sn-sep{width:32px;height:1px;background:var(--border);margin:2px auto;}
-.side-nav .sn-sep--pages{width:36px;height:2px;background:var(--border);margin:3px auto;border-radius:1px;}
-@media(max-width:900px){.side-nav{display:none;}}
 .topnav a:visited{color:#4a5270;}
 .topnav-logo:visited{color:#e8b86d;}
 .layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 57px);}
@@ -244,7 +236,14 @@ function show(idx){
     <tbody id="compBody">${buildRows(all)}</tbody></table>`;
 }
 const p=new URLSearchParams(location.search).get('person');
-const idx=p?COMP.findIndex(c=>c[0]===p):0;
+let idx=0;
+if(p){
+  idx=COMP.findIndex(c=>c[0]===p);                                  // exact
+  if(idx<0){                                                        // combined "A, B" string from one check-in — match first known person
+    for(const part of p.split(',')){const t=part.trim();const j=COMP.findIndex(c=>c[0]===t);if(j>=0){idx=j;break;}}
+  }
+  if(idx<0){const pl=p.toLowerCase();idx=COMP.findIndex(c=>(c[0]||'').toLowerCase().includes(pl));}  // substring fallback
+}
 show(idx>=0?idx:0);
 (function(){const _q=new URLSearchParams(location.search).get('q');if(_q&&!p){const ql=_q.toLowerCase();const fi=COMP.findIndex(c=>(c[0]||'').toLowerCase().includes(ql));if(fi>=0)show(fi);}})();
 </script>
@@ -301,29 +300,7 @@ show(idx>=0?idx:0);
   })();
 
   // ISO2 for flag icons
-  const ISO2={
-    'Afghanistan':'af','Albania':'al','Algeria':'dz','Angola':'ao','Argentina':'ar',
-    'Armenia':'am','Australia':'au','Austria':'at','Azerbaijan':'az',
-    'Belarus':'by','Belgium':'be','Bolivia':'bo','Bosnia and Herzegovina':'ba',
-    'Brazil':'br','Bulgaria':'bg','Cambodia':'kh','Canada':'ca','Chile':'cl',
-    'China':'cn','Colombia':'co','Croatia':'hr','Cyprus':'cy','Czech Republic':'cz',
-    'Denmark':'dk','Ecuador':'ec','Egypt':'eg','Estonia':'ee','Finland':'fi',
-    'France':'fr','Georgia':'ge','Germany':'de','Greece':'gr','Hungary':'hu',
-    'Hong Kong':'hk','India':'in','Indonesia':'id','Iran':'ir','Iraq':'iq',
-    'Ireland':'ie','Israel':'il','Italy':'it','Japan':'jp','Kazakhstan':'kz',
-    'Kosovo':'xk','Kyrgyzstan':'kg','Latvia':'lv','Lithuania':'lt','Luxembourg':'lu',
-    'Macao':'mo','Malaysia':'my','Malta':'mt','Mexico':'mx','Moldova':'md',
-    'Montenegro':'me','Morocco':'ma','Myanmar':'mm','Netherlands':'nl',
-    'New Zealand':'nz','North Macedonia':'mk','Norway':'no','Oman':'om',
-    'Pakistan':'pk','Peru':'pe','Philippines':'ph','Poland':'pl','Portugal':'pt',
-    'Qatar':'qa','Romania':'ro','Russia':'ru','Serbia':'rs','Singapore':'sg',
-    'Slovakia':'sk','Slovenia':'si','South Korea':'kr','Spain':'es','Sweden':'se',
-    'Switzerland':'ch','Taiwan':'tw','Thailand':'th','Tunisia':'tn',
-    'Turkey':'tr','Türkiye':'tr','Ukraine':'ua','United Arab Emirates':'ae',
-    'United Kingdom':'gb','United States':'us','Uruguay':'uy','Uzbekistan':'uz',
-    'Venezuela':'ve','Vietnam':'vn','Holy See (Vatican City State)':'va','Vatican City':'va',
-    'North Korea':'kp','Cuba':'cu','Iceland':'is','Sri Lanka':'lk','Liechtenstein':'li',
-  };
+  const ISO2={{CTRY_CODE_JSON}};
   function flagHtml(country,size){
     const c=(country||'').trim();
     const code=ISO2[c];
@@ -394,6 +371,9 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   <a href="feed.html"><span class="sn-icon">📰</span><span class="sn-lbl">FEED</span></a>
   <a href="tips.html"><span class="sn-icon">💬</span><span class="sn-lbl">TIPS</span></a>
   <a href="ratings.html"><span class="sn-icon">⭐</span><span class="sn-lbl">RATED</span></a>
+  <a href="flights.html"><span class="sn-icon">✈</span><span class="sn-lbl">FLIGHTS</span></a>
+  <a href="years.html"><span class="sn-icon">🗓️</span><span class="sn-lbl">YEARS</span></a>
+  <a href="shouts.html"><span class="sn-icon">💭</span><span class="sn-lbl">SHOUTS</span></a>
   <a href="photos.html"><span class="sn-icon">📷</span><span class="sn-lbl">PHOTOS</span></a>
   <a href="trips.html"><span class="sn-icon">✈</span><span class="sn-lbl">TRIPS</span></a>
   <a href="lists.html"><span class="sn-icon">📋</span><span class="sn-lbl">LISTS</span></a>
@@ -422,5 +402,6 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   });
 })();
 </script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "096ba3d9093f4c629948d81ef8438a34"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

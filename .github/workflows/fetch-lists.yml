@@ -113,6 +113,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add lists.html index.html
+          git add -A -- 'site-*.css' sw.js manifest.webmanifest
           [ -f private-data/ratings.json ] && git add ratings.html || true
           if git diff --cached --quiet; then
             echo "Nothing to commit."

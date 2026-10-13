@@ -22,16 +22,19 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600&family=DM+Mono&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css" integrity="sha512-uvXdJud8WaOlQFjlz9B15Yy2Au/bMAvz79F7Xa6OakCl2jvQPdHD0hb3dEqZRdSwG4/sknePXlE7GiarwA/9Wg==" crossorigin="anonymous">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
+<link rel="stylesheet" href="site-a16a334b.css">
 <style>
 
-:root{--bg:#0c0e14;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#6b7280;--gold:#e8b86d;--teal:#4ec9b0;}
+:root{--bg:#0c0e14;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#8b93a8;--gold:#e8b86d;--teal:#4ec9b0;}
 body.light{--bg:#ddd8cf;--card:#f0ece3;--card2:#e5e0d7;--border:#aaa49a;--gold:#7a3e00;--teal:#155c58;--muted:#54576a;--text:#15172a;--text2:#373b58;}
 body.light header{background:linear-gradient(160deg,#d6d1c8 0%,#dedad1 70%);}
 body.light .side-nav{background:rgba(220,215,208,0.97);}
@@ -47,6 +50,15 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .page{display:flex;flex-direction:column;height:100vh;}
 
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skel{background:linear-gradient(90deg,var(--card2) 25%,rgba(255,255,255,.05) 50%,var(--card2) 75%);background-size:800px 100%;animation:shimmer 1.4s infinite linear;border-radius:4px;}
+.skel-row{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);}
+.skel-icon{width:32px;height:32px;border-radius:50%;flex-shrink:0;}
+.skel-lines{flex:1;display:flex;flex-direction:column;gap:6px;padding-top:4px;}
+.skel-line{height:10px;width:70%;}
+.skel-line.short{width:40%;}
+#loadSkel{display:none;}
+#loadSkel.visible{display:block;}
 
 
 
@@ -77,16 +89,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .gs-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;}
 .gs-input::placeholder{color:var(--muted);}
 .gs-esc-hint{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:2px 6px;cursor:pointer;flex-shrink:0;}
-.side-nav{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:4000;display:flex;flex-direction:column;gap:0;background:rgba(18,21,31,0.92);border:1px solid var(--border);border-right:none;border-radius:10px 0 0 10px;backdrop-filter:blur(10px);overflow:hidden;}
-.side-nav a,.side-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:52px;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);text-decoration:none;transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent;}
-.side-nav a:hover,.side-nav button:hover{background:rgba(255,255,255,.06);color:var(--text);}
-.side-nav a.active,.side-nav button.active{color:var(--gold);}
-.side-nav .sn-icon{font-size:.95rem;line-height:1;display:inline-block;transition:transform .15s;}
-.side-nav a:hover .sn-icon,.side-nav button:hover .sn-icon{transform:scale(1.28);}
-.side-nav .sn-lbl{font-family:'DM Mono',monospace;font-size:.42rem;text-transform:uppercase;letter-spacing:.05em;line-height:1;white-space:nowrap;}
-.side-nav .sn-sep{width:32px;height:1px;background:var(--border);margin:2px auto;}
-.side-nav .sn-sep--pages{width:36px;height:2px;background:var(--border);margin:3px auto;border-radius:1px;}
-@media(max-width:900px){.side-nav{display:none;}}
 
 .tb-nav{display:flex;align-items:center;gap:6px;}
 
@@ -181,6 +183,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
 .gap-lbl{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;}
 
+.gap-mode{font-size:.78rem;vertical-align:-1px;letter-spacing:0;}
+
 .g-sm .gap-line{background:rgba(255,255,255,.055);}
 
 .g-sm .gap-lbl{font-size:.50rem;color:rgba(255,255,255,.18);}
@@ -238,6 +242,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .fc-cat{font-family:'DM Mono',monospace;font-size:.57rem;text-transform:uppercase;letter-spacing:.06em;color:var(--teal);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
 .fc-loc{font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.fc-with{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--teal);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px;}
+/* Reconstructed (pre-2012 backfill) check-ins render identically to real cards;
+   only a compact "↺ reconstructed" marker sits in the top-right corner of the
+   venue row (where the category icon would be). No card muting/dashing. */
+.fc-refurb{flex-shrink:0;display:inline-flex;align-items:center;gap:3px;background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:2px 6px;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.04em;white-space:nowrap;margin-top:1px;}
+.fc-no-fsq{flex-shrink:0;display:inline-flex;align-items:center;gap:3px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.4);color:#60a5fa;border-radius:5px;padding:2px 6px;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.04em;white-space:nowrap;margin-top:2px;}
+.fc-refurb-stack{flex-shrink:0;display:inline-flex;flex-direction:column;align-items:flex-end;}
 
 .fc-loc span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
@@ -289,7 +300,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
 </style>
 
-</head>
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
 
 <body>
 
@@ -351,6 +362,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
         </div>
 
+        <div id="loadSkel">
+          <div class="skel-row"><div class="skel skel-icon"></div><div class="skel-lines"><div class="skel skel-line"></div><div class="skel skel-line short"></div></div></div>
+          <div class="skel-row"><div class="skel skel-icon"></div><div class="skel-lines"><div class="skel skel-line"></div><div class="skel skel-line short"></div></div></div>
+          <div class="skel-row"><div class="skel skel-icon"></div><div class="skel-lines"><div class="skel skel-line"></div><div class="skel skel-line short"></div></div></div>
+        </div>
+
       </div>
 
     </div>
@@ -397,61 +414,14 @@ let ALL=[];
 let YM_IDX={};
 let META_TOTAL=0;
 let FIRST_TS=null;
+let FLIGHT_DAYS=[];   // sorted "YYYY-MM-DD" UTC days with an FR24 diary flight
 let _loadGen=0; // generation counter — incremented on state reset to discard stale fetches
 
 
 
 // ── Country → ISO 3166-1 alpha-2 ──
 
-const ISO2={
-
-  'Afghanistan':'af','Albania':'al','Algeria':'dz','Angola':'ao','Argentina':'ar',
-
-  'Armenia':'am','Australia':'au','Austria':'at','Azerbaijan':'az',
-
-  'Belarus':'by','Belgium':'be','Bolivia':'bo','Bosnia and Herzegovina':'ba',
-
-  'Brazil':'br','Bulgaria':'bg','Cambodia':'kh','Canada':'ca','Chile':'cl',
-
-  'China':'cn','Colombia':'co','Croatia':'hr','Cyprus':'cy','Czech Republic':'cz',
-
-  'Denmark':'dk','Ecuador':'ec','Egypt':'eg','Estonia':'ee','Finland':'fi',
-
-  'France':'fr','Georgia':'ge','Germany':'de','Greece':'gr','Hungary':'hu',
-
-  'Hong Kong':'hk','India':'in','Indonesia':'id','Iran':'ir','Iraq':'iq',
-
-  'Ireland':'ie','Israel':'il','Italy':'it','Japan':'jp','Kazakhstan':'kz',
-
-  'Kosovo':'xk','Kyrgyzstan':'kg','Latvia':'lv','Lithuania':'lt','Luxembourg':'lu',
-
-  'Macao':'mo','Malaysia':'my','Malta':'mt','Mexico':'mx','Moldova':'md',
-
-  'Montenegro':'me','Morocco':'ma','Myanmar':'mm','Netherlands':'nl',
-
-  'New Zealand':'nz','North Macedonia':'mk','Norway':'no','Oman':'om',
-
-  'Pakistan':'pk','Peru':'pe','Philippines':'ph','Poland':'pl','Portugal':'pt',
-
-  'Qatar':'qa','Romania':'ro','Russia':'ru','Serbia':'rs','Singapore':'sg',
-
-  'Slovakia':'sk','Slovenia':'si','South Korea':'kr','Spain':'es','Sweden':'se',
-
-  'Switzerland':'ch','Taiwan':'tw','Thailand':'th','Tunisia':'tn',
-
-  'Turkey':'tr','Türkiye':'tr','Ukraine':'ua','United Arab Emirates':'ae',
-
-  'United Kingdom':'gb','United States':'us','Uruguay':'uy','Uzbekistan':'uz',
-
-  'Venezuela':'ve','Vietnam':'vn','Holy See (Vatican City State)':'va','Vatican City':'va',
-
-  'North Korea':'kp','Cuba':'cu','Iceland':'is','Sri Lanka':'lk',
-
-  'Liechtenstein':'li','San Marino':'sm','Andorra':'ad','Monaco':'mc',
-
-  'Tajikistan':'tj','Turkmenistan':'tm',
-
-};
+const ISO2={"Afghanistan": "af", "Albania": "al", "Algeria": "dz", "Angola": "ao", "Argentina": "ar", "Armenia": "am", "Australia": "au", "Austria": "at", "Azerbaijan": "az", "Belarus": "by", "Belgium": "be", "Bolivia": "bo", "Bosnia and Herzegovina": "ba", "Brazil": "br", "Bulgaria": "bg", "Cambodia": "kh", "Canada": "ca", "Chile": "cl", "China": "cn", "Colombia": "co", "Croatia": "hr", "Cyprus": "cy", "Czech Republic": "cz", "Denmark": "dk", "Ecuador": "ec", "Egypt": "eg", "Estonia": "ee", "Finland": "fi", "France": "fr", "Georgia": "ge", "Germany": "de", "Greece": "gr", "Hungary": "hu", "Hong Kong": "hk", "India": "in", "Indonesia": "id", "Iran": "ir", "Iraq": "iq", "Ireland": "ie", "Israel": "il", "Italy": "it", "Japan": "jp", "Kazakhstan": "kz", "Kosovo": "xk", "Kyrgyzstan": "kg", "Latvia": "lv", "Lithuania": "lt", "Luxembourg": "lu", "Macao": "mo", "Malaysia": "my", "Malta": "mt", "Mexico": "mx", "Moldova": "md", "Montenegro": "me", "Morocco": "ma", "Myanmar": "mm", "Netherlands": "nl", "New Zealand": "nz", "North Macedonia": "mk", "Norway": "no", "Oman": "om", "Pakistan": "pk", "Peru": "pe", "Philippines": "ph", "Poland": "pl", "Portugal": "pt", "Qatar": "qa", "Romania": "ro", "Russia": "ru", "Serbia": "rs", "Singapore": "sg", "Slovakia": "sk", "Slovenia": "si", "South Korea": "kr", "Spain": "es", "Sweden": "se", "Switzerland": "ch", "Taiwan": "tw", "Thailand": "th", "Tunisia": "tn", "Turkey": "tr", "Türkiye": "tr", "Ukraine": "ua", "United Arab Emirates": "ae", "United Kingdom": "gb", "United States": "us", "Uruguay": "uy", "Uzbekistan": "uz", "Tajikistan": "tj", "Venezuela": "ve", "Vietnam": "vn", "Holy See (Vatican City State)": "va", "Vatican City": "va", "North Korea": "kp", "Cuba": "cu", "Iceland": "is", "Sri Lanka": "lk", "Liechtenstein": "li", "San Marino": "sm", "Andorra": "ad", "Monaco": "mc", "Turkmenistan": "tm", "Czechia": "cz", "Mongolia": "mn", "Nepal": "np", "UAE": "ae", "Saudi Arabia": "sa", "Jordan": "jo", "Lebanon": "lb", "South Africa": "za", "Bangladesh": "bd", "Macau": "mo"};
 
 function flagHtml(country){
 
@@ -471,353 +441,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 
 // ── Category icons: emoji + vivid colour ──
 
-const CAT_ICON={
-
-  'Coffee Shop':['☕','#6F4E37'],'Café':['☕','#6F4E37'],'Bakery':['🥐','#C8860A'],
-
-  'Restaurant':['🍽️','#C0392B'],'Fast Food Restaurant':['🍔','#E67E22'],'Pizzeria':['🍕','#E74C3C'],
-
-  'Burger Joint':['🍔','#D35400'],'Italian Restaurant':['🍝','#C0392B'],'Kebab Restaurant':['🌯','#E67E22'],
-
-  'Cafeteria':['🥣','#D4A017'],'Corporate Cafeteria':['🥣','#D4A017'],'Food Court':['🍱','#E67E22'],
-
-  'Grocery Store':['🛒','#27AE60'],'Supermarket':['🛒','#219A52'],'Convenience Store':['🏪','#2ECC71'],
-
-  'Market':['🛒','#27AE60'],'Gourmet Store':['🧀','#F39C12'],'Candy Store':['🍬','#F06292'],
-
-  'Farmers Market':['🥦','#27AE60'],
-
-  'Bar':['🍺','#F39C12'],'Beer Bar':['🍺','#E67E22'],'Pub':['🍻','#D4A017'],
-
-  'Hookah Bar':['💨','#8E44AD'],'Cocktail Bar':['🍸','#E74C3C'],'Wine Bar':['🍷','#922B21'],
-
-  'Wine Store':['🍷','#7B241C'],'Liquor Store':['🥃','#784212'],'Lounge':['🛋️','#5D6D7E'],
-
-  'Gastropub':['🍖','#CA6F1E'],'Brewery':['🍻','#BA4A00'],'Nightclub':['🎵','#6C3483'],
-
-  'Night Club':['🎵','#6C3483'],'Karaoke Bar':['🎤','#7D3C98'],'Beer Garden':['🍻','#D4A017'],
-
-  'Beach Bar':['🍹','#2980B9'],'Dive Bar':['🍺','#7B241C'],'Sports Bar':['📺','#2C3E50'],
-
-  'Rock Club':['🎸','#6C3483'],'Hotel Bar':['🍸','#2C3E50'],'Irish Pub':['🍀','#27AE60'],
-
-  'Beer Store':['🍺','#D4A017'],'Speakeasy':['🥃','#4A235A'],'Whisky Bar':['🥃','#784212'],
-
-  'Buffet':['🍱','#E67E22'],'Brasserie':['🍺','#D4A017'],
-
-  'Hotel':['🏨','#2C3E50'],'Hostel':['🛏️','#34495E'],'Bed and Breakfast':['🛏️','#4A235A'],
-
-  'Inn':['🏠','#2E4053'],'Apartment or Condo':['🏠','#1A5276'],'Home (private)':['🏠','#17202A'],
-
-  'Resort':['🏖️','#2980B9'],'Lodging':['🛏️','#5D6D7E'],
-
-  'Metro Station':['🚇','#2980B9'],'Rail Station':['🚉','#1A5276'],'Train':['🚂','#E74C3C'],
-
-  'Tram Station':['🚃','#2471A3'],'Light Rail Station':['🚈','#2980B9'],'Platform':['🚉','#1F618D'],
-
-  'Bus Line':['🚌','#27AE60'],'Bus Station':['🚌','#1E8449'],'Bus Stop':['🚏','#239B56'],
-
-  'Airport Terminal':['✈️','#2471A3'],'International Airport':['✈️','#154360'],'Airport Gate':['✈️','#1A5276'],
-
-  'Airport':['✈️','#154360'],'Airport Lounge':['🛋️','#21618C'],'Travel Lounge':['🛋️','#21618C'],
-
-  'Plane':['✈️','#2980B9'],'Boat or Ferry':['⛴️','#117A65'],'Border Crossing':['🛂','#717D7E'],
-
-  'Taxi':['🚕','#F4D03F'],'Parking':['🅿️','#2980B9'],'Fuel Station':['⛽','#E67E22'],
-
-  'Cable Car':['🚡','#8E44AD'],'Ski Chairlift':['🚡','#2980B9'],'Marine Terminal':['⚓','#1A5276'],
-
-  'Port':['🚢','#154360'],'Harbor or Marina':['⛵','#2980B9'],'Pier':['🎣','#2471A3'],
-
-  'Travel and Transportation':['✈️','#2980B9'],'Transportation Service':['🚐','#27AE60'],
-
-  'Park':['🌳','#1E8449'],'Plaza':['🏛️','#2E86C1'],'Pedestrian Plaza':['🚶','#2E86C1'],
-
-  'Beach':['🏖️','#F39C12'],'Mountain':['⛰️','#7F8C8D'],'Hiking Trail':['🥾','#6E2F1A'],
-
-  'Garden':['🌸','#1E8449'],'Scenic Lookout':['🔭','#1A5276'],'Waterfront':['🌊','#2471A3'],
-
-  'River':['🌊','#2980B9'],'Lake':['🏞️','#2471A3'],'Island':['🏝️','#27AE60'],
-
-  'Bike Trail':['🚴','#E67E22'],'Other Great Outdoors':['🌲','#186A3B'],
-
-  'Cemetery':['🪦','#5D6D7E'],'Ski Area':['⛷️','#85C1E9'],'Bridge':['🌉','#626567'],
-
-  'Fountain':['⛲','#5DADE2'],'National Park':['🌲','#186A3B'],'Nature Preserve':['🌿','#1E8449'],
-
-  'Forest':['🌲','#186A3B'],'Botanical Garden':['🌺','#1E8449'],'Waterfall':['💦','#2980B9'],
-
-  'Canal':['🚤','#2471A3'],'Bay':['🌊','#2980B9'],'Campground':['⛺','#186A3B'],
-
-  'Playground':['🛝','#E74C3C'],'Tree':['🌳','#1E8449'],'Lighthouse':['🔦','#F39C12'],
-
-  'Volcano':['🌋','#E74C3C'],'Cave':['🦇','#616A6B'],'Field':['🌾','#27AE60'],
-
-  'Hill':['⛰️','#784212'],'Vineyard':['🍇','#922B21'],'Farm':['🚜','#27AE60'],
-
-  'Museum':['🏛️','#7D3C98'],'Art Museum':['🎨','#884EA0'],'History Museum':['📜','#6E2F1A'],
-
-  'Art Gallery':['🖼️','#7D3C98'],'Monument':['🗽','#626567'],'Historic and Protected Site':['🏰','#784212'],
-
-  'Castle':['🏰','#6E2F1A'],'Palace':['🏯','#784212'],'Public Art':['🎨','#7D3C98'],
-
-  'Street Art':['🎨','#8E44AD'],'Theater':['🎭','#922B21'],'Concert Hall':['🎼','#922B21'],
-
-  'Movie Theater':['🎬','#C0392B'],'Cultural Center':['🎭','#7D3C98'],'Exhibit':['🖼️','#7D3C98'],
-
-  'Exhibition':['🖼️','#8E44AD'],'Science Museum':['🔬','#1A5276'],'Amusement Park':['🎡','#E74C3C'],
-
-  'Memorial Site':['🕯️','#626567'],'Library':['📚','#1A5276'],'Amphitheater':['🎭','#8E44AD'],
-
-  'Music Venue':['🎸','#8E44AD'],'Opera House':['🎭','#6C3483'],'Attraction':['⭐','#D4A017'],
-
-  'Zoo':['🦁','#D4A017'],'Aquarium':['🐠','#2980B9'],'Casino':['🎲','#C0392B'],
-
-  'Escape Room':['🔐','#8E44AD'],'Event Space':['🎪','#C0392B'],
-
-  'Church':['⛪','#7D3C98'],'Mosque':['🕌','#117A65'],'Temple':['🛕','#B9770E'],
-
-  'Monastery':['🙏','#6E2F1A'],'Synagogue':['✡️','#1A5276'],'Shrine':['⛩️','#C0392B'],
-
-  'Buddhist Temple':['☸️','#D4A017'],'Hindu Temple':['🛕','#E67E22'],
-
-  'Shopping Mall':['🛍️','#E91E63'],'Department Store':['🏬','#C0392B'],'Clothing Store':['👔','#8E44AD'],
-
-  'Shoe Store':['👟','#D35400'],'Electronics Store':['💻','#2471A3'],'Mobile Phone Store':['📱','#2E86C1'],
-
-  'Bookstore':['📚','#1A5276'],'Furniture and Home Store':['🛋️','#784212'],'Cosmetics Store':['💄','#F06292'],
-
-  'Bicycle Store':['🚲','#27AE60'],'Big Box Store':['📦','#7F8C8D'],'Flea Market':['🏷️','#D35400'],
-
-  'Hardware Store':['🔧','#7F8C8D'],'Miscellaneous Store':['🏪','#E67E22'],'Souvenir Store':['🛍️','#D4A017'],
-
-  'Gift Store':['🎁','#E91E8C'],'Jewelry Store':['💍','#D4A017'],'Antique Store':['🏺','#D4A017'],
-
-  'Outdoor Supply Store':['⛺','#27AE60'],'Sporting Goods Retail':['⚽','#27AE60'],
-
-  'Fruit and Vegetable Store':['🥦','#27AE60'],'Butcher':['🥩','#C0392B'],'Fish Market':['🐟','#2980B9'],
-
-  'Pharmacy':['💊','#27AE60'],'Drugstore':['💊','#27AE60'],'Health Food Store':['🥗','#1E8449'],
-
-  'Gym':['💪','#E74C3C'],'Bath House':['♨️','#1ABC9C'],'Spa':['💆','#1ABC9C'],
-
-  'Medical Center':['🏥','#E74C3C'],'Hospital':['🏥','#E74C3C'],'Yoga Studio':['🧘','#27AE60'],
-
-  'Hair Salon':['✂️','#F06292'],'Swimming Pool':['🏊','#2980B9'],'Sauna':['♨️','#E74C3C'],
-
-  'Bank':['🏦','#1A5276'],'Office':['🏢','#2C3E50'],'Post Office':['📮','#E74C3C'],
-
-  'Police Station':['👮','#2471A3'],'City Hall':['🏛️','#1A5276'],'Government Building':['🏛️','#154360'],
-
-  'University':['🎓','#154360'],'Business Center':['🏢','#2C3E50'],'Coworking Space':['💻','#2C3E50'],
-
-  'Embassy or Consulate':['🏛️','#1A5276'],'Non-Profit Organization':['🤝','#1E8449'],
-
-  'City':['🏙️','#2E86C1'],'Town':['🏘️','#5D6D7E'],'Village':['🏡','#5D6D7E'],
-
-  'Neighborhood':['🏘️','#5D6D7E'],'Residential Building':['🏠','#2C3E50'],
-
-  'Chinese Restaurant':['🥢','#C0392B'],'Japanese Restaurant':['🍱','#C0392B'],
-
-  'Korean Restaurant':['🍚','#E74C3C'],'Vietnamese Restaurant':['🍜','#27AE60'],
-
-  'Thai Restaurant':['🍛','#F39C12'],'Indian Restaurant':['🍛','#E67E22'],
-
-  'Turkish Restaurant':['🌯','#C0392B'],'Greek Restaurant':['🫒','#27AE60'],
-
-  'French Restaurant':['🥐','#2980B9'],'Spanish Restaurant':['🥘','#E74C3C'],
-
-  'German Restaurant':['🍺','#C8860A'],'Mexican Restaurant':['🌮','#27AE60'],
-
-  'American Restaurant':['🍔','#E67E22'],'Middle Eastern Restaurant':['🧆','#D35400'],
-
-  'Russian Restaurant':['🥟','#C0392B'],'Ukrainian Restaurant':['🌻','#F39C12'],
-
-  'Belarusian Restaurant':['🥟','#27AE60'],'Eastern European Restaurant':['🍲','#C0392B'],
-
-  'Diner':['🍳','#E67E22'],'Bistro':['🍽️','#C0392B'],'Dessert Shop':['🍰','#F06292'],
-
-  'Ice Cream Parlor':['🍦','#F06292'],'Pastry Shop':['🥐','#C8860A'],
-
-  'Coffee Roaster':['☕','#4A235A'],'Cafe, Coffee, and Tea House':['☕','#6F4E37'],
-
-  'Blini House':['🫓','#C8860A'],'Pelmeni House':['🥟','#C8860A'],'Dumpling Restaurant':['🥟','#E67E22'],
-
-  'Ramen Restaurant':['🍜','#E74C3C'],'Sushi Restaurant':['🍣','#C0392B'],'Steak House':['🥩','#922B21'],
-
-  'Steakhouse':['🥩','#922B21'],'Seafood Restaurant':['🦐','#2980B9'],'Food Truck':['🚚','#E67E22'],
-
-  'BBQ Joint':['🔥','#C0392B'],'Vegan and Vegetarian Restaurant':['🥦','#27AE60'],
-
-  'Breakfast Spot':['🥞','#F39C12'],'Tea Room':['🫖','#27AE60'],'Bubble Tea Shop':['🧋','#8E44AD'],
-
-  'Hot Dog Joint':['🌭','#E67E22'],'Taco Restaurant':['🌮','#27AE60'],
-
-  'Trattoria':['🍝','#C0392B'],'Deli':['🥪','#D4A017'],'Sandwich Spot':['🥪','#D4A017'],
-
-  'Education':['🎓','#1A5276'],'Language School':['📝','#2980B9'],'Planetarium':['🌌','#2C3E50'],
-
-  'Tennis Court':['🎾','#27AE60'],'Soccer Field':['⚽','#27AE60'],'Basketball Court':['🏀','#E67E22'],
-
-  'Skate Park':['🛹','#5D6D7E'],'Skating Rink':['⛸️','#2980B9'],'Rock Climbing Spot':['🧗','#784212'],
-
-  'Dog Park':['🐕','#D4A017'],'Sports Club':['🏅','#E67E22'],'Gym and Studio':['💪','#E74C3C'],
-
-  'Dance Studio':['💃','#E91E8C'],'Pool Hall':['🎱','#2C3E50'],
-
-  // Roads & transport infrastructure
-
-  'Road':['🛣️','#7F8C8D'],'Intersection':['🔀','#7F8C8D'],'Tunnel':['🚇','#626567'],
-
-  'Rest Area':['🛑','#E67E22'],'Toll Plaza':['🚧','#D4A017'],'Toll Booth':['🚧','#E67E22'],
-
-  'Airport Service':['🛠️','#2471A3'],'Airport Ticket Counter':['🎫','#2471A3'],
-
-  'Airport Tram Station':['🚈','#2471A3'],'Baggage Claim':['🧳','#2471A3'],
-
-  'Baggage Locker':['🔒','#2471A3'],'Airfield':['✈️','#154360'],
-
-  'Bike Rental':['🚲','#27AE60'],'Boat Launch':['⛵','#2980B9'],
-
-  'Canal Lock':['🔒','#2471A3'],'Dam':['💧','#2471A3'],'Reservoir':['💧','#2980B9'],
-
-  'Shipping, Freight, and Material Transportation Service':['📦','#7F8C8D'],
-
-  // Geographic/admin
-
-  'Country':['🌍','#2E86C1'],'County':['🌄','#5D6D7E'],'State':['🗺️','#5D6D7E'],
-
-  'Landmarks and Outdoors':['🗺️','#27AE60'],
-
-  // Arts & outdoor
-
-  'Outdoor Sculpture':['🗿','#7D3C98'],'Sculpture Garden':['🗿','#626567'],
-
-  'Arts and Entertainment':['🎭','#8E44AD'],'Public Art':['🎨','#7D3C98'],
-
-  'Art Studio':['🎨','#8E44AD'],'Auditorium':['🎭','#8E44AD'],'Ballroom':['💃','#8E44AD'],
-
-  'Outdoor Event Space':['🎪','#27AE60'],'Circus':['🎪','#E74C3C'],
-
-  // College
-
-  'College Arts Building':['🎨','#8E44AD'],'College Academic Building':['🏫','#1A5276'],
-
-  'College Administrative Building':['🏛️','#1A5276'],'College Auditorium':['🎭','#8E44AD'],
-
-  'College Cafeteria':['🍽️','#D4A017'],'College Gym':['💪','#E74C3C'],
-
-  'College Library':['📚','#1A5276'],'College Quad':['🌳','#1E8449'],
-
-  'College Residence Hall':['🏠','#2C3E50'],'College Science Building':['🔬','#1A5276'],
-
-  'College Stadium':['🏟️','#E67E22'],'College Technology Building':['💻','#2471A3'],
-
-  'College Theater':['🎭','#8E44AD'],'College and University':['🎓','#154360'],
-
-  'Community College':['🎓','#1A5276'],'Language School':['📝','#2980B9'],
-
-  // Food
-
-  'Caucasian Restaurant':['🍖','#C0392B'],'Shawarma Restaurant':['🌯','#D35400'],
-
-  'Doner Restaurant':['🌯','#E67E22'],'Souvlaki Shop':['🍢','#27AE60'],
-
-  'Romanian Restaurant':['🥘','#C0392B'],'Polish Restaurant':['🥟','#C0392B'],
-
-  'Modern European Restaurant':['🍽️','#C0392B'],'Asian Restaurant':['🥢','#C0392B'],
-
-  'Noodle Restaurant':['🍜','#E67E22'],'Bagel Shop':['🥯','#C8860A'],
-
-  'Pie Shop':['🥧','#C8860A'],'Fried Chicken Joint':['🍗','#E67E22'],
-
-  'Comfort Food Restaurant':['🥘','#D4A017'],'Burrito Restaurant':['🌯','#27AE60'],
-
-  'Food and Beverage Retail':['🏪','#E67E22'],'Chocolate Store':['🍫','#6F4E37'],
-
-  'Christmas Market':['🎄','#27AE60'],'Farmers Market':['🥦','#27AE60'],
-
-  'Israeli Restaurant':['🧆','#D4A017'],'African Restaurant':['🌍','#D35400'],
-
-  'Argentinian Restaurant':['🥩','#C0392B'],'Australian Restaurant':['🦘','#D4A017'],
-
-  'Belgian Restaurant':['🍺','#C8860A'],'Bosnian Restaurant':['🥘','#C0392B'],
-
-  'Brazilian Restaurant':['🥩','#E67E22'],'Bulgarian Restaurant':['🥘','#C0392B'],
-
-  'Cambodian Restaurant':['🍜','#27AE60'],'Campanian Restaurant':['🍝','#C0392B'],
-
-  // Shopping & services
-
-  'Tech Startup':['💻','#2980B9'],'Convention Center':['🏢','#2C3E50'],
-
-  'Community Center':['🏘️','#27AE60'],'Tourist Information and Service':['ℹ️','#2E86C1'],
-
-  'Currency Exchange':['💱','#27AE60'],'ATM':['🏧','#1A5276'],
-
-  'Duty-free Store':['🛍️','#1A5276'],'Discount Store':['🏷️','#E74C3C'],
-
-  'Shopping Plaza':['🛍️','#E91E63'],'Vintage and Thrift Store':['🏷️','#8E44AD'],
-
-  'Arts and Crafts Store':['✂️','#8E44AD'],'Flower Store':['🌸','#F06292'],
-
-  'Leather Goods Store':['👜','#784212'],'Watch Store':['⌚','#2C3E50'],
-
-  'Eyecare Store':['👓','#2471A3'],'Newsstand':['📰','#2C3E50'],
-
-  'Tailor':['🧵','#8E44AD'],'Print Store':['🖨️','#2C3E50'],
-
-  'Repair Service':['🔧','#7F8C8D'],'Home Service':['🔧','#7F8C8D'],
-
-  'Rental Service':['🔑','#E67E22'],'Automotive Repair Shop':['🔧','#7F8C8D'],
-
-  'Computers and Electronics Retail':['💻','#2471A3'],'Boutique':['👗','#F06292'],
-
-  'Costume Store':['🎭','#8E44AD'],'Board Store':['🏄','#2980B9'],
-
-  'Bicycle Store':['🚲','#27AE60'],
-
-  // Structure / industrial
-
-  'Structure':['🏗️','#626567'],'Factory':['🏭','#626567'],
-
-  'Housing Development':['🏘️','#2C3E50'],'Boarding House':['🛏️','#4A235A'],
-
-  'Assisted Living':['🏥','#E74C3C'],'Military Base':['🪖','#5D6D7E'],
-
-  'Gun Range':['🎯','#E74C3C'],'Construction':['🏗️','#E67E22'],
-
-  'Capitol Building':['🏛️','#1A5276'],'Well':['💧','#2471A3'],
-
-  // Sports & recreation
-
-  'Sports and Recreation':['🏅','#E67E22'],'Tennis Stadium':['🎾','#27AE60'],
-
-  'Soccer Stadium':['⚽','#27AE60'],'Basketball Stadium':['🏀','#E67E22'],
-
-  'Bowling Alley':['🎳','#2C3E50'],'Ski Resort and Area':['⛷️','#85C1E9'],
-
-  'Bathing Area':['🏊','#2980B9'],'Arcade':['🕹️','#8E44AD'],
-
-  'Pool Hall':['🎱','#2C3E50'],'Comedy Club':['😄','#8E44AD'],
-
-  // Business & professional
-
-  'Banking and Finance':['🏦','#1A5276'],'Business and Professional Services':['🏢','#2C3E50'],
-
-  'Business Service':['💼','#2C3E50'],'Campaign Office':['🗳️','#2E86C1'],
-
-  'Conference Room':['🤝','#2C3E50'],
-
-  // Other
-
-  'Moving Target':['🎯','#E74C3C'],'Animal Shelter':['🐾','#D4A017'],
-
-  'Winery':['🍇','#922B21'],'Spiritual Center':['🕯️','#8E44AD'],
-
-  'Confucian Temple':['⛩️','#D4A017'],'Adult Store':['🔞','#C0392B'],
-
-};
+const CAT_ICON = {"Coffee Shop": ["☕", "#6F4E37"], "Café": ["☕", "#6F4E37"], "Bakery": ["🥐", "#C8860A"], "Restaurant": ["🍽️", "#C0392B"], "Fast Food Restaurant": ["🍔", "#E67E22"], "Pizzeria": ["🍕", "#E74C3C"], "Burger Joint": ["🍔", "#D35400"], "Italian Restaurant": ["🍝", "#C0392B"], "Kebab Restaurant": ["🌯", "#E67E22"], "Doner Restaurant": ["🌯", "#D35400"], "Shawarma Restaurant": ["🌯", "#E67E22"], "Caucasian Restaurant": ["🍖", "#922B21"], "Food Court": ["🍱", "#E67E22"], "Cafeteria": ["🥣", "#D4A017"], "Corporate Cafeteria": ["🥣", "#D4A017"], "College Cafeteria": ["🥣", "#D4A017"], "Farmers Market": ["🥦", "#27AE60"], "Market": ["🛒", "#27AE60"], "Grocery Store": ["🛒", "#27AE60"], "Supermarket": ["🛒", "#219A52"], "Convenience Store": ["🏪", "#2ECC71"], "Gourmet Store": ["🧀", "#F39C12"], "Candy Store": ["🍬", "#F06292"], "Bar": ["🍺", "#F39C12"], "Beer Bar": ["🍺", "#E67E22"], "Pub": ["🍻", "#D4A017"], "Hookah Bar": ["💨", "#8E44AD"], "Cocktail Bar": ["🍸", "#E74C3C"], "Wine Bar": ["🍷", "#922B21"], "Wine Store": ["🍷", "#7B241C"], "Liquor Store": ["🥃", "#784212"], "Lounge": ["🛋️", "#5D6D7E"], "Gastropub": ["🍖", "#CA6F1E"], "Brewery": ["🍻", "#BA4A00"], "Nightclub": ["🎵", "#6C3483"], "Karaoke Bar": ["🎤", "#7D3C98"], "Hotel": ["🏨", "#2C3E50"], "Hostel": ["🛏️", "#34495E"], "Bed and Breakfast": ["🛏️", "#4A235A"], "Inn": ["🏠", "#2E4053"], "Apartment or Condo": ["🏠", "#1A5276"], "Home (private)": ["🏠", "#17202A"], "Metro Station": ["🚇", "#2980B9"], "Rail Station": ["🚉", "#1A5276"], "Train": ["🚂", "#E74C3C"], "Tram Station": ["🚃", "#2471A3"], "Light Rail Station": ["🚈", "#2980B9"], "Platform": ["🚉", "#1F618D"], "Bus Line": ["🚌", "#27AE60"], "Bus Station": ["🚌", "#1E8449"], "Bus Stop": ["🚏", "#239B56"], "Airport Terminal": ["✈️", "#2471A3"], "International Airport": ["✈️", "#154360"], "Airport Gate": ["✈️", "#1A5276"], "Airport Service": ["✈️", "#21618C"], "Plane": ["✈️", "#2980B9"], "Travel Lounge": ["🛋️", "#21618C"], "Boat or Ferry": ["⛴️", "#117A65"], "Border Crossing": ["🛂", "#717D7E"], "Taxi": ["🚕", "#F4D03F"], "Parking": ["🅿️", "#2980B9"], "Fuel Station": ["⛽", "#E67E22"], "Rest Area": ["🛑", "#7F8C8D"], "Cable Car": ["🚡", "#8E44AD"], "Park": ["🌳", "#1E8449"], "Plaza": ["🏛️", "#2E86C1"], "Pedestrian Plaza": ["🚶", "#2E86C1"], "Beach": ["🏖️", "#F39C12"], "Mountain": ["⛰️", "#7F8C8D"], "Hiking Trail": ["🥾", "#6E2F1A"], "Garden": ["🌸", "#1E8449"], "Scenic Lookout": ["🔭", "#1A5276"], "Waterfront": ["🌊", "#2471A3"], "Harbor or Marina": ["⚓", "#154360"], "River": ["🌊", "#2980B9"], "Lake": ["🏞️", "#2471A3"], "Island": ["🏝️", "#27AE60"], "Bike Trail": ["🚴", "#E67E22"], "Other Great Outdoors": ["🌲", "#186A3B"], "Cemetery": ["🪦", "#5D6D7E"], "Ski Area": ["⛷️", "#85C1E9"], "Sculpture Garden": ["🗿", "#7F8C8D"], "Bridge": ["🌉", "#626567"], "Fountain": ["⛲", "#5DADE2"], "Museum": ["🏛️", "#7D3C98"], "Art Museum": ["🎨", "#884EA0"], "History Museum": ["📜", "#6E2F1A"], "Art Gallery": ["🖼️", "#7D3C98"], "Monument": ["🗽", "#626567"], "Historic and Protected Site": ["🏰", "#784212"], "Castle": ["🏰", "#6E2F1A"], "Palace": ["🏯", "#784212"], "Outdoor Sculpture": ["🗿", "#717D7E"], "Public Art": ["🎨", "#7D3C98"], "Street Art": ["🎨", "#8E44AD"], "Event Space": ["🎪", "#C0392B"], "Dance Studio": ["💃", "#E74C3C"], "Theater": ["🎭", "#922B21"], "Church": ["⛪", "#7D3C98"], "Mosque": ["🕌", "#117A65"], "Temple": ["🛕", "#B9770E"], "Monastery": ["🙏", "#6E2F1A"], "Synagogue": ["✡️", "#1A5276"], "Shopping Mall": ["🛍️", "#E91E63"], "Department Store": ["🏬", "#C0392B"], "Clothing Store": ["👔", "#8E44AD"], "Shoe Store": ["👟", "#D35400"], "Electronics Store": ["💻", "#2471A3"], "Mobile Phone Store": ["📱", "#2E86C1"], "Bookstore": ["📚", "#1A5276"], "Furniture and Home Store": ["🛋️", "#784212"], "Cosmetics Store": ["💄", "#F06292"], "Bicycle Store": ["🚲", "#27AE60"], "Big Box Store": ["📦", "#7F8C8D"], "Flea Market": ["🏷️", "#D35400"], "Hardware Store": ["🔧", "#7F8C8D"], "Gym": ["💪", "#E74C3C"], "Bath House": ["♨️", "#1ABC9C"], "Spa": ["💆", "#1ABC9C"], "Medical Center": ["🏥", "#E74C3C"], "Pharmacy": ["💊", "#27AE60"], "Bank": ["🏦", "#1A5276"], "Office": ["🏢", "#2C3E50"], "Post Office": ["📮", "#E74C3C"], "Police Station": ["👮", "#2471A3"], "City Hall": ["🏛️", "#1A5276"], "Government Building": ["🏛️", "#154360"], "University": ["🎓", "#154360"], "Tech Startup": ["💡", "#F39C12"], "Business Center": ["🏢", "#2C3E50"], "Non-Profit Organization": ["🤝", "#1E8449"], "Road": ["🛣️", "#626567"], "Tunnel": ["🚧", "#E67E22"], "Neighborhood": ["🏘️", "#5D6D7E"], "Intersection": ["🔀", "#717D7E"], "Housing Development": ["🏘️", "#1A5276"], "Miscellaneous Store": ["🏪", "#E67E22"], "Food and Beverage Retail": ["🛒", "#27AE60"], "Sporting Goods Retail": ["⚽", "#27AE60"], "Health Food Store": ["🥗", "#1E8449"], "Butcher": ["🥩", "#C0392B"], "Eyecare Store": ["👓", "#2471A3"], "Tailor": ["🧵", "#7D3C98"], "Bike Rental": ["🚲", "#27AE60"], "Currency Exchange": ["💱", "#F39C12"], "Diner": ["🍳", "#E67E22"], "Bistro": ["🍽️", "#C0392B"], "Breakfast Spot": ["🥞", "#F39C12"], "Bagel Shop": ["🥯", "#C8860A"], "Dessert Shop": ["🍰", "#F06292"], "Ice Cream Parlor": ["🍦", "#F06292"], "Sandwich Spot": ["🥪", "#E67E22"], "Noodle Restaurant": ["🍜", "#E74C3C"], "Turkish Restaurant": ["🥙", "#C0392B"], "Indian Restaurant": ["🍛", "#E67E22"], "Romanian Restaurant": ["🍲", "#C0392B"], "Ukrainian Restaurant": ["🥟", "#D4A017"], "Eastern European Restaurant": ["🍲", "#C0392B"], "Modern European Restaurant": ["🍽️", "#922B21"], "Middle Eastern Restaurant": ["🧆", "#D35400"], "Beer Garden": ["🍻", "#D4A017"], "Concert Hall": ["🎼", "#922B21"], "Movie Theater": ["🎬", "#C0392B"], "Cultural Center": ["🎭", "#7D3C98"], "Exhibit": ["🖼️", "#7D3C98"], "Science Museum": ["🔬", "#1A5276"], "Amusement Park": ["🎡", "#E74C3C"], "Memorial Site": ["🕯️", "#626567"], "Library": ["📚", "#1A5276"], "National Park": ["🌲", "#186A3B"], "Nature Preserve": ["🌿", "#1E8449"], "Forest": ["🌲", "#186A3B"], "Botanical Garden": ["🌺", "#1E8449"], "Waterfall": ["💦", "#2980B9"], "Canal": ["🚤", "#2471A3"], "Bay": ["🌊", "#2980B9"], "Reservoir": ["💧", "#2471A3"], "Playground": ["🛝", "#E74C3C"], "Campground": ["⛺", "#186A3B"], "Well": ["🪣", "#7F8C8D"], "Tree": ["🌳", "#1E8449"], "Lighthouse": ["🔦", "#F39C12"], "Port": ["🚢", "#154360"], "Pier": ["🎣", "#2471A3"], "Buddhist Temple": ["☸️", "#D4A017"], "Hindu Temple": ["🛕", "#E67E22"], "Shrine": ["⛩️", "#C0392B"], "Education": ["🎓", "#1A5276"], "College Arts Building": ["🎨", "#7D3C98"], "College Technology Building": ["💻", "#2471A3"], "College Academic Building": ["📖", "#1A5276"], "College Residence Hall": ["🏠", "#2C3E50"], "College Library": ["📚", "#154360"], "College Gym": ["💪", "#C0392B"], "Airport Lounge": ["🛋️", "#21618C"], "Airport": ["✈️", "#154360"], "Airport Ticket Counter": ["🎫", "#2471A3"], "Baggage Claim": ["🧳", "#2C3E50"], "Travel and Transportation": ["🧳", "#2C3E50"], "Transportation Service": ["🚐", "#27AE60"], "Shipping, Freight, and Material Transportation Service": ["📦", "#7F8C8D"], "Moving Target": ["📍", "#E74C3C"], "Toll Plaza": ["🛣️", "#626567"], "Embassy or Consulate": ["🏛️", "#1A5276"], "Hair Salon": ["✂️", "#F06292"], "Swimming Pool": ["🏊", "#2980B9"], "Pool Hall": ["🎱", "#2C3E50"], "Factory": ["🏭", "#7F8C8D"], "Structure": ["🏗️", "#626567"], "Arts and Entertainment": ["🎭", "#7D3C98"], "Sports and Recreation": ["⚽", "#27AE60"], "Gym and Studio": ["💪", "#E74C3C"], "City": ["🏙️", "#2E86C1"], "Town": ["🏘️", "#5D6D7E"], "Village": ["🏡", "#5D6D7E"], "Country": ["🌍", "#2E86C1"], "County": ["📍", "#626567"], "State": ["📍", "#626567"], "Pastry Shop": ["🥐", "#C8860A"], "Pie Shop": ["🥧", "#A04000"], "Donut Shop": ["🍩", "#E91E8C"], "Gelato Shop": ["🍨", "#9B59B6"], "Creperie": ["🥞", "#D4A017"], "Smoothie Shop": ["🥤", "#27AE60"], "Juice Bar": ["🥤", "#27AE60"], "Tea Room": ["🫖", "#27AE60"], "Bubble Tea Shop": ["🧋", "#8E44AD"], "Snack Place": ["🍿", "#E67E22"], "Food Truck": ["🚚", "#E67E22"], "Food Stand": ["🌮", "#E67E22"], "BBQ Joint": ["🔥", "#C0392B"], "Souvlaki Shop": ["🍢", "#E67E22"], "Blini House": ["🫓", "#C8860A"], "Pelmeni House": ["🥟", "#C8860A"], "Dumpling Restaurant": ["🥟", "#E67E22"], "Ramen Restaurant": ["🍜", "#E74C3C"], "Sushi Restaurant": ["🍣", "#C0392B"], "Fried Chicken Joint": ["🍗", "#E67E22"], "Fish and Chips Shop": ["🐟", "#2980B9"], "Seafood Restaurant": ["🦐", "#2980B9"], "Steak House": ["🥩", "#922B21"], "Steakhouse": ["🥩", "#922B21"], "Paella Restaurant": ["🥘", "#E67E22"], "Tapas Restaurant": ["🍢", "#E67E22"], "Falafel Restaurant": ["🧆", "#D4A017"], "Shaanxi Restaurant": ["🍜", "#E67E22"], "Chinese Restaurant": ["🥢", "#C0392B"], "Japanese Restaurant": ["🍱", "#C0392B"], "Vietnamese Restaurant": ["🍜", "#27AE60"], "Korean Restaurant": ["🍚", "#E74C3C"], "Thai Restaurant": ["🍛", "#F39C12"], "South Indian Restaurant": ["🍛", "#C8860A"], "Greek Restaurant": ["🫒", "#27AE60"], "Lebanese Restaurant": ["🌿", "#27AE60"], "Syrian Restaurant": ["🌿", "#27AE60"], "Israeli Restaurant": ["🫓", "#D4A017"], "Egyptian Restaurant": ["🌽", "#F39C12"], "German Restaurant": ["🍺", "#C8860A"], "Polish Restaurant": ["🥟", "#E74C3C"], "Belarusian Restaurant": ["🥟", "#27AE60"], "Russian Restaurant": ["🥟", "#C0392B"], "French Restaurant": ["🥐", "#2980B9"], "Spanish Restaurant": ["🥘", "#E74C3C"], "Portuguese Restaurant": ["🐟", "#2980B9"], "Mexican Restaurant": ["🌮", "#27AE60"], "Latin American Restaurant": ["🌮", "#27AE60"], "Argentinian Restaurant": ["🥩", "#27AE60"], "American Restaurant": ["🍔", "#E67E22"], "Asian Restaurant": ["🥢", "#C0392B"], "Cambodian Restaurant": ["🍲", "#27AE60"], "Tibetan Restaurant": ["🍵", "#8E44AD"], "Tatar Restaurant": ["🥟", "#C0392B"], "Yemeni Restaurant": ["🍖", "#D4A017"], "Ethiopian Restaurant": ["🌿", "#27AE60"], "African Restaurant": ["🌍", "#27AE60"], "Vegan and Vegetarian Restaurant": ["🥦", "#27AE60"], "Halal Restaurant": ["🌙", "#2ECC71"], "Kosher Restaurant": ["✡️", "#2980B9"], "Scottish Restaurant": ["🏴󠁧󠁢󠁳󠁣󠁴󠁿", "#154360"], "Comfort Food Restaurant": ["🍲", "#C8860A"], "Corporate Coffee Shop": ["☕", "#6F4E37"], "Coffee Roaster": ["☕", "#4A235A"], "Cafe, Coffee, and Tea House": ["☕", "#6F4E37"], "Beach Bar": ["🍹", "#2980B9"], "Dive Bar": ["🍺", "#7B241C"], "Speakeasy": ["🥃", "#4A235A"], "Whisky Bar": ["🥃", "#784212"], "Sports Bar": ["📺", "#2C3E50"], "Rock Club": ["🎸", "#6C3483"], "Hotel Bar": ["🍸", "#2C3E50"], "Night Club": ["🎵", "#6C3483"], "Irish Pub": ["🍀", "#27AE60"], "Beer Store": ["🍺", "#D4A017"], "Buffet": ["🍱", "#E67E22"], "Flower Store": ["🌸", "#E91E8C"], "Vintage and Thrift Store": ["🎪", "#8E44AD"], "Duty-free Store": ["✈️", "#2980B9"], "Discount Store": ["🏷️", "#E67E22"], "Arts and Crafts Store": ["🎨", "#E91E8C"], "Souvenir Store": ["🛍️", "#D4A017"], "Jewelry Store": ["💍", "#D4A017"], "Watch Store": ["⌚", "#5D6D7E"], "Leather Goods Store": ["👜", "#784212"], "Newsstand": ["📰", "#5D6D7E"], "Print Store": ["🖨️", "#5D6D7E"], "Tobacco Store": ["🚬", "#616A6B"], "Smoke Shop": ["💨", "#616A6B"], "Optical Store": ["👓", "#2980B9"], "Office Supply Store": ["✏️", "#5D6D7E"], "Stationery Store": ["✏️", "#5D6D7E"], "Fish Market": ["🐟", "#2980B9"], "Fruit and Vegetable Store": ["🥦", "#27AE60"], "Outlet Store": ["🏷️", "#E74C3C"], "Outlet Mall": ["🏷️", "#E74C3C"], "Luggage Store": ["🧳", "#5D6D7E"], "Textiles Store": ["🧵", "#8E44AD"], "Toy Store": ["🧸", "#E91E8C"], "Pet Supplies Store": ["🐾", "#D4A017"], "Gift Store": ["🎁", "#E91E8C"], "Hobby Store": ["🎮", "#8E44AD"], "Music Store": ["🎵", "#8E44AD"], "Antique Store": ["🏺", "#D4A017"], "Used Bookstore": ["📚", "#784212"], "Winery": ["🍷", "#922B21"], "Computers and Electronics Retail": ["💻", "#2980B9"], "Lighting Store": ["💡", "#D4A017"], "Warehouse or Wholesale Store": ["📦", "#7F8C8D"], "Pop-Up Store": ["🏪", "#E91E8C"], "s Store": ["👗", "#E91E8C"], "Ski Store": ["⛷️", "#2980B9"], "Board Store": ["🏄", "#2980B9"], "Outdoor Supply Store": ["⛺", "#27AE60"], "Mattress Store": ["🛏️", "#2C3E50"], "Car Dealership": ["🚗", "#5D6D7E"], "Motorcycle Dealership": ["🏍️", "#5D6D7E"], "Used Car Dealership": ["🚗", "#7F8C8D"], "Garden Center": ["🌱", "#27AE60"], "Christmas Market": ["🎄", "#E74C3C"], "Cruise": ["🚢", "#1A5276"], "Ski Chairlift": ["🚡", "#2980B9"], "Marine Terminal": ["⚓", "#1A5276"], "Toll Booth": ["🚧", "#D4A017"], "Taxi Stand": ["🚕", "#F39C12"], "Public Transportation": ["🚇", "#2980B9"], "Airport Tram Station": ["🚈", "#2471A3"], "Baggage Locker": ["🔒", "#5D6D7E"], "Airfield": ["✈️", "#2471A3"], "Runway": ["✈️", "#154360"], "Rental Car Location": ["🚗", "#2C3E50"], "Travel Agency": ["✈️", "#2980B9"], "Performing Arts Venue": ["🎭", "#8E44AD"], "Opera House": ["🎭", "#6C3483"], "Indie Movie Theater": ["🎬", "#6C3483"], "Amphitheater": ["🎭", "#8E44AD"], "Music Venue": ["🎸", "#8E44AD"], "Jazz and Blues Venue": ["🎷", "#8E44AD"], "Convention Center": ["🏛️", "#2C3E50"], "Outdoor Event Space": ["🎊", "#27AE60"], "Festival": ["🎡", "#E91E8C"], "Music Festival": ["🎵", "#E91E8C"], "Street Fair": ["🎠", "#E91E8C"], "Exhibition": ["🖼️", "#8E44AD"], "Attraction": ["⭐", "#D4A017"], "Tourist Information and Service": ["ℹ️", "#2980B9"], "Landmarks and Outdoors": ["🗺️", "#27AE60"], "Zoo": ["🦁", "#D4A017"], "Zoo Exhibit": ["🦁", "#C8860A"], "Aquarium": ["🐠", "#2980B9"], "Water Park": ["💦", "#2980B9"], "Casino": ["🎲", "#C0392B"], "Arcade": ["🕹️", "#8E44AD"], "Escape Room": ["🔐", "#8E44AD"], "Bowling Alley": ["🎳", "#2980B9"], "Shooting Range": ["🎯", "#7F8C8D"], "Gun Range": ["🎯", "#7F8C8D"], "Laser Tag Center": ["🔫", "#8E44AD"], "Paintball Field": ["🎯", "#27AE60"], "Race Track": ["🏎️", "#E74C3C"], "Go Kart Track": ["🏎️", "#E74C3C"], "Hockey Stadium": ["🏒", "#2980B9"], "Soccer Stadium": ["⚽", "#27AE60"], "Track Stadium": ["🏃", "#E67E22"], "College Stadium": ["🏟️", "#E74C3C"], "Tennis Court": ["🎾", "#27AE60"], "Tennis Stadium": ["🎾", "#2980B9"], "Tennis Club": ["🎾", "#27AE60"], "Soccer Field": ["⚽", "#27AE60"], "Basketball Court": ["🏀", "#E67E22"], "Basketball Stadium": ["🏀", "#E67E22"], "Bathing Area": ["🏊", "#2980B9"], "Skate Park": ["🛹", "#5D6D7E"], "Skating Rink": ["⛸️", "#2980B9"], "Rock Climbing Spot": ["🧗", "#784212"], "Surf Spot": ["🏄", "#2980B9"], "Ski Trail": ["⛷️", "#85C1E9"], "Ski Resort and Area": ["⛷️", "#2980B9"], "Running and Track": ["🏃", "#27AE60"], "Dog Park": ["🐕", "#D4A017"], "Sports Club": ["🏅", "#E67E22"], "Recreation Center": ["🏅", "#27AE60"], "Yoga Studio": ["🧘", "#27AE60"], "Gym Pool": ["🏊", "#2980B9"], "Dive Spot": ["🤿", "#2980B9"], "Rafting Spot": ["🛶", "#2980B9"], "Hot Air Balloon Tour Agency": ["🎈", "#E91E8C"], "Circus": ["🎪", "#E91E8C"], "Hospital": ["🏥", "#E74C3C"], "Medical Lab": ["🔬", "#E74C3C"], "Dentist": ["🦷", "#2980B9"], "Drugstore": ["💊", "#27AE60"], "Emergency Room": ["🚨", "#E74C3C"], "Massage Clinic": ["💆", "#27AE60"], "Sauna": ["♨️", "#E74C3C"], "Laundry Service": ["👕", "#2980B9"], "Laundromat": ["👕", "#2980B9"], "Dry Cleaner": ["👔", "#2980B9"], "Repair Service": ["🔧", "#7F8C8D"], "Shoe Repair Service": ["👟", "#784212"], "Automotive Repair Shop": ["🔧", "#5D6D7E"], "Car Wash and Detail": ["🚿", "#2980B9"], "Coworking Space": ["💻", "#2C3E50"], "Office Building": ["🏢", "#2C3E50"], "Power Plant": ["⚡", "#E67E22"], "Recycling Facility": ["♻️", "#27AE60"], "ATM": ["💳", "#1A5276"], "Financial Service": ["💹", "#1A5276"], "Banking and Finance": ["🏦", "#1A5276"], "Government Department": ["🏛️", "#5D6D7E"], "Capitol Building": ["🏛️", "#2980B9"], "Town Hall": ["🏛️", "#2C3E50"], "Courthouse": ["⚖️", "#2C3E50"], "Fire Station": ["🚒", "#E74C3C"], "Military Base": ["🪖", "#27AE60"], "Social Services Organization": ["🤝", "#27AE60"], "Community Center": ["🤝", "#2980B9"], "Social Club": ["🤝", "#8E44AD"], "Rental Service": ["🔑", "#5D6D7E"], "Storage Facility": ["📦", "#7F8C8D"], "IT Service": ["💻", "#2980B9"], "Home Service": ["🏠", "#7F8C8D"], "Business and Professional Services": ["💼", "#2C3E50"], "Business Service": ["💼", "#2C3E50"], "Property Management Office": ["🏢", "#5D6D7E"], "Notary": ["✍️", "#5D6D7E"], "TV Station": ["📺", "#2C3E50"], "Mobile Company": ["📱", "#2980B9"], "Ticket Seller": ["🎫", "#E91E8C"], "Auditorium": ["🏛️", "#8E44AD"], "Conference Room": ["🤝", "#2C3E50"], "Meeting Room": ["🤝", "#2C3E50"], "Ballroom": ["💃", "#8E44AD"], "Assisted Living": ["🏥", "#2980B9"], "Veterinarian": ["🐾", "#27AE60"], "Animal Shelter": ["🐾", "#27AE60"], "High School": ["🏫", "#2C3E50"], "Community College": ["🎓", "#5D6D7E"], "Language School": ["📝", "#2980B9"], "Music School": ["🎵", "#8E44AD"], "Religious School": ["📖", "#784212"], "Art Studio": ["🎨", "#E91E8C"], "Driving School": ["🚗", "#5D6D7E"], "Swim School": ["🏊", "#2980B9"], "College Administrative Building": ["🏛️", "#5D6D7E"], "College Auditorium": ["🎭", "#8E44AD"], "College Science Building": ["🔬", "#2980B9"], "College Theater": ["🎭", "#8E44AD"], "College Quad": ["🌳", "#27AE60"], "Student Center": ["🎓", "#8E44AD"], "Law School": ["⚖️", "#2C3E50"], "Fraternity House": ["🏠", "#8E44AD"], "Planetarium": ["🌌", "#2C3E50"], "Observatory": ["🔭", "#1A5276"], "State or Provincial Park": ["🌳", "#27AE60"], "Urban Park": ["🌳", "#27AE60"], "Natural Park": ["🏞️", "#1E8449"], "Hot Spring": ["♨️", "#E74C3C"], "Field": ["🌾", "#27AE60"], "Hill": ["⛰️", "#784212"], "Vineyard": ["🍇", "#922B21"], "Farm": ["🚜", "#27AE60"], "Cave": ["🦇", "#616A6B"], "Volcano": ["🌋", "#E74C3C"], "Stable": ["🐴", "#784212"], "Dam": ["💧", "#2471A3"], "Canal Lock": ["🚤", "#2471A3"], "Confucian Temple": ["🛕", "#C8860A"], "Sikh Temple": ["🛕", "#F39C12"], "Spiritual Center": ["🕯️", "#8E44AD"], "Scaffold": ["🏗️", "#7F8C8D"], "Construction": ["🏗️", "#E67E22"], "Industrial Estate": ["🏭", "#7F8C8D"], "Residential Building": ["🏠", "#2C3E50"], "Trailer Park": ["🚚", "#7F8C8D"], "RV Park": ["🚌", "#7F8C8D"], "Boarding House": ["🛏️", "#5D6D7E"], "Lodging": ["🛏️", "#5D6D7E"], "Resort": ["🏖️", "#2980B9"], "Hot Air Balloon": ["🎈", "#E91E8C"], "Photography Lab": ["📸", "#616A6B"], "Comic Book Store": ["📚", "#E91E8C"], "Knitting Store": ["🧶", "#E91E8C"], "Costume Store": ["🎭", "#E91E8C"], "Pawn Shop": ["💰", "#D4A017"], "Adult Store": ["🔞", "#E74C3C"], "Perfume Store": ["🌸", "#E91E8C"], "Herb Store": ["🌿", "#27AE60"], "Herbs and Spices Store": ["🌿", "#27AE60"], "Internet Cafe": ["💻", "#2980B9"], "Gaming Cafe": ["🎮", "#8E44AD"], "Night Market": ["🌙", "#E91E8C"], "Truck Stop": ["🚚", "#7F8C8D"], "Hot Dog Joint": ["🌭", "#E67E22"], "Taco Restaurant": ["🌮", "#27AE60"], "Burrito Restaurant": ["🌯", "#27AE60"], "Poke Restaurant": ["🍣", "#E74C3C"], "Sri Lankan Restaurant": ["🍛", "#E67E22"], "Mughlai Restaurant": ["🍛", "#C0392B"], "Bengali Restaurant": ["🍛", "#27AE60"], "Filipino Restaurant": ["🍚", "#E67E22"], "Venezuelan Restaurant": ["🌮", "#27AE60"], "Brazilian Restaurant": ["🥩", "#27AE60"], "South American Restaurant": ["🌮", "#27AE60"], "Peruvian Restaurant": ["🥘", "#E67E22"], "Czech Restaurant": ["🥟", "#2980B9"], "Belgian Restaurant": ["🧇", "#D4A017"], "Australian Restaurant": ["🦘", "#D4A017"], "Mongolian Restaurant": ["🍖", "#C0392B"], "Bulgarian Restaurant": ["🥗", "#27AE60"], "Bosnian Restaurant": ["🥘", "#C0392B"], "New American Restaurant": ["🍔", "#E67E22"], "Brasserie": ["🍺", "#D4A017"], "Trattoria": ["🍝", "#C0392B"], "Salad Restaurant": ["🥗", "#27AE60"], "Deli": ["🥪", "#D4A017"], "Food and Beverage Service": ["🍽️", "#E67E22"], "Soup Spot": ["🍲", "#D4A017"], "Friterie": ["🍟", "#E67E22"], "Campanian Restaurant": ["🍕", "#E74C3C"], "Dim Sum Restaurant": ["🥟", "#E74C3C"], "Dongbei Restaurant": ["🍜", "#C0392B"], "Peking Duck Restaurant": ["🦆", "#C0392B"], "Kafenio": ["☕", "#8E44AD"], "Kuruyemişçi Shop": ["🌰", "#784212"], "Turkish Coffeehouse": ["☕", "#6F4E37"], "Döner Restaurant": ["🌯", "#E67E22"], "Wing Joint": ["🍗", "#E67E22"], "Wings Joint": ["🍗", "#E67E22"], "Coin Laundry": ["🪙", "#2980B9"], "States and Municipalities": ["🏛️", "#5D6D7E"], "Entertainment Event": ["🎉", "#E91E8C"], "Other Event": ["🎉", "#8E44AD"], "Public Bathroom": ["🚻", "#5D6D7E"], "Boat Launch": ["⛵", "#2980B9"], "College and University": ["🎓", "#154360"], "Chocolate Store": ["🍫", "#6F4E37"], "Shopping Plaza": ["🛍️", "#E91E63"], "Boutique": ["👗", "#F06292"], "Comedy Club": ["😄", "#8E44AD"], "Campaign Office": ["🗳️", "#2E86C1"]};
 
 function catIcon(cat){
 
@@ -905,7 +529,7 @@ async function fetchWeather(lat,lng,ts){
 
 // ── Virtual scroll ──
 
-const CARD_H=120;
+const CARD_H=138;
 
 const GAP_PAD=8;
 
@@ -915,7 +539,7 @@ const G={sm:14,md:22,lg:32};
 
 
 
-function haversine(lat1,lng1,lat2,lng2){
+function havNum(lat1,lng1,lat2,lng2){
 
   if(!lat1||!lng1||!lat2||!lng2) return null;
 
@@ -923,10 +547,61 @@ function haversine(lat1,lng1,lat2,lng2){
 
   const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
 
-  const d=R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+
+}
+
+function haversine(lat1,lng1,lat2,lng2){
+
+  const d=havNum(lat1,lng1,lat2,lng2);
+
+  if(d==null) return null;
 
   return d<1?`${Math.round(d*1000)}m`:d<10?`${d.toFixed(1)}km`:`${Math.round(d)}km`;
 
+}
+
+// ── Transport-mode icon between consecutive check-ins ──
+// Client-side mirror of the rule core in scripts/transport_mode.py:
+// FR24 flight days → category anchors (exact names, sanity-checked) → speed/
+// distance bands.  v = d/Δt is a LOWER bound (Δt includes dwell time).
+const M_VEH={'Plane':'P','Train':'T','Bus Line':'U','Boat or Ferry':'F'};
+const M_STA={'Airport':'P','International Airport':'P','Airport Terminal':'P','Airport Gate':'P','Airport Lounge':'P',
+  'Rail Station':'T','Train Station':'T','Metro Station':'T','Tram Station':'T','Light Rail Station':'T','Platform':'T',
+  'Airport Tram Station':'T','Monorail':'T','Bus Station':'U','Bus Stop':'U','Bus Terminal':'U',
+  'Ferry Terminal':'F','Pier':'F','Harbor or Marina':'F','Port':'F'};
+const M_SANE={W:[10,20],B:[32,120],C:[160,900],T:[280,1500],U:[130,1200],F:[80,600]}; // [vmax,dmax]
+const M_ICON={W:'🚶',B:'🚴',C:'🚗',T:'🚆',U:'🚌',F:'⛴️',P:'✈️'};
+
+function saneM(m,d,v){
+  if(m==='P') return d>=100;
+  const s=M_SANE[m];
+  return !s||(v<=s[0]&&d<=s[1]);
+}
+
+function flightBetween(t0,t1){ // any FR24 flight day in [t0,t1] ± 3h slack
+  if(!FLIGHT_DAYS.length) return false;
+  const d0=new Date((t0-10800)*1000).toISOString().slice(0,10);
+  const d1=new Date((t1+10800)*1000).toISOString().slice(0,10);
+  let lo=0,hi=FLIGHT_DAYS.length-1,f=-1;
+  while(lo<=hi){const m=(lo+hi)>>1;FLIGHT_DAYS[m]>=d0?(f=m,hi=m-1):lo=m+1;}
+  return f>=0&&FLIGHT_DAYS[f]<=d1;
+}
+
+function moveMode(o,n){ // o = older tuple, n = newer tuple → mode char or ''
+  const d=havNum(o[8],o[9],n[8],n[9]);
+  if(d==null||d<0.05) return '';
+  const dtH=Math.max((n[0]-o[0])/3600,1/60), v=d/dtH;
+  if(d>=100&&flightBetween(o[0],n[0])) return 'P';
+  for(const map of [M_VEH,M_STA])
+    for(const c of [o[6],n[6]]){
+      const m=map[c];
+      if(m&&saneM(m,d,v)) return m;
+    }
+  if(dtH>18) return '';                 // too long a gap to guess
+  if(v>=150||d>=500) return 'P';
+  if(v>=25||v>=7) return 'C';
+  return d<8?'W':'C';
 }
 
 function gapFor(sec){
@@ -1017,7 +692,11 @@ function renderVis(){
 
         const distStr=dist?` · ↔ ${dist}`:'';
 
-        html+=`<div class="gap-row g-${gp.g}" style="top:${pos[i]-gp.h+1}px;height:${gp.h-2}px;"><div class="gap-line"></div><span class="gap-lbl">${gp.t}${distStr}</span><div class="gap-line"></div></div>`;
+        const mi=(ci0&&ci1)?M_ICON[moveMode(ci1,ci0)]||'':'';
+
+        const miStr=mi?`<span class="gap-mode">${mi}</span> `:'';
+
+        html+=`<div class="gap-row g-${gp.g}" style="top:${pos[i]-gp.h+1}px;height:${gp.h-2}px;"><div class="gap-line"></div><span class="gap-lbl">${miStr}${gp.t}${distStr}</span><div class="gap-line"></div></div>`;
 
       }
 
@@ -1089,7 +768,7 @@ function mkCard(i){
 
   const ci=DATA[i];
 
-  const [ts,date,time,venue,city,country,cat,vid,lat,lng,cid]=ci;
+  const [ts,date,time,venue,city,country,cat,vid,lat,lng,cid,companions,refurb]=ci;
 
   const vn=vid?`<a href="https://foursquare.com/v/${vid}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(venue||'—')}</a>`:esc(venue||'—');
 
@@ -1119,11 +798,13 @@ function mkCard(i){
 
   return `<div class="fcard${isActive?' active':''}" id="fc${i}" onclick="onCardClick(${i})" onmouseenter="onCardHover(${i})" style="top:${pos[i]}px;height:${CARD_H}px;">
 
-    <div class="fc-venue-row"><div class="fc-venue">${vn}</div>${ico}</div>
+    <div class="fc-venue-row"><div class="fc-venue">${vn}</div>${refurb?`<div class="fc-refurb-stack"><div class="fc-refurb" title="Reconstructed from travel history — not a live app check-in">↺ reconstructed</div>${!vid?`<div class="fc-no-fsq" title="No Foursquare venue data — location from diary only">✕ no fsq data</div>`:''}</div>`:ico}</div>
 
     <div class="fc-cat">${esc(cat)}</div>
 
     <div class="fc-loc">${flag}<span>${esc(locStr)}</span></div>
+
+    ${(companions&&companions.length)?`<div class="fc-with">with ${esc(companions.join(', '))}</div>`:''}
 
     <div class="fc-weather-row" id="wrow${i}">${wHtml}</div>
 
@@ -1370,7 +1051,7 @@ async function _fetchDayCounts(ym){
   if(_ymDaysFetching.has(ym)) return _ymDaysFetching.get(ym);
   const p=(async()=>{
     try{
-      const data=await(await fetch(`/api/feed?month=${ym}`)).json();
+      const data=await(await fetch(`/api/feed?_v=refurb&month=${ym}`)).json();
       const items=data.items||[];
       const[myr,mmo]=ym.split('-').map(Number);
       const mdays=new Date(myr,mmo,0).getDate();
@@ -1446,7 +1127,7 @@ async function goYMD(ymd){
   const ts=YD_IDX[ymd];
   if(ts==null) return;
   try{
-    const d=await(await fetch(`/api/feed?cursor=${ts+1}&limit=50`)).json();
+    const d=await(await fetch(`/api/feed?_v=refurb&cursor=${ts+1}&limit=50`)).json();
     const items=d.items||[];
     if(!items.length) return;
     _loadGen++;
@@ -1488,7 +1169,7 @@ async function fetchAndShowMonth(ym){
 
   let rawItems=[];
   try{
-    const res=await fetch(`/api/feed?month=${ym}`);
+    const res=await fetch(`/api/feed?_v=refurb&month=${ym}`);
     const data=await res.json();
     rawItems=data.items||[];
   }catch(e){}
@@ -1544,7 +1225,7 @@ async function goLatest(){
   if(monthMode) exitMonthView();
   if(revDone){jumpTo(0);return;}
   try{
-    const d=await(await fetch('/api/feed?limit=100')).json();
+    const d=await(await fetch('/api/feed?_v=refurb&limit=100')).json();
     const items=d.items||[];
     if(!items.length) return;
     _loadGen++;
@@ -1571,7 +1252,7 @@ async function goLatest(){
 async function goOldest(){
   if(monthMode) exitMonthView();
   try{
-    const d=await(await fetch('/api/feed?oldest=1&limit=100')).json();
+    const d=await(await fetch('/api/feed?_v=refurb&oldest=1&limit=100')).json();
     const items=d.items||[];
     if(!items.length) return;
     _loadGen++;
@@ -1597,13 +1278,15 @@ async function goOldest(){
 
 // ── Contiguous scroll loading ──
 
+function _skelShow(v){const s=document.getElementById('loadSkel');if(s)s.classList.toggle('visible',v);}
+
 async function loadFwd(){
   if(gapLoading||fwdDone||!fwdCursor) return;
-  gapLoading=true;
+  gapLoading=true;_skelShow(true);
   const gen=_loadGen;
   try{
     const cid=fwdCursorId?`&cursor_id=${encodeURIComponent(fwdCursorId)}`:'';
-    const d=await(await fetch(`/api/feed?limit=50&cursor=${fwdCursor}${cid}`)).json();
+    const d=await(await fetch(`/api/feed?_v=refurb&limit=50&cursor=${fwdCursor}${cid}`)).json();
     if(gen!==_loadGen) return;
     const items=d.items||[];
     if(!items.length){fwdDone=true;return;}
@@ -1620,16 +1303,16 @@ async function loadFwd(){
       renderVis();
     }
   }catch(e){console.warn('loadFwd',e);}
-  finally{gapLoading=false;}
+  finally{gapLoading=false;_skelShow(false);}
 }
 
 async function loadRev(){
   if(gapLoading||revDone||revCursor==null) return;
-  gapLoading=true;
+  gapLoading=true;_skelShow(true);
   const gen=_loadGen;
   try{
     const rid=revCursorId?`&after_id=${encodeURIComponent(revCursorId)}`:'';
-    const d=await(await fetch(`/api/feed?after=${revCursor}${rid}&limit=50`)).json();
+    const d=await(await fetch(`/api/feed?_v=refurb&after=${revCursor}${rid}&limit=50`)).json();
     if(gen!==_loadGen) return;
     const items=d.items||[];
     if(!items.length){revDone=true;return;}
@@ -1653,7 +1336,7 @@ async function loadRev(){
       renderVis();
     }
   }catch(e){console.warn('loadRev',e);}
-  finally{gapLoading=false;}
+  finally{gapLoading=false;_skelShow(false);}
 }
 
 function checkGapLoad(){
@@ -1725,7 +1408,7 @@ function onSearch(q){
       (r[5]||'').toLowerCase().includes(lo)||(r[6]||'').toLowerCase().includes(lo));
     _applySearchResults(local, ql);
     try{
-      const d=await(await fetch('/api/feed?q='+encodeURIComponent(ql))).json();
+      const d=await(await fetch('/api/feed?_v=refurb&q='+encodeURIComponent(ql))).json();
       if(gen!==_srchGen) return; // stale
       _applySearchResults(d.items||[], ql);
     }catch(e){console.warn('search',e);}
@@ -1746,6 +1429,7 @@ window.addEventListener('resize',()=>{lastR=[-1,-1];renderVis();});
     YM_IDX=meta.ym_index||{};
     META_TOTAL=meta.total||0;
     FIRST_TS=meta.first_ts||null;
+    FLIGHT_DAYS=meta.flight_days||[];
     document.getElementById('badge').textContent=META_TOTAL.toLocaleString()+' check-ins';
     renderCal();
     // ── Page insight ─────────────────────────────────────────────────────────
@@ -1778,7 +1462,7 @@ window.addEventListener('resize',()=>{lastR=[-1,-1];renderVis();});
 
   let newestData={items:[],has_more:false,next_cursor:null,next_cursor_id:null};
   try{
-    newestData=await(await fetch(`/api/feed?limit=${PG}`)).json();
+    newestData=await(await fetch(`/api/feed?_v=refurb&limit=${PG}`)).json();
   }catch(e){console.warn('init fetch',e);}
 
   const items=newestData.items||[];
@@ -1814,6 +1498,9 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   <a class="active" href="feed.html"><span class="sn-icon">📰</span><span class="sn-lbl">FEED</span></a>
   <a href="tips.html"><span class="sn-icon">💬</span><span class="sn-lbl">TIPS</span></a>
   <a href="ratings.html"><span class="sn-icon">⭐</span><span class="sn-lbl">RATED</span></a>
+  <a href="flights.html"><span class="sn-icon">✈</span><span class="sn-lbl">FLIGHTS</span></a>
+  <a href="years.html"><span class="sn-icon">🗓️</span><span class="sn-lbl">YEARS</span></a>
+  <a href="shouts.html"><span class="sn-icon">💭</span><span class="sn-lbl">SHOUTS</span></a>
   <a href="photos.html"><span class="sn-icon">📷</span><span class="sn-lbl">PHOTOS</span></a>
   <a href="trips.html"><span class="sn-icon">✈</span><span class="sn-lbl">TRIPS</span></a>
   <a href="lists.html"><span class="sn-icon">📋</span><span class="sn-lbl">LISTS</span></a>
@@ -1843,6 +1530,7 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   });
 })();
 </script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "096ba3d9093f4c629948d81ef8438a34"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 
 </html>

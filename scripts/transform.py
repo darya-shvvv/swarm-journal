@@ -12,6 +12,7 @@ import json
 import math
 import yaml
 import logging
+import unicodedata
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -148,6 +149,12 @@ def build_blank_city_resolver(review_csv_path: str | Path):
 
 # ── Config loader ──────────────────────────────────────────────────────────────
 
+#: Columns a companion_fixes.json entry may override, in the same order
+#: metrics.collect_companions() reads them. sync_to_d1.py imports this so the
+#: D1 reconcile patches exactly the same set.
+COMPANION_FIX_FIELDS = ("with_name", "with_id", "overlaps_name", "overlaps_id")
+
+
 def load_mappings(config_dir: str | Path = "config") -> dict[str, Any]:
     """Load city_merge (YAML), country_fixes and categories (JSON) from config/."""
 
@@ -169,12 +176,16 @@ def load_mappings(config_dir: str | Path = "config") -> dict[str, Any]:
 
     country_fixes = _load_file("country_fixes.json")
     city_fixes    = _load_file("city_fixes.json")   # per-timestamp city overrides
+    venue_fixes   = _load_file("venue_fixes.json")  # per-venue_id city/country overrides
+    companion_fixes = _load_file("companion_fixes.json")  # per-checkin_id companion overrides
     city_merge    = _load_file("city_merge.yaml")
     cats_raw      = _load_file("categories.json")
 
     return {
         "country_fixes":   country_fixes,
         "city_fixes":      city_fixes,
+        "venue_fixes":     venue_fixes,
+        "companion_fixes": companion_fixes,
         "city_merge":      city_merge,
         "category_groups": cats_raw.get("category_groups", {}),
         "explorer_groups": cats_raw.get("explorer_groups", {}),
@@ -197,14 +208,45 @@ def apply_transforms(
     """
     country_fixes = mappings.get("country_fixes", {})
     city_fixes    = mappings.get("city_fixes", {})
+    venue_fixes   = mappings.get("venue_fixes", {})
+    companion_fixes = mappings.get("companion_fixes", {})
     city_merge    = mappings.get("city_merge", {})
 
     blank_filled  = 0
     malformed_dates = 0
 
     for row in rows:
-        # Country fix (keyed on unix timestamp string)
         ts = row.get("date", "").strip()
+
+        # Per-check-in companion override (companion_fixes.json), keyed by
+        # checkin_id. Foursquare lets a friend be tagged onto a check-in AFTER
+        # we snapshotted it, and nothing re-reads `with`/`shout` for an existing
+        # row: the incremental fetch only appends new rows, enrich_overlaps reads
+        # only `overlaps`, and the archive full re-fetch replaces each row with
+        # the API version (so hand-editing checkins.csv is undone next month).
+        # Fixing it here instead keeps the CSV a faithful API snapshot and makes
+        # the correction survive every re-fetch. Applied FIRST — it is an
+        # independent field set, and the venue_fixes branch below can `continue`.
+        cfix = companion_fixes.get(row.get("checkin_id", "").strip())
+        if isinstance(cfix, dict):
+            for _f in COMPANION_FIX_FIELDS:
+                if cfix.get(_f):
+                    row[_f] = cfix[_f]
+
+        # Per-venue override (venue_fixes.json) — HIGHEST priority. A single
+        # venue_id entry pins city/country for every check-in at that venue,
+        # past and future. Used for gateway venues (border crossings, airports)
+        # whose Foursquare city/country is wrong or internally inconsistent.
+        vfix = venue_fixes.get(row.get("venue_id", "").strip())
+        if isinstance(vfix, dict):
+            if vfix.get("country"):
+                row["country"] = vfix["country"]
+            if vfix.get("city"):
+                row["city"] = vfix["city"]
+                row["city_inferred"] = "0"
+                continue
+
+        # Country fix (keyed on unix timestamp string)
         if ts in country_fixes:
             row["country"] = country_fixes[ts]
 
@@ -212,6 +254,7 @@ def apply_transforms(
         # returned by Foursquare for some check-ins → canonical "Turkey")
         if row.get("country") == "Türkiye":
             row["country"] = "Turkey"
+        # Foursquare returns Belarus in its local spelling for some venues.
         if row.get("country") == "Беларусь":
             row["country"] = "Belarus"
 
@@ -219,10 +262,18 @@ def apply_transforms(
         # city_merge and blank-city inference so manual assignments win.
         if ts in city_fixes:
             row["city"] = city_fixes[ts]
+            row["city_inferred"] = "0"
             continue
 
         # City normalisation
-        city = row.get("city", "").strip()
+        # Unicode-normalise to NFC first: Foursquare sometimes returns diacritic
+        # city names in NFD (decomposed, e.g. "Ha Noi" as a+U+0300, o+U+0323),
+        # while city_merge keys are NFC (precomposed). Without this, NFD rows bypass
+        # EVERY string-keyed rule (city_merge, city_fixes values, venue_fixes) and
+        # resurface as phantom single-count cities (a duplicate "Soc Son" alongside
+        # the correctly-merged Hanoi rows). Store the NFC value back so metrics/D1 agree.
+        city = unicodedata.normalize("NFC", row.get("city", "").strip())
+        row["city"] = city
         # Foursquare encodes apostrophes as U+2019 (RIGHT SINGLE QUOTATION MARK)
         # but city_merge keys use U+0027 (ASCII apostrophe).  Normalise first so
         # entries like "Kazan'" (167 rows), "Smarhon'" (7), "Nevel'" (8), etc. match.
@@ -234,6 +285,7 @@ def apply_transforms(
             # Infer city for blank-city rows from coordinates / timestamp
             inferred = blank_city_resolver(row)
             if inferred:
+                inferred = unicodedata.normalize("NFC", inferred)
                 # Also run city_merge on the inferred name — the review CSV may
                 # store raw Foursquare values (Cyrillic, RSQM apostrophes, variants)
                 # that still need normalising, e.g. "Мачулищи" → "Machulishchy".
@@ -241,10 +293,13 @@ def apply_transforms(
                 row["city"] = city_merge.get(inferred_norm,
                               city_merge.get(inferred, inferred))
                 blank_filled += 1
+                row["city_inferred"] = "1"
         elif city_normalised in city_merge:
             row["city"] = city_merge[city_normalised]
         elif city in city_merge:
             row["city"] = city_merge[city]
+
+        row.setdefault("city_inferred", "0")
 
         # Validate date
         if ts and not ts.lstrip("-").isdigit():
