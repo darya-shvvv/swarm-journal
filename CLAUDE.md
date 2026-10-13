@@ -17,7 +17,7 @@ Repository guidance for Claude Code.
   --input C:/Users/dshvvv/Documents/GitHub/foursquare-data/checkins.csv \
   --config-dir config --output-dir . \
   --photos C:/Users/dshvvv/Documents/GitHub/foursquare-data/photos.json \
-  --pix-url "https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix"
+  --pix-url "https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix"
 ```
 
 ### Fetch check-ins
@@ -111,13 +111,13 @@ python -m http.server 8000
   (contains `checkins.csv`, `tips.json`, `photos.json`, `pix/`).
 - Main orchestrator: `scripts/build.py`.
 - Core pipeline:
-  `transform.py -> metrics.py -> template/gen scripts -> *.html`.
+  `transform.py -> metrics/ (package) -> template/gen scripts -> *.html`.
 
 ## Key Files
 
 - Build/orchestration: `scripts/build.py`
 - Normalization: `scripts/transform.py`
-- Metrics/trips: `scripts/metrics.py`
+- Metrics/trips: `scripts/metrics/` package
 - Tips generation: `scripts/gen_tips.py`
 - Photos generation: `scripts/gen_photos.py`
 - Tips fetch: `scripts/fetch_tips.py`
@@ -157,10 +157,10 @@ python -m http.server 8000
 
 ## Deployment Notes
 
-- Deploy target: Cloudflare Pages (auto on push to `main`). Project name: `4sq` (`wrangler.toml`).
+- Deploy target: Cloudflare Pages (auto on push to `main`). Project name: `swarm-journal` (`wrangler.toml`). Site: https://swarm-journal.pages.dev (canonical/og URLs in templates, `SITE_URL` in `gen_feeds.py` / `gen_country_pages.py`).
 - Photo hosting: Cloudflare R2 under `/pix` prefix.
 - Search backend: Cloudflare D1 database `swarmdata` (ID `52210bd9-a019-415e-8f12-6a73b42278f9`), queried by `functions/api/search.js`.
-- D1 binding must be added manually in CF dashboard: Pages → 4sq → Settings → Functions → D1 database bindings → Variable: `DB`, database: `swarmdata`.
+- D1 binding must be added manually in CF dashboard: Pages → swarm-journal → Settings → Functions → D1 database bindings → Variable: `DB`, database: `swarmdata`.
 - Common required secrets in CI:
   `FOURSQUARE_TOKEN`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL`,
   `CF_D1_TOKEN`, `CF_ACCOUNT_ID`, `CF_D1_DATABASE_ID`.

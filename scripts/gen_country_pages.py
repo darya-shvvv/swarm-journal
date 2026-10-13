@@ -32,7 +32,7 @@ from pathlib import Path
 
 CTRY_CODE: dict[str, str] = {}
 
-SITE_URL = "https://4sq.pages.dev"
+SITE_URL = "https://swarm-journal.pages.dev"
 _MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 

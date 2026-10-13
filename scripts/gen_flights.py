@@ -406,7 +406,7 @@ HTML = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Flights — Check-in Journal</title>
 <meta name="description" content="Every flight you've taken, with routes, airlines, aircraft, and a world map of all great-circle paths.">
-<link rel="canonical" href="https://4sq.pages.dev/flights.html">
+<link rel="canonical" href="https://swarm-journal.pages.dev/flights.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Flights — Check-in Journal">
 <meta property="og:description" content="Every flight you've taken, with routes, airlines, aircraft, and a world map.">

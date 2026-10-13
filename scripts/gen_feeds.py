@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any
 from xml.sax.saxutils import escape as _xml_escape
 
-SITE_URL = "https://4sq.pages.dev"
+SITE_URL = "https://swarm-journal.pages.dev"
 FEED_TITLE = "Check-in Journal"
 FEED_DESC = "Latest Foursquare/Swarm check-ins."
 MAX_ITEMS = 30

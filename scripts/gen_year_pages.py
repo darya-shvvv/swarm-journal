@@ -743,7 +743,7 @@ PAGE_TEMPLATE = r"""<!DOCTYPE html>
 <script>document.documentElement.classList.add('js');</script>
 <title>{title}</title>
 <meta name="description" content="{description}">
-<link rel="canonical" href="https://4sq.pages.dev/year-{year}.html">
+<link rel="canonical" href="https://swarm-journal.pages.dev/year-{year}.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
