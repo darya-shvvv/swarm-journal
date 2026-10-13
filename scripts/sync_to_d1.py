@@ -566,6 +566,10 @@ def main() -> None:
         if _file_exists(args.trips, "trips"):
             trip_rows = parse_trips(args.trips)
             d1.batch_upsert(SQL_TRIPS, trip_rows, label="trips    ")
+            # ids are 1..N in trips.html order, so the upsert above replaces
+            # every row that still exists; a trip that vanished (merge, rule
+            # change) leaves its id at the tail — drop that tail too.
+            d1.query("DELETE FROM trips WHERE id > ?", [max((r[0] for r in trip_rows), default=0)])
             changed = True
         else:
             print("  trips    : skipped (no data)", flush=True)
@@ -733,6 +737,7 @@ def main() -> None:
         print("D1 sync: all counts stable or growing", flush=True)
 
     print(f"CHANGED={'true' if changed else 'false'}", flush=True)
+    print(d1.usage_summary(), flush=True)
     print("D1 sync: done", flush=True)
 
 
