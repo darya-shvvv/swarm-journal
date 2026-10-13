@@ -64,16 +64,17 @@
     "name": "Minsk - second visit 🚂",
     "start_date": "2025-03-09",
     "end_date": "2025-03-11",
-    "start_ts": 1741552666,
+    "start_ts": 1741546297,
     "start_year": 2025,
     "duration": 3,
-    "checkin_count": 39,
-    "unique_places": 37,
+    "checkin_count": 40,
+    "unique_places": 38,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Minsk",
+      "Hrodna",
       "Strachanyaty"
     ],
     "tags": [],
@@ -87,15 +88,15 @@
         4
       ],
       [
+        "Bus Line",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
       [
         "Coffee Shop",
-        2
-      ],
-      [
-        "Bus Line",
         2
       ],
       [
@@ -185,11 +186,11 @@
     "name": "First vacation - big adventure in SPB 🚂",
     "start_date": "2025-04-13",
     "end_date": "2025-04-29",
-    "start_ts": 1744576136,
+    "start_ts": 1744570168,
     "start_year": 2025,
     "duration": 17,
-    "checkin_count": 404,
-    "unique_places": 353,
+    "checkin_count": 407,
+    "unique_places": 356,
     "countries": [
       "Russia",
       "Belarus"
@@ -197,6 +198,7 @@
     "cities": [
       "Saint Petersburg",
       "Minsk",
+      "Hrodna",
       "Strachanyaty",
       "Vitebsk",
       "Lobok",
@@ -240,11 +242,11 @@
         11
       ],
       [
-        "Outdoor Sculpture",
+        "Bus Line",
         9
       ],
       [
-        "Church",
+        "Outdoor Sculpture",
         9
       ]
     ]
@@ -252,18 +254,19 @@
   {
     "id": 5,
     "name": "Minsk for a seminar 🚌",
-    "start_date": "2025-05-24",
+    "start_date": "2025-05-23",
     "end_date": "2025-05-29",
-    "start_ts": 1748037147,
+    "start_ts": 1748026040,
     "start_year": 2025,
-    "duration": 6,
-    "checkin_count": 173,
-    "unique_places": 161,
+    "duration": 7,
+    "checkin_count": 178,
+    "unique_places": 166,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Minsk",
+      "Hrodna",
       "Machulishchy",
       "Strachanyaty"
     ],
@@ -278,6 +281,10 @@
         18
       ],
       [
+        "Bus Line",
+        10
+      ],
+      [
         "Monument",
         10
       ],
@@ -286,16 +293,12 @@
         9
       ],
       [
-        "Bus Line",
-        8
+        "Bus Stop",
+        7
       ],
       [
         "Park",
         7
-      ],
-      [
-        "Bus Stop",
-        6
       ],
       [
         "Bridge",
@@ -315,17 +318,18 @@
     "id": 6,
     "name": "Skidel countryside 🚂",
     "start_date": "2025-06-06",
-    "end_date": "2025-06-06",
-    "start_ts": 1749211028,
+    "end_date": "2025-06-07",
+    "start_ts": 1749205029,
     "start_year": 2025,
-    "duration": 1,
-    "checkin_count": 27,
-    "unique_places": 27,
+    "duration": 2,
+    "checkin_count": 34,
+    "unique_places": 33,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Skidel"
+      "Skidel",
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
@@ -335,11 +339,19 @@
       ],
       [
         "City",
-        4
+        5
       ],
       [
         "Church",
         3
+      ],
+      [
+        "Bus Station",
+        2
+      ],
+      [
+        "Rail Station",
+        2
       ],
       [
         "Memorial Site",
@@ -350,7 +362,7 @@
         2
       ],
       [
-        "Rail Station",
+        "Plaza",
         1
       ],
       [
@@ -360,14 +372,6 @@
       [
         "Fountain",
         1
-      ],
-      [
-        "Outdoor Sculpture",
-        1
-      ],
-      [
-        "Café",
-        1
       ]
     ]
   },
@@ -375,18 +379,19 @@
     "id": 7,
     "name": "Baranovichi animal party 🚌",
     "start_date": "2025-06-14",
-    "end_date": "2025-06-15",
-    "start_ts": 1749891519,
+    "end_date": "2025-06-16",
+    "start_ts": 1749875968,
     "start_year": 2025,
-    "duration": 2,
-    "checkin_count": 81,
-    "unique_places": 75,
+    "duration": 3,
+    "checkin_count": 89,
+    "unique_places": 82,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Baranovichi",
-      "Slonim"
+      "Slonim",
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
@@ -404,31 +409,31 @@
       ],
       [
         "Plaza",
-        5
+        6
+      ],
+      [
+        "Bus Station",
+        4
+      ],
+      [
+        "Bus Line",
+        4
+      ],
+      [
+        "City",
+        3
+      ],
+      [
+        "Neighborhood",
+        3
       ],
       [
         "Lake",
         3
       ],
       [
-        "Bus Line",
-        3
-      ],
-      [
         "Historic and Protected Site",
         3
-      ],
-      [
-        "Other Great Outdoors",
-        3
-      ],
-      [
-        "Church",
-        3
-      ],
-      [
-        "City",
-        2
       ]
     ]
   },
@@ -440,8 +445,8 @@
     "start_ts": 1750138724,
     "start_year": 2025,
     "duration": 1,
-    "checkin_count": 6,
-    "unique_places": 6,
+    "checkin_count": 7,
+    "unique_places": 7,
     "countries": [
       "Belarus"
     ],
@@ -449,7 +454,8 @@
       "Masty",
       "Skidel",
       "Lavno",
-      "Shchuchin"
+      "Shchuchin",
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
@@ -476,24 +482,71 @@
       [
         "Fuel Station",
         1
+      ],
+      [
+        "Home (private)",
+        1
       ]
     ]
   },
   {
     "id": 9,
-    "name": "Minsk midsummer vibes 🚂",
-    "start_date": "2025-07-06",
-    "end_date": "2025-07-08",
-    "start_ts": 1751772832,
+    "name": "Minsk, Belarus 🚗",
+    "start_date": "2025-06-21",
+    "end_date": "2025-06-21",
+    "start_ts": 1750485317,
     "start_year": 2025,
-    "duration": 3,
-    "checkin_count": 67,
-    "unique_places": 59,
+    "duration": 1,
+    "checkin_count": 6,
+    "unique_places": 6,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Minsk",
+      "Hrodna",
+      "Strachanyaty"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "City",
+        2
+      ],
+      [
+        "Fuel Station",
+        1
+      ],
+      [
+        "Museum",
+        1
+      ],
+      [
+        "Water Park",
+        1
+      ],
+      [
+        "Home (private)",
+        1
+      ]
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Minsk midsummer vibes 🚂",
+    "start_date": "2025-07-06",
+    "end_date": "2025-07-08",
+    "start_ts": 1751771775,
+    "start_year": 2025,
+    "duration": 3,
+    "checkin_count": 71,
+    "unique_places": 62,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Minsk",
+      "Hrodna",
       "Skidel"
     ],
     "tags": [],
@@ -509,6 +562,10 @@
       [
         "Bus Stop",
         5
+      ],
+      [
+        "Rail Station",
+        4
       ],
       [
         "Road",
@@ -533,28 +590,25 @@
       [
         "Neighborhood",
         3
-      ],
-      [
-        "Plaza",
-        3
       ]
     ]
   },
   {
-    "id": 10,
+    "id": 11,
     "name": "Lida day trip 🚌",
     "start_date": "2025-08-10",
-    "end_date": "2025-08-10",
-    "start_ts": 1754820095,
+    "end_date": "2025-08-11",
+    "start_ts": 1754812709,
     "start_year": 2025,
-    "duration": 1,
-    "checkin_count": 24,
-    "unique_places": 24,
+    "duration": 2,
+    "checkin_count": 30,
+    "unique_places": 30,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Lida"
+      "Lida",
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
@@ -563,8 +617,20 @@
         5
       ],
       [
+        "Bus Station",
+        3
+      ],
+      [
         "Outdoor Sculpture",
         3
+      ],
+      [
+        "Bus Line",
+        2
+      ],
+      [
+        "City",
+        2
       ],
       [
         "Temple",
@@ -583,38 +649,27 @@
         2
       ],
       [
-        "Bus Station",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
         "BBQ Joint",
-        1
-      ],
-      [
-        "Plaza",
         1
       ]
     ]
   },
   {
-    "id": 11,
+    "id": 12,
     "name": "Vawkavysk & around 🚂",
     "start_date": "2025-08-24",
-    "end_date": "2025-08-24",
-    "start_ts": 1756038404,
+    "end_date": "2025-08-25",
+    "start_ts": 1756028664,
     "start_year": 2025,
-    "duration": 1,
-    "checkin_count": 17,
-    "unique_places": 17,
+    "duration": 2,
+    "checkin_count": 25,
+    "unique_places": 24,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Vawkavysk",
+      "Hrodna",
       "Skidel",
       "Zel’va",
       "Slonim"
@@ -622,11 +677,19 @@
     "tags": [],
     "top_cats": [
       [
+        "Bus Station",
+        4
+      ],
+      [
         "Rail Station",
+        4
+      ],
+      [
+        "Bus Line",
         2
       ],
       [
-        "Bus Station",
+        "City",
         2
       ],
       [
@@ -635,10 +698,6 @@
       ],
       [
         "Church",
-        1
-      ],
-      [
-        "City",
         1
       ],
       [
@@ -656,23 +715,19 @@
       [
         "Park",
         1
-      ],
-      [
-        "Event Space",
-        1
       ]
     ]
   },
   {
-    "id": 12,
+    "id": 13,
     "name": "Second vacation - exploring SPB region 🚂",
     "start_date": "2025-09-06",
     "end_date": "2025-09-18",
-    "start_ts": 1757129662,
+    "start_ts": 1757129387,
     "start_year": 2025,
     "duration": 13,
-    "checkin_count": 535,
-    "unique_places": 461,
+    "checkin_count": 542,
+    "unique_places": 467,
     "countries": [
       "Russia",
       "Belarus"
@@ -685,6 +740,7 @@
       "Kronshtadt",
       "Pushkin",
       "Lomonosov",
+      "Hrodna",
       "Domoshany",
       "Lobok",
       "Skidel",
@@ -711,7 +767,7 @@
       ],
       [
         "Plaza",
-        31
+        32
       ],
       [
         "Road",
@@ -740,24 +796,41 @@
     ]
   },
   {
-    "id": 13,
+    "id": 14,
     "name": "Minsk hair coloring 🚂",
     "start_date": "2025-09-29",
-    "end_date": "2025-09-29",
-    "start_ts": 1759116840,
+    "end_date": "2025-09-30",
+    "start_ts": 1759114449,
     "start_year": 2025,
-    "duration": 1,
-    "checkin_count": 14,
-    "unique_places": 14,
+    "duration": 2,
+    "checkin_count": 23,
+    "unique_places": 22,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Minsk",
+      "Hrodna",
       "Skidel"
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Bus Station",
+        3
+      ],
+      [
+        "Plaza",
+        2
+      ],
+      [
+        "Rail Station",
+        2
+      ],
+      [
+        "City",
+        2
+      ],
       [
         "Shopping Mall",
         2
@@ -767,15 +840,11 @@
         2
       ],
       [
+        "Platform",
+        1
+      ],
+      [
         "Train",
-        1
-      ],
-      [
-        "City",
-        1
-      ],
-      [
-        "Rail Station",
         1
       ],
       [
@@ -785,36 +854,25 @@
       [
         "Bus Stop",
         1
-      ],
-      [
-        "Hair Salon",
-        1
-      ],
-      [
-        "Bakery",
-        1
-      ],
-      [
-        "Hiking Trail",
-        1
       ]
     ]
   },
   {
-    "id": 14,
+    "id": 15,
     "name": "Minsk for a bachelor party 🚂",
     "start_date": "2025-10-10",
-    "end_date": "2025-10-13",
-    "start_ts": 1760128586,
+    "end_date": "2025-10-14",
+    "start_ts": 1760121456,
     "start_year": 2025,
-    "duration": 4,
-    "checkin_count": 92,
-    "unique_places": 83,
+    "duration": 5,
+    "checkin_count": 100,
+    "unique_places": 91,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Minsk",
+      "Hrodna",
       "Strachanyaty"
     ],
     "tags": [],
@@ -824,8 +882,12 @@
         12
       ],
       [
+        "Bus Line",
+        7
+      ],
+      [
         "Neighborhood",
-        6
+        7
       ],
       [
         "Monument",
@@ -836,47 +898,44 @@
         6
       ],
       [
-        "Bus Line",
-        5
-      ],
-      [
         "Street Art",
         4
+      ],
+      [
+        "Plaza",
+        3
+      ],
+      [
+        "Home (private)",
+        3
       ],
       [
         "Bus Stop",
         3
       ],
       [
-        "Plaza",
-        2
-      ],
-      [
-        "Business Center",
-        2
-      ],
-      [
-        "Taxi",
+        "Bus Station",
         2
       ]
     ]
   },
   {
-    "id": 15,
+    "id": 16,
     "name": "Navahrudak - Lida castles 🚂",
     "start_date": "2025-10-19",
-    "end_date": "2025-10-19",
-    "start_ts": 1760859573,
+    "end_date": "2025-10-20",
+    "start_ts": 1760851194,
     "start_year": 2025,
-    "duration": 1,
-    "checkin_count": 64,
-    "unique_places": 64,
+    "duration": 2,
+    "checkin_count": 71,
+    "unique_places": 71,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Navahrudak",
-      "Lida"
+      "Lida",
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
@@ -890,7 +949,15 @@
       ],
       [
         "Plaza",
+        5
+      ],
+      [
+        "Bus Station",
         4
+      ],
+      [
+        "City",
+        3
       ],
       [
         "Historic and Protected Site",
@@ -905,49 +972,42 @@
         3
       ],
       [
-        "City",
-        2
-      ],
-      [
-        "Bus Station",
+        "Bus Line",
         2
       ],
       [
         "Park",
-        2
-      ],
-      [
-        "Castle",
         2
       ]
     ]
   },
   {
-    "id": 16,
+    "id": 17,
     "name": "Minsk end of October 🚂",
     "start_date": "2025-10-25",
     "end_date": "2025-10-27",
-    "start_ts": 1761424770,
+    "start_ts": 1761417347,
     "start_year": 2025,
     "duration": 3,
-    "checkin_count": 68,
-    "unique_places": 67,
+    "checkin_count": 72,
+    "unique_places": 71,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Minsk",
+      "Hrodna",
       "Strachanyaty"
     ],
     "tags": [],
     "top_cats": [
       [
-        "Park",
+        "Bus Line",
         6
       ],
       [
-        "Bus Line",
-        5
+        "Park",
+        6
       ],
       [
         "Other Great Outdoors",
@@ -978,13 +1038,13 @@
         3
       ],
       [
-        "Waterfront",
+        "City",
         2
       ]
     ]
   },
   {
-    "id": 17,
+    "id": 18,
     "name": "Minsk - move to the man 🚗",
     "start_date": "2025-11-14",
     "end_date": "2025-11-15",
@@ -1045,7 +1105,7 @@
     ]
   },
   {
-    "id": 18,
+    "id": 19,
     "name": "Hrodna - teeth therapy 🚂",
     "start_date": "2025-11-25",
     "end_date": "2025-11-26",
@@ -1106,7 +1166,7 @@
     ]
   },
   {
-    "id": 19,
+    "id": 20,
     "name": "Big weekend - winter SPB 🚌",
     "start_date": "2026-01-16",
     "end_date": "2026-01-19",
@@ -1174,7 +1234,7 @@
     ]
   },
   {
-    "id": 20,
+    "id": 21,
     "name": "Hrodna - teeth therapy #2 🚂",
     "start_date": "2026-01-22",
     "end_date": "2026-01-23",
@@ -1235,7 +1295,7 @@
     ]
   },
   {
-    "id": 21,
+    "id": 22,
     "name": "Hrodna - to fix a bracket 🚂",
     "start_date": "2026-02-12",
     "end_date": "2026-02-12",
@@ -1297,7 +1357,7 @@
     ]
   },
   {
-    "id": 22,
+    "id": 23,
     "name": "В Москве на патриках 🚌",
     "start_date": "2026-02-26",
     "end_date": "2026-03-01",
@@ -1364,7 +1424,7 @@
     ]
   },
   {
-    "id": 23,
+    "id": 24,
     "name": "Gomel city of lynx 🚂",
     "start_date": "2026-03-14",
     "end_date": "2026-03-16",
@@ -1425,7 +1485,7 @@
     ]
   },
   {
-    "id": 24,
+    "id": 25,
     "name": "Bath session #1 🚂",
     "start_date": "2026-04-03",
     "end_date": "2026-04-04",
@@ -1486,7 +1546,7 @@
     ]
   },
   {
-    "id": 25,
+    "id": 26,
     "name": "Hrodna - teeth therapy #3 🚂",
     "start_date": "2026-04-07",
     "end_date": "2026-04-08",
@@ -1547,7 +1607,7 @@
     ]
   },
   {
-    "id": 26,
+    "id": 27,
     "name": "Maladoi trip 🚂",
     "start_date": "2026-04-18",
     "end_date": "2026-04-18",
@@ -1608,7 +1668,7 @@
     ]
   },
   {
-    "id": 27,
+    "id": 28,
     "name": "Uzbekistan + Russia + 1 more 🚌",
     "start_date": "2026-04-24",
     "end_date": "2026-05-06",
@@ -1679,7 +1739,7 @@
     ]
   },
   {
-    "id": 28,
+    "id": 29,
     "name": "Mogilev, Belarus 🚂",
     "start_date": "2026-05-16",
     "end_date": "2026-05-18",
@@ -1740,7 +1800,7 @@
     ]
   },
   {
-    "id": 29,
+    "id": 30,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-05-18",
     "end_date": "2026-05-18",
@@ -1803,7 +1863,7 @@
     ]
   },
   {
-    "id": 30,
+    "id": 31,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-06-11",
     "end_date": "2026-06-14",
@@ -1866,7 +1926,7 @@
     ]
   },
   {
-    "id": 31,
+    "id": 32,
     "name": "Russia & Belarus 🚌",
     "start_date": "2026-06-19",
     "end_date": "2026-06-23",
@@ -1935,7 +1995,7 @@
     ]
   },
   {
-    "id": 32,
+    "id": 33,
     "name": "Vitebsk, Belarus 🚂",
     "start_date": "2026-07-04",
     "end_date": "2026-07-05",
@@ -1996,7 +2056,7 @@
     ]
   },
   {
-    "id": 33,
+    "id": 34,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-09-04",
     "end_date": "2026-09-06",
@@ -2058,8 +2118,8 @@
     ]
   },
   {
-    "id": 34,
-    "name": "Turkey + Moldova + 3 more 🚌",
+    "id": 35,
+    "name": "Turkey + Moldova + 3 more ✈️",
     "start_date": "2026-09-26",
     "end_date": "2026-10-12",
     "start_ts": 1790453145,

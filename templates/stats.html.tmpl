@@ -15,11 +15,14 @@
 <meta name="twitter:title" content="Statistics — Check-in Journal">
 <meta name="twitter:description" content="Deep analytics of 65,000+ Foursquare check-ins: yearly trends, activity streaks, venue loyalty, discovery rate, category mix and more.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css" integrity="sha512-uvXdJud8WaOlQFjlz9B15Yy2Au/bMAvz79F7Xa6OakCl2jvQPdHD0hb3dEqZRdSwG4/sknePXlE7GiarwA/9Wg==" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{{SITE_CSS_LINK}}">
 <style>
-:root{--bg:#0b0d13;--card:#12151f;--card2:#181c28;--border:#222738;--gold:#e8b86d;--teal:#4ecdc4;--muted:#4a5270;--text:#cdd5f0;--text2:#7a85a8;}
+:root{--bg:#0b0d13;--card:#12151f;--card2:#181c28;--border:#222738;--gold:#e8b86d;--teal:#4ecdc4;--muted:#8790b4;--text:#cdd5f0;--text2:#7a85a8;}
 body.light{--bg:#ddd8cf;--card:#f0ece3;--card2:#e5e0d7;--border:#aaa49a;--gold:#7a3e00;--teal:#155c58;--muted:#54576a;--text:#15172a;--text2:#373b58;}
 body.light header{background:linear-gradient(160deg,#d6d1c8 0%,#dedad1 70%);}
 body.light .side-nav{background:rgba(220,215,208,0.97);}
@@ -48,16 +51,6 @@ a{color:inherit;}
 .gs-input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;}
 .gs-input::placeholder{color:var(--muted);}
 .gs-esc-hint{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:2px 6px;cursor:pointer;flex-shrink:0;}
-.side-nav{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:4000;display:flex;flex-direction:column;gap:0;background:rgba(18,21,31,0.92);border:1px solid var(--border);border-right:none;border-radius:10px 0 0 10px;backdrop-filter:blur(10px);overflow:hidden;}
-.side-nav a,.side-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:52px;padding:10px 4px;border:none;background:none;cursor:pointer;color:var(--muted);text-decoration:none;transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent;}
-.side-nav a:hover,.side-nav button:hover{background:rgba(255,255,255,.06);color:var(--text);}
-.side-nav a.active,.side-nav button.active{color:var(--gold);}
-.side-nav .sn-icon{font-size:.95rem;line-height:1;display:inline-block;transition:transform .15s;}
-.side-nav a:hover .sn-icon,.side-nav button:hover .sn-icon{transform:scale(1.28);}
-.side-nav .sn-lbl{font-family:'DM Mono',monospace;font-size:.42rem;text-transform:uppercase;letter-spacing:.05em;line-height:1;white-space:nowrap;}
-.side-nav .sn-sep{width:32px;height:1px;background:var(--border);margin:2px auto;}
-.side-nav .sn-sep--pages{width:36px;height:2px;background:var(--border);margin:3px auto;border-radius:1px;}
-@media(max-width:900px){.side-nav{display:none;}}
 /* visited: must use literal hex, not var() */
 .topnav a:visited{color:#4a5270;}
 
@@ -143,6 +136,11 @@ a{color:inherit;}
   .grid{padding:10px 10px 48px;}
   .card{padding:14px 14px;}
   .card-title{font-size:0.58rem;}
+  /* Mobile: let canvases pick up natural width but cap height so they don't dominate the viewport */
+  .card canvas{max-height:280px !important;height:auto !important;}
+  .card.full canvas{max-height:320px !important;}
+  /* Heatmap tables stay scrollable horizontally */
+  .card.full > div[style*="overflow-x"]{margin:0 -8px;}
   .loyalty-row{grid-template-columns:20px 1fr auto 30px;gap:6px;}
   .reg-row{grid-template-columns:20px 1fr 44px 36px;gap:5px;}
   .reg-name{font-size:.72rem;}
@@ -170,12 +168,15 @@ a{color:inherit;}
 
 <div id="heatmapTip" class="heatmap-tooltip"></div>
 
+{{ANOMALIES}}
+
 <div class="grid">
 
   <!-- 1. Check-ins by Year -->
   <div class="card">
     <div class="card-title">Check-ins by Year</div>
     <canvas id="yearChart" height="210"></canvas>
+    <div id="yoyTable" style="margin-top:14px;overflow-x:auto;"></div>
   </div>
 
   <!-- 2. Monthly Trend -->
@@ -266,6 +267,134 @@ a{color:inherit;}
     <canvas id="catChart" height="85"></canvas>
   </div>
 
+  <!-- 16. Hour × Category heatmap (full-width) -->
+  <div class="card full" id="hourCatCard" style="display:none;">
+    <div class="card-title">Hour of Day × Category <em>&middot; local time, top 8 groups</em></div>
+    <div id="hourCatHeat" style="overflow-x:auto;"></div>
+  </div>
+
+  <!-- 17. Day of Week × Category -->
+  <div class="card full" id="dowCatCard" style="display:none;">
+    <div class="card-title">Day of Week × Category <em>&middot; local time</em></div>
+    <div id="dowCatHeat" style="overflow-x:auto;"></div>
+  </div>
+
+  <!-- 18. Country hour profiles -->
+  <div class="card full" id="ctryHourCard" style="display:none;">
+    <div class="card-title">Country Hour Profiles <em>&middot; % of country's check-ins per local hour &middot; top 12 by volume</em></div>
+    <div id="ctryHourHeat" style="overflow-x:auto;"></div>
+  </div>
+
+  <!-- 19. Shout KPIs + emojis + sentiment + language (full-width) -->
+  <div class="card full" id="shoutKpiCard" style="display:none;">
+    <div class="card-title">Shouts <em>&middot; free-text notes you wrote with check-ins</em></div>
+    <div class="streak-row" id="shoutKpiRow"></div>
+  </div>
+
+  <div class="card" id="shoutEmojiCard" style="display:none;">
+    <div class="card-title">Top Emojis <em>&middot; you used in shouts</em></div>
+    <div id="shoutEmojiList" style="line-height:2;"></div>
+  </div>
+
+  <div class="card" id="shoutLangCard" style="display:none;">
+    <div class="card-title">Language Mix by Year <em>&middot; cyrillic vs latin in shouts</em></div>
+    <canvas id="shoutLangChart" height="230"></canvas>
+  </div>
+
+  <div class="card" id="shoutSentimentCard" style="display:none;">
+    <div class="card-title">Shout Mood by Year <em>&middot; emoji-based sentiment</em></div>
+    <canvas id="shoutSentChart" height="230"></canvas>
+  </div>
+
+  <div class="card" id="shoutCountCard" style="display:none;">
+    <div class="card-title">Shouts per Year <em>&middot; count &amp; avg length</em></div>
+    <canvas id="shoutCountChart" height="230"></canvas>
+  </div>
+
+  <div class="card full" id="shoutWordsCard" style="display:none;">
+    <div class="card-title">Top Words <em>&middot; most-used non-stopword tokens in your shouts</em></div>
+    <div id="shoutWordsList"></div>
+  </div>
+
+  <div class="card full" id="shoutWordsByCountryCard" style="display:none;">
+    <div class="card-title">Top Words by Country <em>&middot; top 10 countries by shout volume</em></div>
+    <div id="shoutWordsCountryList"></div>
+  </div>
+
+  <!-- 21. Transport Modes (full-width) -->
+  <div class="card full" id="transportCard" style="display:none;">
+    <div class="card-title">Transport Modes <em>&middot; km/year classified by speed between consecutive check-ins</em></div>
+    <div class="streak-row" id="transportKpis"></div>
+    <canvas id="transportChart" height="240"></canvas>
+  </div>
+
+  <!-- 22. Carbon Footprint -->
+  <div class="card" id="carbonCard" style="display:none;">
+    <div class="card-title">Travel Carbon <em>&middot; kg CO₂e per year, est.</em></div>
+    <canvas id="carbonChart" height="220"></canvas>
+  </div>
+
+  <!-- 23. Distance from Home -->
+  <div class="card" id="distHomeCard" style="display:none;">
+    <div class="card-title">Distance from Home <em>&middot; daily mean km from home centroid</em></div>
+    <div class="streak-row" id="nomadKpis"></div>
+    <canvas id="distHomeChart" height="220"></canvas>
+  </div>
+
+  <!-- 24. Daily Extremes (full-width) -->
+  <div class="card full" id="dayExtCard" style="display:none;">
+    <div class="card-title">First &amp; Last Check-in of Day <em>&middot; median local hour per year</em></div>
+    <canvas id="dayExtChart" height="240"></canvas>
+  </div>
+
+  <!-- 25. Cohort Retention (full-width) -->
+  <div class="card full" id="cohortCard" style="display:none;">
+    <div class="card-title">Cohort Venue Retention <em>&middot; venues discovered each year &middot; % revisited later</em></div>
+    <div id="cohortHeat" style="overflow-x:auto;"></div>
+  </div>
+
+  <!-- 26. Activity Trajectory (absolute counts, full-width) -->
+  <div class="card full" id="trajectoryCard" style="display:none;">
+    <div class="card-title">Category Trajectory <em>&middot; absolute check-in count per category group per year</em></div>
+    <canvas id="trajectoryChart" height="260"></canvas>
+  </div>
+
+  <!-- 27. City Funnel -->
+  <div class="card" id="cityFunnelCard" style="display:none;">
+    <div class="card-title">City Graduation <em>&middot; cities by total check-in count</em></div>
+    <canvas id="cityFunnelChart" height="240"></canvas>
+  </div>
+
+  <!-- 28. Diversity Index -->
+  <div class="card" id="diversityCard" style="display:none;">
+    <div class="card-title">Diversity Index <em>&middot; Shannon entropy of category mix per year</em></div>
+    <canvas id="diversityChart" height="240"></canvas>
+  </div>
+
+  <!-- 29. Companion Lifecycle (full-width) -->
+  <div class="card full" id="compLifeCard" style="display:none;">
+    <div class="card-title">Companion Lifecycle <em>&middot; first &amp; last seen, active span, top venue</em></div>
+    <div id="compLifeList"></div>
+  </div>
+
+  <!-- 30. Source App Trends -->
+  <div class="card" id="srcAppCard" style="display:none;">
+    <div class="card-title">Source App Trends <em>&middot; check-ins per client per year</em></div>
+    <canvas id="srcAppChart" height="220"></canvas>
+  </div>
+
+  <!-- 31. City inferred (data quality) -->
+  <div class="card" id="cityInferredCard" style="display:none;">
+    <div class="card-title">Data Quality <em>&middot; city values filled by centroid resolver</em></div>
+    <div class="streak-row" id="cityInferredKpis"></div>
+  </div>
+
+  <!-- 32. Dormant Venues (full-width) -->
+  <div class="card full" id="dormantCard" style="display:none;">
+    <div class="card-title">What You Miss <em>&middot; 10+ visit venues you haven't been to in over a year</em></div>
+    <div id="dormantList"></div>
+  </div>
+
 </div><!-- /.grid -->
 
 <script>
@@ -314,6 +443,34 @@ new Chart(document.getElementById('yearChart'),{
     scales:{x:{grid:{display:false}},y:{grid:{color:'#1a1e2e'}}}
   }
 });
+
+// ── YoY delta table ─────────────────────────────────────────────────────────
+(function(){
+  var d=S.by_year||[];if(d.length<2)return;
+  var rows='<table style="width:100%;border-collapse:collapse;font-family:\'DM Mono\',monospace;font-size:.65rem;">'
+    +'<thead><tr style="color:var(--muted);text-transform:uppercase;letter-spacing:.08em;">'
+    +'<th style="padding:4px 8px;text-align:left;">Year</th>'
+    +'<th style="padding:4px 8px;text-align:right;">Check-ins</th>'
+    +'<th style="padding:4px 8px;text-align:right;">vs prev</th>'
+    +'<th style="padding:4px 8px;text-align:right;">Δ%</th>'
+    +'</tr></thead><tbody>';
+  for(var i=0;i<d.length;i++){
+    var yr=d[i][0],cnt=d[i][1];
+    var delta=i>0?cnt-d[i-1][1]:null;
+    var pct=i>0&&d[i-1][1]?((delta/d[i-1][1])*100):null;
+    var col=delta===null?'var(--muted)':delta>=0?'#4ecdc4':'#e63946';
+    var sign=delta===null?'':delta>=0?'+':'';
+    var bg=i%2===0?'rgba(255,255,255,.02)':'transparent';
+    rows+='<tr style="background:'+bg+';">'
+      +'<td style="padding:4px 8px;color:var(--gold);">'+yr+'</td>'
+      +'<td style="padding:4px 8px;text-align:right;">'+cnt.toLocaleString()+'</td>'
+      +'<td style="padding:4px 8px;text-align:right;color:'+col+';">'+(delta===null?'—':sign+delta.toLocaleString())+'</td>'
+      +'<td style="padding:4px 8px;text-align:right;color:'+col+';">'+(pct===null?'—':sign+pct.toFixed(1)+'%')+'</td>'
+      +'</tr>';
+  }
+  rows+='</tbody></table>';
+  var el=document.getElementById('yoyTable');if(el)el.innerHTML=rows;
+})();
 
 // ── 2. Monthly Trend ────────────────────────────────────────────────────────
 new Chart(document.getElementById('monthChart'),{
@@ -637,6 +794,454 @@ new Chart(document.getElementById('catChart'),{
     }
   }
 });
+
+// ── 16-18. Cross-dim heatmaps ───────────────────────────────────────────────
+(function(){
+  var X=S.cross_dim||{};var groups=X.groups||[];
+  if(!groups.length)return;
+
+  // Generic heatmap renderer — rowsLabels, cols (group names), matrix[r][c]
+  function renderHeat(target, rowLabels, matrix, opts){
+    opts=opts||{};
+    var maxV=0;
+    for(var r=0;r<matrix.length;r++) for(var c=0;c<matrix[r].length;c++) if(matrix[r][c]>maxV) maxV=matrix[r][c];
+    if(maxV===0) return;
+    var rowTotals=matrix.map(function(row){return row.reduce(function(a,b){return a+b;},0);});
+
+    var html='<table style="border-collapse:collapse;font-family:\'DM Mono\',monospace;font-size:.62rem;width:100%;min-width:'+(120+groups.length*78)+'px;">';
+    html+='<thead><tr><th style="padding:4px 8px;text-align:left;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">'+(opts.rowLabel||'')+'</th>';
+    for(var c=0;c<groups.length;c++){
+      html+='<th style="padding:4px 6px;text-align:center;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:400;">'+esc(groups[c])+'</th>';
+    }
+    html+='<th style="padding:4px 8px;text-align:right;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Total</th></tr></thead><tbody>';
+    for(var r=0;r<matrix.length;r++){
+      html+='<tr><td style="padding:3px 8px;color:var(--gold);font-weight:600;white-space:nowrap;">'+esc(rowLabels[r])+'</td>';
+      for(var c=0;c<groups.length;c++){
+        var v=matrix[r][c];
+        var ratio=maxV?v/maxV:0;
+        var alpha=(0.07+0.78*ratio).toFixed(3);
+        var label=opts.pct?(v.toFixed(1)+'%'):v.toLocaleString();
+        var color=v?'var(--text)':'rgba(122,133,168,.25)';
+        var bg=v?'rgba(78,205,196,'+alpha+')':'transparent';
+        html+='<td style="padding:3px 6px;text-align:center;background:'+bg+';color:'+color+';border-radius:3px;">'+(v?label:'·')+'</td>';
+      }
+      var tot=rowTotals[r];
+      html+='<td style="padding:3px 8px;text-align:right;color:var(--muted);">'+(tot?tot.toLocaleString():'—')+'</td></tr>';
+    }
+    html+='</tbody></table>';
+    target.innerHTML=html;
+  }
+
+  // Hour × Category
+  if(X.hour_cat){
+    var hourLabels=[];for(var h=0;h<24;h++)hourLabels.push((h<10?'0':'')+h+':00');
+    renderHeat(document.getElementById('hourCatHeat'),hourLabels,X.hour_cat,{rowLabel:'Hour'});
+    document.getElementById('hourCatCard').style.display='';
+  }
+  // DOW × Category
+  if(X.dow_cat){
+    var dowLabels=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    renderHeat(document.getElementById('dowCatHeat'),dowLabels,X.dow_cat,{rowLabel:'Day'});
+    document.getElementById('dowCatCard').style.display='';
+  }
+  // Country × Hour (percent profile)
+  if(X.country_hour_pct&&X.country_hour_pct.length){
+    var rows=X.country_hour_pct.map(function(x){return x[0];});
+    var matrix=X.country_hour_pct.map(function(x){return x[1];});
+    var hours24=[];for(var h=0;h<24;h++)hours24.push((h<10?'0':'')+h);
+    // Replace groups for this single render — temp swap
+    var savedGroups=groups; groups=hours24;
+    renderHeat(document.getElementById('ctryHourHeat'),rows,matrix,{rowLabel:'Country',pct:true});
+    groups=savedGroups;
+    document.getElementById('ctryHourCard').style.display='';
+  }
+})();
+
+// ── 19. Shout text mining ────────────────────────────────────────────────────
+(function(){
+  var SH=S.shout_stats||{};
+  if(!SH.total_shouts)return;
+
+  // KPI strip
+  var totalShouts=SH.total_shouts||0;
+  var totalWords=SH.total_words||0;
+  var emojiTypes=(SH.top_emojis||[]).length;
+  var avgWords=totalShouts?Math.round(totalWords/totalShouts):0;
+  document.getElementById('shoutKpiRow').innerHTML=
+    '<div class="streak-stat"><div class="s-num">'+totalShouts.toLocaleString()+'</div><div class="s-lbl">Shouts</div></div>'
+   +'<div class="streak-stat"><div class="s-num">'+totalWords.toLocaleString()+'</div><div class="s-lbl">Total Words</div></div>'
+   +'<div class="streak-stat"><div class="s-num">'+avgWords+'</div><div class="s-lbl">Avg Words / Shout</div></div>'
+   +'<div class="streak-stat"><div class="s-num">'+emojiTypes+'</div><div class="s-lbl">Unique Emojis</div></div>';
+  document.getElementById('shoutKpiCard').style.display='';
+
+  // Top emojis — display as a flowing list of large emoji with counts
+  var emojis=SH.top_emojis||[];
+  if(emojis.length){
+    var maxC=emojis[0][1];
+    var html='';
+    for(var i=0;i<emojis.length;i++){
+      var e=emojis[i][0],c=emojis[i][1];
+      var scale=(0.9+0.8*(c/maxC)).toFixed(2);
+      html+='<span style="display:inline-block;margin:4px 10px;text-align:center;">'
+           +'<span style="font-size:'+scale+'rem;display:block;">'+e+'</span>'
+           +'<span style="font-size:.6rem;color:var(--muted);">'+c.toLocaleString()+'</span></span>';
+    }
+    document.getElementById('shoutEmojiList').innerHTML=html;
+    document.getElementById('shoutEmojiCard').style.display='';
+  }
+
+  // Top words — sorted bars
+  var words=SH.top_words||[];
+  if(words.length){
+    var maxW=words[0][1];
+    var html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px 14px;font-family:\'DM Mono\',monospace;font-size:.7rem;">';
+    for(var i=0;i<words.length;i++){
+      var w=words[i][0],c=words[i][1];
+      var pct=(c/maxW*100).toFixed(1);
+      html+='<div style="display:flex;align-items:center;gap:8px;">'
+           +'<div style="flex:0 0 90px;color:var(--gold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(w)+'</div>'
+           +'<div style="flex:1;background:rgba(78,205,196,0.12);height:14px;border-radius:3px;position:relative;">'
+           +'<div style="position:absolute;left:0;top:0;height:100%;width:'+pct+'%;background:#4ecdc4;border-radius:3px;"></div>'
+           +'</div>'
+           +'<div style="flex:0 0 40px;text-align:right;color:var(--muted);">'+c.toLocaleString()+'</div>'
+           +'</div>';
+    }
+    html+='</div>';
+    document.getElementById('shoutWordsList').innerHTML=html;
+    document.getElementById('shoutWordsCard').style.display='';
+  }
+
+  // Words by country — sectioned list
+  var wbc=SH.words_by_country||[];
+  if(wbc.length){
+    var html='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">';
+    for(var i=0;i<wbc.length;i++){
+      var co=wbc[i][0],ws=wbc[i][1];
+      html+='<div><div style="font-size:.66rem;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">'+esc(co)+'</div>';
+      html+='<div style="font-family:\'DM Mono\',monospace;font-size:.66rem;line-height:1.7;">';
+      for(var j=0;j<ws.length;j++){
+        html+='<span style="display:inline-block;margin:1px 8px 1px 0;color:var(--text);">'+esc(ws[j][0])+'<span style="color:var(--muted);font-size:.6rem;"> '+ws[j][1]+'</span></span>';
+      }
+      html+='</div></div>';
+    }
+    html+='</div>';
+    document.getElementById('shoutWordsCountryList').innerHTML=html;
+    document.getElementById('shoutWordsByCountryCard').style.display='';
+  }
+
+  // Language by year — stacked bar
+  var lby=SH.lang_by_year||[];
+  if(lby.length){
+    var yrs=lby.map(function(x){return x[0];});
+    new Chart(document.getElementById('shoutLangChart'),{
+      type:'bar',
+      data:{
+        labels:yrs,
+        datasets:[
+          {label:'Latin',     data:lby.map(function(x){return x[1];}),backgroundColor:'#4ecdc4'},
+          {label:'Cyrillic',  data:lby.map(function(x){return x[2];}),backgroundColor:'#e8b86d'},
+          {label:'Mixed',     data:lby.map(function(x){return x[3];}),backgroundColor:'#c44dff'},
+          {label:'Other',     data:lby.map(function(x){return x[4];}),backgroundColor:'#7a85a8'},
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10}}},
+        scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#1a1e2e'}}}
+      }
+    });
+    document.getElementById('shoutLangCard').style.display='';
+  }
+
+  // Sentiment by year — stacked bar [pos, neg, neutral]
+  // Only show when there's any positive/negative signal at all (skip all-neutral datasets).
+  var sby=SH.sentiment_by_year||[];
+  var hasPolarity=sby.some(function(x){return x[1]>0||x[2]>0;});
+  if(sby.length&&hasPolarity){
+    new Chart(document.getElementById('shoutSentChart'),{
+      type:'bar',
+      data:{
+        labels:sby.map(function(x){return x[0];}),
+        datasets:[
+          {label:'Positive 😊',data:sby.map(function(x){return x[1];}),backgroundColor:'#4ecdc4'},
+          {label:'Negative 😞',data:sby.map(function(x){return x[2];}),backgroundColor:'#e63946'},
+          {label:'Neutral',   data:sby.map(function(x){return x[3];}),backgroundColor:'#3a4258'},
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10}}},
+        scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#1a1e2e'}}}
+      }
+    });
+    document.getElementById('shoutSentimentCard').style.display='';
+  }
+
+  // Shouts per year — count + avg length (dual axis)
+  var spy=SH.shouts_per_year||[];
+  if(spy.length){
+    new Chart(document.getElementById('shoutCountChart'),{
+      type:'bar',
+      data:{
+        labels:spy.map(function(x){return x[0];}),
+        datasets:[
+          {label:'Shouts',          data:spy.map(function(x){return x[1];}),backgroundColor:'#e8b86d',yAxisID:'y'},
+          {label:'Avg chars',type:'line',data:spy.map(function(x){return x[2];}),borderColor:'#4ecdc4',backgroundColor:'rgba(78,205,196,0.1)',yAxisID:'y1',tension:0.3,pointRadius:3},
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10}}},
+        scales:{
+          x:{grid:{display:false}},
+          y:{position:'left',grid:{color:'#1a1e2e'}},
+          y1:{position:'right',grid:{display:false},ticks:{color:'#4ecdc4'}}
+        }
+      }
+    });
+    document.getElementById('shoutCountCard').style.display='';
+  }
+})();
+
+// ── 21. Transport Modes ─────────────────────────────────────────────────────
+(function(){
+  var tm=S.transport_modes||[];var k=S.transport_kpis||{};
+  if(!tm.length)return;
+  document.getElementById('transportCard').style.display='';
+  document.getElementById('transportKpis').innerHTML=
+    '<div class="streak-stat"><div class="s-num">'+(k.flight_legs||0).toLocaleString()+'</div><div class="s-lbl">Flight legs</div></div>'
+   +'<div class="streak-stat"><div class="s-num">'+(k.walk_km_total||0).toLocaleString()+' km</div><div class="s-lbl">Total walked</div></div>'
+   +'<div class="streak-stat"><div class="s-num">'+(k.co2_tonnes||0)+' t</div><div class="s-lbl">CO₂ est.</div></div>';
+  var labels=tm.map(function(x){return x[0];});
+  function ds(mode,color,label){return {label:label,data:tm.map(function(x){return x[1][mode]||0;}),backgroundColor:color};}
+  new Chart(document.getElementById('transportChart'),{
+    type:'bar',
+    data:{labels:labels,datasets:[
+      ds('walking','#4ecdc4','Walking'),
+      ds('ground','#e8b86d','Ground (car/bus)'),
+      ds('rail_likely','#c44dff','Rail-likely'),
+      ds('flight','#e63946','Flight'),
+    ]},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.parsed.y.toLocaleString()+' km';}}}},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#1a1e2e'},title:{display:true,text:'km',color:'#7a85a8'}}}
+    }
+  });
+})();
+
+// ── 22. Carbon Footprint ─────────────────────────────────────────────────────
+(function(){
+  var co=S.transport_co2||[];if(!co.length)return;
+  document.getElementById('carbonCard').style.display='';
+  new Chart(document.getElementById('carbonChart'),{
+    type:'bar',
+    data:{labels:co.map(function(x){return x[0];}),
+          datasets:[{data:co.map(function(x){return x[1];}),backgroundColor:'#e63946',borderRadius:4}]},
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.parsed.y.toLocaleString()+' kg CO₂e';}}}},
+      scales:{x:{grid:{display:false}},y:{grid:{color:'#1a1e2e'},title:{display:true,text:'kg CO₂e',color:'#7a85a8'}}}
+    }
+  });
+})();
+
+// ── 23. Distance from Home ──────────────────────────────────────────────────
+(function(){
+  var dh=S.distance_from_home||[];var nk=S.nomad_kpis||{};
+  if(!dh.length)return;
+  document.getElementById('distHomeCard').style.display='';
+  document.getElementById('nomadKpis').innerHTML=
+    '<div class="streak-stat"><div class="s-num">'+(nk.nomad_pct||0)+'%</div><div class="s-lbl">Days &gt; 50 km</div></div>'
+   +'<div class="streak-stat"><div class="s-num">'+(nk.max_dist_km||0).toLocaleString()+' km</div><div class="s-lbl">Furthest day</div></div>';
+  // Down-sample: one point per week for performance
+  var sampled=[];for(var i=0;i<dh.length;i+=7) sampled.push(dh[i]);
+  new Chart(document.getElementById('distHomeChart'),{
+    type:'line',
+    data:{labels:sampled.map(function(x){return x[0];}),
+          datasets:[{data:sampled.map(function(x){return x[1];}),borderColor:'#4ecdc4',backgroundColor:'rgba(78,205,196,.08)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}]},
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.parsed.y.toLocaleString()+' km';}}}},
+      scales:{x:{grid:{display:false},ticks:{maxTicksLimit:8,maxRotation:0}},y:{grid:{color:'#1a1e2e'},title:{display:true,text:'km',color:'#7a85a8'}}}
+    }
+  });
+})();
+
+// ── 24. Daily Extremes (first/last) ─────────────────────────────────────────
+(function(){
+  var de=S.daily_extremes||[];if(!de.length)return;
+  document.getElementById('dayExtCard').style.display='';
+  new Chart(document.getElementById('dayExtChart'),{
+    type:'line',
+    data:{labels:de.map(function(x){return x[0];}),datasets:[
+      {label:'Median first check-in',data:de.map(function(x){return x[1];}),borderColor:'#e8b86d',backgroundColor:'rgba(232,184,109,.07)',borderWidth:2,tension:0.3,pointRadius:3},
+      {label:'Median last check-in', data:de.map(function(x){return x[2];}),borderColor:'#c44dff',backgroundColor:'rgba(196,77,255,.07)',borderWidth:2,tension:0.3,pointRadius:3},
+    ]},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10}},tooltip:{callbacks:{label:function(c){var h=c.parsed.y;return ' '+c.dataset.label+': '+Math.floor(h)+':'+String(Math.round((h-Math.floor(h))*60)).padStart(2,'0');}}}},
+      scales:{x:{grid:{display:false}},y:{min:0,max:24,grid:{color:'#1a1e2e'},ticks:{callback:function(v){return v+':00';}},title:{display:true,text:'local hour',color:'#7a85a8'}}}
+    }
+  });
+})();
+
+// ── 25. Cohort Retention Heatmap ────────────────────────────────────────────
+(function(){
+  var cr=S.cohort_retention||[];if(!cr.length)return;
+  document.getElementById('cohortCard').style.display='';
+  var years=cr.map(function(r){return r.cohort;});
+  var html='<table style="border-collapse:collapse;font-family:\'DM Mono\',monospace;font-size:.62rem;width:100%;min-width:'+(140+years.length*52)+'px;">';
+  html+='<thead><tr><th style="padding:4px 8px;text-align:left;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Cohort</th>';
+  for(var c=0;c<years.length;c++){
+    html+='<th style="padding:4px 6px;text-align:center;color:var(--muted);font-weight:400;">'+years[c]+'</th>';
+  }
+  html+='<th style="padding:4px 8px;text-align:right;color:var(--muted);">Size</th></tr></thead><tbody>';
+  for(var r=0;r<cr.length;r++){
+    html+='<tr><td style="padding:3px 8px;color:var(--gold);font-weight:600;">'+cr[r].cohort+'</td>';
+    for(var c=0;c<cr[r].by_year.length;c++){
+      var v=cr[r].by_year[c];
+      if(v===null){html+='<td style="padding:3px 6px;text-align:center;color:rgba(122,133,168,.15);">·</td>';continue;}
+      var alpha=(0.05+0.85*(v/100)).toFixed(3);
+      var color=v>0?'var(--text)':'rgba(122,133,168,.25)';
+      html+='<td style="padding:3px 6px;text-align:center;background:rgba(78,205,196,'+alpha+');color:'+color+';border-radius:3px;">'+v+'%</td>';
+    }
+    html+='<td style="padding:3px 8px;text-align:right;color:var(--muted);">'+cr[r].size.toLocaleString()+'</td></tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('cohortHeat').innerHTML=html;
+})();
+
+// ── 26. Activity Trajectory (absolute) ──────────────────────────────────────
+(function(){
+  var ta=S.cat_trajectory_abs||[];var yrs=S.cat_trajectory_years||[];
+  if(!ta.length||!yrs.length)return;
+  document.getElementById('trajectoryCard').style.display='';
+  var pal=['#e8b86d','#4ecdc4','#c44dff','#e63946','#f4831f','#96ceb4','#45b7d1','#ff6b9d'];
+  var datasets=ta.map(function(t,i){return {
+    label:t.group,data:t.series,
+    borderColor:pal[i%pal.length],backgroundColor:'transparent',
+    borderWidth:2,tension:0.3,pointRadius:2
+  };});
+  new Chart(document.getElementById('trajectoryChart'),{
+    type:'line',
+    data:{labels:yrs,datasets:datasets},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10}}},
+      scales:{x:{grid:{display:false}},y:{grid:{color:'#1a1e2e'},title:{display:true,text:'check-ins',color:'#7a85a8'}}}
+    }
+  });
+})();
+
+// ── 27. City Funnel ─────────────────────────────────────────────────────────
+(function(){
+  var cf=S.city_funnel||[];if(!cf.length)return;
+  document.getElementById('cityFunnelCard').style.display='';
+  new Chart(document.getElementById('cityFunnelChart'),{
+    type:'bar',
+    data:{labels:cf.map(function(x){return '≥ '+x[0];}),
+          datasets:[{data:cf.map(function(x){return x[1];}),backgroundColor:'#e8b86d',borderRadius:5}]},
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.parsed.x.toLocaleString()+' cities';}}}},
+      scales:{x:{grid:{color:'#1a1e2e'}},y:{grid:{display:false}}}
+    }
+  });
+})();
+
+// ── 28. Diversity Index ─────────────────────────────────────────────────────
+(function(){
+  var di=S.diversity_by_year||[];if(!di.length)return;
+  document.getElementById('diversityCard').style.display='';
+  new Chart(document.getElementById('diversityChart'),{
+    type:'line',
+    data:{labels:di.map(function(x){return x[0];}),
+          datasets:[{data:di.map(function(x){return x[1];}),borderColor:'#c44dff',backgroundColor:'rgba(196,77,255,.07)',borderWidth:2,tension:0.3,pointRadius:3,fill:true}]},
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.parsed.y.toFixed(2)+' bits (Shannon)';}}}},
+      scales:{x:{grid:{display:false}},y:{grid:{color:'#1a1e2e'},title:{display:true,text:'bits',color:'#7a85a8'}}}
+    }
+  });
+})();
+
+// ── 29. Companion Lifecycle ─────────────────────────────────────────────────
+(function(){
+  var cl=S.companion_lifecycle||[];if(!cl.length)return;
+  document.getElementById('compLifeCard').style.display='';
+  // Lifeline-style horizontal bars: x = first_ts → last_ts
+  var allFirst=Math.min.apply(null,cl.map(function(c){return c.first_ts;}));
+  var allLast =Math.max.apply(null,cl.map(function(c){return c.last_ts;}));
+  var span=allLast-allFirst||1;
+  function fmt(ts){var d=new Date(ts*1000);return d.toLocaleDateString('en-GB',{month:'short',year:'numeric'});}
+  var html='<div style="display:flex;flex-direction:column;gap:5px;font-family:\'DM Mono\',monospace;font-size:.65rem;">';
+  // Header timeline (rough years)
+  cl.forEach(function(c){
+    var a=(c.first_ts-allFirst)/span*100;
+    var w=Math.max(0.6,(c.last_ts-c.first_ts)/span*100);
+    html+='<div style="display:grid;grid-template-columns:130px 1fr 60px;align-items:center;gap:8px;padding:5px 8px;background:var(--card2);border-radius:6px;">'
+      +'<div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--gold);">'+esc(c.name)+'</div>'
+      +'<div style="position:relative;height:14px;background:rgba(78,205,196,.06);border-radius:7px;">'
+      +'<div style="position:absolute;left:'+a.toFixed(2)+'%;width:'+w.toFixed(2)+'%;height:14px;background:var(--teal);border-radius:7px;opacity:.7;" title="'+fmt(c.first_ts)+' → '+fmt(c.last_ts)+'"></div>'
+      +'</div>'
+      +'<div style="text-align:right;color:var(--muted);">'+c.n.toLocaleString()+'×</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:130px 1fr 60px;gap:8px;padding:0 8px;font-size:.55rem;color:var(--muted);">'
+      +'<div></div>'
+      +'<div>'+fmt(c.first_ts)+' → '+fmt(c.last_ts)+(c.top_city?' · '+esc(c.top_city):'')+(c.med_gap?' · median '+c.med_gap+'d gap':'')+'</div>'
+      +'<div></div>'
+      +'</div>';
+  });
+  html+='</div>';
+  document.getElementById('compLifeList').innerHTML=html;
+})();
+
+// ── 30. Source App Trends ───────────────────────────────────────────────────
+(function(){
+  var sa=S.source_app_by_year||[];if(!sa.length)return;
+  document.getElementById('srcAppCard').style.display='';
+  var apps=Object.keys(sa[0][1]||{});
+  var pal=['#4ecdc4','#e8b86d','#c44dff','#e63946','#f4831f','#96ceb4'];
+  var datasets=apps.map(function(a,i){return {
+    label:a,data:sa.map(function(x){return x[1][a]||0;}),backgroundColor:pal[i%pal.length]
+  };});
+  new Chart(document.getElementById('srcAppChart'),{
+    type:'bar',
+    data:{labels:sa.map(function(x){return x[0];}),datasets:datasets},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10}}},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#1a1e2e'}}}
+    }
+  });
+})();
+
+// ── 31. City Inferred KPI ───────────────────────────────────────────────────
+(function(){
+  var k=S.city_inferred_kpis||{};if(!k.total)return;
+  document.getElementById('cityInferredCard').style.display='';
+  document.getElementById('cityInferredKpis').innerHTML=
+    '<div class="streak-stat"><div class="s-num">'+(k.inferred_n||0).toLocaleString()+'</div><div class="s-lbl">Cities Resolved</div></div>'
+   +'<div class="streak-stat"><div class="s-num">'+(k.inferred_pct||0)+'%</div><div class="s-lbl">Of all check-ins</div></div>';
+})();
+
+// ── 32. Dormant Venues ──────────────────────────────────────────────────────
+(function(){
+  var dv=S.dormant_venues||[];if(!dv.length)return;
+  document.getElementById('dormantCard').style.display='';
+  var html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;">';
+  dv.forEach(function(v){
+    var yrs=Math.floor(v.days_ago/365);var mos=Math.floor((v.days_ago%365)/30);
+    var ago=yrs?(yrs+' y'+(mos?' '+mos+' mo':'')+' ago'):mos+' mo ago';
+    html+='<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;">'
+      +'<div style="font-size:.78rem;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(v.name)+'</div>'
+      +'<div style="font-family:\'DM Mono\',monospace;font-size:.6rem;color:var(--muted);margin-top:2px;">'+esc(v.city||'—')+' · '+v.visits+'× visits · last '+ago+'</div>'
+      +'</div>';
+  });
+  html+='</div>';
+  document.getElementById('dormantList').innerHTML=html;
+})();
 </script>
 
 <script>
@@ -651,6 +1256,9 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   <a href="feed.html"><span class="sn-icon">📰</span><span class="sn-lbl">FEED</span></a>
   <a href="tips.html"><span class="sn-icon">💬</span><span class="sn-lbl">TIPS</span></a>
   <a href="ratings.html"><span class="sn-icon">⭐</span><span class="sn-lbl">RATED</span></a>
+  <a href="flights.html"><span class="sn-icon">✈</span><span class="sn-lbl">FLIGHTS</span></a>
+  <a href="years.html"><span class="sn-icon">🗓️</span><span class="sn-lbl">YEARS</span></a>
+  <a href="shouts.html"><span class="sn-icon">💭</span><span class="sn-lbl">SHOUTS</span></a>
   <a href="photos.html"><span class="sn-icon">📷</span><span class="sn-lbl">PHOTOS</span></a>
   <a href="trips.html"><span class="sn-icon">✈</span><span class="sn-lbl">TRIPS</span></a>
   <a href="lists.html"><span class="sn-icon">📋</span><span class="sn-lbl">LISTS</span></a>

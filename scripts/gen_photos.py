@@ -28,6 +28,7 @@ def build_page(
     rows: list | None = None,
     city_merge: dict | None = None,
     ctry_norm: dict | None = None,
+    country_count: int = 0,
 ) -> None:
     city_merge = city_merge or {}
     ctry_norm = ctry_norm or {}
@@ -57,10 +58,17 @@ def build_page(
             "ts":      ts,
         }
 
-    # Build flat photo list sorted by timestamp desc
+    # Build flat photo list sorted by timestamp desc.
+    # Skip photos whose check-in no longer exists (deleted check-in that left a
+    # stale photos.json key): with no metadata they rendered as a blank card at
+    # ts=0, i.e. pinned to the very bottom of the page.
     all_photos: list[dict] = []
+    orphaned = 0
     for cid, filenames in photos_by_checkin.items():
-        meta = ci_meta.get(cid, {})
+        meta = ci_meta.get(cid)
+        if meta is None:
+            orphaned += len(filenames)
+            continue
         ts = meta.get("ts", 0)
         for fname in filenames:
             all_photos.append({
@@ -71,6 +79,9 @@ def build_page(
                 "date":    meta.get("date", ""),
                 "ts":      ts,
             })
+    if orphaned:
+        print(f"  gen_photos: skipped {orphaned} photo(s) with no matching check-in "
+              f"(run delete_checkin.py --prune-orphans to clean photos.json)")
     all_photos.sort(key=lambda p: -p["ts"])
     total = len(all_photos)
     photos_json = json.dumps(all_photos, ensure_ascii=False).replace("</", "<\\/")
@@ -126,16 +137,16 @@ def build_page(
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Photos — Check-in Journal</title>
-<meta name="description" content="Venue and place photos from Foursquare check-ins, organised by trip and location across 62 countries.">
+<meta name="description" content="Venue and place photos from Foursquare check-ins, organised by trip and location across {country_count} countries.">
 <link rel="canonical" href="https://4sq.andrei-patsiomkin.workers.dev/photos.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Check-in Journal">
 <meta property="og:title" content="Photos — Check-in Journal">
-<meta property="og:description" content="Venue and place photos from Foursquare check-ins, organised by trip and location across 62 countries.">
+<meta property="og:description" content="Venue and place photos from Foursquare check-ins, organised by trip and location across {country_count} countries.">
 <meta property="og:url" content="https://4sq.andrei-patsiomkin.workers.dev/photos.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Photos — Check-in Journal">
-<meta name="twitter:description" content="Venue and place photos from Foursquare check-ins, organised by trip and location across 62 countries.">
+<meta name="twitter:description" content="Venue and place photos from Foursquare check-ins, organised by trip and location across {country_count} countries.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css">
 <style>
@@ -288,7 +299,7 @@ let sorted = PHOTOS_NEWEST, loaded = 0, galleryIdx = 0;
 let tipGalIdx = 0, galMode = 'photos'; // 'photos' or 'tips'
 let activeCity = null, sortOrder = 'newest';
 
-const CTRY_CODE = {{"Belarus":"by","Moldova":"md","Poland":"pl","Russia":"ru","Ukraine":"ua","Germany":"de","France":"fr","Italy":"it","Spain":"es","Turkey":"tr","Türkiye":"tr","Sweden":"se","Denmark":"dk","Norway":"no","Finland":"fi","Austria":"at","Switzerland":"ch","Netherlands":"nl","Belgium":"be","Portugal":"pt","Czech Republic":"cz","Czechia":"cz","Hungary":"hu","Slovakia":"sk","Romania":"ro","Bulgaria":"bg","Croatia":"hr","Slovenia":"si","Serbia":"rs","Bosnia and Herzegovina":"ba","Montenegro":"me","North Macedonia":"mk","Albania":"al","Kosovo":"xk","Estonia":"ee","Latvia":"lv","Lithuania":"lt","Greece":"gr","Cyprus":"cy","Malta":"mt","Iceland":"is","Ireland":"ie","United Kingdom":"gb","Georgia":"ge","Armenia":"am","Azerbaijan":"az","Kazakhstan":"kz","Uzbekistan":"uz","Kyrgyzstan":"kg","Tajikistan":"tj","Turkmenistan":"tm","Mongolia":"mn","China":"cn","Japan":"jp","South Korea":"kr","Taiwan":"tw","India":"in","Thailand":"th","Vietnam":"vn","Cambodia":"kh","Indonesia":"id","Singapore":"sg","Malaysia":"my","Pakistan":"pk","Nepal":"np","Qatar":"qa","UAE":"ae","United Arab Emirates":"ae","Saudi Arabia":"sa","Jordan":"jo","Israel":"il","Iraq":"iq","Lebanon":"lb","Iran":"ir","Egypt":"eg","Morocco":"ma","Tunisia":"tn","Oman":"om","South Africa":"za","United States":"us","Canada":"ca","Mexico":"mx","Argentina":"ar","Chile":"cl","Brazil":"br","Australia":"au","New Zealand":"nz","Hong Kong":"hk","Liechtenstein":"li","Holy See (Vatican City State)":"va"}};
+const CTRY_CODE = {{{{CTRY_CODE_JSON}}}};
 function flag(c){{const code=(CTRY_CODE[c]||'').toLowerCase();return code?`<span class="fi fi-${{code}}" style="border-radius:2px;font-size:.9em;vertical-align:middle;flex-shrink:0"></span>`:''}}
 
 function esc(s){{return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}}

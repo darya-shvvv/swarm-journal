@@ -19,6 +19,7 @@ import yaml
 
 from transform import load_mappings, apply_transforms, build_blank_city_resolver
 from metrics import process
+from metrics.trip_insights import trip_used_plane
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")
 log = logging.getLogger(__name__)
@@ -48,9 +49,11 @@ def save_category_list(rows: list[dict], out_path: str) -> None:
     log.info("Category list → %s  (%d categories)", out_path, len(cats))
 
 
-def generate_feed_meta(rows: list[dict], output_dir: str):
-    """Create feed_meta.json with ym_index, total, first_ts.
-    Replaces expensive D1 query for month index.
+def generate_feed_meta(rows: list[dict], output_dir: str, flight_days: list[str] | None = None):
+    """Create feed_meta.json with ym_index, total, first_ts, flight_days.
+    Replaces expensive D1 query for month index.  flight_days (sorted
+    "YYYY-MM-DD" strings from the FR24 diary) feeds the feed's client-side
+    transport-mode classifier.
     """
     if not rows:
         log.warning("No rows to generate feed_meta.json")
@@ -75,6 +78,7 @@ def generate_feed_meta(rows: list[dict], output_dir: str):
         "ym_index": ym_index,
         "total": total,
         "first_ts": first_ts,
+        "flight_days": flight_days or [],
     }
     out_path = os.path.join(output_dir, "feed_meta.json")
     with open(out_path, "w", encoding="utf-8") as f:
@@ -91,6 +95,19 @@ TRIPS_TEMPLATE = (_TEMPLATES_DIR / "trips.html.tmpl").read_text(encoding="utf-8"
 
 def build(data, trips, out_dir='.', extra_replacements=None, pix_dir_json='""'):
     import os
+    # ── Externalize the heavy below-the-fold map payload ────────────────────
+    # unique_places (~2.8 MB) + venues_heatmap (~1.4 MB) + explorer_groups +
+    # country_centroids feed ONLY the Leaflet map card, which is lazy-built on
+    # first view. Ship them in map_data.json (fetched on demand) instead of
+    # inlining into every index/trips page's {{STATS}} const S={...}.
+    _MAP_KEYS = ('unique_places', 'venues_heatmap', 'explorer_groups', 'country_centroids')
+    map_payload = {k: data[k] for k in _MAP_KEYS if k in data}
+    with open(os.path.join(out_dir, 'map_data.json'), 'w', encoding='utf-8') as f:
+        json.dump(map_payload, f, ensure_ascii=False, separators=(',', ':'))
+    # STATS without the map keys — do NOT mutate `data` (later generators read it).
+    stats_slim = {k: v for k, v in data.items() if k not in _MAP_KEYS}
+    stats_json = json.dumps(stats_slim, ensure_ascii=False).replace('</', '<\\/')
+
     # ── index.html ──────────────────────────────────────────────────────────
     html = TEMPLATE
     html = html.replace('{{DATE_MIN}}',  data['date_min'])
@@ -101,7 +118,14 @@ def build(data, trips, out_dir='.', extra_replacements=None, pix_dir_json='""'):
     html = html.replace('{{PLACES}}',    f"{data['unique_places_count']:,}")
     html = html.replace('{{UPDATED}}',   datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC'))
     html = html.replace('{{TRIPS}}',      str(data['trips_count']))
-    html = html.replace('{{STATS}}',     json.dumps(data, ensure_ascii=False).replace('</', '<\\/'))
+    _rf_ci = data.get('refurb_checkins', 0)
+    _rf_pl = data.get('refurb_places', 0)
+    _rf_note = (
+        f'<div class="kpi-note">↺ {_rf_ci:,} reconstructed check-ins'
+        f' &middot; +{_rf_pl:,} unique places</div>'
+    ) if _rf_ci else ''
+    html = html.replace('{{RECONSTRUCTED_NOTE}}', _rf_note)
+    html = html.replace('{{STATS}}',     stats_json)
     if extra_replacements:
         for key, val in extra_replacements.items():
             html = html.replace(key, val)
@@ -113,9 +137,13 @@ def build(data, trips, out_dir='.', extra_replacements=None, pix_dir_json='""'):
     trips_html = TRIPS_TEMPLATE
     trips_html = trips_html.replace('{{TRIPS_JSON}}', json.dumps(trips, ensure_ascii=False).replace('</', '<\\/'))
     trips_html = trips_html.replace('{{TOTAL_TRIPS}}', str(len(trips)))
+    trips_html = trips_html.replace('{{COUNTRIES}}', str(len(data['countries'])))
     trips_html = trips_html.replace('{{UPDATED}}', datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC'))
     trips_html = trips_html.replace('{{PIX_DIR_JSON}}', pix_dir_json)
-    trips_html = trips_html.replace('{{STATS}}', json.dumps(data, ensure_ascii=False).replace('</', '<\\/'))
+    trips_html = trips_html.replace('{{STATS}}', stats_json)
+    if extra_replacements:
+        for key, val in extra_replacements.items():
+            trips_html = trips_html.replace(key, val)
     trips_path = os.path.join(out_dir, 'trips.html')
     with open(trips_path, 'w', encoding='utf-8') as f: f.write(trips_html)
     print(f"Built ->{trips_path}  ({len(trips_html)//1024:,} KB)")
@@ -152,6 +180,20 @@ if __name__ == "__main__":
                         help="Write slim trips metadata JSON to this path "
                              "(used by sync_to_d1.py; excludes checkins/coords arrays). "
                              "Defaults to trips_meta.json in the current directory.")
+    parser.add_argument("--trip-names-healed-out", default=None,
+                        help="When orphaned trip_names keys were healed (a trip start "
+                             "moved), also write the healed trip_names.json here — "
+                             "WITHOUT this build's auto-added names, so CI can commit "
+                             "just the heal. Emits TRIP_NAMES_HEALED=<n>.")
+    parser.add_argument("--routes-cache", default=None,
+                        help="Path to routes_cache.json (persistent OSRM/BRouter "
+                             "route-geometry cache, lives in the private data repo). "
+                             "When set, trip-map segments get real street/rail paths; "
+                             "omitted → routes.json is empty and the map draws "
+                             "straight lines.")
+    parser.add_argument("--routes-max-fetch", type=int, default=250,
+                        help="Max missing routes to fetch per build (default 250); "
+                             "the cache warms up over successive CI builds.")
     args = parser.parse_args()
 
     if not os.path.exists(args.input):
@@ -164,8 +206,89 @@ if __name__ == "__main__":
 
     home_city     = args.home_city     or trip_cfg.get("home_city",    "Minsk")
     min_checkins  = args.min_checkins  or trip_cfg.get("min_checkins", 5)
-    home_periods  = trip_cfg.get("home_periods", [])  # ADDED: load time-based home periods
     fs_user_id    = settings.get("dashboard", {}).get("foursquare_user_id", "")
+
+    # Era-aware home: each home_history entry names the home BEFORE its `until`
+    # date (exclusive, UTC midnight). Parse to sorted [(until_ts, city)] so
+    # detect_trips can bucket pre-move check-ins (e.g. 2008 Chișinău) as home,
+    # not as a phantom trip. See config/settings.yaml trip_detection.home_history.
+    # home_venue_ids: venue_ids flagged as a home across any era (from each
+    # home_history entry's optional `venues:`). A check-in at one is treated as
+    # the homecoming by detect_trips' arrival extension regardless of category.
+    # home_eras carries the SAME entries with their per-era trip rules attached
+    # (air_departure / arrival_transit / arrival_neighborhoods / venues), so
+    # detect_trips can branch by date instead of applying one rule to twenty
+    # years. An era that sets no flags keeps the original behaviour exactly —
+    # which is how the Minsk years stay frozen while the Chișinău era gets the
+    # airport rules. See config/settings.yaml trip_detection.home_history.
+    home_history: list[tuple[int, str]] = []
+    home_venue_ids: set[str] = set()
+    home_eras: list[tuple[int, dict]] = []
+    for _hh in trip_cfg.get("home_history", []) or []:
+        _city = str(_hh.get("city", "")).strip()
+        _until = str(_hh.get("until", "")).strip()
+        _era_venues: set[str] = set()
+        for _hv in _hh.get("venues", []) or []:
+            _hv = str(_hv).strip()
+            if _hv:
+                home_venue_ids.add(_hv)
+                _era_venues.add(_hv)
+        if not _city or not _until:
+            continue
+        _until_ts = int(datetime.strptime(_until, "%Y-%m-%d")
+                        .replace(tzinfo=timezone.utc).timestamp())
+        home_history.append((_until_ts, _city))
+        home_eras.append((_until_ts, {
+            "city": _city,
+            "venues": _era_venues,
+            "air_departure": bool(_hh.get("air_departure")),
+            "arrival_transit": bool(_hh.get("arrival_transit")),
+            "arrival_neighborhoods": {
+                str(_n).strip() for _n in (_hh.get("arrival_neighborhoods") or []) if str(_n).strip()
+            },
+            "departure_ride_categories": {
+                str(_c).strip() for _c in (_hh.get("departure_ride_categories") or []) if str(_c).strip()
+            },
+            "arrival_stop_at_home": bool(_hh.get("arrival_stop_at_home")),
+            "arrival_max_city_checkins": int(_hh.get("arrival_max_city_checkins") or 0),
+            "hub_categories": {
+                str(_c).strip() for _c in (_hh.get("hub_categories") or []) if str(_c).strip()
+            },
+        }))
+    # Legacy home format: trip_detection.home_periods = [{start, end, city}]
+    # with epoch-second bounds (inclusive start, exclusive end, `~` = open).
+    # Used only when no home_history is configured. Each closed period maps
+    # to a (end_ts, city) era; the open-ended period becomes the fallback
+    # home_city (unless --home-city overrides it), matching the old
+    # get_home_city_for_timestamp() semantics.
+    if not home_history and trip_cfg.get("home_periods"):
+        for _p in trip_cfg.get("home_periods") or []:
+            _city = str(_p.get("city", "")).strip()
+            _end = _p.get("end")
+            if not _city:
+                continue
+            if _end in (None, "", "~"):
+                if not args.home_city:
+                    home_city = _city
+                continue
+            _end_ts = int(_end)
+            home_history.append((_end_ts, _city))
+            home_eras.append((_end_ts, {
+                "city": _city,
+                "venues": set(),
+                "air_departure": False,
+                "arrival_transit": False,
+                "arrival_neighborhoods": set(),
+                "departure_ride_categories": set(),
+                "arrival_stop_at_home": False,
+                "arrival_max_city_checkins": 0,
+                "hub_categories": set(),
+            }))
+        log.info("home_periods → home_history=%s, fallback home=%s",
+                 home_history, home_city)
+
+    home_eras.sort(key=lambda e: e[0])
+    home_history.sort(key=lambda p: p[0])
 
     log.info("Loading mappings from %s …", config_dir)
     mappings = load_mappings(config_dir)
@@ -175,6 +298,20 @@ if __name__ == "__main__":
         rows = list(csv.DictReader(fh))
     log.info("  %d rows loaded", len(rows))
 
+    # Merge reconstructed pre-2012 travel history (backfill.csv), if present next
+    # to the input CSV. These rows are stamped source_app="refurbished" and flow
+    # through the same transforms + generators as real check-ins, so every KPI /
+    # story / map / trip shifts automatically. They are badged as reconstructed
+    # wherever an individual check-in card renders. See scripts/build_backfill.py.
+    _backfill_csv = Path(args.input).resolve().parent / "backfill.csv"
+    if _backfill_csv.exists():
+        with open(_backfill_csv, encoding="utf-8") as fh:
+            _bf_rows = list(csv.DictReader(fh))
+        rows.extend(_bf_rows)
+        rows.sort(key=lambda r: int(r.get("date") or 0))
+        log.info("  + %d reconstructed row(s) from %s (%d total)",
+                 len(_bf_rows), _backfill_csv.name, len(rows))
+
     # Blank-city inference: if the review CSV exists next to the config dir,
     # resolve blank city fields using timestamp + coordinate matching.
     review_csv = config_dir / "city_merge_normalized_review.csv"
@@ -183,20 +320,17 @@ if __name__ == "__main__":
     rows = apply_transforms(rows, mappings, blank_city_resolver=blank_resolver)
 
     # ── Generate static feed_meta.json (replaces expensive D1 query) ─────────
-    generate_feed_meta(rows, args.output_dir)
-
-    # ── Generate venues_filter.json (year + catgrp heatmap layers, loaded lazily) ─
-    # Extracted from S to keep index.html lean; fetched on first map filter use.
-    def _write_venues_filter(data_dict: dict, out_dir: str) -> None:
-        payload = {
-            "by_year":    data_dict.get("venues_by_year", {}),
-            "by_catgrp":  data_dict.get("venues_by_catgrp", {}),
-        }
-        out_path = os.path.join(out_dir, "venues_filter.json")
-        with open(out_path, "w", encoding="utf-8") as fh:
-            json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
-        log.info("venues_filter.json → %s  (%d KB)",
-                 out_path, os.path.getsize(out_path) // 1024)
+    # FR24 flight calendar days ride along for the feed's client-side
+    # transport-mode classifier (flights.csv lives next to checkins.csv).
+    _flights_csv = Path(args.input).resolve().parent / "flights.csv"
+    _flight_days: list[str] = []
+    if _flights_csv.exists():
+        try:
+            from flights import load_flights as _lf_days
+            _flight_days = sorted({f["date"] for f in _lf_days(_flights_csv) if f.get("date")})
+        except Exception as _fde:
+            log.warning("flight days for feed_meta failed: %s", _fde)
+    generate_feed_meta(rows, args.output_dir, _flight_days)
 
     trip_names_path = config_dir / "trip_names.json"
     trip_names: dict = {}
@@ -238,35 +372,109 @@ if __name__ == "__main__":
         for k, v in settings.get("new_country_year_overrides", {}).items()
     }
 
-    log.info("Computing metrics (home=%s, min_checkins=%d, home_periods=%d) …", 
-             home_city, min_checkins, len(home_periods))
-    
-    # UPDATED: Pass home_periods to process()
-    data, trips = process(
-        rows, mappings,
-        home_city=home_city,
-        home_periods=home_periods,
-        min_trip_checkins=min_checkins,
-        trip_names=trip_names,
-        trip_exclude=trip_exclude,
-        trip_end_overrides=trip_end_overrides,
-        trip_start_overrides=trip_start_overrides,
-        trip_tags=trip_tags,
-        new_country_year_overrides=nc_yr_overrides
-    )
+    # Real FR24 flight diary, threaded into metrics so the per-year narrative
+    # flight counts + transport-mode classifier reconcile against actual flights
+    # (unmatched fast hops are demoted from "flight").
+    _metrics_flights: list[dict] = []
+    _metrics_flights_csv = Path(args.input).resolve().parent / "flights.csv"
+    if _metrics_flights_csv.exists():
+        try:
+            from flights import load_flights as _lf_metrics
+            _metrics_flights = _lf_metrics(_metrics_flights_csv)
+        except Exception as _mfe:
+            log.warning("flights.csv load for metrics failed: %s", _mfe)
 
-    # Write per-year / per-catgrp heatmap layers as a separate static file.
-    # Remove from data dict so they don't bloat index.html.
-    _write_venues_filter(data, args.output_dir)
-    data.pop("venues_by_year", None)
-    data.pop("venues_by_catgrp", None)
+    log.info("Computing metrics (home=%s, min_checkins=%d) …", home_city, min_checkins)
+    _name_report: dict = {}
+    data, trips = process(rows, mappings, home_city=home_city, min_trip_checkins=min_checkins, trip_names=trip_names, trip_exclude=trip_exclude, trip_end_overrides=trip_end_overrides, trip_start_overrides=trip_start_overrides, trip_tags=trip_tags, new_country_year_overrides=nc_yr_overrides, flights=_metrics_flights, home_history=home_history, home_venue_ids=home_venue_ids, home_eras=home_eras, trip_name_report=_name_report)
+
+    # ── trip_names.json self-heal (see metrics/trip_names.py) ─────────────────
+    # detect_trips already rendered the healed names; here the heal is logged,
+    # adopted for the auto-populate write below, and — for CI — written on its
+    # own (no auto-added names) so only the heal itself gets committed.
+    _heal = _name_report.get("heal")
+    _healed_n = 0
+    if _heal is not None:
+        from metrics.trip_names import describe as _describe_heal
+        for _line in _describe_heal(_heal):
+            log.warning("trip_names: %s", _line)
+        _healed_n = _heal.changed
+        if _healed_n:
+            trip_names = dict(_heal.names)
+            if args.trip_names_healed_out:
+                Path(args.trip_names_healed_out).write_text(json.dumps(
+                    dict(sorted(trip_names.items(), key=lambda kv: int(kv[0]))),
+                    ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"TRIP_NAMES_HEALED={_healed_n}")
+    print(f"TRIP_NAMES_SUSPICIOUS={len(_heal.suspicious) if _heal else 0}")
+    _gho = os.environ.get("GITHUB_OUTPUT")
+    if _gho:
+        with open(_gho, "a", encoding="utf-8") as _fh:
+            _fh.write(f"TRIP_NAMES_HEALED={_healed_n}\n")
+            _fh.write(f"TRIP_NAMES_SUSPICIOUS={len(_heal.suspicious) if _heal else 0}\n")
+
+    # ── Flights: parse FR24 flight-diary CSV if present ─────────────────────
+    # data/flights.csv lives next to checkins.csv in the private data repo.
+    flights_path = Path(args.input).resolve().parent / "flights.csv"
+    flight_matches: dict[str, dict] = {}
+    if flights_path.exists():
+        try:
+            from flights import (
+                load_flights, build_iata_coords, match_to_checkins, summarise as _flights_summary,
+            )
+            _fl = load_flights(flights_path)
+            _iata = build_iata_coords(rows, _fl)
+            flight_matches = match_to_checkins(_fl, rows, _iata)
+            data["flight_history"] = _flights_summary(_fl, _iata)
+            data["flight_matches"] = flight_matches    # checkin_id → flight info
+            log.info("Flights: %d parsed | %d IATA airports resolved | %d check-ins matched",
+                     len(_fl), len(_iata), len(flight_matches))
+        except Exception as _fe:
+            log.warning("flights.csv load failed: %s", _fe)
+    else:
+        log.info("No flights.csv at %s — Flight History card will be hidden", flights_path)
+
+    # Enrich the metrics.recent[] list with matched flight info so the index
+    # recent strip can show "✈ PC842 MSQ→IST · A320" inline.
+    if flight_matches:
+        for r in data.get("recent", []):
+            cid = r.get("checkin_id", "")
+            if cid in flight_matches:
+                r["flight"] = flight_matches[cid]
+
+    # Build a recent-flights list for the index "Recent Flights" cards strip.
+    # Re-parse flights here (cheap — ~127 rows) so build.py owns the recent
+    # subset shape; the full history is already on the stats page.
+    data["flights_recent"] = []
+    if flights_path.exists():
+        try:
+            from flights import load_flights as _load_flights
+            _all_fl = _load_flights(flights_path)
+            data["flights_recent"] = list(reversed(_all_fl))[:15]   # newest first
+        except Exception:
+            pass
 
     # ── Auto-populate trip_names.json with new trips ──────────────────────────
     # Any trip whose _name_ts is not yet in trip_names.json gets added with its
     # auto-generated name + inferred transport icon.
+    # The airport family below matters because Foursquare almost never emits the
+    # bare "Airport" category — 28 of ~1000 airport check-ins carry it, Chișinău's
+    # RMO none at all ("International Airport"). Without these every flight out
+    # of Chișinău got the 🚗 fallback, and flight trips had to be fixed to ✈️ by
+    # hand in trip_names.json. Only NEW trips are affected: an existing entry
+    # that already has an icon is never rewritten (see _needs_update).
     _ICON_MAP = {
-        "Airport":            "✈️",
-        "Light Rail Station": "✈️",
+        "Airport":                "✈️",
+        "International Airport":  "✈️",
+        "Airport Terminal":       "✈️",
+        "Airport Gate":           "✈️",
+        "Airport Service":        "✈️",
+        "Airport Lounge":         "✈️",
+        "Airport Ticket Counter": "✈️",
+        "Airport Tram Station":   "✈️",
+        "Baggage Claim":          "✈️",
+        "Plane":                  "✈️",
+        "Light Rail Station":     "✈️",
         "Rail Station":       "🚂",
         "Train Station":      "🚂",
         "Bus Station":        "🚌",
@@ -279,12 +487,20 @@ if __name__ == "__main__":
     _ICON_PRIORITY = {"✈️": 4, "🚂": 3, "⛴️": 2, "🚌": 1, "🚗": 0}
 
     def _infer_icon(trip: dict) -> str:
-        # Probe first 5 and last 5 check-ins — transport hubs appended by extension
         checkins = trip.get("checkins", [])
+        # A flight anywhere in the trip wins — the mode that took you furthest.
+        # Only a real flight counts: an airport visit with the same city on
+        # both sides (seeing someone off) does not, and it never earns ✈️
+        # from the probe below either.
+        if trip_used_plane(checkins):
+            return "✈️"
+        # Probe first 5 and last 5 check-ins — transport hubs appended by extension
         probe = checkins[:5] + checkins[-5:]
         best = ""
         for ci in probe:
             icon = _ICON_MAP.get(ci.get("category", ""), "")
+            if icon == "✈️":
+                continue
             if icon and _ICON_PRIORITY.get(icon, -1) > _ICON_PRIORITY.get(best, -1):
                 best = icon
         return best
@@ -320,7 +536,7 @@ if __name__ == "__main__":
         for t in trips
         if _needs_update(str(t["_name_ts"]), t)
     }
-    if new_name_entries:
+    if new_name_entries or _healed_n:
         trip_names.update(new_name_entries)
         trip_names_sorted = dict(sorted(trip_names.items(), key=lambda kv: int(kv[0])))
         trip_names_path.write_text(
@@ -377,6 +593,56 @@ if __name__ == "__main__":
                 cid = c.get("checkin_id", "")
                 c["photos"] = _photos_by_checkin.get(cid, [])
             t["photo_count"] = sum(len(c.get("photos", [])) for c in t.get("checkins", []))
+
+    # ── Per-segment transport modes (trips map + feed) ───────────────────────
+    # Attach checkin["m"] (arrival-mode char) to every trip check-in before
+    # the TRIPS_JSON dump.  Rule cascade + a Naive Bayes layer re-trained on
+    # this build's own rule-anchored segments (see scripts/transport_mode.py).
+    try:
+        import transport_mode as _tm
+        _fl_modes = []
+        if flights_path.exists():
+            from flights import load_flights as _lf_modes
+            _fl_modes = _lf_modes(flights_path)
+        _tm_windows = _tm.flight_windows(_fl_modes)
+        _tm_bikes = ["bicycle" in t.get("tags", []) for t in trips]
+        _tm_model = _tm.train_model(
+            [t.get("checkins", []) for t in trips], _tm_windows, _tm_bikes)
+        from collections import Counter as _Counter
+        _tm_counts = _Counter()
+        for t, _bike in zip(trips, _tm_bikes):
+            _modes = _tm.classify_segments(
+                t.get("checkins", []), _tm_windows, bike=_bike, model=_tm_model)
+            for c, m in zip(t.get("checkins", []), _modes):
+                if m:
+                    c["m"] = m
+                    _tm_counts[m] += 1
+        log.info("Transport modes tagged: %s (NB layer: %s)",
+                 dict(_tm_counts.most_common()),
+                 "self-trained" if _tm_model else "fallback to bands")
+    except Exception as _tme:
+        log.warning("transport-mode classification failed: %s", _tme)
+
+    # ── GPS-like route geometry for trip-map segments (routes.json) ──────────
+    # Fetch real street/rail paths (FOSSGIS OSRM + BRouter) for mode-tagged
+    # segments, served from a persistent cache in the private data repo.
+    # routes.json is ALWAYS written (empty when --routes-cache is unset) so the
+    # template's fetch never 404s.
+    _routes: dict = {}
+    if args.routes_cache:
+        try:
+            import route_paths as _rp
+            _rc = _rp.RouteCache(args.routes_cache)
+            _routes = _rp.attach_routes(trips, _rc, max_fetch=args.routes_max_fetch)
+            _rc.save()
+            log.info("Route geometry: %d segments routed (cache %s: %d entries)",
+                     len(_routes), args.routes_cache, len(_rc.data))
+        except Exception as _rpe:
+            log.warning("route-geometry attachment failed: %s", _rpe)
+    os.makedirs(args.output_dir, exist_ok=True)
+    Path(os.path.join(args.output_dir, "routes.json")).write_text(
+        json.dumps(_routes, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8")
 
     # ── Load tips for recent section ─────────────────────────────────────────
     # Resolve tips.json next to the input CSV so CI (private-data/checkins.csv →
@@ -638,10 +904,130 @@ if __name__ == "__main__":
     else:
         log.info("lists.json not found at %s — skipping lists.html", lists_path)
 
+    # ── Load checkins_anomalies.json (generated by fetch_checkins.py) ────────────
+    _anomalies_path = Path(args.input).resolve().parent / "checkins_anomalies.json"
+    _anomalies_html = ""
+    if _anomalies_path.exists():
+        try:
+            _anom = json.loads(_anomalies_path.read_text(encoding="utf-8"))
+            # Use _meta counts (set by fetch_checkins.py at write time) — more reliable
+            # than len() which includes stale historical accumulations in "missing".
+            _meta = _anom.get("_meta", {})
+            _n_dup = _meta.get("duplicates_count", len(_anom.get("duplicates", [])))
+            # "missing" is a historical accumulator (grows unboundedly as check-ins age
+            # off the API). Don't surface it in the widget — it's not actionable.
+            if _n_dup:
+                _anomalies_html = (
+                    '<div id="anomaly-widget" style="display:flex;gap:12px;align-items:center;'
+                    'padding:6px 14px;border-radius:8px;background:rgba(244,131,31,.08);'
+                    'border:1px solid rgba(244,131,31,.25);font-family:\'DM Mono\',monospace;'
+                    'font-size:.65rem;flex-wrap:wrap;">'
+                    f'<span title="Duplicate (venue_id, date) pairs in CSV" style="color:#f4831f">'
+                    f'⚠ {_n_dup} duplicate check-in{"s" if _n_dup != 1 else ""}</span>'
+                    '</div>'
+                )
+                log.info("Anomalies: %d duplicate pair(s)", _n_dup)
+        except Exception as _ae:
+            log.warning("Failed to load anomalies: %s", _ae)
+
+    # ── Extract shouts, then merge per-check-in comment threads ─────────────────
+    # comments.json (reply threads under check-ins, distinct from shouts) lives
+    # next to checkins.csv. The merged list (shouts + comment-only check-ins,
+    # sorted newest-first, threads attached) feeds BOTH the shouts page and the
+    # index recent-strip so comments interleave with shouts by date.
+    from metrics import shout_records as _shout_records
+    from metrics import merge_comments_into_shouts as _merge_comments
+    all_shouts = _shout_records(rows)
+
+    _comments_path = Path(args.input).resolve().parent / "comments.json"
+    _comments_map: dict = {}
+    if _comments_path.exists():
+        try:
+            _comments_map = json.loads(
+                _comments_path.read_text(encoding="utf-8")
+            ).get("comments", {}) or {}
+        except Exception as _ce:  # noqa: BLE001
+            log.warning("Could not read %s (%s) — comments won't render", _comments_path, _ce)
+    shouts_for_page = _merge_comments(all_shouts, rows, _comments_map)
+    _n_threads = sum(1 for s in shouts_for_page if s.get("comments"))
+    log.info("Shouts page: %d entr(y/ies), %d with comment threads (%d comment-only)",
+             len(shouts_for_page), _n_threads, len(shouts_for_page) - len(all_shouts))
+
+    # Comment tallies (mine vs others) across every thread — surfaced in the index
+    # strip subtitle and the shouts-page insight. "Mine" = comment author matches
+    # our Foursquare user id; everything else is a friend's reply.
+    _cmt_total = _cmt_mine = _cmt_threads = 0
+    for _s in shouts_for_page:
+        _cl = _s.get("comments") or []
+        if not _cl:
+            continue
+        _cmt_threads += 1
+        for _c in _cl:
+            _cmt_total += 1
+            if str(_c.get("author_id") or "") == str(fs_user_id or ""):
+                _cmt_mine += 1
+    _cmt_others = _cmt_total - _cmt_mine
+    log.info("Comments: %d total (%d mine, %d others) on %d check-ins",
+             _cmt_total, _cmt_mine, _cmt_others, _cmt_threads)
+
+    # Recent strip for index: newest 30 across the merged list (shouts +
+    # comment-only), each carrying its comment thread.
+    _recent_shouts = []
+    for s in shouts_for_page[:30]:
+        from datetime import datetime as _dt, timezone as _tz
+        try:
+            _d = _dt.fromtimestamp(s["ts"], tz=_tz.utc)
+            _date_str = _d.strftime("%d %b %Y")
+        except (ValueError, OSError):
+            _date_str = ""
+        _recent_shouts.append({
+            "ts":         s["ts"],
+            "date":       _date_str,
+            "text":       s["text"],
+            "venue":      s.get("venue", ""),
+            "venue_id":   s.get("venue_id", ""),
+            "city":       s.get("city", ""),
+            "country":    s.get("country", ""),
+            "category":   s.get("category", ""),
+            "checkin_id": s.get("checkin_id", ""),
+            "companions": s.get("companions", []),
+            "comments":   s.get("comments", []),
+        })
+    shouts_recent_json = json.dumps(
+        {"total": len(all_shouts),
+         "cmt_total": _cmt_total, "cmt_mine": _cmt_mine,
+         "cmt_others": _cmt_others, "cmt_threads": _cmt_threads,
+         "items": _recent_shouts},
+        ensure_ascii=False,
+    ).replace("</", "<\\/")
+    log.info("Loaded %d shouts (recent %d)", len(all_shouts), len(_recent_shouts))
+
+    # Load canonical country flag map (English name -> ISO 3166 alpha-2)
+    _flags_path = config_dir / "country_flags.json"
+    if _flags_path.exists():
+        _ctry_flags = json.loads(_flags_path.read_text(encoding="utf-8"))
+        # Skip _comment-prefixed keys reserved for inline documentation
+        _ctry_flags = {k: v for k, v in _ctry_flags.items() if not k.startswith("_")}
+    else:
+        _ctry_flags = {}
+        log.warning("country_flags.json missing at %s — flag icons will be empty", _flags_path)
+    _ctry_flags_json = json.dumps(_ctry_flags, ensure_ascii=False)
+
+    # Load canonical category icon map (category name -> [emoji, color])
+    _cat_icon_path = config_dir / "category_icons.json"
+    if _cat_icon_path.exists():
+        _cat_icons = json.loads(_cat_icon_path.read_text(encoding="utf-8"))
+        _cat_icons = {k: v for k, v in _cat_icons.items() if not k.startswith("_")}
+    else:
+        _cat_icons = {}
+        log.warning("category_icons.json missing at %s — category icons will be empty", _cat_icon_path)
+    _cat_icons_json = json.dumps(_cat_icons, ensure_ascii=False)
+
     os.makedirs(args.output_dir, exist_ok=True)
     build(data, trips, out_dir=args.output_dir,
           pix_dir_json=json.dumps(_pix_dir_uri),
           extra_replacements={
+              "{{ANOMALIES}}":             _anomalies_html,
               "{{TIPS_RECENT}}":           tips_recent_json,
               "{{TIPS_COUNT}}":            f"{tips_count:,}",
               "{{PHOTOS_KPI}}":            f'<div class="kpi"><div class="num">{total_photos:,}</div><div class="lbl">Photos</div></div>' if total_photos else '',
@@ -650,27 +1036,37 @@ if __name__ == "__main__":
               "{{RATINGS_RECENT_JSON}}":   ratings_recent_json,
               "{{RATINGS_COUNTS}}":        ratings_counts_json,
               "{{LISTS_COUNT}}":           str(len(json.loads(_lists_data_json))),
+              "{{SHOUTS_RECENT}}":         shouts_recent_json,
+              "{{SHOUTS_COUNT}}":          f"{len(all_shouts):,}",
+              "{{CTRY_CODE_JSON}}":        _ctry_flags_json,
+              "{{CAT_ICON_JSON}}":         _cat_icons_json,
           })
 
     if args.cat_list:
         save_category_list(rows, os.path.join(args.output_dir, "category_list.txt"))
 
     # ── Generate companion, feed, world-cities, tips pages ──
+    # Templates use {{CTRY_CODE_JSON}} placeholder — substituted in a post-
+    # process pass below from the single canonical config/country_flags.json.
     _here = _SCRIPT_DIR
+    _gen_outputs: list[str] = []
     for gen_script, gen_out, gen_tmpl, gen_kwargs in [
         (_here / "gen_companions.py", "companions.html",   "companions.html.tmpl",   {"social_data": data}),
         (_here / "gen_feed.py",       "feed.html",         "feed.html.tmpl",         {"swarm_user_id": fs_user_id}),
-        (_here / "gen_worldcities.py","world_cities.html", "world_cities.html.tmpl", {"cities_data": data.get("cities")}),
+        (_here / "gen_worldcities.py","world_cities.html", "world_cities.html.tmpl", {"cities_data": data.get("cities"), "country_count": len(data['countries'])}),
         (_here / "gen_venues.py",     "venues.html",       "venues.html.tmpl",       {}),
-        (_here / "gen_tips.py",       "tips.html",         "tips.html.tmpl",         {"tips_path": str(tips_path), "pix_url": _pix_dir_uri}),
-        (_here / "gen_stats.py",      "stats.html",        "stats.html.tmpl",        {"stats_data": data}),
+        (_here / "gen_tips.py",       "tips.html",         "tips.html.tmpl",         {"tips_path": str(tips_path), "pix_url": _pix_dir_uri, "country_count": len(data['countries'])}),
+        (_here / "gen_stats.py",      "stats.html",        "stats.html.tmpl",        {"stats_data": data, "anomalies_html": _anomalies_html}),
         (_here / "gen_search.py",     "search.html",       "search.html.tmpl",       {"rows": rows, "all_tips": all_tips, "trips": trips, "metrics": data}),
-        (_here / "gen_ratings.py",    "ratings.html",      "ratings.html.tmpl",      {"likes": _likes, "neutral": _neutral, "dislikes": _dislikes}),
+        (_here / "gen_ratings.py",    "ratings.html",      "ratings.html.tmpl",      {"likes": _likes, "neutral": _neutral, "dislikes": _dislikes, "country_count": len(data['countries'])}),
         (_here / "gen_lists.py",      "lists.html",        "lists.html.tmpl",        {"lists_data_json": _lists_data_json}),
+        (_here / "gen_guide.py",      "guide.html",        "guide.html.tmpl",        {"rows": rows, "mappings": mappings}),
+        (_here / "gen_shouts.py",     "shouts.html",       "shouts.html.tmpl",       {"shouts": shouts_for_page, "country_count": len(data['countries']), "swarm_user_id": fs_user_id}),
     ]:
         if gen_script.exists():
-            import importlib.util as _ilu, importlib as _il
+            import importlib.util as _ilu
             _spec = _ilu.spec_from_file_location(f"_gen_{gen_script.stem}", gen_script)
+            assert _spec and _spec.loader
             _mod  = _ilu.module_from_spec(_spec)
             try:
                 _spec.loader.exec_module(_mod)
@@ -681,10 +1077,148 @@ if __name__ == "__main__":
                     tmpl_path  = str(_TEMPLATES_DIR / gen_tmpl),
                     **gen_kwargs,
                 )
+                _gen_outputs.append(os.path.join(args.output_dir, gen_out))
             except Exception as _e:
                 log.warning("Generator %s failed: %s", gen_script.name, _e)
         else:
             log.warning("Generator not found: %s", gen_script)
+
+    # ── Generate flights.html (dedicated page) ───────────────────────────────
+    _gen_flights = _SCRIPT_DIR / "gen_flights.py"
+    if _gen_flights.exists() and flights_path.exists():
+        try:
+            import importlib.util as _ilu_f
+            _spec_f = _ilu_f.spec_from_file_location("gen_flights", _gen_flights)
+            assert _spec_f and _spec_f.loader
+            _mod_f  = _ilu_f.module_from_spec(_spec_f)
+            _spec_f.loader.exec_module(_mod_f)
+            from flights import (
+                load_flights as _lf,
+                build_iata_coords as _bic,
+                summarise as _summ,
+            )
+            _all_fl2 = _lf(flights_path)
+            _iata2 = _bic(rows, _all_fl2)
+            _mod_f.build_page(
+                csv_path=args.input, config_dir=str(config_dir),
+                out_path=os.path.join(args.output_dir, "flights.html"),
+                tmpl_path="",
+                flights_data=_all_fl2,
+                flight_history=_summ(_all_fl2, _iata2),
+                iata_coords=_iata2,
+            )
+        except Exception as _fle:
+            log.warning("gen_flights failed: %s", _fle)
+
+    # ── Generate years.html (overview index of year cards) ──────────────────
+    _gen_yix = _SCRIPT_DIR / "gen_years_index.py"
+    if _gen_yix.exists():
+        try:
+            import importlib.util as _ilu_yi
+            _spec_yi = _ilu_yi.spec_from_file_location("gen_years_index", _gen_yix)
+            assert _spec_yi and _spec_yi.loader
+            _mod_yi  = _ilu_yi.module_from_spec(_spec_yi)
+            _spec_yi.loader.exec_module(_mod_yi)
+            _mod_yi.build_page(
+                csv_path=args.input, config_dir=str(config_dir),
+                out_path=os.path.join(args.output_dir, "years.html"),
+                tmpl_path="",
+                stats_data=data, photos_by_checkin=_photos_by_checkin,
+                rows=rows, pix_url=_pix_dir_uri,
+            )
+        except Exception as _yie:
+            log.warning("gen_years_index failed: %s", _yie)
+
+    # ── Generate year-YYYY.html album pages ─────────────────────────────────
+    _gen_year = _SCRIPT_DIR / "gen_year_pages.py"
+    if _gen_year.exists():
+        try:
+            import importlib.util as _ilu_y
+            _spec_y = _ilu_y.spec_from_file_location("gen_year_pages", _gen_year)
+            assert _spec_y and _spec_y.loader
+            _mod_y  = _ilu_y.module_from_spec(_spec_y)
+            _spec_y.loader.exec_module(_mod_y)
+            # Load flights once for the year pages (re-parses if available)
+            _flights_list = []
+            if flights_path.exists():
+                try:
+                    from flights import load_flights as _load_flights2
+                    _flights_list = _load_flights2(flights_path)
+                except Exception:
+                    pass
+            # Last.fm per-year music aggregate (sibling of checkins.csv, like flights.csv).
+            _music_by_year: dict = {}
+            _lastfm_path = Path(args.input).resolve().parent / "lastfm_years.json"
+            if _lastfm_path.exists():
+                try:
+                    _lf_music = json.loads(_lastfm_path.read_text(encoding="utf-8"))
+                    _music_by_year = _lf_music.get("years", {}) or {}
+                    log.info("Last.fm: %d years of scrobble stats loaded", len(_music_by_year))
+                except Exception as _lfe:
+                    log.warning("lastfm_years.json load failed: %s", _lfe)
+            _mod_y.build_page(
+                csv_path=args.input,
+                config_dir=str(config_dir),
+                out_path=args.output_dir,
+                tmpl_path="",                           # not used; template inlined
+                rows=rows,
+                stats_data=data,
+                photos_by_checkin=_photos_by_checkin,
+                pix_url=_pix_dir_uri,
+                trips=trips,
+                flight_history=data.get("flight_history"),
+                flights_data=_flights_list,
+                music_by_year=_music_by_year,
+            )
+        except Exception as _ye:
+            log.warning("gen_year_pages failed: %s", _ye)
+
+    # ── Generate country-<slug>.html per-country pages ──────────────────────────
+    _gen_ctry = _SCRIPT_DIR / "gen_country_pages.py"
+    if _gen_ctry.exists():
+        try:
+            import importlib.util as _ilu_c
+            _spec_c = _ilu_c.spec_from_file_location("gen_country_pages", _gen_ctry)
+            assert _spec_c and _spec_c.loader
+            _mod_c  = _ilu_c.module_from_spec(_spec_c)
+            _spec_c.loader.exec_module(_mod_c)
+            _mod_c.build_page(
+                csv_path=args.input,
+                config_dir=str(config_dir),
+                out_path=args.output_dir,
+                tmpl_path="",                           # not used; template inlined
+                rows=rows,
+                stats_data=data,
+                photos_by_checkin=_photos_by_checkin,
+                pix_url=_pix_dir_uri,
+                trips=trips,
+            )
+        except Exception as _ce:
+            log.warning("gen_country_pages failed: %s", _ce)
+
+    # ── Post-process: substitute canonical placeholders in every generated file ──
+    # Single source of truth: config/country_flags.json + config/category_icons.json
+    # (both loaded once above).  Done after generators run so we don't need to
+    # thread these through every gen_*.py kwarg signature.
+    _post_subs = {
+        "{{CTRY_CODE_JSON}}": _ctry_flags_json,
+        "{{CAT_ICON_JSON}}":  _cat_icons_json,
+    }
+    for _out_file in _gen_outputs:
+        try:
+            _p = Path(_out_file)
+            if not _p.exists():
+                continue
+            _txt = _p.read_text(encoding="utf-8")
+            _dirty = False
+            for _k, _v in _post_subs.items():
+                if _k in _txt:
+                    _txt = _txt.replace(_k, _v)
+                    _dirty = True
+            if _dirty:
+                _p.write_text(_txt, encoding="utf-8")
+        except Exception as _e:
+            log.warning("post-process substitution failed for %s: %s", _out_file, _e)
 
     # ── Generate photos.html (all photos gallery) ────────────────────────────
     if args.photos and _photos_by_checkin:
@@ -692,6 +1226,7 @@ if __name__ == "__main__":
         if gen_photos_script.exists():
             import importlib.util as _ilu
             _spec = _ilu.spec_from_file_location("gen_photos", gen_photos_script)
+            assert _spec and _spec.loader
             _mod  = _ilu.module_from_spec(_spec)
             try:
                 _spec.loader.exec_module(_mod)
@@ -704,10 +1239,98 @@ if __name__ == "__main__":
                     tips=all_tips if _pix_dir_uri else [],
                     city_merge=mappings.get("city_merge", {}),
                     ctry_norm=_CTRY_NORM,
+                    country_count=len(data['countries']),
                 )
+                # Post-process the canonical placeholders.
+                _photos_html = Path(args.output_dir) / "photos.html"
+                if _photos_html.exists():
+                    _txt = _photos_html.read_text(encoding="utf-8")
+                    _dirty = False
+                    for _k, _v in _post_subs.items():
+                        if _k in _txt:
+                            _txt = _txt.replace(_k, _v)
+                            _dirty = True
+                    if _dirty:
+                        _photos_html.write_text(_txt, encoding="utf-8")
             except Exception as _e:
                 log.warning("gen_photos.py failed: %s", _e)
         else:
             log.warning("gen_photos.py not found — skipping photos.html")
+
+    # ── Inject shared site.css (content-hashed) ───────────────────────────────
+    # assets/site.css holds the byte-identical side-nav rail pulled out of the 12
+    # page templates. Copy it into the output root under a content-hashed name and
+    # replace the {{SITE_CSS_LINK}} placeholder in EVERY generated page in one pass
+    # — index/trips (built via build()), all _gen_outputs, photos, years, trips and
+    # flights — so no page can ship an unsubstituted placeholder (which would fail
+    # validate_html). Pages without the placeholder (year/trip pages that still
+    # inline their nav CSS) are simply left untouched.
+    _site_css_src = _PROJECT_ROOT / "assets" / "site.css"
+    if _site_css_src.exists():
+        import hashlib as _hashlib
+        _css_bytes = _site_css_src.read_bytes()
+        _css_hash = _hashlib.sha1(_css_bytes).hexdigest()[:8]
+        _css_name = f"site-{_css_hash}.css"
+        (Path(args.output_dir) / _css_name).write_bytes(_css_bytes)
+        _n_linked = 0
+        for _html in Path(args.output_dir).glob("*.html"):
+            _txt = _html.read_text(encoding="utf-8")
+            if "{{SITE_CSS_LINK}}" in _txt:
+                _html.write_text(_txt.replace("{{SITE_CSS_LINK}}", _css_name), encoding="utf-8")
+                _n_linked += 1
+        log.info("Injected %s into %d pages", _css_name, _n_linked)
+    else:
+        log.warning("assets/site.css not found — {{SITE_CSS_LINK}} left unsubstituted")
+
+    # ── PWA: manifest + service worker (versioned per build) ──────────────────
+    # Render templates/{manifest.webmanifest,sw.js}.tmpl into the output root,
+    # stamping the SW cache name with this build's UTC timestamp so every deploy
+    # invalidates the previous service-worker cache. Then inject the manifest
+    # link + theme-color + SW registration into every generated page before
+    # </head> (idempotent — skips a page that already carries the link).
+    _sw_version = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
+    _manifest_src = _TEMPLATES_DIR / "manifest.webmanifest.tmpl"
+    _sw_src = _TEMPLATES_DIR / "sw.js.tmpl"
+    if _manifest_src.exists() and _sw_src.exists():
+        (Path(args.output_dir) / "manifest.webmanifest").write_text(
+            _manifest_src.read_text(encoding="utf-8"), encoding="utf-8")
+        (Path(args.output_dir) / "sw.js").write_text(
+            _sw_src.read_text(encoding="utf-8").replace("{{SW_VERSION}}", _sw_version),
+            encoding="utf-8")
+        _pwa_head = (
+            '<link rel="manifest" href="/manifest.webmanifest">'
+            '<meta name="theme-color" content="#0b0d13">'
+            "<script>if('serviceWorker'in navigator){"
+            "addEventListener('load',function(){"
+            "navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script>"
+        )
+        _n_pwa = 0
+        for _html in Path(args.output_dir).glob("*.html"):
+            _txt = _html.read_text(encoding="utf-8")
+            if 'rel="manifest"' in _txt or "</head>" not in _txt:
+                continue
+            _html.write_text(_txt.replace("</head>", _pwa_head + "</head>", 1), encoding="utf-8")
+            _n_pwa += 1
+        log.info("PWA: manifest + sw.js (v%s) injected into %d pages", _sw_version, _n_pwa)
+    else:
+        log.warning("PWA templates missing — skipping manifest/sw.js")
+
+    # ── Syndication feeds: feed.xml (RSS 2.0) + feed.json (JSON Feed 1.1) ──────
+    # Built from the metrics recent[] list (30 newest check-ins). The CI cp glob
+    # already ships *.xml/*.json, and both are gitignored like other generated
+    # output. index.html links feed.xml via <link rel="alternate">.
+    try:
+        _gen_feeds = _SCRIPT_DIR / "gen_feeds.py"
+        if _gen_feeds.exists():
+            import importlib.util as _ilu_gf
+            _spec_gf = _ilu_gf.spec_from_file_location("gen_feeds", _gen_feeds)
+            assert _spec_gf and _spec_gf.loader
+            _mod_gf = _ilu_gf.module_from_spec(_spec_gf)
+            _spec_gf.loader.exec_module(_mod_gf)
+            _mod_gf.build_feeds(data.get("recent", []), args.output_dir,
+                                swarm_user_id=fs_user_id)
+            log.info("Syndication: feed.xml + feed.json written")
+    except Exception as _fe:
+        log.warning("gen_feeds failed: %s", _fe)
 
     log.info("Done!")

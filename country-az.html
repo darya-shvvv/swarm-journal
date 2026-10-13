@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Azerbaijan — Check-in Journal</title>
+<meta name="description" content="48 check-ins across 1 cities and 43 venues in Azerbaijan.">
+<link rel="canonical" href="https://4sq.pages.dev/country-az.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Azerbaijan — Check-in Journal">
+<meta property="og:description" content="48 check-ins across 1 cities and 43 venues in Azerbaijan.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<style>
+:root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.55;overflow-x:hidden;}
+a{color:var(--teal);}
+.crumb{position:fixed;top:14px;left:18px;z-index:200;font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);background:rgba(18,21,31,.85);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:6px;text-decoration:none;}
+.crumb:hover{color:var(--gold);}
+.wrap{max-width:960px;margin:0 auto;padding:88px 22px 120px;}
+.hero-flag{font-size:0;line-height:0;margin-bottom:16px;}
+.hero-flag .fi{width:96px;height:72px;border-radius:8px;box-shadow:0 8px 26px rgba(0,0,0,.5);}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;line-height:1.08;letter-spacing:-.02em;padding-bottom:.08em;background:linear-gradient(150deg,#f5d48a 0%,#e8b86d 40%,#b97c30 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-family:'DM Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin-top:12px;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:34px 0 12px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;text-align:center;}
+.kpi-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1;}
+.kpi-lbl{font-family:'DM Mono',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-top:7px;}
+section{margin-top:52px;}
+.sec-h{font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;}
+.years{display:flex;align-items:flex-end;gap:6px;height:148px;padding:8px 0;overflow-x:auto;overflow-y:hidden;}
+.yr-bar{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto;min-width:34px;}
+.yr-bar .bar{width:22px;background:linear-gradient(180deg,#f5d48a,#b97c30);border-radius:4px 4px 0 0;}
+.yr-bar .yr-lbl{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);}
+.yr-bar .yr-n{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--teal);}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px;}
+.rank-list{display:flex;flex-direction:column;gap:4px;}
+.rank-row{display:grid;grid-template-columns:20px 1fr auto;gap:8px;align-items:center;padding:4px 6px;border-radius:6px;}
+.rank-row:hover{background:var(--card2);}
+.rank-i{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);}
+.rank-name{font-size:.85rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rank-n{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--teal);}
+.trip-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--text);margin-bottom:10px;transition:border-color .2s,transform .2s;}
+.trip-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.trip-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.trip-meta{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em;}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:var(--card2);}
+.shout{padding:14px 0 14px 18px;border-left:2px solid var(--teal);font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:#e8e9ee;line-height:1.6;margin-bottom:20px;}
+.shout-meta{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);margin-top:8px;font-style:normal;letter-spacing:.04em;}
+@media(max-width:600px){.wrap{padding:78px 16px 90px;}}
+</style>
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
+<body>
+<a class="crumb" href="/index.html#s-countries">← all countries</a>
+<div class="wrap">
+<div class="hero-flag"><span class="fi fi-az"></span></div>
+<h1 class="hero-name">Azerbaijan</h1>
+<div class="hero-sub">first visit 11 Oct 2026 · last 12 Oct 2026</div>
+<div class="kpis"><div class="kpi"><div class="kpi-num">48</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">43</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">cities</div></div><div class="kpi"><div class="kpi-num">2</div><div class="kpi-lbl">days</div></div></div>
+<section><div class="sec-h">By year</div><div class="years"><div class="yr-bar"><span class="yr-n">48</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2026</span></div></div></section>
+<section><div class="cols"><div><div class="sec-h">Top cities</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Baku">Baku</span><span class="rank-n">47</span></div></div></div><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Airport Express Bus">Airport Express Bus</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Heydar Aliyev International Airport (GYD) (Heydər Əliyev Beynəlxalq Aeroportu)">Heydar Aliyev International Airport (GYD) (Heydər Əliyev Beynəlxalq Aeroportu)</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Passport Control">Passport Control</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Courtyard by Marriott Baku">Courtyard by Marriott Baku</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Azerbaijan (Azərbaycan)">Azerbaijan (Azərbaycan)</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Koroğlu Metrostansiyası">Koroğlu Metrostansiyası</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="28 May Metrostansiyası">28 May Metrostansiyası</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="14 Avtobus">14 Avtobus</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Nizami Street (Nizami Küçəsi)">Nizami Street (Nizami Küçəsi)</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Fountains Square (Fəvvarələr Meydanı)">Fountains Square (Fəvvarələr Meydanı)</span><span class="rank-n">1</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Park">Park</span><span class="rank-n">7</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Historic and Protected Site">Historic and Protected Site</span><span class="rank-n">5</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Bus Station">Bus Station</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Airport Service">Airport Service</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Plaza">Plaza</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="International Airport">International Airport</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Metro Station">Metro Station</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Hotel">Hotel</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Road">Road</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">2</span></div></div></div></div></section>
+
+
+<section><div class="sec-h">Trips here</div><a class="trip-card" href="/trips.html#trip-35"><div class="trip-name">Turkey + Moldova + 3 more ✈️</div><div class="trip-meta">2026-09-26 → 2026-10-12 · 17 days · 902 check-ins</div></a></section>
+<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_eeOvdQ5ov82huSo8yRHmToMU33wGxH7kwlFO_qDW4Ss.jpg" alt="Premium Bank Lounge"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_QBhBcVsqCWEEoQRrB_mQUTASd2YUvndYi_q37Mg0s_Q.jpg" alt="Heydər Əliyev Parkı"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_4m_GSWPQJAuoutrVXM7KIWRBVbc2Swq8c85k9FOGDGs.jpg" alt="Courtyard by Marriott Baku"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_tDQNaqfu2ZXUwyksSC_KYXTRfF-pqWsv2LWIOU2IXa8.jpg" alt="Islam Səfərli küçəsi"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_6t-tGMYyna1QTxRBK4r4M4eXHknNwr_mI028eSsoBfo.jpg" alt="Flame Towers (Alov qüllələri)"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_orm0ruWQcj4q5OdiZuUQ78w4WYgiSgkduoKvB4FnaVM.jpg" alt="Flame Towers (Alov qüllələri)"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_fDFg7bp9p9ISbenEPFW5MIjma4pPmybE0dPhWIVRuH0.jpg" alt="Panorama / Панорама"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_y_4uMFwBAfBqi_31R-4sDg18jonIOJ20V17pDUbHx9o.jpg" alt="Swans Fountain"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_xONPLnYCUrPp7I_fFYNMlYEht9hboTGJrWj6emd6LTA.jpg" alt="Azneft Meydanı | Azneft Square"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_NH4HkGmFy2uLPtD0jQ1XuAQYcUYuUPy-PBfm97mFXks.jpg" alt="Philarmonia Wall Clock"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_o1GJeH1BeeuzwcmCXeEcywFT67VKIeNfTqnD7NQtdUY.jpg" alt="Philarmonia Garden (Filarmoniya Bağı)"><img loading="lazy" src="https://pub-5514667a5da04a75986022e39efc7118.r2.dev/pix/1413067054_KKM00isjKX07Ja1D8kTKIavQnYpTAbHwlLAZZQ7lFD4.jpg" alt="Monument Lovers &amp; Cats"></div></section>
+<section><div class="sec-h">In your own voice</div><div class="shout">“Я не знаю сколько лестничных пролетов я прошла ради этого вида!!”<div class="shout-meta">Panorama / Панорама, Baku</div></div><div class="shout">“Спасибо авиакомпании Azal за этот чекин 💅”<div class="shout-meta">Courtyard by Marriott Baku, Baku</div></div><div class="shout">“С музыкальным сопровождением!)”<div class="shout-meta">Müslüm Maqomayevin Heykəli, Baku</div></div></section>
+</div>
+</body>
+</html>

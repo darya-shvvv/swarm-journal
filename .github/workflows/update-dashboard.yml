@@ -231,6 +231,7 @@ jobs:
             --input private-data/checkins.csv \
             --config-dir config \
             --output-dir . \
+            --trip-names-healed-out "$RUNNER_TEMP/trip_names_healed.json" \
             $PHOTOS_ARG $PIX_URL_ARG $RATINGS_ARG $LISTS_ARG
 
       # ── 7b. Sync data to Cloudflare D1 ──────────────────────────────────────
@@ -276,10 +277,18 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add index.html trips.html feed.html companions.html world_cities.html venues.html tips.html photos.html stats.html search.html trips_meta.json feed_meta.json
+          git add -A -- 'site-*.css' sw.js manifest.webmanifest feed.xml feed.json map_data.json routes.json guide.html shouts.html years.html 'year-*.html' 'country-*.html'
           # Only update ratings.html if ratings data was available during the build
           [ -f private-data/venueRatings.json ] && git add ratings.html || true
           # Only update lists.html if lists data was available during the build
           [ -f private-data/lists.json ] && git add lists.html || true
+          # trip_names.json self-heal: when a trip's start moved, its custom name was
+          # re-keyed to the new start ts (written only if something changed; no
+          # auto-added names). Commit it so the next build starts clean.
+          if [ -f "$RUNNER_TEMP/trip_names_healed.json" ]; then
+            cp "$RUNNER_TEMP/trip_names_healed.json" config/trip_names.json
+            git add config/trip_names.json
+          fi
 
           if git diff --cached --quiet; then
             echo "Nothing to commit."

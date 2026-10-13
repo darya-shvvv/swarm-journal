@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guide — What's around me right now</title>
+<meta name="description" content="Live nearby venue suggestions tailored to your taste history, day-part, and current location.">
+<link rel="canonical" href="https://4sq.pages.dev/guide.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Guide — What's around me right now">
+<meta property="og:description" content="Live nearby venue suggestions tailored to your taste history.">
+<meta property="og:url" content="https://4sq.pages.dev/guide.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preconnect" href="https://overpass-api.de" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;600&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="{{SITE_CSS_LINK}}">
+<style>
+:root{--bg:#0c0e14;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#8b93a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
+body.light{--bg:#ddd8cf;--card:#f0ece3;--card2:#e5e0d7;--border:#aaa49a;--gold:#7a3e00;--teal:#155c58;--muted:#54576a;--text:#15172a;--rose:#a83e5a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;}
+a{color:var(--teal);}
+
+/* ── Layout ── */
+.page{padding:18px 28px 80px;max-width:1280px;margin:0 auto;}
+@media(max-width:600px){.page{padding:12px 14px 60px;}}
+
+/* ── Header ── */
+header{padding:18px 0 14px;border-bottom:1px solid var(--border);margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+header h1{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;background:linear-gradient(130deg,#f5d48a,#e8b86d 50%,#b97c30);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05;}
+.h-sub{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:auto;}
+@media(max-width:600px){header h1{font-size:1.3rem;} .h-sub{display:none;}}
+
+/* ── Hero (anchor) ── */
+.hero{background:linear-gradient(135deg,rgba(232,184,109,.10) 0%,rgba(78,201,176,.05) 100%);border:1px solid rgba(232,184,109,.25);border-radius:14px;padding:18px 22px;margin-bottom:16px;}
+.hero-row1{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+.hero-anchor{flex:1 1 280px;min-width:0;}
+.hero-anchor-lbl{font-family:'DM Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:4px;}
+.hero-venue{font-size:1.15rem;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hero-meta{font-size:.78rem;color:var(--muted);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap;}
+.hero-meta strong{color:var(--text);font-weight:600;}
+.hero-context{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--teal);margin-top:7px;letter-spacing:.05em;}
+.hero-context .ctx-badge{display:inline-block;background:rgba(78,201,176,.12);border:1px solid rgba(78,201,176,.35);border-radius:10px;padding:1px 8px;margin-right:5px;font-size:.58rem;}
+.hero-context .ctx-badge.alert{background:rgba(232,184,109,.10);border-color:rgba(232,184,109,.35);color:var(--gold);}
+.hero-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.hero-btn{padding:6px 11px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:.7rem;font-family:'DM Mono',monospace;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s;letter-spacing:.04em;}
+.hero-btn:hover{border-color:var(--gold);color:var(--gold);}
+.hero-btn.gps{background:rgba(78,201,176,.10);border-color:rgba(78,201,176,.35);color:var(--teal);}
+.hero-btn.gps.active{background:rgba(78,201,176,.20);border-color:var(--teal);}
+.hero-btn.gps.locating{opacity:.7;animation:gpspulse 1s ease-in-out infinite;}
+@keyframes gpspulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+.hero-hint{font-size:.72rem;color:var(--muted);margin-top:8px;line-height:1.4;}
+.hero-hint b{color:var(--teal);font-weight:600;}
+
+/* ── Filter panel + map two-pane ── */
+.discover-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.dc-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.dc-head h2{font-family:'DM Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);font-weight:600;}
+.dc-head .count{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-left:auto;}
+.dc-head .count strong{color:var(--teal);}
+
+.layout{display:grid;grid-template-columns:340px 1fr;gap:0;min-height:540px;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}}
+
+/* Left rail */
+.rail{border-right:1px solid var(--border);padding:14px 14px 18px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 240px);overflow-y:auto;}
+@media(max-width:900px){.rail{border-right:none;border-bottom:1px solid var(--border);max-height:none;overflow-y:visible;}}
+.rail::-webkit-scrollbar{width:3px;}
+.rail::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+.rail-block{display:flex;flex-direction:column;gap:8px;}
+.rail-label{font-family:'DM Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);}
+
+.rec-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.rec-pill{padding:5px 11px;border-radius:14px;font-size:.72rem;cursor:pointer;border:1px solid rgba(232,184,109,.4);background:rgba(232,184,109,.08);color:var(--gold);font-family:inherit;display:inline-flex;align-items:center;gap:4px;transition:all .15s;}
+.rec-pill:hover{background:rgba(232,184,109,.16);}
+.rec-pill.active{background:rgba(232,184,109,.22);border-color:var(--gold);color:var(--gold);}
+.rec-pill .star{font-size:.55rem;}
+
+.cat-acc{display:flex;flex-direction:column;gap:3px;}
+.cat-group{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--card2);}
+.cat-group-h{width:100%;display:flex;align-items:center;gap:7px;padding:6px 10px;background:transparent;cursor:pointer;border:none;color:var(--text);font-family:inherit;text-align:left;transition:background .12s;}
+.cat-group-h:hover{background:rgba(78,201,196,.08);}
+.cat-group.open .cat-group-h{background:rgba(78,201,196,.10);border-bottom:1px solid var(--border);}
+.cgi{font-size:.85rem;width:18px;text-align:center;flex-shrink:0;}
+.cgn{flex:1;font-size:.74rem;font-weight:500;}
+.cgliked{font-size:.55rem;color:var(--rose);margin-right:2px;}
+.cgcount{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--teal);background:rgba(78,201,196,.10);border-radius:9px;padding:1px 6px;flex-shrink:0;}
+.cgarrow{font-size:.55rem;color:var(--muted);transition:transform .15s;flex-shrink:0;}
+.cat-group.open .cgarrow{transform:rotate(180deg);}
+.cgbody{display:none;padding:8px;flex-wrap:wrap;gap:4px;}
+.cat-group.open .cgbody{display:flex;}
+.cat-pill{padding:3px 9px;border-radius:14px;font-size:.66rem;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .12s;font-family:inherit;white-space:nowrap;}
+.cat-pill:hover{background:rgba(78,201,196,.08);border-color:rgba(78,201,196,.35);color:var(--text);}
+.cat-pill.active{background:rgba(78,201,196,.18);border-color:var(--teal);color:var(--teal);}
+.cat-pill.liked{border-color:rgba(232,119,138,.35);color:var(--rose);}
+.cat-pill.liked .heart{font-size:.5rem;margin-right:2px;}
+.cat-pill.visited::after{content:'';display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--teal);margin-left:5px;opacity:.6;vertical-align:middle;}
+.cat-pill-count{font-family:'DM Mono',monospace;font-size:.5rem;opacity:.6;margin-left:3px;}
+
+.toggle-row{display:flex;flex-wrap:wrap;gap:5px;}
+.toggle-btn{padding:4px 9px;border-radius:14px;font-size:.65rem;cursor:pointer;background:var(--card2);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.04em;text-transform:none;transition:all .12s;}
+.toggle-btn:hover{border-color:var(--teal);color:var(--text);}
+.toggle-btn.active{background:rgba(78,201,176,.15);border-color:var(--teal);color:var(--teal);}
+.toggle-btn.gold.active{background:rgba(232,184,109,.12);border-color:var(--gold);color:var(--gold);}
+
+.radius-slider{width:100%;}
+.radius-slider input{width:100%;accent-color:var(--teal);}
+.radius-display{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--teal);margin-top:2px;text-align:center;}
+
+/* Right pane: map + list */
+.right{display:flex;flex-direction:column;min-width:0;}
+.map-pane{position:relative;height:340px;border-bottom:1px solid var(--border);}
+#nbMap{width:100%;height:100%;background:#0c0e14;}
+.map-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(12,14,20,0.78);color:var(--muted);font-size:.78rem;z-index:500;pointer-events:none;}
+.map-loading.hidden{display:none;}
+.leaflet-popup-content-wrapper{background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;}
+.leaflet-popup-tip{background:var(--card2);}
+
+.list-pane{flex:1;overflow-y:auto;padding:8px 14px 14px;max-height:480px;}
+.list-pane::-webkit-scrollbar{width:3px;}
+.list-pane::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+.nb-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;margin-bottom:5px;cursor:pointer;transition:all .12s;}
+.nb-item:hover, .nb-item.hover{border-color:rgba(78,201,196,.5);background:rgba(78,201,196,.05);}
+.nb-item.visited{border-color:rgba(232,184,109,.4);background:rgba(232,184,109,.06);}
+.nb-item .dist{font-family:'DM Mono',monospace;font-size:.68rem;font-weight:600;color:var(--teal);white-space:nowrap;min-width:48px;text-align:right;padding-top:1px;}
+.nb-item .body{flex:1;min-width:0;}
+.nb-item .name{font-size:.85rem;font-weight:500;line-height:1.25;}
+.nb-item.visited .name::after{content:' ✓';color:var(--gold);}
+.nb-item .meta{font-size:.65rem;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nb-item .meta .sep{margin:0 4px;opacity:.5;}
+.nb-item .meta .opening{color:var(--teal);}
+.nb-item .meta .opening.closed{color:var(--rose);}
+.nb-item .links{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
+.nb-link{font-size:.6rem;padding:2px 7px;border-radius:4px;text-decoration:none;border:1px solid rgba(255,255,255,.12);color:var(--text);}
+.nb-link.g{border-color:rgba(66,133,244,.4);color:#5995ff;}
+.nb-link.y{border-color:rgba(255,80,80,.4);color:#ff6060;}
+.nb-link.o{border-color:rgba(120,200,100,.35);color:#78c864;}
+.nb-link.w{border-color:rgba(232,184,109,.35);color:var(--gold);}
+.nb-link:hover{background:rgba(255,255,255,.05);}
+.nb-item.mine .name::after{content:none;}
+.mine-badge{display:inline-block;margin-left:6px;font-size:.55rem;font-weight:600;color:var(--gold);border:1px solid rgba(232,184,109,.4);border-radius:4px;padding:1px 5px;vertical-align:middle;}
+.nb-banner{margin:8px 0 4px;padding:8px 11px;font-size:.72rem;line-height:1.4;color:var(--gold);background:rgba(232,184,109,.08);border:1px solid rgba(232,184,109,.3);border-radius:7px;}
+.nb-banner.hidden{display:none;}
+.nb-banner .fb-ico{margin-right:4px;}
+.nb-banner b{color:var(--text);font-weight:600;}
+.nb-empty{text-align:center;padding:30px 16px;color:var(--muted);font-size:.82rem;}
+.nb-empty h3{font-size:.95rem;margin-bottom:6px;color:var(--text);}
+.nb-empty a{color:var(--teal);}
+
+/* Side nav */
+
+/* Empty state when no anchor */
+.no-anchor{padding:60px 20px;text-align:center;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:14px;}
+.no-anchor h2{font-size:1.2rem;color:var(--text);margin-bottom:10px;}
+.no-anchor p{font-size:.82rem;line-height:1.6;}
+.no-anchor button{margin-top:18px;padding:9px 18px;border-radius:8px;background:rgba(78,201,196,.10);border:1px solid var(--teal);color:var(--teal);font-size:.78rem;cursor:pointer;font-family:inherit;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>Guide</h1>
+  <div class="h-sub">{{TOTAL_CHECKINS}} check-ins · {{TOTAL_COUNTRIES}} countries · updated {{UPDATED}}</div>
+</header>
+
+<!-- HERO -->
+<div id="heroBox"></div>
+
+<!-- DISCOVERY -->
+<div id="discoverBox"></div>
+
+</div><!-- /.page -->
+
+<nav class="side-nav" aria-label="Page shortcuts">
+  <a href="index.html"><span class="sn-icon">🏠</span><span class="sn-lbl">HOME</span></a>
+  <div class="sn-sep--pages"></div>
+  <a href="feed.html"><span class="sn-icon">📰</span><span class="sn-lbl">FEED</span></a>
+  <a href="tips.html"><span class="sn-icon">💬</span><span class="sn-lbl">TIPS</span></a>
+  <a href="ratings.html"><span class="sn-icon">⭐</span><span class="sn-lbl">RATED</span></a>
+  <a href="flights.html"><span class="sn-icon">✈</span><span class="sn-lbl">FLIGHTS</span></a>
+  <a href="years.html"><span class="sn-icon">🗓️</span><span class="sn-lbl">YEARS</span></a>
+  <a href="shouts.html"><span class="sn-icon">💭</span><span class="sn-lbl">SHOUTS</span></a>
+  <a href="trips.html"><span class="sn-icon">✈</span><span class="sn-lbl">TRIPS</span></a>
+  <a href="lists.html"><span class="sn-icon">📋</span><span class="sn-lbl">LISTS</span></a>
+  <a href="world_cities.html"><span class="sn-icon">🌐</span><span class="sn-lbl">WORLD</span></a>
+  <a href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">VENUES</span></a>
+  <a href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <a href="guide.html" class="active"><span class="sn-icon">🧭</span><span class="sn-lbl">GUIDE</span></a>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+"use strict";
+const D = {{GUIDE_DATA_JSON}};
+const CAT_ICON = {{CAT_ICON_JSON}};   // canonical category → [emoji, color]
+
+// ── Utilities ─────────────────────────────────────────────────────────────
+const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const fmtDist = m => m < 50 ? '<50 m' : m < 1000 ? Math.round(m / 10) * 10 + ' m' : (m / 1000).toFixed(2) + ' km';
+const fmtWalk = m => {
+  const mins = Math.round(m / 80); // 80 m/min ≈ 4.8 km/h
+  if (mins < 1) return '<1 min walk';
+  if (mins < 60) return mins + ' min walk';
+  return Math.round(mins / 60) + ' h walk';
+};
+const distM = (la1, lo1, la2, lo2) => {
+  const R = 6371000, r = Math.PI / 180;
+  const dLa = (la2 - la1) * r, dLo = (lo2 - lo1) * r;
+  const a = Math.sin(dLa / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin(dLo / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+const catEmoji = c => (CAT_ICON[c] && CAT_ICON[c][0]) || '📍';
+const catColor = c => (CAT_ICON[c] && CAT_ICON[c][1]) || '#4a5270';
+const timeAgo = ts => {
+  if (!ts) return '';
+  const s = Math.floor(Date.now() / 1000) - ts;
+  if (s < 90) return 'just now';
+  const m = Math.round(s / 60);
+  if (m < 60) return m + ' min ago';
+  const h = Math.round(m / 60);
+  if (h < 24) return h + (h === 1 ? ' hour ago' : ' hours ago');
+  const d = Math.round(h / 24);
+  if (d < 30) return d + (d === 1 ? ' day ago' : ' days ago');
+  const mo = Math.round(d / 30);
+  if (mo < 12) return mo + (mo === 1 ? ' month ago' : ' months ago');
+  const y = Math.round(mo / 12);
+  return y + (y === 1 ? ' year ago' : ' years ago');
+};
+
+// Opening-hours probe — very lightweight; returns {open: bool|null, text: ''}
+// Full opening_hours grammar is out of scope; we just look for "24/7", "Mo-Su",
+// and a simple "Mo-Fr 09:00-21:00" form.  Anything else → unknown (null).
+function probeOpen(ohRaw, dt) {
+  if (!ohRaw) return { open: null, text: '' };
+  const oh = ohRaw.trim();
+  if (/^24\/7$/i.test(oh)) return { open: true, text: '24/7' };
+  // Convert dt to "HH:MM"
+  const hh = String(dt.getHours()).padStart(2, '0');
+  const mm = String(dt.getMinutes()).padStart(2, '0');
+  const nowMin = dt.getHours() * 60 + dt.getMinutes();
+  // Map JS DOW (Sun=0) to OSM (Mo=0..Su=6)
+  const osmDow = (dt.getDay() + 6) % 7;
+  const dayKeys = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+  // Try patterns like "Mo-Su 09:00-22:00" / "Mo-Fr 09:00-18:00; Sa 10:00-16:00"
+  for (const part of oh.split(/\s*;\s*/)) {
+    const m = part.match(/^([A-Z][a-z](?:[-,][A-Z][a-z])*)\s+(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})$/);
+    if (!m) continue;
+    const [, dRange, h1, m1, h2, m2] = m;
+    const days = new Set();
+    for (const dr of dRange.split(',')) {
+      const span = dr.split('-');
+      if (span.length === 1) days.add(span[0]);
+      else {
+        const a = dayKeys.indexOf(span[0]), b = dayKeys.indexOf(span[1]);
+        if (a >= 0 && b >= 0) for (let i = a; i <= b; i++) days.add(dayKeys[i]);
+      }
+    }
+    if (!days.has(dayKeys[osmDow])) continue;
+    const open = +h1 * 60 + +m1;
+    const close = +h2 * 60 + +m2;
+    const isOpen = open <= close
+      ? (nowMin >= open && nowMin < close)
+      : (nowMin >= open || nowMin < close);
+    return { open: isOpen, text: `${h1}:${m1}–${h2}:${m2}` };
+  }
+  return { open: null, text: oh.length > 22 ? oh.slice(0, 22) + '…' : oh };
+}
+
+// ── IndexedDB cache ───────────────────────────────────────────────────────
+const IDB_NAME = 'guide-overpass-v1';
+const IDB_STORE = 'cache';
+const TTL_MS = 24 * 3600 * 1000;
+
+function idbOpen() {
+  return new Promise((res, rej) => {
+    if (!window.indexedDB) return rej(new Error('no indexedDB'));
+    const r = indexedDB.open(IDB_NAME, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(IDB_STORE);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+async function idbGet(key) {
+  try {
+    const db = await idbOpen();
+    return await new Promise((res, rej) => {
+      const tx = db.transaction(IDB_STORE, 'readonly');
+      const req = tx.objectStore(IDB_STORE).get(key);
+      req.onsuccess = () => res(req.result);
+      req.onerror = () => rej(req.error);
+    });
+  } catch { return null; }
+}
+async function idbSet(key, val) {
+  try {
+    const db = await idbOpen();
+    await new Promise((res, rej) => {
+      const tx = db.transaction(IDB_STORE, 'readwrite');
+      tx.objectStore(IDB_STORE).put(val, key);
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    });
+  } catch {}
+}
+function cacheKey(lat, lng, radius, tags) {
+  // Round coords to ~10m precision so the same area produces cache hits even on
+  // slight GPS drift.
+  const la = Math.round(lat * 10000) / 10000;
+  const lo = Math.round(lng * 10000) / 10000;
+  return `${la},${lo},${radius},${tags.slice().sort().join('|')}`;
+}
+
+// ── App state ─────────────────────────────────────────────────────────────
+const state = {
+  anchor: D.anchor ? { ...D.anchor, source: 'checkin' } : null,
+  radius: +localStorage.getItem('guide-radius') || 1500,
+  filters: {
+    likedOnly:     localStorage.getItem('guide-liked') === '1',
+    unvisitedOnly: localStorage.getItem('guide-unvis') === '1',
+    openNow:       localStorage.getItem('guide-open') === '1',
+  },
+  activeCat:     null,
+  results:       [],    // raw OSM elements (after distance attach)
+  fallback:      false, // false | 'empty' | 'error' — showing own venues
+  filteredCount: 0,
+  inFlight:      new Map(),  // tags-key → AbortController
+  promiseDedup:  new Map(),  // tags-key → Promise
+  hoverIdx:      -1,
+};
+
+const visitedNames = new Set((D.visited_names || []).map(s => s.toLowerCase()));
+const likedCatsSet = new Set(D.liked_cats || []);
+const visitedCatsMap = new Map((D.visited_cats || []).map(([c, n]) => [c, n]));
+const osmTagMap = D.osm_tags || {};
+
+// ── Hero ──────────────────────────────────────────────────────────────────
+function renderHero() {
+  const box = document.getElementById('heroBox');
+  if (!state.anchor) {
+    box.innerHTML = `<div class="no-anchor">
+      <h2>Where are you right now?</h2>
+      <p>This guide finds venues near you that match your taste.<br>
+      Share your location for live results, or it will fall back to your latest check-in.</p>
+      <button onclick="useDeviceLocation()">📡 Use my location</button>
+    </div>`;
+    return;
+  }
+  const a = state.anchor;
+  const gUrl = `https://www.google.com/maps/@${a.lat},${a.lng},15z`;
+  const yUrl = `https://yandex.com/maps/?ll=${a.lng},${a.lat}&z=15`;
+  const isGps = a.source === 'gps';
+  const dpName = { morning: 'Morning', lunch: 'Lunch', afternoon: 'Afternoon', evening: 'Evening', late_night: 'Late night' }[D.session.daypart] || '';
+
+  const badges = [];
+  if (D.session.just_arrived) badges.push(`<span class="ctx-badge alert">✈ just arrived</span>`);
+  if (D.session.in_foreign_country) badges.push(`<span class="ctx-badge alert">🌍 foreign country</span>`);
+  if (D.session.in_new_country) badges.push(`<span class="ctx-badge alert">★ new for you</span>`);
+  if (D.session.is_home) badges.push(`<span class="ctx-badge">🏠 home</span>`);
+  if (dpName) badges.push(`<span class="ctx-badge">⏱ ${dpName}</span>`);
+
+  box.innerHTML = `<div class="hero">
+    <div class="hero-row1">
+      <div class="hero-anchor">
+        <div class="hero-anchor-lbl">${isGps ? '📡 Your location · live' : 'Last check-in' + (a.ts ? ' · ' + timeAgo(a.ts) : '')}</div>
+        <div class="hero-venue">${esc(a.venue || 'My location')}</div>
+        <div class="hero-meta">
+          ${a.category ? `<span>${catEmoji(a.category)} <strong>${esc(a.category)}</strong></span>` : ''}
+          ${a.city ? `<span>📍 ${esc(a.city)}${a.country ? ', ' + esc(a.country) : ''}</span>` : ''}
+        </div>
+        <div class="hero-context">${badges.join(' ')}</div>
+        ${!isGps ? `<div class="hero-hint">Showing results around your last check-in. <b>Use my location</b> for what's near you now.</div>` : ''}
+      </div>
+      <div class="hero-actions">
+        <button class="hero-btn gps ${isGps ? 'active' : ''}" onclick="useDeviceLocation()">📡 ${isGps ? 'Using your location' : 'Use my location'}</button>
+        ${!isGps && D.anchor ? `<button class="hero-btn" onclick="useLastCheckin()">↩ Last check-in</button>` : ''}
+        <a class="hero-btn" href="${gUrl}" target="_blank" rel="noopener">Google Maps ↗</a>
+        <a class="hero-btn" href="${yUrl}" target="_blank" rel="noopener">Yandex Maps ↗</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Discovery panel ───────────────────────────────────────────────────────
+function renderDiscover() {
+  const box = document.getElementById('discoverBox');
+  if (!state.anchor) { box.innerHTML = ''; return; }
+
+  // Build category accordion from canonical config/categories.json groups
+  const groupsBlocks = Object.entries(D.groups || {}).map(([groupName, cats]) => {
+    const visited = cats.filter(c => visitedCatsMap.has(c));
+    const hasLiked = cats.some(c => likedCatsSet.has(c));
+    const groupVisits = visited.reduce((s, c) => s + (visitedCatsMap.get(c) || 0), 0);
+
+    // Sort: liked first, visited next, others alphabetical
+    const sorted = cats.slice().sort((a, b) => {
+      const al = likedCatsSet.has(a) ? 0 : visitedCatsMap.has(a) ? 1 : 2;
+      const bl = likedCatsSet.has(b) ? 0 : visitedCatsMap.has(b) ? 1 : 2;
+      return al - bl || a.localeCompare(b);
+    });
+
+    const pillsHtml = sorted.map(cat => {
+      const isLiked = likedCatsSet.has(cat);
+      const isVis = visitedCatsMap.has(cat);
+      const n = visitedCatsMap.get(cat) || 0;
+      const cls = ['cat-pill'];
+      if (isLiked) cls.push('liked');
+      else if (isVis) cls.push('visited');
+      return `<button class="${cls.join(' ')}" data-cat="${esc(cat)}">${isLiked ? '<span class="heart">❤</span>' : ''}${esc(cat)}${n ? `<span class="cat-pill-count">${n}</span>` : ''}</button>`;
+    }).join('');
+
+    const cgIcon = ({ 'Food & Drink': '🍽️', 'Transport': '🚉', 'Culture & Sights': '🎭', 'Nature & Outdoors': '🌿', 'Shopping': '🛍️', 'Home & Office': '🏢', 'Hotels & Lodging': '🏨', 'Sport & Fitness': '💪' })[groupName] || '📌';
+    return `<div class="cat-group${hasLiked ? ' open' : ''}" data-group="${esc(groupName)}">
+      <button class="cat-group-h">
+        <span class="cgi">${cgIcon}</span>
+        <span class="cgn">${hasLiked ? '<span class="cgliked">❤</span>' : ''}${esc(groupName)}</span>
+        ${visited.length ? `<span class="cgcount">${visited.length}/${cats.length}</span>` : `<span class="cgcount">${cats.length}</span>`}
+        <span class="cgarrow">▾</span>
+      </button>
+      <div class="cgbody">${pillsHtml}</div>
+    </div>`;
+  }).join('');
+
+  // Recommendations (sparkle-marked, daypart-aware, taste-aware)
+  const recPills = (D.recommended || []).map(cat =>
+    `<button class="rec-pill" data-cat="${esc(cat)}"><span class="star">★</span> ${esc(cat)}</button>`
+  ).join('');
+
+  box.innerHTML = `<div class="discover-card">
+    <div class="dc-head">
+      <h2>🔍 Nearby for you</h2>
+      <span class="count" id="nbCount"></span>
+    </div>
+    <div class="layout">
+      <div class="rail">
+        ${recPills ? `<div class="rail-block">
+          <div class="rail-label">Recommended for ${esc(D.session.daypart || 'now')}</div>
+          <div class="rec-pills">${recPills}</div>
+        </div>` : ''}
+
+        <div class="rail-block">
+          <div class="rail-label">Radius</div>
+          <div class="radius-slider">
+            <input type="range" id="radiusInput" min="250" max="5000" step="250" value="${state.radius}">
+            <div class="radius-display" id="radiusDisplay">${state.radius < 1000 ? state.radius + ' m' : (state.radius / 1000) + ' km'}</div>
+          </div>
+        </div>
+
+        <div class="rail-block">
+          <div class="rail-label">Filters</div>
+          <div class="toggle-row">
+            <button class="toggle-btn ${state.filters.likedOnly ? 'active' : ''}" data-toggle="likedOnly">❤ Liked cats only</button>
+            <button class="toggle-btn gold ${state.filters.unvisitedOnly ? 'active' : ''}" data-toggle="unvisitedOnly">★ Unvisited only</button>
+            <button class="toggle-btn ${state.filters.openNow ? 'active' : ''}" data-toggle="openNow">🕐 Open now</button>
+          </div>
+        </div>
+
+        <div class="rail-block">
+          <div class="rail-label">Browse all categories</div>
+          <div class="cat-acc">${groupsBlocks}</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="map-pane">
+          <div id="nbMap"></div>
+          <div class="map-loading" id="mapLoading">Pick a category to see what's nearby…</div>
+        </div>
+        <div class="nb-banner hidden" id="nbBanner"></div>
+        <div class="list-pane" id="nbList"></div>
+      </div>
+    </div>
+  </div>`;
+
+  wireDiscoverEvents();
+  initMap();
+}
+
+// ── Event wiring ──────────────────────────────────────────────────────────
+function wireDiscoverEvents() {
+  document.getElementById('discoverBox').addEventListener('click', e => {
+    const pill = e.target.closest('.cat-pill, .rec-pill');
+    if (pill) { selectCat(pill.dataset.cat); return; }
+    const cgHead = e.target.closest('.cat-group-h');
+    if (cgHead) { cgHead.parentElement.classList.toggle('open'); return; }
+    const toggle = e.target.closest('.toggle-btn');
+    if (toggle) {
+      const k = toggle.dataset.toggle;
+      state.filters[k] = !state.filters[k];
+      toggle.classList.toggle('active', state.filters[k]);
+      localStorage.setItem('guide-' + (k === 'likedOnly' ? 'liked' : k === 'unvisitedOnly' ? 'unvis' : 'open'), state.filters[k] ? '1' : '0');
+      applyAndRender();
+      return;
+    }
+  });
+
+  // Debounced radius slider
+  const slider = document.getElementById('radiusInput');
+  let radDebounce = null;
+  slider.addEventListener('input', e => {
+    state.radius = +e.target.value;
+    document.getElementById('radiusDisplay').textContent =
+      state.radius < 1000 ? state.radius + ' m' : (state.radius / 1000).toFixed(2).replace(/\.?0+$/, '') + ' km';
+    updateRadiusCircle();
+    if (radDebounce) clearTimeout(radDebounce);
+    radDebounce = setTimeout(() => {
+      localStorage.setItem('guide-radius', state.radius);
+      if (state.activeCat) fetchAndRender(state.activeCat);
+    }, 350);
+  });
+}
+
+// ── Map ───────────────────────────────────────────────────────────────────
+let _map = null, _radiusCircle = null, _resultLayer = null, _anchorMarker = null;
+const _markerByIdx = [];
+
+function initMap() {
+  if (_map || !state.anchor) return;
+  const a = state.anchor;
+  _map = L.map('nbMap', { zoomControl: true, attributionControl: false }).setView([a.lat, a.lng], 15);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    { subdomains: 'abcd', maxZoom: 19 }).addTo(_map);
+  _anchorMarker = L.marker([a.lat, a.lng], {
+    icon: L.divIcon({
+      className: '',
+      html: `<div style="width:14px;height:14px;border-radius:50%;background:#e8b86d;border:3px solid #fff;box-shadow:0 0 6px rgba(0,0,0,.5)"></div>`,
+      iconSize: [14, 14], iconAnchor: [7, 7],
+    }),
+  }).addTo(_map).bindPopup(`<strong>${esc(a.venue || 'You')}</strong><br><small>${a.source === 'gps' ? 'Device location' : 'Last check-in'}</small>`);
+  _radiusCircle = L.circle([a.lat, a.lng], { radius: state.radius, color: '#4ec9b0', weight: 1.5, dashArray: '4 4', opacity: 0.5, fill: false }).addTo(_map);
+  _resultLayer = L.layerGroup().addTo(_map);
+}
+
+function updateRadiusCircle() {
+  if (_radiusCircle) _radiusCircle.setRadius(state.radius);
+}
+
+function moveAnchor(lat, lng, label, sourceTag) {
+  if (!_map) return;
+  state.anchor.lat = lat; state.anchor.lng = lng;
+  if (label != null) state.anchor.venue = label;
+  if (sourceTag != null) state.anchor.source = sourceTag;
+  _anchorMarker.setLatLng([lat, lng]);
+  _radiusCircle.setLatLng([lat, lng]);
+  _map.setView([lat, lng], _map.getZoom());
+}
+
+// ── Overpass fetch ────────────────────────────────────────────────────────
+const ENDPOINTS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.openstreetmap.fr/api/interpreter',
+];
+
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+async function overpassFetch(tags, abortSignal, onStatus) {
+  const cacheK = cacheKey(state.anchor.lat, state.anchor.lng, state.radius, tags);
+  // 1. cache check
+  const hit = await idbGet(cacheK);
+  if (hit && (Date.now() - hit.t) < TTL_MS) return hit.v;
+  // 2. dedup in-flight
+  if (state.promiseDedup.has(cacheK)) return state.promiseDedup.get(cacheK);
+
+  const stanzas = tags.map(t => {
+    const i = t.indexOf('='); const k = t.slice(0, i), v = t.slice(i + 1);
+    return `nwr["${k}"="${v}"](around:${state.radius},${state.anchor.lat},${state.anchor.lng});`;
+  }).join('');
+  const query = `[out:json][timeout:25];(${stanzas});out center 150;`;
+
+  // Overpass mirrors are frequently rate-limited (429) or overloaded (504).
+  // Sweep all endpoints, then retry the whole sweep with backoff before giving
+  // up — the caller shows a "busy, retrying…" state rather than a dead end.
+  const ROUNDS = 3;
+  const promise = (async () => {
+    let lastErr;
+    for (let round = 0; round < ROUNDS; round++) {
+      for (const ep of ENDPOINTS) {
+        if (abortSignal && abortSignal.aborted) throw new DOMException('aborted', 'AbortError');
+        try {
+          const r = await fetch(ep, {
+            method: 'POST',
+            body: 'data=' + encodeURIComponent(query),
+            signal: abortSignal,
+          });
+          if (!r.ok) { lastErr = new Error('HTTP ' + r.status); continue; }
+          const d = await r.json();
+          const els = d.elements || [];
+          idbSet(cacheK, { t: Date.now(), v: els });
+          return els;
+        } catch (e) {
+          if (e.name === 'AbortError') throw e;
+          lastErr = e;
+        }
+      }
+      if (round < ROUNDS - 1) {
+        if (onStatus) onStatus(round);
+        await sleep(700 * (round + 1));  // 700ms, 1400ms backoff between sweeps
+      }
+    }
+    throw lastErr || new Error('all endpoints failed');
+  })();
+  state.promiseDedup.set(cacheK, promise);
+  try {
+    const els = await promise;
+    return els;
+  } finally {
+    state.promiseDedup.delete(cacheK);
+  }
+}
+
+function parseElements(els) {
+  const items = [];
+  for (const el of els) {
+    const lat = el.lat ?? el.center?.lat;
+    const lng = el.lon ?? el.center?.lon;
+    const name = el.tags?.name;
+    if (!lat || !lng || !name) continue;
+    const tags = el.tags || {};
+    const street = tags['addr:street'] || '';
+    const num = tags['addr:housenumber'] || '';
+    const addr = (street + (num ? ' ' + num : '')).trim() || tags['addr:full'] || '';
+    items.push({
+      name,
+      addr,
+      opening: tags.opening_hours || '',
+      website: tags.website || tags['contact:website'] || '',
+      lat, lng,
+      osm_type: el.type, osm_id: el.id,
+      isVis: visitedNames.has(name.toLowerCase()),
+      d: distM(state.anchor.lat, state.anchor.lng, lat, lng),
+    });
+  }
+  items.sort((a, b) => a.d - b.d);
+  return items;
+}
+
+// ── Never-empty fallback: your own visited venues near the anchor ──────────
+// D.nearby_mine rows are [name, category, lat, lng, liked] (nearest ≤600 within
+// 25 km, from gen_guide). Filter to the selected category + current radius and
+// shape them like parseElements output. These carry mine:true (no OSM id).
+function ownNearby(cat) {
+  const rows = D.nearby_mine || [];
+  const out = [];
+  for (const [name, category, lat, lng, liked] of rows) {
+    if (category !== cat) continue;
+    const d = distM(state.anchor.lat, state.anchor.lng, lat, lng);
+    if (d > state.radius) continue;
+    out.push({
+      name, addr: '', opening: '', website: '',
+      lat, lng, osm_type: null, osm_id: null,
+      isVis: true, mine: true, liked: !!liked, d,
+    });
+  }
+  out.sort((a, b) => a.d - b.d);
+  return out;
+}
+
+// ── Render / filter ───────────────────────────────────────────────────────
+function applyAndRender() {
+  if (!state.results.length) {
+    renderEmpty('Pick a category', 'Choose a category on the left to see what\'s nearby.');
+    return;
+  }
+  const now = new Date();
+  let items = state.results;
+
+  if (state.filters.unvisitedOnly) items = items.filter(x => !x.isVis);
+  if (state.filters.openNow) items = items.filter(x => probeOpen(x.opening, now).open === true);
+
+  state.filteredCount = items.length;
+  const radTxt = state.radius < 1000 ? state.radius + ' m' : (state.radius / 1000).toFixed(2).replace(/\.?0+$/, '') + ' km';
+  document.getElementById('nbCount').innerHTML = items.length
+    ? `<strong>${items.length}</strong> within ${radTxt}`
+    : '';
+
+  const banner = document.getElementById('nbBanner');
+  if (banner) {
+    banner.innerHTML = state.fallback
+      ? `<span class="fb-ico">📍</span> ${state.fallback === 'error'
+          ? 'Live map data is unavailable right now — showing places <b>you\'ve been to</b> nearby instead.'
+          : 'No live results here — showing places <b>you\'ve been to</b> nearby instead.'}`
+      : '';
+    banner.classList.toggle('hidden', !state.fallback);
+  }
+
+  if (!items.length) {
+    renderEmpty('Nothing matches', 'Try a wider radius or relaxing filters.');
+    return;
+  }
+
+  // Render full list virtually: 80 cards max in DOM at any time
+  const VISIBLE = 80;
+  const slice = items.slice(0, VISIBLE);
+  _markerByIdx.length = 0;
+  renderMap(slice);
+  renderList(slice);
+}
+
+function renderEmpty(title, body) {
+  document.getElementById('nbList').innerHTML = `<div class="nb-empty">
+    <h3>${esc(title)}</h3>
+    <p>${esc(body)}</p>
+  </div>`;
+}
+
+function renderMap(items) {
+  if (!_map) return;
+  _resultLayer.clearLayers();
+  const now = new Date();
+  items.forEach((item, idx) => {
+    const oh = probeOpen(item.opening, now);
+    const isOpenNow = oh.open === true;
+    const marker = L.circleMarker([item.lat, item.lng], {
+      radius: item.isVis ? 9 : 7,
+      fillColor: item.isVis ? '#e8b86d' : (isOpenNow ? '#4ec9b0' : '#7a85a8'),
+      color: '#fff',
+      weight: item.isVis ? 2.5 : 1.5,
+      fillOpacity: 0.92,
+    }).addTo(_resultLayer);
+    marker.on('mouseover', () => highlightItem(idx, 'marker'));
+    marker.on('mouseout', () => clearHighlight());
+    marker.on('click', () => {
+      const el = document.querySelector(`[data-idx="${idx}"]`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    marker.bindPopup(
+      `<strong>${esc(item.name)}</strong>`
+      + (item.isVis ? `&nbsp;<span style="color:#e8b86d">✓</span>` : '')
+      + `<br><small>${fmtDist(item.d)} · ${fmtWalk(item.d)}</small>`
+      + (item.addr ? `<br><small>📍 ${esc(item.addr)}</small>` : '')
+      + (oh.text ? `<br><small>🕐 ${esc(oh.text)}</small>` : '')
+    );
+    _markerByIdx[idx] = marker;
+  });
+  const pts = [[state.anchor.lat, state.anchor.lng], ...items.map(i => [i.lat, i.lng])];
+  if (pts.length > 1) _map.fitBounds(L.latLngBounds(pts), { padding: [30, 30], maxZoom: 16 });
+}
+
+function renderList(items) {
+  const now = new Date();
+  document.getElementById('nbList').innerHTML = items.map((item, idx) => {
+    const gUrl = `https://www.google.com/maps/search/${encodeURIComponent(item.name)}/@${item.lat},${item.lng},17z`;
+    const yUrl = `https://yandex.com/maps/?text=${encodeURIComponent(item.name)}&ll=${item.lng},${item.lat}&z=17`;
+    // Own-venue fallback items have no OSM id — omit the OSM deep link for them.
+    const oUrl = item.osm_id ? `https://www.openstreetmap.org/${item.osm_type}/${item.osm_id}` : '';
+    const oh = probeOpen(item.opening, now);
+    const ohHtml = oh.text
+      ? `<span class="opening ${oh.open === false ? 'closed' : ''}">${oh.open === true ? '🟢' : oh.open === false ? '🔴' : '⏱'} ${esc(oh.text)}</span>`
+      : '';
+    const dirChar = bearingChar(state.anchor.lat, state.anchor.lng, item.lat, item.lng);
+    return `<div class="nb-item${item.isVis ? ' visited' : ''}${item.mine ? ' mine' : ''}" data-idx="${idx}">
+      <div class="dist">${fmtDist(item.d)}<br><span style="font-size:.55rem;opacity:.7;font-weight:400">${esc(fmtWalk(item.d))}</span></div>
+      <div class="body">
+        <div class="name">${esc(item.name)}${item.mine ? '<span class="mine-badge">✓ your place</span>' : ''}</div>
+        <div class="meta">
+          <span>${dirChar}</span>
+          ${item.addr ? `<span class="sep">·</span><span>📍 ${esc(item.addr)}</span>` : ''}
+          ${ohHtml ? `<span class="sep">·</span>${ohHtml}` : ''}
+        </div>
+        <div class="links">
+          <a class="nb-link g" href="${gUrl}" target="_blank" rel="noopener">Google</a>
+          <a class="nb-link y" href="${yUrl}" target="_blank" rel="noopener">Yandex</a>
+          ${oUrl ? `<a class="nb-link o" href="${oUrl}" target="_blank" rel="noopener">OSM</a>` : ''}
+          ${item.website ? `<a class="nb-link w" href="${esc(item.website)}" target="_blank" rel="noopener">🌐</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Map↔list hover sync
+  const list = document.getElementById('nbList');
+  list.addEventListener('mouseover', e => {
+    const item = e.target.closest('.nb-item');
+    if (!item) return;
+    highlightItem(+item.dataset.idx, 'list');
+  }, { passive: true });
+  list.addEventListener('mouseout', () => clearHighlight(), { passive: true });
+}
+
+function bearingChar(la1, lo1, la2, lo2) {
+  const r = Math.PI / 180;
+  const dLo = (lo2 - lo1) * r;
+  const y = Math.sin(dLo) * Math.cos(la2 * r);
+  const x = Math.cos(la1 * r) * Math.sin(la2 * r) - Math.sin(la1 * r) * Math.cos(la2 * r) * Math.cos(dLo);
+  const brng = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+  const arrows = ['↑','↗','→','↘','↓','↙','←','↖'];
+  return arrows[Math.round(brng / 45) % 8];
+}
+
+function highlightItem(idx, source) {
+  clearHighlight();
+  state.hoverIdx = idx;
+  const el = document.querySelector(`[data-idx="${idx}"]`);
+  if (el) el.classList.add('hover');
+  const m = _markerByIdx[idx];
+  if (m && source === 'list') m.setStyle({ weight: 3, fillOpacity: 1 });
+}
+function clearHighlight() {
+  if (state.hoverIdx < 0) return;
+  const el = document.querySelector(`.nb-item.hover`);
+  if (el) el.classList.remove('hover');
+  const m = _markerByIdx[state.hoverIdx];
+  if (m) m.setStyle({ weight: 1.5, fillOpacity: 0.92 });
+  state.hoverIdx = -1;
+}
+
+// ── Category selection ───────────────────────────────────────────────────
+async function selectCat(cat) {
+  if (!cat || cat === state.activeCat) return;
+  state.activeCat = cat;
+  document.querySelectorAll('.cat-pill, .rec-pill').forEach(p =>
+    p.classList.toggle('active', p.dataset.cat === cat));
+  await fetchAndRender(cat);
+}
+
+async function fetchAndRender(cat) {
+  if (!state.anchor) return;
+  const tags = osmTagMap[cat] || guessTags(cat);
+  if (!tags || !tags.length) {
+    state.results = [];
+    renderEmpty('No OSM mapping', `Can't query OSM for "${cat}".`);
+    return;
+  }
+  // Cancel any previous fetch for a different category
+  const key = cacheKey(state.anchor.lat, state.anchor.lng, state.radius, tags);
+  for (const [k, ctrl] of state.inFlight) if (k !== key) ctrl.abort();
+  state.inFlight.clear();
+
+  const ctrl = new AbortController();
+  state.inFlight.set(key, ctrl);
+
+  const mapLoading = document.getElementById('mapLoading');
+  mapLoading.classList.remove('hidden');
+  mapLoading.textContent = `⏳ Searching "${cat}" within ${state.radius < 1000 ? state.radius + ' m' : (state.radius / 1000) + ' km'}…`;
+
+  state.fallback = false;
+  const onStatus = round => {
+    mapLoading.textContent = `⏳ OSM busy — retrying (${round + 2}/3)…`;
+  };
+
+  try {
+    const els = await overpassFetch(tags, ctrl.signal, onStatus);
+    state.results = parseElements(els);
+    // Live query returned nothing? Fall back to your own places here.
+    if (!state.results.length) {
+      const mine = ownNearby(cat);
+      if (mine.length) { state.results = mine; state.fallback = 'empty'; }
+    }
+    applyAndRender();
+    // Background idle prefetch — top 2 recommended cats that aren't active
+    schedulePrefetch();
+  } catch (e) {
+    if (e.name === 'AbortError') return;
+    // Never a dead end: fall back to your own visited venues near the anchor.
+    const mine = ownNearby(cat);
+    if (mine.length) {
+      state.results = mine;
+      state.fallback = 'error';
+      applyAndRender();
+    } else {
+      state.results = [];
+      renderEmpty('Fetch error', 'OSM Overpass is unavailable right now and you have no visited places of this type nearby. Try again in a moment.');
+    }
+  } finally {
+    state.inFlight.delete(key);
+    mapLoading.classList.add('hidden');
+  }
+}
+
+function guessTags(cat) {
+  // Best-effort fallback for cats not in osm_tags — name-substring search.
+  // Rarely used; main osm_tags covers 250+ categories.
+  return null;
+}
+
+// ── Idle prefetch (next 1-2 likely categories) ───────────────────────────
+function schedulePrefetch() {
+  if (!('requestIdleCallback' in window)) return;
+  const candidates = (D.recommended || []).filter(c => c !== state.activeCat).slice(0, 2);
+  candidates.forEach(c => {
+    const tags = osmTagMap[c];
+    if (!tags) return;
+    requestIdleCallback(() => overpassFetch(tags, undefined).catch(() => {}), { timeout: 5000 });
+  });
+}
+
+// ── Geolocation ───────────────────────────────────────────────────────────
+window.useDeviceLocation = function() {
+  if (!('geolocation' in navigator)) {
+    alert('Geolocation not supported in this browser.');
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, longitude } = pos.coords;
+    if (!state.anchor) {
+      // First-time anchor (no last check-in)
+      state.anchor = {
+        lat: latitude, lng: longitude,
+        venue: 'My location', category: '', city: '', country: '',
+        source: 'gps', ts: Math.floor(Date.now() / 1000),
+      };
+      renderHero();
+      renderDiscover();
+    } else {
+      moveAnchor(latitude, longitude, 'My location', 'gps');
+      renderHero();
+      if (state.activeCat) fetchAndRender(state.activeCat);
+    }
+    localStorage.setItem('guide-source', 'gps');
+  }, err => {
+    alert('Geolocation denied or unavailable: ' + (err.message || err.code));
+  }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 });
+};
+
+window.useLastCheckin = function() {
+  if (!D.anchor) return;
+  state.anchor = { ...D.anchor, source: 'checkin' };
+  if (_map) moveAnchor(D.anchor.lat, D.anchor.lng, D.anchor.venue, 'checkin');
+  localStorage.setItem('guide-source', 'checkin');
+  renderHero();
+  if (state.activeCat) fetchAndRender(state.activeCat);
+};
+
+// ── GPS-first auto-upgrade ────────────────────────────────────────────────
+// If the user previously used GPS here, or has already granted the browser
+// geolocation permission, silently acquire their live position and switch the
+// anchor away from the (possibly stale) last check-in — no click required.
+// A user who explicitly pinned to their check-in this session is respected.
+async function autoLocate() {
+  if (!('geolocation' in navigator)) return;
+  if (localStorage.getItem('guide-source') === 'checkin') return;
+
+  let allowed = localStorage.getItem('guide-source') === 'gps';
+  if (!allowed && navigator.permissions && navigator.permissions.query) {
+    try {
+      const st = await navigator.permissions.query({ name: 'geolocation' });
+      allowed = st.state === 'granted';
+    } catch { /* permissions API unavailable — leave allowed as-is */ }
+  }
+  if (!allowed) return;  // never prompt on load; the hero button does that
+
+  const gpsBtn = document.querySelector('.hero-btn.gps');
+  if (gpsBtn) gpsBtn.classList.add('locating');
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, longitude } = pos.coords;
+    if (!state.anchor) {
+      state.anchor = {
+        lat: latitude, lng: longitude,
+        venue: 'My location', category: '', city: '', country: '',
+        source: 'gps', ts: Math.floor(Date.now() / 1000),
+      };
+      renderHero();
+      renderDiscover();
+      if ((D.recommended || []).length) selectCat(D.recommended[0]);
+    } else {
+      moveAnchor(latitude, longitude, 'My location', 'gps');
+      renderHero();
+      if (state.activeCat) fetchAndRender(state.activeCat);
+    }
+    localStorage.setItem('guide-source', 'gps');
+    if (gpsBtn) gpsBtn.classList.remove('locating');
+  }, () => {
+    if (gpsBtn) gpsBtn.classList.remove('locating');
+  }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+renderHero();
+renderDiscover();
+// Auto-select first recommendation
+if (state.anchor && (D.recommended || []).length) {
+  selectCat(D.recommended[0]);
+}
+autoLocate();
+</script>
+
+<script>
+(function(){
+  function apply(light){document.body.classList.toggle('light',light);}
+  apply(localStorage.getItem('fsq-theme')==='light');
+})();
+</script>
+</body>
+</html>

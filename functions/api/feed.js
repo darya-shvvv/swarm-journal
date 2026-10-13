@@ -146,8 +146,39 @@ function mapRows(rows, tzCache) {
       r.lat  != null ? Math.round(r.lat  * 10000) / 10000 : null,
       r.lng  != null ? Math.round(r.lng  * 10000) / 10000 : null,
       r.id        || '',
+      collectCompanions(r),
+      r.source_app === 'refurbished' ? 1 : 0,
     ];
   });
+}
+
+// Extra columns for items[11] (companions) and items[12] (reconstructed flag).
+const COMPANION_COLS = 'with_name, created_by_name, overlaps_name, source_app';
+
+// De-duped union of with_name, created_by_name, overlaps_name — same logic
+// as metrics.collect_companions on the Python side.
+function collectCompanions(r) {
+  const seen = new Set();
+  const out = [];
+  const pushList = (raw) => {
+    if (!raw) return;
+    for (const part of String(raw).replace(/ ,/g, ',').split(',')) {
+      const n = part.trim();
+      if (!n || n === '-') continue;
+      const key = n.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(n);
+    }
+  };
+  pushList(r.with_name);
+  const cb = (r.created_by_name || '').trim();
+  if (cb && !seen.has(cb.toLowerCase())) {
+    seen.add(cb.toLowerCase());
+    out.push(cb);
+  }
+  pushList(r.overlaps_name);
+  return out;
 }
 
 export async function onRequestGet({ request, env }) {
@@ -185,7 +216,7 @@ export async function onRequestGet({ request, env }) {
     if (!term) return jsonResp({ items: [], total: 0 });
     const like = `%${term}%`;
     const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id ' +
+      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
       'FROM checkins WHERE venue LIKE ?1 OR city LIKE ?1 OR country LIKE ?1 OR category LIKE ?1 ' +
       'ORDER BY date DESC LIMIT 500'
     ).bind(like).all();
@@ -206,7 +237,7 @@ export async function onRequestGet({ request, env }) {
     const tsStart = Math.floor(Date.UTC(yr, mo - 1, 1) / 1000) - PAD;
     const tsEnd   = Math.floor(Date.UTC(yr, mo,     1) / 1000) + PAD;
     const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id ' +
+      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
       'FROM checkins WHERE date >= ?1 AND date < ?2 ORDER BY date DESC'
     ).bind(tsStart, tsEnd).all();
     const rows = dataRes.results || [];
@@ -221,7 +252,7 @@ export async function onRequestGet({ request, env }) {
   if (wantOldest !== null) {
     const lim = Math.min(200, Math.max(1, parseInt(url.searchParams.get('limit') || '100', 10)));
     const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id ' +
+      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
       'FROM checkins ORDER BY date ASC LIMIT ?1'
     ).bind(lim).all();
     const rows = dataRes.results || [];
@@ -248,7 +279,7 @@ export async function onRequestGet({ request, env }) {
     const bindArgs = afterId ? [ts, afterId, lim + 1] : [ts, lim + 1];
     const limitIdx = afterId ? '?3' : '?2';
     const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id ' +
+      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
       `FROM checkins ${whereClause} ORDER BY date ASC, id ASC LIMIT ${limitIdx}`
     ).bind(...bindArgs).all();
     const rows = dataRes.results || [];
@@ -259,7 +290,48 @@ export async function onRequestGet({ request, env }) {
   }
 
   // --------------------------------------------------------------
-  // 5. Cursor‑based infinite scroll (default)
+  // 5. Country or city exact-match, cursor-paginated (index drill-down)
+  // GET /api/feed?country=X[&cursor=TS&cursor_id=ID&limit=N]
+  // GET /api/feed?city=X[&cursor=TS&cursor_id=ID&limit=N]
+  // --------------------------------------------------------------
+  const filterCountry = url.searchParams.get('country');
+  const filterCity    = url.searchParams.get('city');
+  if (filterCountry !== null || filterCity !== null) {
+    const flimit = Math.min(50, Math.max(1, parseInt(url.searchParams.get('limit') || '50', 10)));
+    const fcursorTs = parseInt(url.searchParams.get('cursor') || '', 10);
+    const fcursorId = url.searchParams.get('cursor_id');
+    const filterCol = filterCountry !== null ? 'country' : 'city';
+    let fwhere = `${filterCol} = ?1`;
+    const fparams = [filterCountry !== null ? filterCountry : filterCity];
+    let fidx = 2;
+    if (!isNaN(fcursorTs)) {
+      if (fcursorId) {
+        fwhere += ` AND (date < ?${fidx} OR (date = ?${fidx} AND id < ?${fidx + 1}))`;
+        fparams.push(fcursorTs, fcursorId);
+        fidx += 2;
+      } else {
+        fwhere += ` AND date < ?${fidx++}`;
+        fparams.push(fcursorTs);
+      }
+    }
+    const fres = await env.DB.prepare(
+      `SELECT date, venue, city, country, category, venue_id, lat, lng, id, ${COMPANION_COLS} ` +
+      `FROM checkins WHERE ${fwhere} ORDER BY date DESC, id DESC LIMIT ?${fidx}`
+    ).bind(...fparams, flimit + 1).all();
+    const frows = fres.results || [];
+    const fhas_more = frows.length > flimit;
+    const ftrimmed = fhas_more ? frows.slice(0, flimit) : frows;
+    const flast = ftrimmed[ftrimmed.length - 1];
+    return jsonResp({
+      items: mapRows(ftrimmed, {}),
+      has_more: fhas_more,
+      next_cursor:    fhas_more ? flast.date : null,
+      next_cursor_id: fhas_more ? flast.id   : null,
+    });
+  }
+
+  // --------------------------------------------------------------
+  // 6. Cursor‑based infinite scroll (default)
   // --------------------------------------------------------------
   const limit = Math.min(50, Math.max(1, parseInt(url.searchParams.get('limit') || '20', 10)));
   const cursor   = url.searchParams.get('cursor');    // Unix timestamp integer
@@ -283,7 +355,7 @@ export async function onRequestGet({ request, env }) {
   }
 
   const query = `
-    SELECT date, venue, city, country, category, venue_id, lat, lng, id
+    SELECT date, venue, city, country, category, venue_id, lat, lng, id, ${COMPANION_COLS}
     FROM checkins${whereClause}
     ORDER BY date DESC, id DESC LIMIT ?${bindIndex}`;
   params.push(limit + 1); // fetch one extra to detect has_more

@@ -1,0 +1,932 @@
+# Copyright 2026 Andrei Patsiomkin
+# SPDX-License-Identifier: Apache-2.0
+
+"""Trip detection + date/timezone helpers (metrics package)."""
+from __future__ import annotations
+
+import logging
+from collections import Counter
+from datetime import datetime, timezone
+
+from .trip_names import TripSpan, heal_trip_names
+
+log = logging.getLogger(__name__)
+
+# ── Date helpers ───────────────────────────────────────────────────────────────
+
+def _parse_ts(row: dict) -> datetime | None:
+    try:
+        return datetime.fromtimestamp(int(row["date"]), tz=timezone.utc)
+    except (ValueError, KeyError, TypeError, OSError):
+        return None
+
+
+# Try to use timezonefinder for accurate lat/lng → IANA timezone resolution.
+# Fall back to a longitude-based approximation (±30 min) if not installed.
+try:
+    from timezonefinder import TimezoneFinder as _TZF
+    _tf = _TZF()
+
+    def _tz_at(lat: float | None, lng: float | None) -> str:
+        """Return the IANA timezone name for a coordinate pair."""
+        if lat is None or lng is None:
+            return "UTC"
+        tz = _tf.timezone_at(lat=lat, lng=lng)
+        return tz if tz else "UTC"
+
+except ImportError:
+    log.warning(
+        "timezonefinder not installed — falling back to longitude-based timezone "
+        "approximation (±30 min accuracy). Run: pip install timezonefinder"
+    )
+
+    def _tz_at(lat: float | None, lng: float | None) -> str:  # type: ignore[misc]
+        if lng is None:
+            return "UTC"
+        offset = max(-12, min(14, round(lng / 15)))
+        if offset == 0:
+            return "Etc/GMT"
+        sign = "-" if offset > 0 else "+"
+        return f"Etc/GMT{sign}{abs(offset)}"
+
+
+# Country → IANA timezone for countries with a single timezone (no DST surprises).
+# Belarus stays at UTC+3 year-round (Europe/Minsk); longitude-based fallback gives UTC+2.
+_COUNTRY_TZ: dict[str, str] = {
+    'Belarus': 'Europe/Minsk', 'Moldova': 'Europe/Chisinau', 'Poland': 'Europe/Warsaw',
+    'Ukraine': 'Europe/Kyiv', 'Italy': 'Europe/Rome', 'Romania': 'Europe/Bucharest',
+    'Lithuania': 'Europe/Vilnius', 'Germany': 'Europe/Berlin',
+    'Türkiye': 'Europe/Istanbul', 'Turkey': 'Europe/Istanbul',
+    'China': 'Asia/Shanghai', 'Spain': 'Europe/Madrid', 'Georgia': 'Asia/Tbilisi',
+    'France': 'Europe/Paris', 'India': 'Asia/Kolkata', 'Latvia': 'Europe/Riga',
+    'Portugal': 'Europe/Lisbon', 'Iran': 'Asia/Tehran', 'Egypt': 'Africa/Cairo',
+    'Japan': 'Asia/Tokyo', 'United Kingdom': 'Europe/London',
+    'Czechia': 'Europe/Prague', 'Czech Republic': 'Europe/Prague',
+    'Hungary': 'Europe/Budapest', 'Austria': 'Europe/Vienna',
+    'Switzerland': 'Europe/Zurich', 'Netherlands': 'Europe/Amsterdam',
+    'Belgium': 'Europe/Brussels', 'Slovakia': 'Europe/Bratislava',
+    'Bulgaria': 'Europe/Sofia', 'Greece': 'Europe/Athens', 'Croatia': 'Europe/Zagreb',
+    'Serbia': 'Europe/Belgrade', 'Estonia': 'Europe/Tallinn',
+    'Finland': 'Europe/Helsinki', 'Sweden': 'Europe/Stockholm',
+    'Norway': 'Europe/Oslo', 'Denmark': 'Europe/Copenhagen',
+    'Kazakhstan': 'Asia/Almaty', 'Uzbekistan': 'Asia/Tashkent',
+    'Azerbaijan': 'Asia/Baku', 'Armenia': 'Asia/Yerevan',
+    'Israel': 'Asia/Jerusalem', 'Jordan': 'Asia/Amman',
+    'Thailand': 'Asia/Bangkok', 'Vietnam': 'Asia/Ho_Chi_Minh',
+    'Indonesia': 'Asia/Jakarta', 'South Korea': 'Asia/Seoul', 'Taiwan': 'Asia/Taipei',
+    'Singapore': 'Asia/Singapore', 'Malaysia': 'Asia/Kuala_Lumpur',
+    'Pakistan': 'Asia/Karachi', 'Nepal': 'Asia/Kathmandu',
+    'Mongolia': 'Asia/Ulaanbaatar', 'Morocco': 'Africa/Casablanca',
+    'Tunisia': 'Africa/Tunis', 'South Africa': 'Africa/Johannesburg',
+    'New Zealand': 'Pacific/Auckland', 'Holy See (Vatican City State)': 'Europe/Rome',
+    'San Marino': 'Europe/Rome', 'Monaco': 'Europe/Monaco', 'Malta': 'Europe/Malta',
+    'Cyprus': 'Asia/Nicosia', 'Iceland': 'Atlantic/Reykjavik', 'Ireland': 'Europe/Dublin',
+    'Slovenia': 'Europe/Ljubljana', 'North Macedonia': 'Europe/Skopje',
+    'Albania': 'Europe/Tirane', 'Montenegro': 'Europe/Podgorica',
+    'Bosnia and Herzegovina': 'Europe/Sarajevo', 'Kosovo': 'Europe/Belgrade',
+    'Tajikistan': 'Asia/Dushanbe', 'Kyrgyzstan': 'Asia/Bishkek',
+    'Turkmenistan': 'Asia/Ashgabat', 'Oman': 'Asia/Muscat',
+    'Saudi Arabia': 'Asia/Riyadh', 'United Arab Emirates': 'Asia/Dubai',
+    'Qatar': 'Asia/Qatar', 'Kuwait': 'Asia/Kuwait', 'Bahrain': 'Asia/Bahrain',
+    'Iraq': 'Asia/Baghdad', 'Lebanon': 'Asia/Beirut', 'Myanmar': 'Asia/Rangoon',
+    'Cambodia': 'Asia/Phnom_Penh', 'Philippines': 'Asia/Manila',
+    'Bangladesh': 'Asia/Dhaka', 'Sri Lanka': 'Asia/Colombo',
+    'Chile': 'America/Santiago', 'Argentina': 'America/Argentina/Buenos_Aires',
+    'Uruguay': 'America/Montevideo', 'Bolivia': 'America/La_Paz',
+    'Peru': 'America/Lima', 'Ecuador': 'America/Guayaquil',
+    'Colombia': 'America/Bogota', 'Venezuela': 'America/Caracas',
+    'Panama': 'America/Panama', 'Costa Rica': 'America/Costa_Rica',
+    'Cuba': 'America/Havana', 'Jamaica': 'America/Jamaica',
+}
+
+
+def _localise(d: datetime, lat: float | None, lng: float | None, country: str = '') -> datetime:
+    """Shift a UTC datetime to local time at the given coordinates.
+
+    Uses country name first (accurate for countries without DST surprises, e.g. Belarus),
+    then falls back to coordinate-based timezone resolution.
+    """
+    from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+    if country and country in _COUNTRY_TZ:
+        try:
+            return d.astimezone(ZoneInfo(_COUNTRY_TZ[country]))
+        except Exception:
+            pass
+    try:
+        return d.astimezone(ZoneInfo(_tz_at(lat, lng)))
+    except (ZoneInfoNotFoundError, Exception):
+        return d
+
+
+# ── Trip detection ─────────────────────────────────────────────────────────────
+
+# Home-city venue categories that mark the start/end of a journey.
+# A check-in at one of these immediately before or after a trip is included
+# as the departure / arrival leg even though it's in the home city.
+_TRANSPORT_CATEGORIES: frozenset[str] = frozenset({
+    "Rail Station", "Train Station", "Airport", "Light Rail Station",
+    "Bus Station", "Bus Terminal", "Ferry Terminal",
+})
+
+# The airport complex.  Foursquare almost never uses the bare "Airport"
+# category: of ~1000 airport check-ins only 28 carry it, and Chișinău's RMO has
+# ZERO — it is always "International Airport".  So an air departure from the
+# current home was invisible to the departure scan, and the whole leg (taxi →
+# RMO → security → gate → plane) was cut off the trip, which then began only
+# on landing abroad.  Minsk hid the bug: from there the airport is reached by
+# the airport bus or train, so all 37 Minsk flight trips opened at a
+# "Bus Station" / "Rail Station" that was already covered.
+#
+# DEPARTURE ONLY.  The arrival scan deliberately keeps to _TRANSPORT_CATEGORIES:
+# it stops at the NEAREST home hub, which is right for a bus/rail arrival (one
+# station check-in, then home) but wrong for an airport, where passport control
+# is merely the first of a long chain that ends hours later at the front door.
+# Treating these as arrival hubs truncated the Serbia 2019 trip at Minsk
+# passport control and threw away the rest of the way home, "Home (private)
+# Лермонтова 43" included — exactly the homecoming this is meant to preserve.
+_AIRPORT_DEPARTURE_CATEGORIES: frozenset[str] = frozenset({
+    "International Airport", "Airport Terminal", "Airport Gate",
+    "Airport Service", "Airport Lounge", "Airport Ticket Counter",
+    "Airport Tram Station", "Baggage Claim",
+})
+
+# Categories that, when a bicycle trip is in progress, should NOT act as a
+# home signal.  On departure-day, blank-city check-ins at bike paths, roads,
+# parks etc. GPS-resolve to the home city — but they belong to the ride, not
+# to "being at home".  Only applied to trips tagged "bicycle".
+_BICYCLE_PASSTHROUGH_CATS: frozenset[str] = frozenset({
+    "Sports and Recreation", "Road", "Bridge", "River", "Lake",
+    "Waterfall", "Park", "Trail", "Bike Trail", "Other Great Outdoors",
+    "Beach", "Reservoir", "Bike Rental",
+})
+
+def _is_home_transport(row: dict, home_city: str) -> bool:
+    return (
+        row.get("city", "").strip() == home_city
+        and row.get("category", "").strip() in _TRANSPORT_CATEGORIES
+    )
+
+
+_EMPTY_ERA: dict = {
+    "venues": frozenset(), "air_departure": False,
+    "arrival_transit": False, "arrival_neighborhoods": frozenset(),
+    "departure_ride_categories": frozenset(), "arrival_stop_at_home": False,
+    "arrival_max_city_checkins": 0, "hub_categories": frozenset(),
+}
+
+# How far before the departure hub the ride TO it may sit (taxi → airport).
+_DEPARTURE_RIDE_WINDOW = 90 * 60
+
+# Check-ins that are part of GETTING home, not of being out in the home city.
+# They never count towards `arrival_max_city_checkins`. Home markers (the home
+# venue, "Home (private)") are the scan targets themselves and are not counted
+# either, since they sit at the end of the span being checked.
+_ARRIVAL_TRANSIT_CATS: frozenset[str] = frozenset({
+    "Bus Line", "Bus Stop", "Taxi", "Road", "Highway", "Moving Target",
+    "Transportation Service", "Parking", "Fuel Station", "Gas Station",
+    "Platform", "Metro Station", "Tram Station", "Train", "Bus", "Plane",
+    "Border Crossing", "Country", "City", "Neighborhood", "Police Station",
+}) | _TRANSPORT_CATEGORIES | _AIRPORT_DEPARTURE_CATEGORIES
+
+
+def _cap_city_walk(
+    valid: list[dict], start: int, end: int, home_city: str,
+    home_history: list[tuple[int, str]] | None, era: dict,
+) -> int | None:
+    """Last index an arrival extension over valid[start..end] may reach.
+
+    `arrival_max_city_checkins` (era rule): when more than that many home-city
+    check-ins that are NOT part of the ride home sit before the target, the
+    trip had already ended on arriving in the city and the rest was a separate
+    outing — so the extension stops just before the first such check-in.
+    Returns `end` unchanged when the rule is off or not exceeded, the cut
+    index otherwise, or None when nothing at all may be added.
+    """
+    limit = era.get("arrival_max_city_checkins")
+    if not limit:
+        return end
+    stops = 0
+    first_stop: int | None = None
+    for k in range(start, end):  # rows strictly before the target
+        r = valid[k]
+        ts = int(r["date"])
+        if r.get("city", "").strip() == _home_at(ts, home_city, home_history) \
+                and r.get("category", "").strip() not in _ARRIVAL_TRANSIT_CATS:
+            stops += 1
+            if first_stop is None:
+                first_stop = k
+    if stops <= int(limit) or first_stop is None:
+        return end
+    return first_stop - 1 if first_stop - 1 >= start else None
+
+
+def _era_at(ts: int, home_eras: list[tuple[int, dict]] | None) -> dict:
+    """The home-era rules in force at `ts`.
+
+    Eras are (until_ts, cfg) sorted ascending; an entry governs every ts
+    strictly BEFORE its `until`, mirroring _home_at. An era with no rules — or
+    no home_eras at all — yields _EMPTY_ERA, i.e. the original behaviour. That
+    default is what keeps the Minsk years byte-identical while the Chișinău era
+    opts into the airport rules.
+    """
+    if not home_eras:
+        return _EMPTY_ERA
+    for until_ts, cfg in home_eras:
+        if ts < until_ts:
+            return cfg
+    return _EMPTY_ERA
+
+
+def _is_home_departure_hub(row: dict, home_city: str, era: dict) -> bool:
+    """Departure-side hub test: transport hubs, plus the airport complex when
+    the era in force opts in (`air_departure`).
+
+    See _AIRPORT_DEPARTURE_CATEGORIES for why the airport half is departure-only.
+    """
+    if row.get("city", "").strip() != home_city:
+        return False
+    cat = row.get("category", "").strip()
+    if cat in _TRANSPORT_CATEGORIES or cat in (era.get("hub_categories") or ()):
+        return True
+    return bool(era.get("air_departure")) and cat in _AIRPORT_DEPARTURE_CATEGORIES
+
+
+def _home_at(
+    ts: int,
+    home_city: str,
+    home_history: list[tuple[int, str]] | None,
+) -> str:
+    """Resolve the home city in effect at unix-ts ``ts``.
+
+    ``home_history`` is a list of ``(until_ts, city)`` sorted ascending: ``city``
+    was home for every ts strictly BEFORE ``until_ts``. At/after the last
+    ``until_ts`` the current ``home_city`` applies. Empty/None → static
+    ``home_city`` (identity for the modern era, so behaviour is unchanged).
+    """
+    if home_history:
+        for until_ts, city in home_history:
+            if ts < until_ts:
+                return city
+    return home_city
+
+
+def _drop_contained_trips(trips: list[dict]) -> list[dict]:
+    """Drop a trip whose every check-in already belongs to another trip.
+
+    A home-city check-in in the middle of a trip splits the raw sequence in two
+    (e.g. a forest on the way back geotagged "Minsk"); the first part's arrival
+    extension then runs on to the real homecoming and swallows the second part
+    — which is still detected on its own. Without this the same check-ins are
+    shown twice: 21.10.2018 "Zaslawye, Belarus" (7 check-ins) sat entirely
+    inside the Veloby bike trip and had to be hidden by hand in trip_exclude.
+    """
+    keys = [frozenset((c.get("ts"), c.get("checkin_id") or c.get("venue"))
+                      for c in t.get("checkins") or []) for t in trips]
+    keep = []
+    for i, t in enumerate(trips):
+        host = next((j for j, k in enumerate(keys)
+                     if j != i and keys[i] and keys[i] < k), None)
+        if host is not None:
+            log.info("trips: dropped %r (%d check-ins) — all inside %r",
+                     t.get("name"), len(keys[i]), trips[host].get("name"))
+            continue
+        keep.append(t)
+    return keep
+
+
+def detect_trips(
+    rows: list[dict],
+    home_city: str = "Minsk",
+    min_checkins: int = 5,
+    trip_names: dict[str, str] | None = None,
+    trip_exclude: set[int] | None = None,
+    trip_end_overrides: dict[int, int] | None = None,
+    trip_start_overrides: dict[int, int] | None = None,
+    trip_tags: dict[int, list[str]] | None = None,
+    home_history: list[tuple[int, str]] | None = None,
+    home_venue_ids: set[str] | None = None,
+    home_eras: list[tuple[int, dict]] | None = None,
+    name_report: dict | None = None,
+) -> list[dict]:
+    """
+    Detect trips as consecutive non-home sequences of check-ins.
+
+    Orphaned trip_names keys (a rule moved a trip's start) are healed before
+    naming — see metrics.trip_names. Pass a dict as `name_report` to receive
+    the HealResult under "heal".
+
+    trip_names: optional dict mapping str(start_ts) → custom trip name.
+    Each trip is extended by one check-in on each side if the immediately
+    adjacent home-city check-in is at a transport hub (station / airport).
+
+    Returns a list of trip dicts sorted chronologically, each containing:
+    id, name, start_date, end_date, duration, countries, cities,
+    checkin_count, unique_places, checkins, coords, unique_pts, top_cats.
+    """
+    valid = sorted(
+        [r for r in rows if r.get("date", "").strip()],
+        key=lambda r: int(r["date"]),
+    )
+
+    raw_trips: list[list[dict]] = []
+    current: list[dict] = []
+    for row in valid:
+        row_home = _home_at(int(row["date"]), home_city, home_history)
+        if row.get("city", "").strip() != row_home:
+            current.append(row)
+        else:
+            if current:
+                raw_trips.append(current)
+            current = []
+    if current:
+        raw_trips.append(current)
+
+    # Apply trip_end_overrides as splits when the override timestamp is before the
+    # trip's natural end.  A raw trip whose start_ts matches an override key and
+    # whose end extends past force_end_ts is cut in two: rows up to force_end_ts
+    # become the first trip; the remainder becomes a new raw trip that will be
+    # extended and named independently.  When force_end_ts >= current end the
+    # override is handled later (extension phase) as before.
+    if trip_end_overrides:
+        split_raw: list[list[dict]] = []
+        for trip in raw_trips:
+            trip_ts_start = int(trip[0]["date"])
+            trip_ts_end   = int(trip[-1]["date"])
+            # Match override key by range: the key may be inside the raw trip
+            # (not necessarily the very first row) when departure rows are blank-city.
+            force_end_ts = next(
+                (v for k, v in trip_end_overrides.items()
+                 if trip_ts_start <= k <= trip_ts_end),
+                None,
+            )
+            if force_end_ts is not None and force_end_ts < trip_ts_end:
+                part1 = [r for r in trip if int(r["date"]) <= force_end_ts]
+                part2 = [r for r in trip if int(r["date"]) > force_end_ts]
+                if part1:
+                    split_raw.append(part1)
+                if part2:
+                    split_raw.append(part2)
+            else:
+                split_raw.append(trip)
+        raw_trips = split_raw
+
+    # Extend trip boundaries to include departure / arrival legs in home city.
+    #
+    # Both scans traverse home-city rows AND blank-city rows (highways, country
+    # markers, fuel stops with unresolved city).  Scanning stops when a row with
+    # a *different* non-blank city is encountered, or the 24 h window is exceeded.
+    # This handles common patterns like:
+    #   Departure: Bus Station (Minsk) → Bus Line (Minsk) → M6 road (blank) → border
+    #   Arrival:   border → country marker (blank) → M1 highway (blank) → Minsk City
+    #              → Bus Station (Minsk)
+    #
+    # Departure (backward scan):
+    #   Track the EARLIEST transport hub found so a bus-station→airport chain
+    #   picks up the bus station.  Include ALL rows from that hub to trip start.
+    #
+    # Arrival (forward scan):
+    #   Find the NEAREST (first) home-city transport hub within 24 h and include
+    #   all rows from trip end up to that hub.  Using nearest avoids pulling in
+    #   home activity that precedes a later, unrelated departure.
+    #
+    # min_checkins is applied to the raw (non-home-only) trip before extension so
+    # that hub / intermediate rows cannot manufacture trips from trivial outings.
+    _24H = 86_400
+    pos = {id(r): i for i, r in enumerate(valid)}
+
+    # Pre-filter: drop trips that are too short even before hub extension.
+    # Allow trips that are one check-in short of the threshold — a single hub
+    # extension may legitimately push them over (e.g. 4 non-home + 1 hub = 5).
+    raw_trips = [t for t in raw_trips if len(t) >= max(1, min_checkins - 1)]
+
+    extended: list[tuple] = []   # (ext_rows, resolved_tags, name_ts)
+    for trip_rows in raw_trips:
+        ext = list(trip_rows)
+        fp = pos[id(trip_rows[0])]
+        lp = pos[id(trip_rows[-1])]
+
+        # --- Departure ---
+        # Scan backward through home-city AND blank-city rows within 24 h.
+        # Stop at any non-blank non-home-city row (reached a different city →
+        # either previous trip or unrelated check-in).
+        # Rules for hub chaining:
+        #   • Different venue (e.g. Bus Station → Airport): extend further back
+        #     so the chain starts at the earlier/outer hub.
+        #   • Same venue ID repeated (e.g. Railway Station visited twice — once
+        #     for ticket buying, once for actual departure): keep only the LATER
+        #     occurrence (nearest to the trip start).  Going back to the earlier
+        #     duplicate would incorrectly include inter-visit home activity.
+        trip_start_ts = int(trip_rows[0]["date"])
+        # Index of the last row included in the previous extended trip.
+        # A transport hub at or before this index was already consumed as an
+        # arrival leg — don't reuse it as a departure hub for this trip.
+        prev_end_idx = pos[id(extended[-1][0][-1])] if extended else -1
+        dep_hub: int | None = None
+        i = fp - 1
+        while i >= 0:
+            if i <= prev_end_idx:
+                break  # reached rows already owned by the previous trip
+            row_city = valid[i].get("city", "").strip()
+            if trip_start_ts - int(valid[i]["date"]) > _24H:
+                break
+            # Era-aware home: the departure hub of a 2013 trip is in the home of
+            # 2013, not in whatever `home_city` happens to be today.
+            row_home = _home_at(int(valid[i]["date"]), home_city, home_history)
+            if row_city == row_home:
+                if _is_home_departure_hub(valid[i], row_home,
+                                          _era_at(int(valid[i]["date"]), home_eras)):
+                    if dep_hub is None:
+                        dep_hub = i  # first hub found (nearest to trip start)
+                    else:
+                        cur_vid  = valid[dep_hub].get("venue_id", "").strip()
+                        new_vid  = valid[i].get("venue_id", "").strip()
+                        if new_vid and cur_vid and new_vid == cur_vid:
+                            pass  # same venue repeated — keep the later one
+                        else:
+                            # Only chain to an earlier hub if it's within 3 h of
+                            # the current dep_hub.  A larger gap means the earlier
+                            # Rail Station visit was an unrelated activity (e.g. a
+                            # local bike-tour check-in the day before departure).
+                            _MAX_HUB_CHAIN_GAP = 3 * 3600
+                            hub_gap = int(valid[dep_hub]["date"]) - int(valid[i]["date"])
+                            if hub_gap <= _MAX_HUB_CHAIN_GAP:
+                                dep_hub = i  # different venue → extend chain earlier
+            elif row_city != "":
+                break  # different non-blank city → stop (avoid previous trips)
+            i -= 1
+        if dep_hub is not None:
+            # The ride TO the hub — the taxi to RMO — opens the trip, when the era
+            # in force asks for it (`departure_ride_categories`). Looked for only
+            # just before the hub, only through home-city / blank rows, and never
+            # into rows the previous trip already owns.
+            dep_era = _era_at(int(valid[dep_hub]["date"]), home_eras)
+            ride_cats = dep_era.get("departure_ride_categories") or ()
+            if ride_cats:
+                hub_ts = int(valid[dep_hub]["date"])
+                j = dep_hub - 1
+                while j >= 0 and j > prev_end_idx:
+                    rts = int(valid[j]["date"])
+                    if hub_ts - rts > _DEPARTURE_RIDE_WINDOW:
+                        break
+                    rcity = valid[j].get("city", "").strip()
+                    if rcity not in ("", _home_at(rts, home_city, home_history)):
+                        break
+                    if valid[j].get("category", "").strip() in ride_cats:
+                        dep_hub = j  # keep going — the earliest ride wins
+                    j -= 1
+            # Include hub + all rows between hub and trip start
+            ext = valid[dep_hub:fp] + ext
+
+        # --- Departure same-day extension (car/marshrutka — no transport hub found) ---
+        # If no transport hub was found, scan backward through home-city and
+        # blank-city rows on the SAME UTC date as the first trip check-in for:
+        #   • "Transportation Service" or "Bus Line" (marshrutka, taxi app, etc.) —
+        #     preferred; keep scanning to find the earliest occurrence (the departure
+        #     vehicle)
+        #   • "Fuel Station" — fallback; take the nearest one (closest to departure)
+        # Blank-city rows are included because marshrutka check-ins are often made
+        # en route with no city assigned yet.
+        if dep_hub is None:
+            trip_start_utc_date = datetime.fromtimestamp(trip_start_ts, tz=timezone.utc).date()
+            fuel_dep: int | None = None          # nearest Fuel Station
+            transport_svc_dep: int | None = None  # earliest Transportation Service / Bus Line / Parking
+            i = fp - 1
+            while i >= 0:
+                if i <= prev_end_idx:
+                    break  # don't scan into rows already owned by previous trip's arrival
+                row_ts = int(valid[i]["date"])
+                if trip_start_ts - row_ts > _24H:
+                    break
+                row_city = valid[i].get("city", "").strip()
+                if row_city == _home_at(row_ts, home_city, home_history) or row_city == "":
+                    cat = valid[i].get("category", "").strip()
+                    row_date = datetime.fromtimestamp(row_ts, tz=timezone.utc).date()
+                    if row_date == trip_start_utc_date:
+                        if cat in ("Transportation Service", "Bus Line", "Parking"):
+                            transport_svc_dep = i  # keep going — want earliest
+                        elif cat == "Fuel Station" and fuel_dep is None:
+                            fuel_dep = i  # nearest fuel station
+                elif row_city != "":
+                    break
+                i -= 1
+            # Transportation Service wins over Fuel Station when both present.
+            # Gap filter: if chosen departure is more than 4 h before the first
+            # trip check-in, it's a previous-day activity (e.g. Uber home at
+            # midnight), not a trip departure — discard it.
+            _MAX_DEP_GAP = 4 * 3600
+            chosen_dep = transport_svc_dep if transport_svc_dep is not None else fuel_dep
+            if chosen_dep is not None:
+                dep_gap = trip_start_ts - int(valid[chosen_dep]["date"])
+                if dep_gap <= _MAX_DEP_GAP:
+                    ext = valid[chosen_dep:fp] + ext
+
+        # --- Already home? ---
+        # If the trip's last check-in is itself the homecoming — a check-in at a
+        # configured home venue (`home_history[].venues`) — there is nothing left
+        # to extend towards: skip both the arrival-hub scan and the home-arrival
+        # extension below.  This is what a *relocation* trip looks like: the last
+        # non-home-city check-in IS the arrival at the (new) home, and everything
+        # after it is ordinary home-city life.  Without this guard the arrival
+        # scan would walk forward up to 24 h and drag the whole next day into the
+        # trip (its Neighborhood fallback in particular).
+        ends_at_home = bool(home_venue_ids) and \
+            trip_rows[-1].get("venue_id", "").strip() in (home_venue_ids or ())
+
+        # --- Arrival ---
+        # Scan ALL rows within 24 h after the trip's last check-in for the first
+        # home-city transport hub.  We intentionally do NOT stop at intermediate
+        # non-home cities: on the return leg there are often fuel stops or
+        # highway check-ins near Brest (or another transit city) between the
+        # border crossing and home.  The 24 h cap and "nearest hub" (break on
+        # first found) prevent accidentally absorbing a subsequent departure hub.
+        trip_end_ts = int(trip_rows[-1]["date"])
+        arr_era = _era_at(trip_end_ts, home_eras)
+        era_venues = arr_era.get("venues") or ()
+        era_hoods = arr_era.get("arrival_neighborhoods") or ()
+        # `hub_categories` (era rule): extra categories that count as a home
+        # transport hub on both legs — Chișinău's suburban rail platform.
+        era_hubs = arr_era.get("hub_categories") or ()
+        stop_at_home = bool(arr_era.get("arrival_stop_at_home"))
+        arr_hub: int | None = None
+        i = lp + 1
+        while i < len(valid) and not ends_at_home:
+            if int(valid[i]["date"]) - trip_end_ts > _24H:
+                break
+            row_city = valid[i].get("city", "").strip()
+            row_home = _home_at(int(valid[i]["date"]), home_city, home_history)
+            # `arrival_stop_at_home`: the first sign of being back ends the trip
+            # — the home address, the home district, or the home-city "City"
+            # check-in that marks "back in Chișinău". Without it this scan walked
+            # straight past the front door to the NEXT day's bus station: the
+            # 10.10 Bender/Tiraspol day trip ran on through Str. Alecu Russo at
+            # 20:47 and all of 11.10 morning, ended at the Vasile Alecsandri bus
+            # station at 12:10 and got renamed "Chișinău, Moldova" — and that
+            # station, swallowed as its arrival, could no longer open the Cricova
+            # trip that actually left from it.
+            if stop_at_home and row_city == row_home and (
+                    valid[i].get("venue_id", "").strip() in era_venues
+                    or valid[i].get("venue", "").strip() in era_hoods
+                    or valid[i].get("category", "").strip() == "City"):
+                arr_hub = i
+                break
+            if row_city == row_home and (
+                    _is_home_transport(valid[i], row_home)
+                    or valid[i].get("category", "").strip() in era_hubs):
+                arr_hub = i  # nearest hub — stop here
+                break
+            i += 1
+        if arr_hub is not None:
+            arr_hub = _cap_city_walk(valid, lp + 1, arr_hub, home_city,
+                                     home_history, arr_era)
+        if arr_hub is not None:
+            # Include all rows between trip end and hub (inclusive)
+            ext = ext + valid[lp + 1 : arr_hub + 1]
+        elif not ends_at_home:
+            # Fallback: if no transport hub found, look for a Neighborhood
+            # check-in in the home city (e.g. car trip arriving back in a
+            # residential area with no fuel stop).
+            # Abort if a "Home (private)" check-in is found first — already
+            # home, no need to extend.  Also stop at any non-home, non-blank
+            # city to avoid absorbing the start of a subsequent trip.
+            # Transit tolerance: the ride in from the airport can be geotagged to
+            # a neighbouring town — the RMO airport bus comes back as "Ialoveni",
+            # not "Chișinău" — and breaking on it stranded the trip at the plane
+            # while the actual homecoming sat 2 h further on. The hub scan above
+            # already tolerates intermediate cities by design; this scan now does
+            # too, but only briefly: past the window a different city means a new
+            # outing, not the way home.
+            _ARRIVAL_TRANSIT_WINDOW = 6 * 3600
+            i = lp + 1
+            while i < len(valid):
+                row_ts = int(valid[i]["date"])
+                if row_ts - trip_end_ts > _24H:
+                    break
+                row_city = valid[i].get("city", "").strip()
+                row_home = _home_at(row_ts, home_city, home_history)
+                cat = valid[i].get("category", "").strip()
+                vid = valid[i].get("venue_id", "").strip()
+                # The homecoming itself — a check-in at the configured home
+                # venue, whatever its category (Str. Alecu Russo, 55 comes back
+                # as "Apartment or Condo", so the Neighborhood test below never
+                # matched it). Include it: this is the arrival the extension is
+                # reaching for.
+                # The homecoming: this era's own home address, whatever its
+                # category (Str. Alecu Russo, 55 comes back as "Apartment or
+                # Condo", so the Neighborhood test below never matched it), or
+                # one of the districts configured to stand in for it when the
+                # trip does not end at the address itself.
+                if era_venues and vid in era_venues:
+                    arr_hub = i
+                    break
+                if era_hoods and row_city == row_home \
+                        and (valid[i].get("venue", "").strip() in era_hoods):
+                    arr_hub = i
+                    break
+                # A generic "Home (private)" still ENDS the scan without
+                # extending, as before. Making it a target instead dragged a
+                # day-trip's whole evening at home into the trip — enough Minsk
+                # rows that Haradzki/Zaslawye/Zhodzina outings were renamed
+                # "Minsk, Belarus", a trip to the city being lived in.
+                if row_city == row_home and cat == "Home (private)":
+                    break
+                if row_city == row_home and cat == "Neighborhood":
+                    arr_hub = i
+                    break
+                if row_city not in ("", row_home):
+                    # Eras that did not opt into arrival_transit keep the old
+                    # rule: a different city ends the scan at once.
+                    if not arr_era.get("arrival_transit"):
+                        break
+                    if row_ts - trip_end_ts > _ARRIVAL_TRANSIT_WINDOW:
+                        break  # too late to be the way home — a new outing
+                i += 1
+            if arr_hub is not None:
+                arr_hub = _cap_city_walk(valid, lp + 1, arr_hub, home_city,
+                                         home_history, arr_era)
+            if arr_hub is not None:
+                ext = ext + valid[lp + 1 : arr_hub + 1]
+
+        # --- Forced end override ---
+        # If this trip's (post-extension) start_ts is in trip_end_overrides,
+        # include all rows up to (and including) the specified end timestamp.
+        if trip_end_overrides:
+            ext_start_ts = int(ext[0]["date"])
+            if ext_start_ts in trip_end_overrides:
+                force_end_ts = trip_end_overrides[ext_start_ts]
+                cur_lp = pos[id(ext[-1])]
+                j = cur_lp + 1
+                while j < len(valid) and int(valid[j]["date"]) <= force_end_ts:
+                    ext.append(valid[j])
+                    j += 1
+
+        # --- Forced start override ---
+        # If this trip's (post-extension) start_ts is in trip_start_overrides,
+        # prepend all rows from the specified start timestamp up to the current
+        # trip start.  Useful when the real departure has no transport hub but
+        # the home-city morning check-ins should still be included.
+        if trip_start_overrides:
+            ext_start_ts = int(ext[0]["date"])
+            if ext_start_ts in trip_start_overrides:
+                force_start_ts = trip_start_overrides[ext_start_ts]
+                cur_fp = pos[id(ext[0])]
+                prepend = []
+                j = cur_fp - 1
+                while j >= 0 and int(valid[j]["date"]) >= force_start_ts:
+                    prepend.insert(0, valid[j])
+                    j -= 1
+                ext = prepend + ext
+
+        # --- Bicycle departure extension ---
+        # For trips tagged "bicycle", scan backwards from the current trip start
+        # and prepend check-ins in outdoor/sports categories that have city ==
+        # home_city (blank-city bike-path check-ins that GPS-resolved to home).
+        # Stops at the first non-outdoor home check-in or after 24 h lookback.
+        current_start_ts = int(ext[0]["date"])
+        current_tags = (trip_tags or {}).get(current_start_ts, [])
+        if "bicycle" in current_tags:
+            cur_fp = pos[id(ext[0])]
+            _BIKE_DEP_WINDOW = 4 * 3600  # max seconds before trip start to look for departure
+            # Scan backward through home-city rows within the departure window,
+            # collecting them regardless of category (intermediate check-ins
+            # like sculptures or plazas passed while cycling are fine).
+            # Stop at: non-home non-blank city, >4 h gap, or prev_end_idx.
+            bike_window: list[int] = []  # indices in valid, chronological order
+            j = cur_fp - 1
+            while j >= 0:
+                if j <= prev_end_idx:
+                    break
+                row = valid[j]
+                row_ts = int(row["date"])
+                if current_start_ts - row_ts > _BIKE_DEP_WINDOW:
+                    break
+                row_city = row.get("city", "").strip()
+                if row_city == _home_at(row_ts, home_city, home_history):
+                    bike_window.insert(0, j)  # keep in chronological order
+                    j -= 1
+                elif row_city == "":
+                    j -= 1  # skip blank-city rows silently
+                else:
+                    break  # different non-blank city — stop
+            # Find the earliest home-city row in the window that is a passthrough
+            # category (Road, Park, Trail, …).  Include all rows from that anchor
+            # to the trip start — intermediate non-passthrough categories (e.g.
+            # sculptures, plazas encountered while cycling) are fine.
+            anchor: int | None = None
+            for idx in bike_window:
+                if valid[idx].get("category", "").strip() in _BICYCLE_PASSTHROUGH_CATS:
+                    anchor = idx
+                    break
+            if anchor is not None:
+                ext = list(valid[anchor:cur_fp]) + ext
+
+        # --- Home arrival extension ---
+        # Scan forward from the current trip end (arr_hub or last non-home check-in)
+        # looking for a Home (private) check-in in home_city.
+        #
+        # Rules (checked per row):
+        #   • Non-home, non-blank city → new trip territory; stop, don't extend.
+        #   • Nightlife category (bar, pub, etc.) → afterparty; stop, don't extend.
+        #     The trip already ends safely at the transport hub (arr_hub) or the
+        #     last non-home check-in — nothing after the nightlife is included.
+        #   • Home (private) in home_city → found; extend to here and stop.
+        #   • Anything else (metro, road, grocery, blank) → mundane return; keep scanning.
+        #   • Hard cap: 12 h after current trip end.
+        #
+        # Window depends on whether a transport hub was found on arrival:
+        #   transit return (arr_hub found): 5 h — user is already in the city;
+        #     a direct home journey should complete quickly.  Longer gaps mean
+        #     the user did a full day of activities before going home (e.g.
+        #     returned from Moscow on a weekday morning and went straight to
+        #     work) — in that case the trip ends at the hub.
+        #   car / local return (no arr_hub): 12 h — the last non-home check-in
+        #     can be far from home (e.g. a lake near Lepel at 09:05, arriving
+        #     home at 15:55 after the minibus + Minsk commute).
+        _NIGHTLIFE_CATS = frozenset({
+            "Bar", "Beach Bar", "Beer Bar", "Brewery", "Cocktail Bar",
+            "Dive Bar", "Gastropub", "Hookah Bar", "Hotel Bar", "Irish Pub",
+            "Karaoke Bar", "Lounge", "Night Club", "Pub", "Rock Club",
+            "Sports Bar", "Whisky Bar", "Wine Bar",
+        })
+        # Transit check-ins that are clearly part of a return drive home.
+        # Allow these even when their city is non-blank and non-home —
+        # they don't signal new-trip territory.
+        _ROADSIDE_CATS = frozenset({
+            "Fuel Station", "Gas Station", "Rest Stop", "Truck Stop",
+            "Road", "Highway",
+        })
+        _MAX_HOME_ARRIVAL = 5 * 3600 if arr_hub is not None else 12 * 3600
+        cur_end_ts = int(ext[-1]["date"])
+        cur_end_idx = pos[id(ext[-1])]
+        home_idx: int | None = None
+        j = cur_end_idx + 1
+        while j < len(valid) and not ends_at_home:
+            row_ts = int(valid[j]["date"])
+            if row_ts - cur_end_ts > _MAX_HOME_ARRIVAL:
+                break
+            # Era-aware home: a 2008 Chișinău homecoming must not read as a foreign
+            # city just because the modern home_city is Minsk.
+            row_home = _home_at(row_ts, home_city, home_history)
+            row_city = valid[j].get("city", "").strip()
+            row_cat  = valid[j].get("category", "").strip()
+            row_vid  = valid[j].get("venue_id", "").strip()
+            if row_city and row_city != row_home and row_cat not in _ROADSIDE_CATS:
+                break  # non-home city → new trip
+            if row_cat in _NIGHTLIFE_CATS:
+                break  # afterparty → stop before it
+            # Homecoming: a Home (private) check-in in the era-home city, OR a
+            # check-in at a configured era-home venue (any category — e.g. an
+            # apartment/condo that Foursquare never tags "Home (private)").
+            if (row_city == row_home and row_cat == "Home (private)") or \
+               (home_venue_ids and row_vid in home_venue_ids):
+                home_idx = j
+                break
+            j += 1
+        if home_idx is not None:
+            home_idx = _cap_city_walk(valid, cur_end_idx + 1, home_idx, home_city,
+                                      home_history, _era_at(cur_end_ts, home_eras))
+        if home_idx is not None:
+            ext = ext + valid[cur_end_idx + 1 : home_idx + 1]
+
+        extended.append((ext, current_tags, current_start_ts))
+
+    # Heal orphaned trip_names keys against the trips as they are now, so a
+    # moved start keeps its hand-written name in this very build.
+    if trip_names:
+        spans: list[TripSpan] = []
+        prev_last: int | None = None
+        for trip_rows, _t, _nts in extended:
+            if len(trip_rows) < min_checkins:
+                continue
+            ts_all = [int(r["date"]) for r in trip_rows]
+            spans.append(TripSpan(key=_nts, first=min(ts_all), last=max(ts_all),
+                                  checkin_ts=frozenset(ts_all), prev_last=prev_last))
+            prev_last = max(ts_all)
+        heal = heal_trip_names(spans, trip_names)
+        trip_names = heal.names
+        if name_report is not None:
+            name_report["heal"] = heal
+
+    result: list[dict] = []
+    for trip_rows, _resolved_tags, _name_ts in extended:
+        if len(trip_rows) < min_checkins:
+            continue
+
+        dates = []
+        for r in trip_rows:
+            d = _parse_ts(r)
+            if d:
+                dates.append(d)
+        if not dates:
+            continue
+
+        countries_c = Counter(
+            r.get("country", "").strip() for r in trip_rows if r.get("country", "").strip()
+        )
+        cities_c = Counter(
+            r.get("city", "").strip() for r in trip_rows if r.get("city", "").strip()
+        )
+        top_countries = [c for c, _ in countries_c.most_common()]
+        top_cities    = [c for c, _ in cities_c.most_common(3)]
+
+        if len(top_countries) == 1:
+            name = f"{top_cities[0] if top_cities else top_countries[0]}, {top_countries[0]}"
+        elif len(top_countries) == 2:
+            name = " & ".join(top_countries[:2])
+        else:
+            name = f"{top_countries[0]} + {top_countries[1]} + {len(top_countries) - 2} more"
+
+        # Apply custom name override (keyed by start_ts of first check-in)
+        # Use the pre-extension start_ts for name lookup so bicycle departure
+        # extension (which prepends outdoor home check-ins) doesn't break names.
+        start_ts_key = str(_name_ts)
+        if trip_names and start_ts_key in trip_names:
+            name = trip_names[start_ts_key]
+
+        checkins: list[dict] = []
+        for r in trip_rows:
+            d = _parse_ts(r)
+            if not d:
+                continue
+            try:
+                lat = round(float(r["lat"]), 5)
+            except (ValueError, KeyError, TypeError):
+                lat = None
+            try:
+                lng = round(float(r["lng"]), 5)
+            except (ValueError, KeyError, TypeError):
+                lng = None
+            d_local = _localise(d, lat, lng, r.get("country", "").strip())
+            checkins.append(
+                {
+                    "ts":         int(r["date"]),
+                    "date":       d_local.strftime("%Y-%m-%d"),
+                    "time":       d_local.strftime("%H:%M"),
+                    "datetime":   d_local.strftime("%d %b %Y, %H:%M"),
+                    "venue":      r.get("venue", "").strip(),
+                    "venue_id":   r.get("venue_id", "").strip(),
+                    "city":       r.get("city", "").strip(),
+                    "country":    r.get("country", "").strip(),
+                    "category":   r.get("category", "").strip(),
+                    "lat":        lat,
+                    "lng":        lng,
+                    "checkin_id": r.get("checkin_id", "").strip(),
+                    "refurbished": r.get("source_app", "").strip() == "refurbished",
+                }
+            )
+
+        seen_v: set[str] = set()
+        unique_pts: list = []
+        for r in trip_rows:
+            vid = r.get("venue_id", "").strip()
+            if vid and vid not in seen_v:
+                seen_v.add(vid)
+                try:
+                    unique_pts.append(
+                        [round(float(r["lat"]), 5), round(float(r["lng"]), 5), r.get("venue", "").strip()]
+                    )
+                except (ValueError, KeyError, TypeError):
+                    pass
+
+        trip_cats = Counter(
+            r.get("category", "").strip() for r in trip_rows if r.get("category", "").strip()
+        )
+        if checkins:
+            from datetime import date as _date
+            _sd = _date.fromisoformat(checkins[0]["date"])
+            _ed = _date.fromisoformat(checkins[-1]["date"])
+            start_date = checkins[0]["date"]
+            end_date   = checkins[-1]["date"]
+            start_year = _sd.year
+            duration   = (_ed - _sd).days + 1
+        else:
+            start_date = str(dates[0].date())
+            end_date   = str(dates[-1].date())
+            start_year = dates[0].year
+            duration   = (dates[-1].date() - dates[0].date()).days + 1
+        result.append(
+            {
+                "name":           name,
+                "_name_ts":       _name_ts,
+                "start_date":     start_date,
+                "end_date":       end_date,
+                "start_ts":       int(trip_rows[0]["date"]),
+                "start_year":     start_year,
+                "duration":       duration,
+                "countries":      top_countries,
+                "cities":         [c for c, _ in cities_c.most_common()],
+                "checkin_count":  len(trip_rows),
+                "unique_places":  len(seen_v),
+                "checkins":       checkins,
+                "top_cats":       [[c, n] for c, n in trip_cats.most_common(10)],
+                "tags":           _resolved_tags if _resolved_tags else (trip_tags or {}).get(int(trip_rows[0]["date"]), []),
+            }
+        )
+
+    result.sort(key=lambda t: t["start_ts"])
+    result = _drop_contained_trips(result)
+    if trip_exclude:
+        result = [t for t in result if t["start_ts"] not in trip_exclude]
+    for i, t in enumerate(result):
+        t["id"] = i + 1
+    return result
+
