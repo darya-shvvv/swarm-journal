@@ -180,6 +180,9 @@ def load_mappings(config_dir: str | Path = "config") -> dict[str, Any]:
     companion_fixes = _load_file("companion_fixes.json")  # per-checkin_id companion overrides
     city_merge    = _load_file("city_merge.yaml")
     cats_raw      = _load_file("categories.json")
+    # Raw local-language country spellings → canonical English name.
+    country_aliases = {k: v for k, v in _load_file("country_aliases.json").items()
+                       if not k.startswith("_")}
 
     return {
         "country_fixes":   country_fixes,
@@ -187,6 +190,7 @@ def load_mappings(config_dir: str | Path = "config") -> dict[str, Any]:
         "venue_fixes":     venue_fixes,
         "companion_fixes": companion_fixes,
         "city_merge":      city_merge,
+        "country_aliases": country_aliases,
         "category_groups": cats_raw.get("category_groups", {}),
         "explorer_groups": cats_raw.get("explorer_groups", {}),
     }
@@ -211,6 +215,7 @@ def apply_transforms(
     venue_fixes   = mappings.get("venue_fixes", {})
     companion_fixes = mappings.get("companion_fixes", {})
     city_merge    = mappings.get("city_merge", {})
+    country_aliases = mappings.get("country_aliases", {})
 
     blank_filled  = 0
     malformed_dates = 0
@@ -257,6 +262,11 @@ def apply_transforms(
         # Foursquare returns Belarus in its local spelling for some venues.
         if row.get("country") == "Беларусь":
             row["country"] = "Belarus"
+        # Every other local spelling (Россия, Republica Moldova, Ўзбекистон, …)
+        # via config/country_aliases.json.
+        _c = (row.get("country") or "").strip()
+        if _c in country_aliases:
+            row["country"] = country_aliases[_c]
 
         # Per-timestamp city override (city_fixes.json) — applied before
         # city_merge and blank-city inference so manual assignments win.

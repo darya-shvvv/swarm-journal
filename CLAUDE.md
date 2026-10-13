@@ -136,6 +136,7 @@ python -m http.server 8000
 - Build placeholders are simple string substitution (`{{PLACEHOLDER}}`), not Jinja.
 - Search is served by `functions/api/search.js` (Cloudflare Pages Function at `/api/search?q=`). It queries D1 directly — no static `search-index.json` is generated or committed.
 - `sync_to_d1.py` is incremental: checkins append-only, venues only for touched IDs, tips/ratings/lists gated by `--tips-changed` / `--ratings-changed` / `--lists-changed` flags (CI passes fetch step outputs).
+- D1 stores normalised city/country (same as the site): `sync_to_d1.py` and `gen_d1_dump.py` run check-ins through `transform.apply_transforms`, and tips/list venues through `config/country_aliases.json` + `city_merge.yaml` (`scripts/d1_normalize.py`). After changing those configs, force-resync D1 ("Resync checkins + venues to D1" + "Force resync D1 tables" → tips).
 - Companion search covers all three source fields: `with_name`, `created_by_name` (UNION query), and `overlaps_name` (comma-separated, split in JS).
 - Feed (`feed.html` / `functions/api/feed.js`) uses **bidirectional cursor-based virtual scroll**:
   - Init: 100 newest + 100 oldest loaded in parallel; gap between them filled on demand only.

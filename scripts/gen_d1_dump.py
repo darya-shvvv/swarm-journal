@@ -14,6 +14,9 @@ Then execute:
 import argparse, csv, os, sys
 from collections import defaultdict
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from d1_normalize import normalize_checkin_rows  # noqa: E402
+
 
 def q(v):
     if v is None:
@@ -64,48 +67,49 @@ def generate(csv_path: str, out_path: str, batch: int = 100) -> None:
     })
 
     with open(csv_path, encoding="utf-8-sig", newline="") as fh:
-        for row in csv.DictReader(fh):
-            cid = _str(row.get("checkin_id"))
-            if not cid:
-                continue
-            ts  = _int(row.get("date"))
-            vid = _str(row.get("venue_id"))
-            lat = _float(row.get("lat"))
-            lng = _float(row.get("lng"))
-            checkin_rows.append([
-                cid, ts, vid,
-                _str(row.get("venue")),
-                _str(row.get("venue_url")),
-                _str(row.get("city")),
-                _str(row.get("state")),
-                _str(row.get("country")),
-                _str(row.get("neighborhood")),
-                lat, lng,
-                _str(row.get("address")),
-                _str(row.get("category")),
-                _str(row.get("shout")),
-                _str(row.get("source_app")),
-                _str(row.get("source_url")),
-                _str(row.get("with_name")),
-                _str(row.get("with_id")),
-                _str(row.get("created_by_name")),
-                _str(row.get("created_by_id")),
-                _str(row.get("overlaps_name")),
-                _str(row.get("overlaps_id")),
-            ])
-            if vid:
-                m = venue_meta[vid]
-                m["count"] += 1
-                if ts and (not m["first_ts"] or ts < m["first_ts"]):
-                    m["first_ts"] = ts
-                if ts and ts > m["last_ts"]:
-                    m["last_ts"]   = ts
-                    m["name"]      = _str(row.get("venue")) or ""
-                    m["category"]  = _str(row.get("category")) or ""
-                    m["city"]      = _str(row.get("city")) or ""
-                    m["country"]   = _str(row.get("country")) or ""
-                    m["lat"]       = lat
-                    m["lng"]       = lng
+        csv_rows = normalize_checkin_rows(csv.DictReader(fh))
+    for row in csv_rows:
+        cid = _str(row.get("checkin_id"))
+        if not cid:
+            continue
+        ts  = _int(row.get("date"))
+        vid = _str(row.get("venue_id"))
+        lat = _float(row.get("lat"))
+        lng = _float(row.get("lng"))
+        checkin_rows.append([
+            cid, ts, vid,
+            _str(row.get("venue")),
+            _str(row.get("venue_url")),
+            _str(row.get("city")),
+            _str(row.get("state")),
+            _str(row.get("country")),
+            _str(row.get("neighborhood")),
+            lat, lng,
+            _str(row.get("address")),
+            _str(row.get("category")),
+            _str(row.get("shout")),
+            _str(row.get("source_app")),
+            _str(row.get("source_url")),
+            _str(row.get("with_name")),
+            _str(row.get("with_id")),
+            _str(row.get("created_by_name")),
+            _str(row.get("created_by_id")),
+            _str(row.get("overlaps_name")),
+            _str(row.get("overlaps_id")),
+        ])
+        if vid:
+            m = venue_meta[vid]
+            m["count"] += 1
+            if ts and (not m["first_ts"] or ts < m["first_ts"]):
+                m["first_ts"] = ts
+            if ts and ts > m["last_ts"]:
+                m["last_ts"]   = ts
+                m["name"]      = _str(row.get("venue")) or ""
+                m["category"]  = _str(row.get("category")) or ""
+                m["city"]      = _str(row.get("city")) or ""
+                m["country"]   = _str(row.get("country")) or ""
+                m["lat"]       = lat
+                m["lng"]       = lng
 
     print(f"Parsed: {len(checkin_rows):,} checkins, {len(venue_meta):,} venues", flush=True)
 

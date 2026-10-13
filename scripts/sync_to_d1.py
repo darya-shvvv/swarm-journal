@@ -44,6 +44,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import d1_client as d1
+from d1_normalize import normalize_checkin_rows, normalize_city, normalize_country
 
 HERE = Path(__file__).parent
 
@@ -143,53 +144,54 @@ def parse_checkins(csv_path: str):
         "city": "", "country": "", "first_ts": 0, "last_ts": 0, "count": 0,
     })
     with open(csv_path, encoding="utf-8-sig", newline="") as fh:
-        for row in csv.DictReader(fh):
-            cid = _str(row.get("checkin_id"))
-            if not cid:
-                continue
-            ts  = _int(row.get("date"))
-            vid = _str(row.get("venue_id"))
-            lat = _float(row.get("lat"))
-            lng = _float(row.get("lng"))
-            rows.append([
-                cid,
-                ts,
-                vid,
-                _str(row.get("venue")),
-                _str(row.get("venue_url")),
-                _str(row.get("city")),
-                _str(row.get("state")),
-                _str(row.get("country")),
-                _str(row.get("neighborhood")),
-                lat,
-                lng,
-                _str(row.get("address")),
-                _str(row.get("category")),
-                _str(row.get("shout")),
-                _str(row.get("source_app")),
-                _str(row.get("source_url")),
-                _str(row.get("with_name")),
-                _str(row.get("with_id")),
-                _str(row.get("created_by_name")),
-                _str(row.get("created_by_id")),
-                _str(row.get("overlaps_name")),
-                _str(row.get("overlaps_id")),
-            ])
-            if vid:
-                m = venue_meta[vid]
-                m["count"] += 1
-                if ts and (not m["first_ts"] or ts < m["first_ts"]):
-                    m["first_ts"] = ts
-                if ts and ts > m["last_ts"]:
-                    m["last_ts"]   = ts
-                    m["name"]     = _str(row.get("venue")) or ""
-                    m["category"] = _str(row.get("category")) or ""
-                    m["city"]     = _str(row.get("city")) or ""
-                    m["country"]  = _str(row.get("country")) or ""
-                if lat is not None:
-                    m["lat"] = lat
-                if lng is not None:
-                    m["lng"] = lng
+        csv_rows = normalize_checkin_rows(csv.DictReader(fh))
+    for row in csv_rows:
+        cid = _str(row.get("checkin_id"))
+        if not cid:
+            continue
+        ts  = _int(row.get("date"))
+        vid = _str(row.get("venue_id"))
+        lat = _float(row.get("lat"))
+        lng = _float(row.get("lng"))
+        rows.append([
+            cid,
+            ts,
+            vid,
+            _str(row.get("venue")),
+            _str(row.get("venue_url")),
+            _str(row.get("city")),
+            _str(row.get("state")),
+            _str(row.get("country")),
+            _str(row.get("neighborhood")),
+            lat,
+            lng,
+            _str(row.get("address")),
+            _str(row.get("category")),
+            _str(row.get("shout")),
+            _str(row.get("source_app")),
+            _str(row.get("source_url")),
+            _str(row.get("with_name")),
+            _str(row.get("with_id")),
+            _str(row.get("created_by_name")),
+            _str(row.get("created_by_id")),
+            _str(row.get("overlaps_name")),
+            _str(row.get("overlaps_id")),
+        ])
+        if vid:
+            m = venue_meta[vid]
+            m["count"] += 1
+            if ts and (not m["first_ts"] or ts < m["first_ts"]):
+                m["first_ts"] = ts
+            if ts and ts > m["last_ts"]:
+                m["last_ts"]   = ts
+                m["name"]     = _str(row.get("venue")) or ""
+                m["category"] = _str(row.get("category")) or ""
+                m["city"]     = _str(row.get("city")) or ""
+                m["country"]  = _str(row.get("country")) or ""
+            if lat is not None:
+                m["lat"] = lat
+            if lng is not None:
+                m["lng"] = lng
     return rows, dict(venue_meta)
 
 
@@ -201,8 +203,8 @@ def parse_tips(tips_path: str):
         _str(t.get("text")),
         _str(t.get("venue")),
         _str(t.get("venue_id")),
-        _str(t.get("city")),
-        _str(t.get("country")),
+        _str(normalize_city(t.get("city"))),
+        _str(normalize_country(t.get("country"))),
         _float(t.get("lat")), _float(t.get("lng")),
         _str(t.get("category")),
         _int(t.get("agree_count")), _int(t.get("disagree_count")),
@@ -284,10 +286,10 @@ def parse_lists(lists_path: str, visited_vids: set):
                 _str(icon.get("suffix")),
                 _float(loc.get("lat")), _float(loc.get("lng")),
                 _str(loc.get("address")),
-                _str(loc.get("city")),
+                _str(normalize_city(loc.get("city"))),
                 _str(loc.get("state")),
                 _str(loc.get("cc")),
-                _str(loc.get("country")),
+                _str(normalize_country(loc.get("country"))),
                 formatted_address,
                 1 if vid in visited_vids else 0,
                 0,
@@ -594,7 +596,8 @@ def main() -> None:
                                  "lat": "lat", "lng": "lng", "category": "category"}
             for vid, recs in by_venue.items():
                 set_clauses = ", ".join(f"{r['field']}=?" for r in recs)
-                set_vals = [r["new_value"] for r in recs]
+                _norm = {"city": normalize_city, "country": normalize_country}
+                set_vals = [_norm.get(r["field"], lambda v: v)(r["new_value"]) for r in recs]
                 # Update all checkins rows for this venue
                 d1.query(f"UPDATE checkins SET {set_clauses} WHERE venue_id=?", set_vals + [vid])
                 # Update tips rows for this venue (same column names)
