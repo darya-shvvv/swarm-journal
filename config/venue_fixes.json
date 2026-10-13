@@ -1,0 +1,4 @@
+{
+  "_comment": "Per-venue (Foursquare venue_id) city/country overrides, applied with highest priority in transform.py — one entry covers all past and future check-ins at that venue. Use for gateway venues (border crossings, airports) whose Foursquare city/country disagree.",
+  "4e2309a7ae6015b212b5d705": {"city": "Vitebsk Region", "country": "Belarus", "_note": "Граница Беларусь — Россия (M1, Belarusian side); same convention as the Vitebsk Region block in city_fixes.json"}
+}

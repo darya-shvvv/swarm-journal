@@ -197,6 +197,7 @@ def load_mappings(config_dir: str | Path = "config") -> dict[str, Any]:
 
 
 NEIGHBOUR_MAX_KM = 15.0
+NEIGHBOUR_MAX_GAP_S = 6 * 3600
 
 
 def _fill_blank_from_neighbours(rows: list[dict]) -> int:
@@ -241,7 +242,35 @@ def _fill_blank_from_neighbours(rows: list[dict]) -> int:
             r["city"] = best_city
             r["city_inferred"] = "1"
             filled += 1
+
+    # Country-level pins ("Türkiye", "Azerbaijan (Azərbaycan)" at the country
+    # centroid) logged on arrival: no geographic neighbour, but the check-ins
+    # just before and after (same country, within NEIGHBOUR_MAX_GAP_S) agree on
+    # the city — take it.
+    order = sorted(range(len(rows)), key=lambda i: _ts(rows[i]))
+    for k, i in enumerate(order):
+        r = rows[i]
+        if r.get("city"):
+            continue
+        prev = rows[order[k - 1]] if k > 0 else None
+        nxt = rows[order[k + 1]] if k + 1 < len(order) else None
+        if not (prev and nxt and prev.get("city") and prev.get("city") == nxt.get("city")):
+            continue
+        if not (prev.get("country") == nxt.get("country") == r.get("country")):
+            continue
+        if _ts(nxt) - _ts(r) > NEIGHBOUR_MAX_GAP_S or _ts(r) - _ts(prev) > NEIGHBOUR_MAX_GAP_S:
+            continue
+        r["city"] = prev["city"]
+        r["city_inferred"] = "1"
+        filled += 1
     return filled
+
+
+def _ts(r: dict) -> int:
+    try:
+        return int(r.get("date") or 0)
+    except ValueError:
+        return 0
 
 
 # ── Row-level transforms ───────────────────────────────────────────────────────
