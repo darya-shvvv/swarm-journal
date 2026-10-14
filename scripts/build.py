@@ -1345,6 +1345,26 @@ if __name__ == "__main__":
         if _n_fl:
             log.info("No flights.html — removed FLIGHTS nav link from %d pages", _n_fl)
 
+    # ── No lists.json → lists.html is never committed: drop its links ────────
+    # gen_lists still renders an empty lists.html, but the workflows only stage
+    # it when lists.json exists, so on the live site the LISTS nav item and the
+    # "Saved lists" card on the index would 404.
+    if not lists_path.exists():
+        _ls_nav = re.compile(r'\s*<a(?: class="[^"]*")? href="lists\.html"><span class="sn-icon">📋</span>'
+                             r'<span class="sn-lbl">[^<]*</span></a>')
+        _ls_card = re.compile(r'\s*<a class="trips-link-card" href="lists\.html".*?</a>', re.S)
+        _n_ls = 0
+        for _html in Path(args.output_dir).glob("*.html"):
+            if _html.name == "lists.html":
+                continue
+            _txt = _html.read_text(encoding="utf-8")
+            _new = _ls_card.sub("", _ls_nav.sub("", _txt))
+            if _new != _txt:
+                _html.write_text(_new, encoding="utf-8")
+                _n_ls += 1
+        if _n_ls:
+            log.info("No lists.json — removed LISTS links from %d pages", _n_ls)
+
     # ── PWA: manifest + service worker (versioned per build) ──────────────────
     # Render templates/{manifest.webmanifest,sw.js}.tmpl into the output root,
     # stamping the SW cache name with this build's UTC timestamp so every deploy
