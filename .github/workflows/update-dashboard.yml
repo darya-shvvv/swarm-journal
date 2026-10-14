@@ -290,6 +290,9 @@ jobs:
 
           git add index.html trips.html feed.html companions.html world_cities.html venues.html tips.html photos.html stats.html search.html trips_meta.json feed_meta.json
           git add -A -- 'site-*.css' sw.js manifest.webmanifest feed.xml feed.json map_data.json routes.json guide.html shouts.html years.html 'year-*.html' 'country-*.html'
+          # Per-trip check-in shards fetched by trips.html on demand (-A also
+          # stages deletions when the trip count shrinks).
+          git add -A -- 'trip_checkins_*.json'
           # Only update ratings.html if ratings data was available during the build
           [ -f private-data/venueRatings.json ] && git add ratings.html || true
           # Only update lists.html if lists data was available during the build
