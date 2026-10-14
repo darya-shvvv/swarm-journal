@@ -15,6 +15,8 @@ name: Archive check-in snapshot
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "30 2 1 * *"   # 02:30 UTC on the 1st of each month
 
 permissions:
   contents: read   # public repo read-only; private repo access via PAT
