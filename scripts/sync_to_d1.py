@@ -1526,8 +1526,12 @@ def main() -> None:
         three indexes — as COUNT(*) that was ~20k rows read per run (~200k/day)
         spent on a question a single row answers.
         """
+        # Probe the index's own shadow table, NOT `{table}` itself: these are
+        # external-content FTS tables, so `SELECT rowid FROM venues_fts` reads the
+        # BASE table and returns a row even when the index is empty (seen in
+        # prod: tips_fts stayed empty after the first sync, tip search found nothing).
         try:
-            res = d1.query(f"SELECT rowid FROM {table} LIMIT 1")
+            res = d1.query(f"SELECT 1 FROM {table}_docsize LIMIT 1")
         except Exception:
             return True    # unknown → treat as "may be empty" and rebuild
         return not res
