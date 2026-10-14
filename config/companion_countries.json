@@ -1,0 +1,4 @@
+{
+  "_comment": "Companion name (exactly as on companions.html) -> home country (English canonical, as in country_flags.json). Sets the flag next to the name. Anyone not listed gets the country most of your shared check-ins are in.",
+  "Andrei Patsiomkin": "Belarus"
+}
