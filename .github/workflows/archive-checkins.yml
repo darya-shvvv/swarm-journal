@@ -69,9 +69,103 @@ jobs:
           python scripts/fetch_checkins.py \
             --token "$FOURSQUARE_TOKEN" \
             --csv private-data/checkins.csv \
-            --full
+            --full \
+            --deleted-out /tmp/swarm_deleted.txt
 
-      # ── 6. Diff old vs new — detect venue renames/moves, sync tips.json ────
+      # ── 6. Guard against a truncated re-fetch ─────────────────────────────
+      # Full re-fetch runs continue-on-error, so a quota/network failure can
+      # leave a partial checkins.csv. Abort BEFORE any commit or D1 sync if the
+      # new snapshot lost > 5% of rows or unique venues vs the archived one
+      # (check-ins only grow; a large drop means a truncated fetch, not real
+      # deletions). First run (no archive) skips the guard.
+      - name: Guard against truncated re-fetch
+        run: |
+          if [ -z "$ARCHIVE_NAME" ]; then
+            echo "No archived snapshot to compare against — skipping guard."
+            exit 0
+          fi
+          python - "private-data/archive/${ARCHIVE_NAME}" private-data/checkins.csv <<'PY'
+          import csv, sys
+
+          def counts(path):
+              rows = 0
+              venues = set()
+              with open(path, encoding="utf-8", newline="") as fh:
+                  for r in csv.DictReader(fh):
+                      rows += 1
+                      vid = (r.get("venue_id") or "").strip()
+                      if vid:
+                          venues.add(vid)
+              return rows, len(venues)
+
+          old_path, new_path = sys.argv[1], sys.argv[2]
+          old_rows, old_venues = counts(old_path)
+          new_rows, new_venues = counts(new_path)
+          print(f"old snapshot: {old_rows} rows / {old_venues} venues")
+          print(f"new snapshot: {new_rows} rows / {new_venues} venues")
+
+          FLOOR = 0.95
+          bad = []
+          if old_rows and new_rows < FLOOR * old_rows:
+              bad.append(f"rows {new_rows} < 95% of {old_rows}")
+          if old_venues and new_venues < FLOOR * old_venues:
+              bad.append(f"venues {new_venues} < 95% of {old_venues}")
+          if bad:
+              print("::error::truncated re-fetch suspected — " + "; ".join(bad))
+              print("Aborting before commit / D1 sync. Re-run manually once the "
+                    "Foursquare fetch completes fully.")
+              sys.exit(1)
+          print("Guard passed — snapshot is complete enough to sync.")
+          PY
+
+      # ── 6b. Remove check-ins deleted in Swarm ────────────────────────────
+      # The full re-fetch above updates every row Swarm still has (renames,
+      # cities, venue merges — matched by checkin_id), but a check-in deleted
+      # in Swarm is simply absent from it. fetch_checkins.py lists one only when
+      # ALL of these hold: the walk reached the server total, at most 50 rows
+      # are absent, and Swarm answers "Invalid checkin id" for that exact id.
+      # A partial fetch (quota, 500s) therefore deletes nothing: an early stop
+      # would otherwise make every check-in it did not reach look "missing".
+      # Removal goes through delete_checkin.py: CSV + D1 + orphan venues +
+      # photos.json, and the freed images leave R2 in the next step.
+      - name: Remove check-ins deleted in Swarm
+        id: swarm_del
+        env:
+          CF_D1_TOKEN:       ${{ secrets.CF_D1_TOKEN }}
+          CF_ACCOUNT_ID:     ${{ secrets.CF_ACCOUNT_ID }}
+          CF_D1_DATABASE_ID: ${{ secrets.CF_D1_DATABASE_ID }}
+        run: |
+          if [ ! -s /tmp/swarm_deleted.txt ]; then
+            echo "No check-ins deleted in Swarm."
+            exit 0
+          fi
+          echo "Deleted in Swarm (confirmed per id):"
+          cat /tmp/swarm_deleted.txt
+          python scripts/delete_checkin.py \
+            --ids "$(paste -sd, /tmp/swarm_deleted.txt)" \
+            --csv private-data/checkins.csv \
+            --photos private-data/photos.json
+
+      - name: Delete freed photos from R2
+        if: steps.swarm_del.outputs.PHOTO_COUNT != '' && steps.swarm_del.outputs.PHOTO_COUNT != '0'
+        env:
+          AWS_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID:         ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET_NAME:        ${{ secrets.R2_BUCKET_NAME }}
+        run: |
+          if [ -z "$R2_BUCKET_NAME" ]; then
+            echo "R2 secrets not configured — skipping (photos.json already pruned)."
+            exit 0
+          fi
+          pip install awscli --quiet
+          for f in ${{ steps.swarm_del.outputs.PHOTO_FILES }}; do
+            echo "removing pix/$f"
+            aws s3 rm "s3://${R2_BUCKET_NAME}/pix/$f" \
+              --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+          done
+
+      # ── 7. Diff old vs new — detect venue renames/moves, sync tips.json ────
       - name: Sync venue changes into tips.json
         run: |
           if [ -n "$ARCHIVE_NAME" ] && [ -f "private-data/tips.json" ]; then
@@ -83,7 +177,7 @@ jobs:
             echo "No archive snapshot or no tips.json — skipping venue diff."
           fi
 
-      # ── 7. Commit archive + fresh CSV + updated tips to private data repo ──
+      # ── 8. Commit archive + fresh CSV + updated tips to private data repo ──
       - name: Commit to private data repo
         run: |
           cd private-data
@@ -91,6 +185,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add checkins.csv tips.json
+          if [ -f photos.json ]; then git add photos.json; fi
           [ -n "$ARCHIVE_NAME" ] && git add "archive/${ARCHIVE_NAME}"
           [ -f checkins_anomalies.json ] && git add checkins_anomalies.json
           [ -f duplicate_checkins.csv  ] && git add duplicate_checkins.csv
