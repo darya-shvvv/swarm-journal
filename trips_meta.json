@@ -75,7 +75,7 @@
     "cities": [
       "Minsk",
       "Hrodna",
-      "Strachanyaty"
+      "Valozhyn"
     ],
     "tags": [],
     "top_cats": [
@@ -199,10 +199,9 @@
       "Saint Petersburg",
       "Minsk",
       "Hrodna",
-      "Strachanyaty",
-      "Vitebsk",
       "Lobok",
-      "Moscow",
+      "Valozhyn",
+      "Vitebsk",
       "Podborovye",
       "Pskov",
       "Dolostsy"
@@ -267,7 +266,6 @@
     "cities": [
       "Minsk",
       "Hrodna",
-      "Machulishchy",
       "Strachanyaty"
     ],
     "tags": [],
@@ -452,9 +450,8 @@
     ],
     "cities": [
       "Masty",
-      "Skidel",
       "Lavno",
-      "Shchuchin",
+      "Skidel",
       "Hrodna"
     ],
     "tags": [],
@@ -670,9 +667,7 @@
     "cities": [
       "Vawkavysk",
       "Hrodna",
-      "Skidel",
-      "Zel’va",
-      "Slonim"
+      "Zel’va"
     ],
     "tags": [],
     "top_cats": [
@@ -743,13 +738,12 @@
       "Hrodna",
       "Domoshany",
       "Lobok",
+      "Orsha",
       "Skidel",
       "Vitebsk",
-      "Moscow",
       "Pskov",
       "Zaplyusye",
-      "Opochka",
-      "Orsha"
+      "Opochka"
     ],
     "tags": [],
     "top_cats": [
@@ -873,7 +867,7 @@
     "cities": [
       "Minsk",
       "Hrodna",
-      "Strachanyaty"
+      "Valozhyn"
     ],
     "tags": [],
     "top_cats": [
@@ -997,7 +991,7 @@
     "cities": [
       "Minsk",
       "Hrodna",
-      "Strachanyaty"
+      "Valozhyn"
     ],
     "tags": [],
     "top_cats": [
@@ -1182,12 +1176,10 @@
     "cities": [
       "Saint Petersburg",
       "Minsk",
+      "Dolostsy",
       "Astrashytski Haradok",
       "Lyepyel",
-      "Dolostsy",
-      "Moscow",
-      "Pskov Region",
-      "Pushkin"
+      "Pskov Region"
     ],
     "tags": [],
     "top_cats": [
@@ -1374,10 +1366,10 @@
       "Moscow",
       "Minsk",
       "Khimki",
+      "Smolensk Region",
       "Zhodzina",
       "Muravnichi",
-      "Vitebsk Region",
-      "Smolensk Region"
+      "Vitebsk Region"
     ],
     "tags": [],
     "top_cats": [
@@ -1690,9 +1682,9 @@
       "Tashkent",
       "Urgench",
       "Minsk",
+      "Smolensk Region",
       "Tolochyn",
       "Vitebsk Region",
-      "Smolensk Region",
       "Gagarin"
     ],
     "tags": [],
@@ -1880,7 +1872,7 @@
       "Hrodna",
       "Minsk",
       "Lavno",
-      "Strachanyaty"
+      "Valozhyn"
     ],
     "tags": [],
     "top_cats": [
@@ -1943,12 +1935,11 @@
     "cities": [
       "Saint Petersburg",
       "Minsk",
-      "Lobok",
       "Pskov",
+      "Lobok",
       "Zhodzina",
       "Orsha",
       "Vitebsk",
-      "Moscow",
       "Zaplyusye"
     ],
     "tags": [],
@@ -2144,11 +2135,9 @@
       "Tiraspol",
       "Minsk",
       "Khimki",
-      "Ialoveni",
       "Butuceni",
       "Saint Petersburg",
       "Vitebsk Region",
-      "Calarasi",
       "Trebujeni",
       "Brănești"
     ],
