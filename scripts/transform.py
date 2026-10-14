@@ -144,6 +144,28 @@ def build_blank_city_resolver(review_csv_path: str | Path):
 
         return best_city if best_dist <= MAX_DIST_KM else None
 
+    def centroid_with_dist(row: dict):
+        """(city, km) of the nearest review-CSV centroid in the row's country."""
+        try:
+            lat, lng = float(row["lat"]), float(row["lng"])
+        except (ValueError, TypeError, KeyError):
+            return None, float("inf")
+        best = (None, float("inf"))
+        for clat, clng, ccity in centroids.get(row.get("country", ""), []):
+            d = _haversine(lat, lng, clat, clng)
+            if d < best[1]:
+                best = (ccity, d)
+        return best
+
+    def by_ts(row: dict) -> str | None:
+        ts = row.get("date", "").strip()
+        return ts_map.get(ts) if ts else None
+
+    # apply_transforms() uses the passes separately: the reviewed exact-ts match
+    # first, the loose 90 km centroid only after this dataset's own neighbours.
+    resolve.by_ts = by_ts                       # type: ignore[attr-defined]
+    resolve.by_centroid = lambda row: resolve({**row, "date": ""})  # type: ignore[attr-defined]
+    resolve.centroid_with_dist = centroid_with_dist                 # type: ignore[attr-defined]
     return resolve
 
 
@@ -196,58 +218,114 @@ def load_mappings(config_dir: str | Path = "config") -> dict[str, Any]:
     }
 
 
-NEIGHBOUR_MAX_KM = 15.0
+NEIGHBOUR_MAX_KM = 8.0          # same scale as upstream's blank-fix radii (5.5 / 8 km)
 NEIGHBOUR_MAX_GAP_S = 6 * 3600
+VOTE_KM = 1.0                  # majority vote among own check-ins this close
+# Foursquare "country" venues ("Russia (Россия)", "Türkiye") sit at the capital or
+# the country centroid, so their coordinates say nothing about where you were.
+PIN_CATEGORIES = {"Country"}
 
 
-def _fill_blank_from_neighbours(rows: list[dict]) -> int:
+def _fill_blank_from_neighbours(rows: list[dict], by_centroid=None, city_merge=None,
+                                centroid_with_dist=None) -> int:
     """
-    Last-resort blank-city fill: a row still without a city after fixes,
-    city_merge and the review-CSV resolver takes the (already normalised) city
-    of its nearest geotagged check-in in the same country, if that one lies
-    within NEIGHBOUR_MAX_KM. Covers new trips that the review CSV has never
-    seen (e.g. a whole Istanbul visit logged with an empty city). Country-level
-    pins ("Türkiye" at the country centroid) stay blank — nothing is that close.
+    Fill the cities still blank after city_fixes / city_merge / the reviewed
+    exact-ts match, most precise source first:
+
+      1. country-level pins (category Country): coordinates are fake, so take the
+         city of the nearest-in-time check-in in the same country (previous one
+         first — the arrival point, usually the border — else the next one),
+         within NEIGHBOUR_MAX_GAP_S;
+      2. the nearest geotagged check-in of this dataset in the same country,
+         within NEIGHBOUR_MAX_KM (Zelva bus station → Zel'va, not Slonim) —
+         unless a reviewed small-town centroid is even closer (a Pushkin park
+         stays Pushkin even with a "Saint Petersburg"-tagged point 3 km away);
+      3. previous and next check-ins agree on the city (same country, ≤ 6 h);
+      4. last resort: the review-CSV centroid within 90 km (the old behaviour).
     """
+    city_merge = city_merge or {}
+
     def _ll(r):
         try:
             return float(r.get("lat") or ""), float(r.get("lng") or "")
         except ValueError:
             return None
 
+    def _set(r, city):
+        city = unicodedata.normalize("NFC", city)
+        key = city.replace("\u2019", "'").replace("\u2018", "'")
+        r["city"] = city_merge.get(key, city_merge.get(city, city))
+        r["city_inferred"] = "1"
+
+    is_pin = lambda r: (r.get("category") or "").strip() in PIN_CATEGORIES  # noqa: E731
+    order = sorted(range(len(rows)), key=lambda i: _ts(rows[i]))
+    filled = 0
+
+    # 1. country pins — by time
+    for k, i in enumerate(order):
+        r = rows[i]
+        if r.get("city") or not is_pin(r):
+            continue
+        country = r.get("country")
+        for step in (-1, 1):
+            j = k + step
+            while 0 <= j < len(order):
+                o = rows[order[j]]
+                if abs(_ts(o) - _ts(r)) > NEIGHBOUR_MAX_GAP_S or o.get("country") != country:
+                    break
+                if o.get("city") and not is_pin(o):
+                    _set(r, o["city"])
+                    break
+                j += step
+            if r.get("city"):
+                filled += 1
+                break
+
+    # 2. own check-ins nearby (geographic). Foursquare labels one place
+    #    inconsistently (Catherine Park in Pushkin: some venues "Pushkin", some
+    #    "Saint Petersburg"), so within VOTE_KM take the majority city; otherwise
+    #    the nearest own check-in within NEIGHBOUR_MAX_KM — unless a reviewed
+    #    centroid is closer (Fanipol 8 km away beats a Minsk point 19 km away).
     by_cell: dict = defaultdict(list)   # (country, lat°, lng°) → [(lat, lng, city)]
     for r in rows:
-        if r.get("city"):
+        if r.get("city") and not is_pin(r):
             p = _ll(r)
             if p:
                 by_cell[(r.get("country", ""), math.floor(p[0]), math.floor(p[1]))].append((p[0], p[1], r["city"]))
-
-    filled = 0
     for r in rows:
-        if r.get("city"):
+        if r.get("city") or is_pin(r):
             continue
         p = _ll(r)
         if not p:
             continue
         country = r.get("country", "")
-        best_km, best_city = NEIGHBOUR_MAX_KM, None
+        near: list = []
         clat, clng = math.floor(p[0]), math.floor(p[1])
         for dlat in (-1, 0, 1):
             for dlng in (-1, 0, 1):
                 for lat, lng, city in by_cell.get((country, clat + dlat, clng + dlng), ()):
                     km = _haversine(p[0], p[1], lat, lng)
-                    if km < best_km:
-                        best_km, best_city = km, city
+                    if km <= NEIGHBOUR_MAX_KM:
+                        near.append((km, city))
+        best_city, best_km = None, float("inf")
+        close = [c for km, c in near if km <= VOTE_KM]
+        if close:
+            votes = defaultdict(int)
+            for c in close:
+                votes[c] += 1
+            top = max(votes.values())
+            best_km, best_city = min((km, c) for km, c in near if km <= VOTE_KM and votes[c] == top)
+        elif near:
+            best_km, best_city = min(near)
+        if centroid_with_dist is not None:
+            c_city, c_km = centroid_with_dist(r)
+            if c_city and c_km <= NEIGHBOUR_MAX_KM and c_km < best_km and not close:
+                best_city = c_city
         if best_city:
-            r["city"] = best_city
-            r["city_inferred"] = "1"
+            _set(r, best_city)
             filled += 1
 
-    # Country-level pins ("Türkiye", "Azerbaijan (Azərbaycan)" at the country
-    # centroid) logged on arrival: no geographic neighbour, but the check-ins
-    # just before and after (same country, within NEIGHBOUR_MAX_GAP_S) agree on
-    # the city — take it.
-    order = sorted(range(len(rows)), key=lambda i: _ts(rows[i]))
+    # 3. previous and next check-ins agree
     for k, i in enumerate(order):
         r = rows[i]
         if r.get("city"):
@@ -260,9 +338,18 @@ def _fill_blank_from_neighbours(rows: list[dict]) -> int:
             continue
         if _ts(nxt) - _ts(r) > NEIGHBOUR_MAX_GAP_S or _ts(r) - _ts(prev) > NEIGHBOUR_MAX_GAP_S:
             continue
-        r["city"] = prev["city"]
-        r["city_inferred"] = "1"
+        _set(r, prev["city"])
         filled += 1
+
+    # 4. review-CSV centroid ≤ 90 km (never for country pins: their coords are fake)
+    if by_centroid is not None:
+        for r in rows:
+            if r.get("city") or is_pin(r):
+                continue
+            c = by_centroid(r)
+            if c:
+                _set(r, c)
+                filled += 1
     return filled
 
 
@@ -370,7 +457,8 @@ def apply_transforms(
 
         if not city and blank_city_resolver is not None:
             # Infer city for blank-city rows from coordinates / timestamp
-            inferred = blank_city_resolver(row)
+            _by_ts = getattr(blank_city_resolver, "by_ts", blank_city_resolver)
+            inferred = _by_ts(row)
             if inferred:
                 inferred = unicodedata.normalize("NFC", inferred)
                 # Also run city_merge on the inferred name — the review CSV may
@@ -393,7 +481,9 @@ def apply_transforms(
             malformed_dates += 1
 
     if blank_city_resolver is not None:
-        blank_filled += _fill_blank_from_neighbours(rows)
+        blank_filled += _fill_blank_from_neighbours(
+            rows, getattr(blank_city_resolver, "by_centroid", None), city_merge,
+            getattr(blank_city_resolver, "centroid_with_dist", None))
 
     if blank_filled:
         log.info("Blank-city inference filled %d rows", blank_filled)
