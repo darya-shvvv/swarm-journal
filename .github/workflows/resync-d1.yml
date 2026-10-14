@@ -38,6 +38,10 @@ on:
         description: "Lists + list_venues — DELETE + full INSERT OR REPLACE from lists.json"
         type: boolean
         default: false
+      fix_city_country:
+        description: "Check-ins — targeted UPDATE of city/country after config changes (city_merge, city/venue_fixes); far cheaper than the full checkins resync"
+        type: boolean
+        default: false
 
 jobs:
   resync:
@@ -85,6 +89,7 @@ jobs:
           if [ "${{ inputs.resync_tips }}"    = "true" ]; then FORCE_FLAGS="$FORCE_FLAGS --force-tips";    fi
           if [ "${{ inputs.resync_trips }}"   = "true" ]; then FORCE_FLAGS="$FORCE_FLAGS --force-trips";   fi
           if [ "${{ inputs.resync_lists }}"   = "true" ]; then FORCE_FLAGS="$FORCE_FLAGS --force-lists";   fi
+          if [ "${{ inputs.fix_city_country }}" = "true" ]; then FORCE_FLAGS="$FORCE_FLAGS --fix-city-country"; fi
 
           if [ -z "$FORCE_FLAGS" ]; then
             echo "No tables selected — nothing to do."

@@ -1,5 +1,5 @@
 -- Cloudflare D1 schema for swarmdata
--- Run via import_to_d1.py (full recreate) or sync_to_d1.py (IF NOT EXISTS)
+-- Applied by sync_to_d1.py via d1_client.apply_schema() (all statements IF NOT EXISTS).
 
 -- ── Core check-ins ────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS checkins (
@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS checkins (
     created_by_name  TEXT,
     created_by_id    TEXT,
     overlaps_name    TEXT,
-    overlaps_id      TEXT
+    overlaps_id      TEXT,
+    city_inferred    INTEGER DEFAULT 0   -- 1 = filled by blank-city resolver
 );
 
 -- ── Unique venues (aggregated from checkins) ──────────────────────────────────
@@ -136,6 +137,44 @@ CREATE TABLE IF NOT EXISTS venue_changes (
 -- (safe to run repeatedly -- apply_schema suppresses duplicate-column errors)
 ALTER TABLE venue_changes ADD COLUMN venue_name TEXT;
 ALTER TABLE venue_changes ADD COLUMN action TEXT;
+
+-- Migrations: add new columns to existing checkins tables
+ALTER TABLE checkins ADD COLUMN city_inferred INTEGER DEFAULT 0;
+
+-- ── Sync state (content-hash gate for trips/lists/tips/ratings) ─────────────
+-- One row per synced table; sync_to_d1.py skips the D1 write when the sha256
+-- of the parsed rows matches the stored hash (avoids hourly re-sync of
+-- unchanged trips/lists driven by the check-ins fetch flag).
+CREATE TABLE IF NOT EXISTS sync_state (
+    key        TEXT    PRIMARY KEY,   -- 'tips' | 'ratings' | 'trips' | 'lists'
+    hash       TEXT,                  -- sha256 hex of parsed rows last written
+    updated_at INTEGER                -- unix ts of last write
+);
+
+-- ── Full-text search (FTS5) ──────────────────────────────────────────────────
+-- External-content FTS5 indexes: they store only the inverted index and read
+-- display columns from the base table via rowid (venues/tips/trips are ordinary
+-- rowid tables even though their PK is TEXT/INTEGER). Populated by sync_to_d1.py
+-- with `INSERT INTO <t>_fts(<t>_fts) VALUES('rebuild')` after the base table is
+-- written (rebuild-on-change — no triggers, because apply_schema splits on ';'
+-- and would shred a BEGIN..END trigger body). search.js queries these via MATCH
+-- + bm25(). Each is a single statement with no internal ';' so it survives the
+-- split-on-';' parser in d1_client.apply_schema().
+-- Companion name -> check-in count, precomputed by sync_to_d1.build_companion_rows().
+-- /api/search used to answer a companion query with three unindexed LIKE scans of the
+-- 70k-row checkins table (~210k rows READ per keystroke-debounced request, on an
+-- endpoint that is Cache-Control: no-store). This table is a few hundred rows, so the
+-- same lookup scans a few hundred. No secondary index on name_lc on purpose: a
+-- leading-wildcard LIKE cannot use one, and every index costs rows WRITTEN on sync.
+CREATE TABLE IF NOT EXISTS companions (
+    name    TEXT PRIMARY KEY,
+    name_lc TEXT    NOT NULL,
+    cnt     INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE VIRTUAL TABLE IF NOT EXISTS venues_fts USING fts5(name, category, city, country, content='venues', content_rowid='rowid');
+CREATE VIRTUAL TABLE IF NOT EXISTS tips_fts USING fts5(venue, text, city, country, content='tips', content_rowid='rowid');
+CREATE VIRTUAL TABLE IF NOT EXISTS trips_fts USING fts5(name, countries, cities, content='trips', content_rowid='rowid');
 
 -- ── Indexes ───────────────────────────────────────────────────────────────────
 CREATE INDEX IF NOT EXISTS idx_checkins_id       ON checkins(id);
