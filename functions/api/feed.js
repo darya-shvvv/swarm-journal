@@ -27,7 +27,18 @@
 
 const HEADERS = {
   'Content-Type': 'application/json',
-  'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+  // Edge cache 1 h, browser cache 1 min, allow 10 min stale-while-revalidate.
+  // Safe to be aggressive because every /api/feed fetch URL carries a `_v=`
+  // schema-version param — bump it whenever the response tuple shape changes
+  // (e.g. _v=companions) to force a clean cache key.  Newest check-ins are
+  // delayed up to 1 h on CDN edge nodes but D1 reads stay near zero.
+  'Cache-Control': 'public, max-age=60, s-maxage=3600, stale-while-revalidate=600',
+};
+
+// Error responses reuse the same content type but must not be cached anywhere.
+const HEADERS_NOSTORE = {
+  'Content-Type': 'application/json',
+  'Cache-Control': 'no-store',
 };
 
 // Country → IANA timezone (same as original)
@@ -128,6 +139,33 @@ function formatLocal(ts, tz) {
   }
 }
 
+// De-duped union of with_name, created_by_name, overlaps_name — same logic
+// as metrics.collect_companions on the Python side.
+function collectCompanions(r) {
+  const seen = new Set();
+  const out = [];
+  const pushList = (raw, allowDashSentinel) => {
+    if (!raw) return;
+    for (const part of String(raw).replace(/ ,/g, ',').split(',')) {
+      const n = part.trim();
+      if (!n) continue;
+      if (!allowDashSentinel && n === '-') continue;
+      const key = n.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(n);
+    }
+  };
+  pushList(r.with_name, false);
+  const cb = (r.created_by_name || '').trim();
+  if (cb && !seen.has(cb.toLowerCase())) {
+    seen.add(cb.toLowerCase());
+    out.push(cb);
+  }
+  pushList(r.overlaps_name, false);
+  return out;
+}
+
 function mapRows(rows, tzCache) {
   return rows.map(r => {
     const lng = r.lng != null ? r.lng : null;
@@ -152,36 +190,31 @@ function mapRows(rows, tzCache) {
   });
 }
 
-// Extra columns for items[11] (companions) and items[12] (reconstructed flag).
-const COMPANION_COLS = 'with_name, created_by_name, overlaps_name, source_app';
-
-// De-duped union of with_name, created_by_name, overlaps_name — same logic
-// as metrics.collect_companions on the Python side.
-function collectCompanions(r) {
-  const seen = new Set();
-  const out = [];
-  const pushList = (raw) => {
-    if (!raw) return;
-    for (const part of String(raw).replace(/ ,/g, ',').split(',')) {
-      const n = part.trim();
-      if (!n || n === '-') continue;
-      const key = n.toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-      out.push(n);
-    }
-  };
-  pushList(r.with_name);
-  const cb = (r.created_by_name || '').trim();
-  if (cb && !seen.has(cb.toLowerCase())) {
-    seen.add(cb.toLowerCase());
-    out.push(cb);
+// Every branch below is one D1 query away from an unhandled rejection, which a
+// Pages Function surfaces as a bare HTTP 500 "error code: 1101" whose body is not
+// JSON at all — so the caller's `await res.json()` throws too and the feed dies
+// with a console error instead of an empty state. That is exactly what happened
+// when the D1 free-tier daily row-read limit was reached: every query on the
+// database started failing at once. Wrap the handler so any D1 failure becomes a
+// well-formed 503 the frontend can read.
+export async function onRequestGet(ctx) {
+  try {
+    return await handleGet(ctx);
+  } catch (err) {
+    console.error(`/api/feed: query failed — ${(err && err.message) || err}`);
+    // Shape-compatible with every branch's success payload, so a caller that
+    // destructures `items` / `has_more` / `cursor` keeps working and simply
+    // renders nothing. Never cached (see jsonResp) — the feed must recover the
+    // moment D1 does.
+    return jsonResp({
+      error: 'D1 unavailable',
+      items: [], total: 0, has_more: false,
+      next_cursor: null, next_cursor_id: null, cursor: null,
+    }, 503);
   }
-  pushList(r.overlaps_name);
-  return out;
 }
 
-export async function onRequestGet({ request, env }) {
+async function handleGet({ request, env }) {
   if (!env.DB) {
     return jsonResp({ error: 'DB binding not configured' }, 503);
   }
@@ -214,13 +247,46 @@ export async function onRequestGet({ request, env }) {
   if (wantSearch !== null) {
     const term = wantSearch.trim();
     if (!term) return jsonResp({ items: [], total: 0 });
+    // D1 bills rows SCANNED. The old form was a bare `venue/city/country/category
+    // LIKE '%q%'` over all ~70k check-ins — no index can serve a leading-wildcard
+    // LIKE, so every call scanned the whole table (~70k rows read). Instead go
+    // through venues_fts, which indexes exactly those four columns, and reach the
+    // check-ins by an equality seek on idx_checkins_venue_id.
+    //
+    // Two deterministic statements rather than one with a top-level OR: SQLite's
+    // multi-index OR optimisation is not guaranteed, and a degraded plan would
+    // silently restore the full scan. Their predicates are disjoint, so the merge
+    // needs no dedup.
+    const COLS = 'date, venue, city, country, category, venue_id, lat, lng, id, ' +
+                 'with_name, created_by_name, overlaps_name, source_app';
+    // FTS5 MATCH: each word prefix-matched and AND-ed (same builder as search.js).
+    // unicode61 case-folds Cyrillic, so no lowercasing dance is needed here.
+    const ftsTokens = term.toLowerCase().split(/\s+/)
+      .map(w => w.replace(/"/g, ' ').trim())
+      .filter(w => /[\p{L}\p{N}]/u.test(w));
+    const ftsMatch = ftsTokens.map(w => `"${w}"*`).join(' AND ');
+    // Arm B covers the 55 reconstructed rows that carry a blank venue_id and so
+    // have no venues/FTS row at all. `venue_id = ''` is an equality seek, so the
+    // LIKE inside it only ever sees those rows.
     const like = `%${term}%`;
-    const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
-      'FROM checkins WHERE venue LIKE ?1 OR city LIKE ?1 OR country LIKE ?1 OR category LIKE ?1 ' +
-      'ORDER BY date DESC LIMIT 500'
-    ).bind(like).all();
-    const rows = dataRes.results || [];
+    const [vRes, bRes] = await Promise.all([
+      ftsMatch
+        ? env.DB.prepare(
+            `SELECT ${COLS} FROM checkins ` +
+            'WHERE venue_id IN (SELECT id FROM venues WHERE rowid IN ' +
+            '  (SELECT rowid FROM venues_fts WHERE venues_fts MATCH ?1)) ' +
+            'ORDER BY date DESC LIMIT 500'
+          ).bind(ftsMatch).all()
+        : Promise.resolve({ results: [] }),
+      env.DB.prepare(
+        `SELECT ${COLS} FROM checkins ` +
+        "WHERE venue_id = '' AND (venue LIKE ?1 OR city LIKE ?1 OR country LIKE ?1 OR category LIKE ?1) " +
+        'ORDER BY date DESC LIMIT 500'
+      ).bind(like).all()
+    ]);
+    const rows = [...(vRes.results || []), ...(bRes.results || [])]
+      .sort((a, b) => b.date - a.date)
+      .slice(0, 500);
     const items = mapRows(rows, {});
     return jsonResp({ items, total: items.length });
   }
@@ -237,7 +303,7 @@ export async function onRequestGet({ request, env }) {
     const tsStart = Math.floor(Date.UTC(yr, mo - 1, 1) / 1000) - PAD;
     const tsEnd   = Math.floor(Date.UTC(yr, mo,     1) / 1000) + PAD;
     const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
+      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, with_name, created_by_name, overlaps_name, source_app ' +
       'FROM checkins WHERE date >= ?1 AND date < ?2 ORDER BY date DESC'
     ).bind(tsStart, tsEnd).all();
     const rows = dataRes.results || [];
@@ -252,7 +318,7 @@ export async function onRequestGet({ request, env }) {
   if (wantOldest !== null) {
     const lim = Math.min(200, Math.max(1, parseInt(url.searchParams.get('limit') || '100', 10)));
     const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
+      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, with_name, created_by_name, overlaps_name, source_app ' +
       'FROM checkins ORDER BY date ASC LIMIT ?1'
     ).bind(lim).all();
     const rows = dataRes.results || [];
@@ -279,7 +345,7 @@ export async function onRequestGet({ request, env }) {
     const bindArgs = afterId ? [ts, afterId, lim + 1] : [ts, lim + 1];
     const limitIdx = afterId ? '?3' : '?2';
     const dataRes = await env.DB.prepare(
-      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, ' + COMPANION_COLS + ' ' +
+      'SELECT date, venue, city, country, category, venue_id, lat, lng, id, with_name, created_by_name, overlaps_name, source_app ' +
       `FROM checkins ${whereClause} ORDER BY date ASC, id ASC LIMIT ${limitIdx}`
     ).bind(...bindArgs).all();
     const rows = dataRes.results || [];
@@ -290,40 +356,50 @@ export async function onRequestGet({ request, env }) {
   }
 
   // --------------------------------------------------------------
-  // 5. Country or city exact-match, cursor-paginated (index drill-down)
+  // 5. Country or city exact-match, cursor-paginated
   // GET /api/feed?country=X[&cursor=TS&cursor_id=ID&limit=N]
   // GET /api/feed?city=X[&cursor=TS&cursor_id=ID&limit=N]
+  //   → { items: [...], has_more: bool, next_cursor: int|null, next_cursor_id: str|null, total: N }
   // --------------------------------------------------------------
   const filterCountry = url.searchParams.get('country');
   const filterCity    = url.searchParams.get('city');
   if (filterCountry !== null || filterCity !== null) {
     const flimit = Math.min(50, Math.max(1, parseInt(url.searchParams.get('limit') || '50', 10)));
-    const fcursorTs = parseInt(url.searchParams.get('cursor') || '', 10);
+    const fcursor   = url.searchParams.get('cursor');
     const fcursorId = url.searchParams.get('cursor_id');
+    const fcursorTs = fcursor ? parseInt(fcursor, 10) : NaN;
+
     const filterCol = filterCountry !== null ? 'country' : 'city';
+    const filterVal = filterCountry !== null ? filterCountry : filterCity;
+
     let fwhere = `${filterCol} = ?1`;
-    const fparams = [filterCountry !== null ? filterCountry : filterCity];
+    const fparams = [filterVal];
     let fidx = 2;
+
     if (!isNaN(fcursorTs)) {
       if (fcursorId) {
-        fwhere += ` AND (date < ?${fidx} OR (date = ?${fidx} AND id < ?${fidx + 1}))`;
+        fwhere += ` AND (date < ?${fidx} OR (date = ?${fidx} AND id < ?${fidx+1}))`;
         fparams.push(fcursorTs, fcursorId);
         fidx += 2;
       } else {
-        fwhere += ` AND date < ?${fidx++}`;
+        fwhere += ` AND date < ?${fidx}`;
         fparams.push(fcursorTs);
+        fidx++;
       }
     }
-    const fres = await env.DB.prepare(
-      `SELECT date, venue, city, country, category, venue_id, lat, lng, id, ${COMPANION_COLS} ` +
+
+    const dataRes = await env.DB.prepare(
+      `SELECT date, venue, city, country, category, venue_id, lat, lng, id, with_name, created_by_name, overlaps_name, source_app ` +
       `FROM checkins WHERE ${fwhere} ORDER BY date DESC, id DESC LIMIT ?${fidx}`
     ).bind(...fparams, flimit + 1).all();
-    const frows = fres.results || [];
+
+    const frows = dataRes.results || [];
     const fhas_more = frows.length > flimit;
     const ftrimmed = fhas_more ? frows.slice(0, flimit) : frows;
     const flast = ftrimmed[ftrimmed.length - 1];
+    const fitems = mapRows(ftrimmed, {});
     return jsonResp({
-      items: mapRows(ftrimmed, {}),
+      items: fitems,
       has_more: fhas_more,
       next_cursor:    fhas_more ? flast.date : null,
       next_cursor_id: fhas_more ? flast.id   : null,
@@ -355,7 +431,7 @@ export async function onRequestGet({ request, env }) {
   }
 
   const query = `
-    SELECT date, venue, city, country, category, venue_id, lat, lng, id, ${COMPANION_COLS}
+    SELECT date, venue, city, country, category, venue_id, lat, lng, id, with_name, created_by_name, overlaps_name, source_app
     FROM checkins${whereClause}
     ORDER BY date DESC, id DESC LIMIT ?${bindIndex}`;
   params.push(limit + 1); // fetch one extra to detect has_more
@@ -388,6 +464,12 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: HEADERS });
 }
 
+// Only a 200 carries the long edge-cache header. A 4xx/5xx must never be cached:
+// an hour of `s-maxage` on a 503 would pin an outage — or a bad-request answer —
+// long after the cause was fixed.
 function jsonResp(data, status = 200) {
-  return new Response(JSON.stringify(data), { status, headers: HEADERS });
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: status === 200 ? HEADERS : HEADERS_NOSTORE,
+  });
 }

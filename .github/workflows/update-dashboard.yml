@@ -235,7 +235,15 @@ jobs:
             $PHOTOS_ARG $PIX_URL_ARG $RATINGS_ARG $LISTS_ARG
 
       # ── 7b. Sync data to Cloudflare D1 ──────────────────────────────────────
+      #   Non-blocking: a D1 failure (e.g. the free-tier daily row limit) must not
+      #   stop the HTML commit below — the static site still updates, and the next
+      #   run re-syncs (check-ins are append-only, other tables are hash-gated).
+      #   --trips-changed is always true: trip names/boundaries also move on
+      #   config-only changes; the trips sync is hash-gated and writes nothing
+      #   when trips_meta.json is unchanged.
       - name: Sync data to D1
+        id: d1
+        continue-on-error: true
         if: |
           github.event_name == 'workflow_dispatch' ||
           steps.fetch.outputs.CHANGED == 'true' ||
@@ -260,9 +268,13 @@ jobs:
               --tips-changed    ${{ steps.fetch_tips.outputs.CHANGED    || 'false' }} \
               --ratings-changed ${{ steps.fetch_ratings.outputs.CHANGED || 'false' }} \
               --lists-changed   ${{ steps.fetch.outputs.CHANGED         || 'false' }} \
-              --trips-changed   ${{ steps.fetch.outputs.CHANGED         || 'false' }} \
+              --trips-changed   true \
               $RATINGS_ARG $LISTS_ARG
           fi
+
+      - name: Warn if D1 sync failed
+        if: steps.d1.outcome == 'failure'
+        run: echo "::warning title=D1 sync failed::Site still committed; D1 (search/feed) catches up on the next run. Check the step log — often the free-tier daily row limit (resets 00:00 UTC)."
 
       # ── 8. Commit HTML files to public repo → Cloudflare Pages auto-deploys ──
       - name: Commit updated HTML files
