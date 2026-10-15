@@ -499,7 +499,7 @@ RENDER.cover=(sec,arg,first)=>{
         <div class="stat"><strong>${fmt(M.cities)}</strong><span>городов</span></div>
         <div class="stat"><strong>${fmt(M.photos)}</strong><span>фотографий</span></div>
         <div class="stat"><strong>${fmt(M.trips)}</strong><span>поездок</span></div>
-        <div class="stat"><strong>${y1-y0}</strong><span>лет истории</span></div>
+        <div class="stat"><strong>${D.years.length}</strong><span>${plural(D.years.length,'год','года','лет')} с отметками</span></div>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#world-atlas">Открыть атлас →</a><a class="btn ghost" href="#trip">Листать поездки</a></div>
     </div>
