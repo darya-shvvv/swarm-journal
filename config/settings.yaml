@@ -21,7 +21,7 @@ dashboard:
 # (it must list swarm-journal.pages.dev). Substituted into {{CARTO_KEY}} in
 # every tile URL; env CARTO_API_KEY overrides. Empty = CARTO watermark tiles.
 basemap:
-  carto_key: ""
+  carto_key: "cb1_4lwx_1_a667c2540e715948f2a06df2"
 
 output:
   index_html: index.html
