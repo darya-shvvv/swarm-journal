@@ -301,7 +301,7 @@ body.light .ts-cell.z{background:var(--card2);}
   <div class="list-header">
     <div>
       <h1>Trip Journal</h1>
-      <div class="list-meta">35 trips &nbsp;·&nbsp; updated 2026-10-15 21:03 UTC</div>
+      <div class="list-meta">35 trips &nbsp;·&nbsp; updated 2026-10-15 21:31 UTC</div>
     </div>
   </div>
   <div class="page-insight" id="page-insight"></div>
@@ -537,7 +537,7 @@ function _renderTrip(t){
   if(activeMap){ activeMap.remove(); activeMap=null; }
   setTimeout(()=>{
     activeMap = L.map('detailMap',{preferCanvas:true});
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4lwx_1_a667c2540e715948f2a06df2',
       {attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(activeMap);
     const coords = t.checkins.filter(c=>c.lat&&c.lng).map(c=>[c.lat,c.lng]);
     if(coords.length){
