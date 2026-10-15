@@ -172,7 +172,8 @@ jobs:
             python scripts/sync_venue_changes.py \
               --old "private-data/archive/${ARCHIVE_NAME}" \
               --new  private-data/checkins.csv \
-              --tips private-data/tips.json
+              --tips private-data/tips.json \
+              --out  /tmp/venue_diffs.json
           else
             echo "No archive snapshot or no tips.json — skipping venue diff."
           fi
@@ -195,5 +196,58 @@ jobs:
           else
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
             git commit -m "chore: full check-in snapshot [${TIMESTAMP}]"
-            git push
+            # The hourly job may commit a new check-in (checkins.csv + photos.json)
+            # while this one re-fetches — same files, so a plain rebase collides.
+            # resolve_archive_rebase.py merges exactly those two by content (the
+            # fresh snapshot + rows added upstream, minus Swarm deletions); any
+            # other conflict aborts the run, to be re-run by hand.
+            for i in 1 2 3 4 5; do
+              if git push; then break; fi
+              [ "$i" = 5 ] && { echo "push still failing after rebase retries"; exit 1; }
+              echo "push rejected (attempt $i) — rebasing onto latest main"
+              if ! git pull --rebase origin main; then
+                if python ../scripts/resolve_archive_rebase.py --deleted /tmp/swarm_deleted.txt \
+                   && GIT_EDITOR=true git rebase --continue; then
+                  echo "rebase conflict resolved by content"
+                else
+                  git rebase --abort || true
+                  echo "::error::data-repo rebase conflict outside checkins.csv/photos.json — re-run the job"
+                  exit 1
+                fi
+              fi
+            done
           fi
+
+      # ── 9. Apply venue renames / merges to D1 ────────────────────────────
+      # The check-in sync is append-only: a row already in D1 keeps the name it
+      # was first inserted with, so without this step /api/feed and search kept
+      # an old venue name (e.g. "Пешеходная Улица" after it was merged into
+      # "Улица Советская") forever, whatever checkins.csv said.
+      - name: Sync to D1
+        env:
+          CF_D1_TOKEN:       ${{ secrets.CF_D1_TOKEN }}
+          CF_ACCOUNT_ID:     ${{ secrets.CF_ACCOUNT_ID }}
+          CF_D1_DATABASE_ID: ${{ secrets.CF_D1_DATABASE_ID }}
+        run: |
+          if [ -z "$CF_D1_TOKEN" ]; then
+            echo "CF_D1_TOKEN not set — skipping D1 sync."
+            exit 0
+          fi
+          VENUE_CHANGES_ARG=""
+          if [ -f /tmp/venue_diffs.json ]; then
+            COUNT=$(python -c "import json; print(len(json.load(open('/tmp/venue_diffs.json'))))")
+            if [ "$COUNT" -gt 0 ]; then
+              VENUE_CHANGES_ARG="--venue-changes /tmp/venue_diffs.json"
+            fi
+          fi
+          RATINGS_ARG=""
+          if [ -f private-data/venueRatings.json ]; then RATINGS_ARG="--ratings private-data/venueRatings.json"; fi
+          LISTS_ARG=""
+          if [ -f private-data/lists.json ]; then LISTS_ARG="--lists private-data/lists.json"; fi
+          python scripts/sync_to_d1.py \
+            --csv   private-data/checkins.csv \
+            --tips  private-data/tips.json \
+            --trips trips_meta.json \
+            $RATINGS_ARG $LISTS_ARG \
+            --tips-changed true \
+            $VENUE_CHANGES_ARG
