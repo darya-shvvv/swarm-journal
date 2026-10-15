@@ -647,7 +647,7 @@ function selectList(idx){
     document.getElementById('geobar').style.display = 'flex';
     if(!map){
       map = L.map('map',{preferCanvas:true}).setView([30,15],2);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key={{CARTO_KEY}}',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
     }
     mapMarkers.forEach(m=>map.removeLayer(m));
     mapMarkers = []; venueMarkerMap = {};

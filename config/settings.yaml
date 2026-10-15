@@ -16,6 +16,13 @@ dashboard:
   subtitle_source: "Foursquare"
   foursquare_user_id: "29447180"
 
+# CARTO basemap key (free, non-commercial: https://carto.com/basemaps/apikey).
+# Public by design — it ships in every page — and domain-restricted at CARTO
+# (it must list swarm-journal.pages.dev). Substituted into {{CARTO_KEY}} in
+# every tile URL; env CARTO_API_KEY overrides. Empty = CARTO watermark tiles.
+basemap:
+  carto_key: "cb1_4lwx_1_a667c2540e715948f2a06df2"
+
 output:
   index_html: index.html
   trips_html: trips.html
