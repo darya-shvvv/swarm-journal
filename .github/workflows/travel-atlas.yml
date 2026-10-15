@@ -1,0 +1,70 @@
+# .github/workflows/travel-atlas.yml
+#
+# Manual only. Builds the standalone travel-atlas journal (one HTML file, data
+# inlined) from the private data repo and hands it out as a workflow ARTIFACT.
+#
+# It never commits and never deploys: the journal includes home check-ins, and
+# everything committed to this repo is published by Cloudflare Pages. The build
+# writes into $RUNNER_TEMP, outside the repo checkout.
+#
+# Download: Actions → "Build travel atlas journal" → the run → Artifacts.
+
+name: Build travel atlas journal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  atlas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/checkout@v4
+        with:
+          repository: darya-shvvv/foursquare-data
+          token: ${{ secrets.DATA_REPO_PAT }}
+          path: private-data
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build site + journal into a temp dir
+        env:
+          R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
+        run: |
+          OUT="$RUNNER_TEMP/site"
+          mkdir -p "$OUT"
+          PIX_URL_ARG=""
+          if [ -n "$R2_PUBLIC_URL" ]; then PIX_URL_ARG="--pix-url ${R2_PUBLIC_URL}"; fi
+          RATINGS_ARG=""
+          if [ -f private-data/venueRatings.json ]; then RATINGS_ARG="--ratings private-data/venueRatings.json"; fi
+          LISTS_ARG=""
+          if [ -f private-data/lists.json ]; then LISTS_ARG="--lists private-data/lists.json"; fi
+          python scripts/build.py \
+            --input private-data/checkins.csv \
+            --config-dir config \
+            --output-dir "$OUT" \
+            --trips-out "$OUT/trips_meta.json" \
+            --photos private-data/photos.json \
+            $PIX_URL_ARG $RATINGS_ARG $LISTS_ARG \
+            --travel-atlas-out "$RUNNER_TEMP/travel-atlas.html"
+          test -s "$RUNNER_TEMP/travel-atlas.html" || { echo "::error::journal was not written (see gen_travel_atlas warning above)"; exit 1; }
+          # build.py may auto-add trip names to config/; this job must not leave changes behind
+          git checkout -- config || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: travel-atlas
+          path: ${{ runner.temp }}/travel-atlas.html
+          retention-days: 14

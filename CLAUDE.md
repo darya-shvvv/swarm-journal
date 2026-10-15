@@ -20,6 +20,16 @@ Repository guidance for Claude Code.
   --pix-url "https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix"
 ```
 
+### Travel atlas journal (private file, never deployed)
+One self-contained HTML (data + JS + CSS inlined) that reads like a magazine: atlas,
+country and trip spreads, chronicle, paged photo archive, places. `build.py
+--travel-atlas-out PATH` builds it from the same rows/stats/trips as the site, so the
+numbers match the dashboard. It includes home check-ins, so it must NEVER land in the repo
+root (Pages publishes everything committed). Get it from Actions → "Build travel atlas
+journal" (`travel-atlas.yml`, manual) → Artifacts. Code: `scripts/gen_travel_atlas.py`,
+`templates/travel_atlas.html.tmpl`; owner settings in `config/travel_atlas.json`
+(`site_url`, `pix_url`, optional `curated_checkins` / `landmark_audit` / `next`).
+
 ### Fetch check-ins
 ```bash
 python scripts/fetch_checkins.py --token "$FOURSQUARE_TOKEN" --csv data/checkins.csv
