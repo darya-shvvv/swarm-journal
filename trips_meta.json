@@ -234,7 +234,7 @@
       ],
       [
         "Historic and Protected Site",
-        13
+        12
       ],
       [
         "Neighborhood",
@@ -242,7 +242,7 @@
       ],
       [
         "Bus Line",
-        9
+        10
       ],
       [
         "Outdoor Sculpture",
@@ -457,7 +457,7 @@
     "tags": [],
     "top_cats": [
       [
-        "Farm",
+        "Village",
         1
       ],
       [
@@ -543,8 +543,7 @@
     ],
     "cities": [
       "Minsk",
-      "Hrodna",
-      "Skidel"
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
@@ -739,7 +738,6 @@
       "Domoshany",
       "Lobok",
       "Orsha",
-      "Skidel",
       "Vitebsk",
       "Pskov",
       "Zaplyusye",
@@ -785,7 +783,7 @@
       ],
       [
         "Bus Line",
-        19
+        20
       ]
     ]
   },
@@ -804,8 +802,7 @@
     ],
     "cities": [
       "Minsk",
-      "Hrodna",
-      "Skidel"
+      "Hrodna"
     ],
     "tags": [],
     "top_cats": [
@@ -1154,7 +1151,7 @@
         2
       ],
       [
-        "Metro Station",
+        "Road",
         2
       ]
     ]
@@ -1177,7 +1174,6 @@
       "Saint Petersburg",
       "Minsk",
       "Dolostsy",
-      "Astrashytski Haradok",
       "Lyepyel",
       "Pskov Region"
     ],
@@ -1273,15 +1269,15 @@
         2
       ],
       [
-        "Other Great Outdoors",
-        2
-      ],
-      [
         "Platform",
         1
       ],
       [
         "Ski Resort and Area",
+        1
+      ],
+      [
+        "Grocery Store",
         1
       ]
     ]
@@ -1327,7 +1323,7 @@
         2
       ],
       [
-        "Other Great Outdoors",
+        "Road",
         2
       ],
       [
@@ -1668,7 +1664,7 @@
     "start_year": 2026,
     "duration": 13,
     "checkin_count": 491,
-    "unique_places": 407,
+    "unique_places": 405,
     "countries": [
       "Uzbekistan",
       "Russia",
@@ -1698,16 +1694,16 @@
         30
       ],
       [
+        "Mosque",
+        28
+      ],
+      [
         "Plaza",
         25
       ],
       [
         "Park",
         25
-      ],
-      [
-        "Mosque",
-        23
       ],
       [
         "Metro Station",
@@ -1726,7 +1722,7 @@
         11
       ],
       [
-        "Fountain",
+        "History Museum",
         10
       ]
     ]
@@ -1752,7 +1748,7 @@
     "top_cats": [
       [
         "Park",
-        15
+        14
       ],
       [
         "Monument",
@@ -1776,7 +1772,7 @@
       ],
       [
         "Historic and Protected Site",
-        4
+        5
       ],
       [
         "Bus Stop",
@@ -1818,15 +1814,15 @@
         3
       ],
       [
+        "Road",
+        3
+      ],
+      [
         "Rail Station",
         2
       ],
       [
         "City",
-        2
-      ],
-      [
-        "Road",
         2
       ],
       [
@@ -1850,7 +1846,7 @@
         1
       ],
       [
-        "Other Great Outdoors",
+        "Flower Store",
         1
       ]
     ]
@@ -1926,7 +1922,7 @@
     "start_ts": 1781891107,
     "start_year": 2026,
     "duration": 5,
-    "checkin_count": 183,
+    "checkin_count": 182,
     "unique_places": 163,
     "countries": [
       "Russia",
@@ -1958,7 +1954,7 @@
       ],
       [
         "Plaza",
-        16
+        15
       ],
       [
         "Monument",
@@ -2117,8 +2113,8 @@
     "start_ts": 1790453145,
     "start_year": 2026,
     "duration": 17,
-    "checkin_count": 902,
-    "unique_places": 716,
+    "checkin_count": 897,
+    "unique_places": 715,
     "countries": [
       "Turkey",
       "Moldova",
@@ -2136,7 +2132,6 @@
       "Minsk",
       "Khimki",
       "Butuceni",
-      "Saint Petersburg",
       "Vitebsk Region",
       "Trebujeni",
       "Brănești"
@@ -2157,7 +2152,7 @@
       ],
       [
         "Neighborhood",
-        65
+        64
       ],
       [
         "Road",
