@@ -2179,5 +2179,55 @@
         23
       ]
     ]
+  },
+  {
+    "id": 36,
+    "name": "Minsk, Belarus 🚌",
+    "start_date": "2026-10-17",
+    "end_date": "2026-10-17",
+    "start_ts": 1792233923,
+    "start_year": 2026,
+    "duration": 1,
+    "checkin_count": 7,
+    "unique_places": 7,
+    "countries": [
+      "Belarus"
+    ],
+    "cities": [
+      "Minsk",
+      "Pryluky",
+      "Samakhvalavichy"
+    ],
+    "tags": [],
+    "top_cats": [
+      [
+        "Bus Station",
+        1
+      ],
+      [
+        "Plaza",
+        1
+      ],
+      [
+        "Moving Target",
+        1
+      ],
+      [
+        "Village",
+        1
+      ],
+      [
+        "History Museum",
+        1
+      ],
+      [
+        "Historic and Protected Site",
+        1
+      ],
+      [
+        "Lake",
+        1
+      ]
+    ]
   }
 ]
