@@ -1,4 +1,7 @@
 {
   "_comment": "Per-venue (Foursquare venue_id) city/country overrides, applied with highest priority in transform.py — one entry covers all past and future check-ins at that venue. Use for gateway venues (border crossings, airports) whose Foursquare city/country disagree.",
-  "4e2309a7ae6015b212b5d705": {"city": "Vitebsk Region", "country": "Belarus", "_note": "Граница Беларусь — Россия (M1, Belarusian side); same convention as the Vitebsk Region block in city_fixes.json"}
+  "4e2309a7ae6015b212b5d705": {"city": "Vitebsk Region", "country": "Belarus", "_note": "Граница Беларусь — Россия (M1, Belarusian side); same convention as the Vitebsk Region block in city_fixes.json"},
+  "537e0d76498e01f67611d42e": {"city": "Pryluky", "country": "Belarus", "_note": "Озеро Графское (Прилуки): Pryluky (Chapski estate) — Foursquare pins/labels this venue wrong"},
+  "6ad36bad02efa57c920add98": {"city": "Pryluky", "country": "Belarus", "_note": "Заезжий дом XIX века (Foursquare city 'Podgai'): Pryluky (Chapski estate) — Foursquare pins/labels this venue wrong"},
+  "517d3186e4b0b45daaa8e881": {"city": "Pryluky", "country": "Belarus", "_note": "Храм Рождества Пресвятой Богородицы (point on the edge of Minsk): Pryluky (Chapski estate) — Foursquare pins/labels this venue wrong"}
 }

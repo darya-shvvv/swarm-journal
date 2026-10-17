@@ -13,6 +13,8 @@ import logging
 import os
 import sys
 import re
+
+_OPEN_END_TS = 4102444800  # 2100-01-01: stand-in `until` for an open-ended home period
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -313,6 +315,27 @@ if __name__ == "__main__":
     # home_city (unless --home-city overrides it), matching the old
     # get_home_city_for_timestamp() semantics.
     if not home_history and trip_cfg.get("home_periods"):
+        # Optional era rules on a period (same keys as home_history entries):
+        # venues, air_departure, arrival_transit, arrival_neighborhoods,
+        # departure_ride_categories, arrival_stop_at_home,
+        # arrival_max_city_checkins, hub_categories.
+        def _period_era(_p: dict, _city: str) -> dict:
+            return {
+                "city": _city,
+                "venues": {str(v).strip() for v in (_p.get("venues") or []) if str(v).strip()},
+                "air_departure": bool(_p.get("air_departure")),
+                "arrival_transit": bool(_p.get("arrival_transit")),
+                "arrival_neighborhoods": {
+                    str(_n).strip() for _n in (_p.get("arrival_neighborhoods") or []) if str(_n).strip()
+                },
+                "departure_ride_categories": {
+                    str(_c).strip() for _c in (_p.get("departure_ride_categories") or []) if str(_c).strip()
+                },
+                "arrival_stop_at_home": bool(_p.get("arrival_stop_at_home")),
+                "arrival_max_city_checkins": int(_p.get("arrival_max_city_checkins") or 0),
+                "hub_categories": {str(_c).strip() for _c in (_p.get("hub_categories") or []) if str(_c).strip()},
+            }
+
         for _p in trip_cfg.get("home_periods") or []:
             _city = str(_p.get("city", "")).strip()
             _end = _p.get("end")
@@ -321,20 +344,16 @@ if __name__ == "__main__":
             if _end in (None, "", "~"):
                 if not args.home_city:
                     home_city = _city
+                # The open-ended period only gets an era entry when it carries
+                # rules — otherwise behaviour stays exactly as before.
+                _era = _period_era(_p, _city)
+                if any(v for k, v in _era.items() if k != "city"):
+                    home_history.append((_OPEN_END_TS, _city))
+                    home_eras.append((_OPEN_END_TS, _era))
                 continue
             _end_ts = int(_end)
             home_history.append((_end_ts, _city))
-            home_eras.append((_end_ts, {
-                "city": _city,
-                "venues": set(),
-                "air_departure": False,
-                "arrival_transit": False,
-                "arrival_neighborhoods": set(),
-                "departure_ride_categories": set(),
-                "arrival_stop_at_home": False,
-                "arrival_max_city_checkins": 0,
-                "hub_categories": set(),
-            }))
+            home_eras.append((_end_ts, _period_era(_p, _city)))
         log.info("home_periods → home_history=%s, fallback home=%s",
                  home_history, home_city)
 
