@@ -2188,16 +2188,14 @@
     "start_ts": 1792233923,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 11,
-    "unique_places": 11,
+    "checkin_count": 15,
+    "unique_places": 15,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Pryluky",
-      "Minsk",
-      "Samakhvalavichy",
-      "Podgai"
+      "Minsk"
     ],
     "tags": [],
     "top_cats": [
@@ -2231,6 +2229,14 @@
       ],
       [
         "Other Great Outdoors",
+        1
+      ],
+      [
+        "Church",
+        1
+      ],
+      [
+        "Coffee Shop",
         1
       ]
     ]

@@ -224,6 +224,9 @@ VOTE_KM = 1.0                  # majority vote among own check-ins this close
 # Foursquare "country" venues ("Russia (Россия)", "Türkiye") sit at the capital or
 # the country centroid, so their coordinates say nothing about where you were.
 PIN_CATEGORIES = {"Country"}
+OUTLIER_GAP_S = 60 * 60        # mis-pinned venue check: neighbours within an hour,
+OUTLIER_NEIGHBOURS_KM = 3.0     # next to each other,
+OUTLIER_AWAY_KM = 5.0           # while the venue point is this far from both
 
 
 def _fill_blank_from_neighbours(rows: list[dict], by_centroid=None, city_merge=None,
@@ -257,8 +260,33 @@ def _fill_blank_from_neighbours(rows: list[dict], by_centroid=None, city_merge=N
         r["city"] = city_merge.get(key, city_merge.get(city, city))
         r["city_inferred"] = "1"
 
-    is_pin = lambda r: (r.get("category") or "").strip() in PIN_CATEGORIES  # noqa: E731
     order = sorted(range(len(rows)), key=lambda i: _ts(rows[i]))
+
+    # Blank-city rows whose venue point is a detour that cannot have happened:
+    # the check-ins right before and right after (each within OUTLIER_GAP_S)
+    # are next to each other, yet this one is far from both — a mis-pinned
+    # venue (a church in Pryluky that Foursquare places on the edge of Minsk,
+    # 15 km away, between two Pryluky check-ins). Its coordinates are as
+    # useless as a country pin's, so it is placed by time, not geography.
+    # Requiring prev≈next keeps real travel (trains, roads, city pins seen
+    # from a bus) out: there the neighbours themselves are far apart.
+    bad_coords: set = set()
+    for k in range(1, len(order) - 1):
+        r = rows[order[k]]
+        if r.get("city"):
+            continue
+        prev, nxt = rows[order[k - 1]], rows[order[k + 1]]
+        p, a_, b_ = _ll(r), _ll(prev), _ll(nxt)
+        if not (p and a_ and b_):
+            continue
+        if _ts(r) - _ts(prev) > OUTLIER_GAP_S or _ts(nxt) - _ts(r) > OUTLIER_GAP_S:
+            continue
+        if (_haversine(*a_, *b_) <= OUTLIER_NEIGHBOURS_KM
+                and _haversine(*p, *a_) >= OUTLIER_AWAY_KM
+                and _haversine(*p, *b_) >= OUTLIER_AWAY_KM):
+            bad_coords.add(id(r))
+
+    is_pin = lambda r: (r.get("category") or "").strip() in PIN_CATEGORIES or id(r) in bad_coords  # noqa: E731
     filled = 0
 
     # 1. country pins — by time

@@ -10,6 +10,12 @@ trip_detection:
     - start: 1763136000     # 2025-11-14 00:00:00 UTC
       end: ~                # future
       city: Minsk
+      # Arrival rule (same key as upstream home_history eras): the first sign of
+      # being back in Minsk — e.g. the "Minsk (Мінск)" City check-in — ends a
+      # trip and is included in it, so a day trip doesn't stop at the last stop
+      # outside Minsk. Walks at most 3 Minsk check-ins.
+      arrival_stop_at_home: true
+      arrival_max_city_checkins: 3
 
 dashboard:
   title: "Check-in Journal"

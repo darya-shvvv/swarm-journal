@@ -568,6 +568,19 @@ def detect_trips(
                     or valid[i].get("venue", "").strip() in era_hoods
                     or valid[i].get("category", "").strip() == "City"):
                 arr_hub = i
+                # A "back in <home>" City check-in posted from the bus is not
+                # the arrival when the home station follows within the hour:
+                # end at the station (Grodno → Minsk 18.05.2026 lands at the
+                # Central bus station 17 min after "Minsk (Мінск)").
+                if valid[i].get("category", "").strip() == "City":
+                    j = i + 1
+                    while j < len(valid) and int(valid[j]["date"]) - int(valid[i]["date"]) <= 3600:
+                        if valid[j].get("city", "").strip() == row_home and (
+                                _is_home_transport(valid[j], row_home)
+                                or valid[j].get("category", "").strip() in era_hubs):
+                            arr_hub = j
+                            break
+                        j += 1
                 break
             if row_city == row_home and (
                     _is_home_transport(valid[i], row_home)
