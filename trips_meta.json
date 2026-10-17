@@ -2182,24 +2182,28 @@
   },
   {
     "id": 36,
-    "name": "Minsk, Belarus 🚌",
+    "name": "Pryluky, Belarus 🚌",
     "start_date": "2026-10-17",
     "end_date": "2026-10-17",
     "start_ts": 1792233923,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 7,
-    "unique_places": 7,
+    "checkin_count": 8,
+    "unique_places": 8,
     "countries": [
       "Belarus"
     ],
     "cities": [
-      "Minsk",
       "Pryluky",
+      "Minsk",
       "Samakhvalavichy"
     ],
     "tags": [],
     "top_cats": [
+      [
+        "Historic and Protected Site",
+        2
+      ],
       [
         "Bus Station",
         1
@@ -2218,10 +2222,6 @@
       ],
       [
         "History Museum",
-        1
-      ],
-      [
-        "Historic and Protected Site",
         1
       ],
       [
