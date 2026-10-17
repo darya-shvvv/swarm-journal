@@ -2188,15 +2188,16 @@
     "start_ts": 1792233923,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 10,
-    "unique_places": 10,
+    "checkin_count": 11,
+    "unique_places": 11,
     "countries": [
       "Belarus"
     ],
     "cities": [
       "Pryluky",
       "Minsk",
-      "Samakhvalavichy"
+      "Samakhvalavichy",
+      "Podgai"
     ],
     "tags": [],
     "top_cats": [
@@ -2226,6 +2227,10 @@
       ],
       [
         "Lake",
+        1
+      ],
+      [
+        "Other Great Outdoors",
         1
       ]
     ]
