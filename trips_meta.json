@@ -2188,8 +2188,8 @@
     "start_ts": 1792233923,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 8,
-    "unique_places": 8,
+    "checkin_count": 10,
+    "unique_places": 10,
     "countries": [
       "Belarus"
     ],
@@ -2202,7 +2202,7 @@
     "top_cats": [
       [
         "Historic and Protected Site",
-        2
+        4
       ],
       [
         "Bus Station",
