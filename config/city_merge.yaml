@@ -99,6 +99,13 @@
   "Baranovichi": "Baranovichi"  # ok — standard Latin
   "Бобруйск": "Bobruisk"  # ok — Russian Cyrillic
   "Бабруйск": "Bobruisk"  # ok — Belarusian Cyrillic
+  "Babruysk": "Bobruisk"  # ok — Belarusian Latin twin (2026-10-28)
+  "Braslaw": "Braslav"  # ok — Belarusian Latin twin (2026-10-28)
+  "Shklow": "Shklov"  # ok — Belarusian Latin twin (2026-10-28)
+  "Nyasvizh": "Nesvizh"  # ok — Belarusian Latin twin (2026-10-28)
+  "Shchuchyn": "Shchuchin"  # ok — Belarusian Latin twin (2026-10-28)
+  "Ivyanets": "Ivenets"  # ok — Belarusian Latin twin (2026-10-28)
+  "Kamyanyuki": "Kamianiuki"  # ok — Belarusian Latin twin (2026-10-28)
   "Борисов": "Borisov"  # ok — Cyrillic
   "Barysaŭ": "Borisov"  # ok — Belarusian Latin
   "Barysaw": "Borisov"  # ok — variant
@@ -204,7 +211,7 @@
   "Вишнёвка": "Vishniovka"  # ok — village
   "Valer'yanovo": "Valeryanovo"  # ok — apostrophe form
   "Зелёное": "Zyelonaye"  # ok — village
-  "Ивенец": "Ivyanets"  # ok — town Ivyanets
+  "Ивенец": "Ivenets"  # ok — town Ivyanets
   "Zales'ye": "Zalesye"  # ok — apostrophe form
   "Lojeŭ": "Loyew"  # ok — Belarusian Latin
   "Lyepyel'": "Lyepyel"  # ok — apostrophe form
@@ -1307,7 +1314,7 @@
   "Sint-Kruis": "Bruges"  # approved singleton review rank 924
   "Bollenar": "Cajon Del Maipo"  # approved singleton review rank 929
   "Ciudadela": "Buenos Aires"  # approved singleton review rank 937
-  "Ščučyn": "Shchuchyn"  # approved singleton review rank 939
+  "Ščučyn": "Shchuchin"  # approved singleton review rank 939
   "Schlieren": "Zurich"  # approved singleton review rank 947
   "Evilard": "Biel/Bienne"  # approved singleton review rank 952
   "Renens": "Lausanne"  # approved singleton review rank 954
