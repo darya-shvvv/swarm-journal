@@ -26,6 +26,11 @@ on:
   push:
     branches: [main]         # verify build on every push (no deploy)
   workflow_dispatch:         # manual trigger button in GitHub UI
+    inputs:
+      likes_days:
+        description: "Re-read likes for check-ins of the last N days (3650 = whole history)"
+        required: false
+        default: "2"
 
 permissions:
   contents: write
@@ -38,18 +43,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # ── Checkout private data repo ────────────────────────────────────────────
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: darya-shvvv/foursquare-data
           token: ${{ secrets.DATA_REPO_PAT }}
           path: private-data
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
 
       - name: Install dependencies
@@ -74,21 +79,21 @@ jobs:
 
     steps:
       # ── 1. Checkout public repo ───────────────────────────────────────────────
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       # ── 2. Checkout private data repo ────────────────────────────────────────
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: darya-shvvv/foursquare-data
           token: ${{ secrets.DATA_REPO_PAT }}
           path: private-data
 
       # ── 3. Python setup ──────────────────────────────────────────────────────
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
 
       - name: Install dependencies
@@ -104,7 +109,10 @@ jobs:
             echo "⚠️  FOURSQUARE_TOKEN secret is not set — skipping fetch."
             echo "CHANGED=false" >> "$GITHUB_OUTPUT"
           else
-            python scripts/fetch_checkins.py --token "$FOURSQUARE_TOKEN" --csv private-data/checkins.csv --recheck-recent-hours 48 >> "$GITHUB_OUTPUT"
+            # --likes-recent-days: re-read recent check-ins only to refresh likes
+            # (checkin_likes.json next to the CSV); likes arrive after a check-in.
+            LIKES_DAYS="${{ github.event.inputs.likes_days }}"
+            python scripts/fetch_checkins.py --token "$FOURSQUARE_TOKEN" --csv private-data/checkins.csv --recheck-recent-hours 48 --likes-recent-days "${LIKES_DAYS:-2}" >> "$GITHUB_OUTPUT"
           fi
 
       # ── 4b. Fetch new tips ───────────────────────────────────────────────────
@@ -181,6 +189,7 @@ jobs:
       - name: Commit updated data files to data repo
         if: |
           steps.fetch.outputs.CHANGED == 'true' ||
+          steps.fetch.outputs.LIKES_CHANGED == 'true' ||
           steps.fetch_tips.outputs.CHANGED == 'true' ||
           steps.fetch_photos.outputs.CHANGED == 'true' ||
           steps.fetch_ratings.outputs.CHANGED == 'true'
@@ -191,12 +200,18 @@ jobs:
           git add checkins.csv tips.json photos.json
           [ -f venueRatings.json ] && git add venueRatings.json || true
           [ -f lists.json ]        && git add lists.json        || true
+          [ -f checkin_likes.json ] && git add checkin_likes.json || true
           if git diff --cached --quiet; then
             echo "Nothing to commit in data repo."
           else
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
             git commit -m "chore: update data [${TIMESTAMP}]"
-            git push
+            # fetch-comments.yml pushes to the same repo: rebase and retry
+            for attempt in 1 2 3; do
+              git push && break
+              echo "Push rejected — rebasing and retrying (${attempt}/3) …"
+              git pull --rebase --autostash
+            done
           fi
           cd ..
 
@@ -337,7 +352,7 @@ jobs:
             echo "Not the last day of month ($TODAY/$LAST) — skipping Netlify deploy."
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: steps.lastday.outputs.is_last_day == 'true'
 
       - name: Deploy to Netlify

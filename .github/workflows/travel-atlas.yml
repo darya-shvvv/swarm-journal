@@ -21,20 +21,20 @@ jobs:
   atlas:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: darya-shvvv/foursquare-data
           token: ${{ secrets.DATA_REPO_PAT }}
           path: private-data
           fetch-depth: 1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.14"
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -63,7 +63,7 @@ jobs:
           # build.py may auto-add trip names to config/; this job must not leave changes behind
           git checkout -- config || true
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: travel-atlas
           path: ${{ runner.temp }}/travel-atlas.html
