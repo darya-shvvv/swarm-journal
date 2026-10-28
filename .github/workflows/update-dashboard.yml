@@ -185,6 +185,24 @@ jobs:
           echo "No new data — nothing to rebuild or deploy."
           exit 0
 
+      # ── 5b. OSM outlines for the country / city pages ───────────────────────
+      #   Only places without one yet (a new city page, a retry after 90 days);
+      #   paced 1 request/s (Nominatim policy). Kept in the data repo's
+      #   boundaries.json; never fails the run — a page without an outline
+      #   looks it up live in the browser instead.
+      - name: Fetch missing place outlines
+        continue-on-error: true
+        if: |
+          github.event_name == 'workflow_dispatch' ||
+          steps.fetch.outputs.CHANGED == 'true' ||
+          steps.fetch_tips.outputs.CHANGED == 'true' ||
+          steps.fetch_photos.outputs.CHANGED == 'true' ||
+          steps.fetch_ratings.outputs.CHANGED == 'true'
+        run: |
+          python scripts/fetch_boundaries.py --csv private-data/checkins.csv \
+            --backfill private-data/backfill.csv --config-dir config \
+            --cache private-data/boundaries.json --max 80
+
       # ── 6. Commit updated data files to private data repo ────────────────────
       - name: Commit updated data files to data repo
         if: |
@@ -201,6 +219,7 @@ jobs:
           [ -f venueRatings.json ] && git add venueRatings.json || true
           [ -f lists.json ]        && git add lists.json        || true
           [ -f checkin_likes.json ] && git add checkin_likes.json || true
+          [ -f boundaries.json ]    && git add boundaries.json    || true
           if git diff --cached --quiet; then
             echo "Nothing to commit in data repo."
           else
@@ -246,6 +265,7 @@ jobs:
             --input private-data/checkins.csv \
             --config-dir config \
             --output-dir . \
+            --boundaries private-data/boundaries.json \
             --trip-names-healed-out "$RUNNER_TEMP/trip_names_healed.json" \
             $PHOTOS_ARG $PIX_URL_ARG $RATINGS_ARG $LISTS_ARG
 
@@ -307,7 +327,7 @@ jobs:
           git add -A -- 'site-*.css' sw.js manifest.webmanifest feed.xml feed.json map_data.json routes.json guide.html shouts.html years.html 'year-*.html' 'country-*.html'
           # venue dossiers, compare, life, per-country logs, sitemap (2026-10 refresh)
           # each pattern on its own, so one page that was not built cannot fail the commit
-          for g in venue.html 'venue_data_*.json' venues_data.json compare.html year_facts.json life.html life_data.json 'country_ck_*.json' 'city-*.html' 'city_ck_*.json' routes_months.json 'routes_m_*.json' sitemap.xml; do
+          for g in venue.html 'venue_data_*.json' venues_data.json compare.html year_facts.json life.html life_data.json 'country_ck_*.json' 'city-*.html' 'city_ck_*.json' 'bnd_*.json' routes_months.json 'routes_m_*.json' sitemap.xml; do
             ls $g >/dev/null 2>&1 && git add -A -- "$g" || true
           done
           # Per-trip check-in shards fetched by trips.html on demand (-A also
