@@ -107,8 +107,34 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   .sbtn{font-size:.64rem;padding:3px 7px;}
   .badge{display:none;}
 }
+
+/* ── new look (same lists, sorts, filters and map) ── */
+.topbar{gap:8px;padding:14px 18px 10px;background:none;border-bottom:none;}
+.topbar h1{font-size:clamp(1.6rem,3vw,2.3rem)!important;margin-right:10px;background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;}
+.sbtn{border-radius:999px;padding:7px 13px;font-size:.66rem;background:var(--card);}
+.sbtn.act{background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae);color:#1a1206;border-color:transparent;}
+.sbtn:hover:not(.act){border-color:#ff9a6b;color:var(--text);}
+.srch{border-radius:999px;padding:9px 16px;font-size:.8rem;width:260px;background:var(--card);}
+.srch:focus{border-color:#ff9a6b;}
+.badge{font-size:.6rem;background:var(--card2);padding:4px 10px;border-radius:999px;}
+.page-insight{background:none;border-bottom:none;padding:0 18px 8px;}
+.feed-scroll{padding:6px 10px 12px;}
+.leaflet-container{background:#0c0e14;}
+@media(max-width:700px){.topbar{padding:10px 12px 6px;}.srch{width:100%;order:10;}.page-insight{padding:0 12px 6px;}}
+
+.content{padding:6px 18px 18px;}
+.feed-grid{display:block;columns:3 330px;column-gap:12px;max-width:1500px;}
+.scard{break-inside:avoid;margin-bottom:12px;border-radius:18px;padding:14px 16px 12px;}
+.scard::after{display:none;}
+.scard:hover{border-color:rgba(255,154,107,.35);}
+.sc-text{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;line-height:1.42;color:#eef0f6;position:relative;padding-left:14px;margin-bottom:10px;}
+.sc-text::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:3px;border-radius:2px;background:linear-gradient(180deg,#f6d38b,#ff6fae);}
+.sc-cat-icon{width:32px;height:32px;border-radius:11px;font-size:15px;}
+.sc-cmt{border-left:none;border-radius:12px;padding:9px 12px;}
+.sc-cmt-auth{color:var(--teal);}
+.sc-cmt.mine .sc-cmt-auth{color:var(--gold);}
 </style>
-<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
+<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\/pix\/(?!t\/)/,'/pix/t/'):u};addEventListener('error',function(e){var i=e.target;if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[style*="/pix/t/"]').forEach(function(el){var m=/url\(['"]?([^'")]*\/pix\/t\/[^'")]*)/.exec(el.style.backgroundImage||'');if(!m)return;var p=new Image();p.onerror=function(){el.style.backgroundImage="url('"+m[1].replace('/pix/t/','/pix/')+"')"};p.src=m[1]})})</script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
 <body>
 <div class="page">
   <nav class="topnav">
@@ -152,7 +178,7 @@ const CAT_ICON = {"Coffee Shop": ["☕", "#6F4E37"], "Café": ["☕", "#6F4E37"]
 function catIcon(cat){const e=CAT_ICON[cat||''];return e?{em:e[0],bg:e[1]}:{em:'📍',bg:'#4a5270'};}
 
 // Foursquare user id — used to tell my own comments from friends' replies.
-const SWARM_USER_ID = "29447180";
+const SWARM_USER_ID = "1413067054";
 const isMineCmt=c=>c.author_id && String(c.author_id) === SWARM_USER_ID;
 
 // ── Filter state ─────────────────────────────────────────────────────────────
@@ -240,11 +266,11 @@ function renderComments(list){
 
 function renderCard(s){
   const {em,bg} = catIcon(s.category||'');
-  const vUrl = s.venue_id ? `https://foursquare.com/v/${s.venue_id}` : '';
+  const vUrl = s.venue_id ? `/venue.html#${s.venue_id}` : '';
   const swarmUrl = (s.checkin_id && SWARM_USER_ID)
     ? `https://www.swarmapp.com/user/${SWARM_USER_ID}/checkin/${s.checkin_id}` : '';
   const venueLabel = vUrl
-    ? `<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(s.venue||'Unknown venue')}</a>`
+    ? `<a href="${vUrl}" onclick="event.stopPropagation()">${esc(s.venue||'Unknown venue')}</a>`
     : esc(s.venue||'Unknown venue');
   const loc = [s.city, s.country].filter(Boolean).join(', ');
   const f = s.country ? flagHtml(s.country) : '';
@@ -363,6 +389,8 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   <a href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">TOTAL PLACES</span></a>
   <a href="companions.html"><span class="sn-icon">👥</span><span class="sn-lbl">WITH</span></a>
   <a href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <a href="compare.html"><span class="sn-icon">⚖️</span><span class="sn-lbl">COMPARE</span></a>
+  <a href="life.html"><span class="sn-icon">🧬</span><span class="sn-lbl">LIFE</span></a>
   <div class="sn-sep"></div>
   <button id="snThemeToggle"><span class="sn-icon" id="snThemeIcon">☀️</span><span class="sn-lbl" id="snThemeLbl">LIGHT</span></button>
 </nav>

@@ -1,6 +1,6 @@
 // Service worker — versioned per build so a fresh deploy invalidates old caches.
-// 20261027232522 is substituted at build time with the build timestamp.
-const VERSION = '20261027232522';
+// 20261028011055 is substituted at build time with the build timestamp.
+const VERSION = '20261028011055';
 const CACHE = 'foursq-' + VERSION;
 // Tiny app shell precached on install; every other page is runtime-cached.
 const SHELL = ['/', '/index.html', '/favicon.svg', '/manifest.webmanifest'];
@@ -33,7 +33,7 @@ self.addEventListener('fetch', (e) => {
   if (url.origin !== self.location.origin) return;
   // Live API and big generated data blobs must always hit the network.
   if (url.pathname.startsWith('/api/')) return;
-  if (/(feed_meta|map_data|routes|trips_meta|trip_checkins_\d+)\.json$/.test(url.pathname)) return;
+  if (/(feed_meta|map_data|routes|trips_meta|trip_checkins_\d+|venue_data_[0-9a-f]{2}|year_facts|life_data|culture_data)\.json$/.test(url.pathname)) return;
 
   // Static assets: cache-first (content-hashed CSS, immutable SVG/PNG/JS).
   if (isStaticAsset(url.pathname)) {

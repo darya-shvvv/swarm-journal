@@ -140,8 +140,35 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   .tc-venue{font-size:.82rem;}
   .tc-views{display:none;}
 }
+
+/* ── new look (same lists, sorts, filters and map) ── */
+.topbar{gap:8px;padding:14px 18px 10px;background:none;border-bottom:none;}
+.topbar h1{font-size:clamp(1.6rem,3vw,2.3rem)!important;margin-right:10px;background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;}
+.sbtn{border-radius:999px;padding:7px 13px;font-size:.66rem;background:var(--card);}
+.sbtn.act{background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae);color:#1a1206;border-color:transparent;}
+.sbtn:hover:not(.act){border-color:#ff9a6b;color:var(--text);}
+.srch{border-radius:999px;padding:9px 16px;font-size:.8rem;width:260px;background:var(--card);}
+.srch:focus{border-color:#ff9a6b;}
+.badge{font-size:.6rem;background:var(--card2);padding:4px 10px;border-radius:999px;}
+.page-insight{background:none;border-bottom:none;padding:0 18px 8px;}
+.feed-scroll{padding:6px 10px 12px;}
+.leaflet-container{background:#0c0e14;}
+@media(max-width:700px){.topbar{padding:10px 12px 6px;}.srch{width:100%;order:10;}.page-insight{padding:0 12px 6px;}}
+
+.tabs-wrap{background:none;border-bottom:none;padding:0 12px 6px;}
+.tab-btn{border:1px solid var(--border);border-radius:999px;padding:5px 11px;font-size:.72rem;color:var(--text);background:var(--card);}
+.tab-btn.act{border-color:#ff9a6b;color:var(--text);background:rgba(255,154,107,.12);}
+.tab-count{color:#ffc29b;opacity:1;}
+.tcard{border-radius:18px;padding:14px 16px 12px;}
+.tcard::after{display:none;}
+.tcard:hover{border-color:rgba(255,154,107,.35);}
+.tcard.sel{border-color:#ff9a6b;box-shadow:0 0 0 3px rgba(255,154,107,.12);}
+.tc-cat-icon{width:32px;height:32px;border-radius:11px;font-size:15px;}
+.tc-text{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;line-height:1.42;color:#eef0f6;position:relative;padding-left:14px;margin:8px 0 10px;-webkit-line-clamp:5;}
+.tc-text::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:3px;border-radius:2px;background:linear-gradient(180deg,#f6d38b,#ff6fae);}
+.tc-photo{border-radius:12px;height:150px;}
 </style>
-<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
+<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\/pix\/(?!t\/)/,'/pix/t/'):u};addEventListener('error',function(e){var i=e.target;if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[style*="/pix/t/"]').forEach(function(el){var m=/url\(['"]?([^'")]*\/pix\/t\/[^'")]*)/.exec(el.style.backgroundImage||'');if(!m)return;var p=new Image();p.onerror=function(){el.style.backgroundImage="url('"+m[1].replace('/pix/t/','/pix/')+"')"};p.src=m[1]})})</script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
 <body>
 <div class="page">
   <nav class="topnav">
@@ -282,16 +309,43 @@ function getFiltered(){
   });
 }
 
+// Cards go into the list 150 at a time as it scrolls (~2k cards were 22-28k DOM
+// nodes up front). FEED.ensure(id) renders up to a card a map click asks for.
+const FEED=(()=>{
+  const CHUNK=150; let items=[], shown=0, io=null;
+  const box=()=>document.getElementById('feedScroll');
+  function more(){
+    const fs=box(), s=document.getElementById('feedMore'); if(s) s.remove();
+    fs.insertAdjacentHTML('beforeend', items.slice(shown, shown+CHUNK).join(''));
+    shown=Math.min(items.length, shown+CHUNK);
+    if(shown<items.length){
+      fs.insertAdjacentHTML('beforeend','<div id="feedMore" style="height:1px"></div>');
+      io.observe(document.getElementById('feedMore'));
+    }
+  }
+  function show(list){
+    const fs=box();
+    if(io) io.disconnect();
+    // the list scrolls inside its column on wide screens and with the page on phones
+    const ov=getComputedStyle(fs).overflowY;
+    io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ io.disconnect(); more(); } },
+      {root:(ov==='auto'||ov==='scroll')?fs:null, rootMargin:'1200px 0px'});
+    items=list; shown=0; fs.innerHTML=''; more();
+  }
+  function ensure(id){ while(!document.getElementById(id) && shown<items.length) more(); }
+  return {show, ensure};
+})();
+
 function render(){
   let idx=getFiltered();
   if(sortMode==='date' && sortDir===-1) idx.reverse();
   if(sortMode==='agree') idx.sort((a,b)=>sortDir*((ALL[b].agree_count||0)-(ALL[a].agree_count||0)));
   if(sortMode==='views') idx.sort((a,b)=>sortDir*((ALL[b].view_count||0)-(ALL[a].view_count||0)));
   document.getElementById('badge').textContent=idx.length+' / '+ALL.length+' tips';
-  document.getElementById('feedScroll').innerHTML=idx.map(i=>{
+  FEED.show(idx.map(i=>{
     const t=ALL[i];
     const{em,bg}=catIcon(t.category||'');
-    const vUrl=t.venue_id?`https://foursquare.com/v/${t.venue_id}`:'';
+    const vUrl=t.venue_id?`/venue.html#${t.venue_id}`:'';
     const tUrl=t.id?`https://foursquare.com/item/${t.id}`:'';
     const f=t.nc?flagHtml(t.nc):'';
     const loc=[t.nci||t.city,t.nc||t.country].filter(Boolean).join(', ');
@@ -299,8 +353,8 @@ function render(){
     const views=t.view_count>0?`<span class="tc-views">👁 ${t.view_count}</span>`:'';
     const closedBadge=t.closed?'<span class="tc-closed">CLOSED</span>':'';
     const deletedBadge=t.deleted?'<span class="tc-deleted">DELETED</span>':'';
-    const venueLabel=vUrl?`<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(t.venue||'Unknown venue')}</a>`:esc(t.venue||'Unknown venue');
-    const photoEl=t.photo_url?`<img class="tc-photo" src="${t.photo_url}" loading="lazy" alt="" onclick="event.stopPropagation();openTipPhoto('${t.photo_url}')">`:'';
+    const venueLabel=vUrl?`<a href="${vUrl}" onclick="event.stopPropagation()">${esc(t.venue||'Unknown venue')}</a>`:esc(t.venue||'Unknown venue');
+    const photoEl=t.photo_url?`<img class="tc-photo" src="${pixT(t.photo_url)}" loading="lazy" alt="" onclick="event.stopPropagation();openTipPhoto('${t.photo_url}')">`:'';
     return `<div class="tcard" id="tc_${i}" onclick="selectTip(${i})">
       ${photoEl}
       <div class="tc-venue-row">
@@ -319,12 +373,13 @@ function render(){
         ${tUrl?`<a class="tc-fsq" href="${tUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ foursquare</a>`:''}
       </div>
     </div>`;
-  }).join('');
+  }));
 }
 
 function selectTip(i){
   if(selMarker)selMarker.setStyle({radius:6,weight:1});
   document.querySelectorAll('.tcard.sel').forEach(el=>el.classList.remove('sel'));
+  FEED.ensure('tc_'+i);
   const el=document.getElementById('tc_'+i);
   if(el){el.classList.add('sel');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
   if(markers[i]){
@@ -397,6 +452,8 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   <a href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">TOTAL PLACES</span></a>
   <a href="companions.html"><span class="sn-icon">👥</span><span class="sn-lbl">WITH</span></a>
   <a href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <a href="compare.html"><span class="sn-icon">⚖️</span><span class="sn-lbl">COMPARE</span></a>
+  <a href="life.html"><span class="sn-icon">🧬</span><span class="sn-lbl">LIFE</span></a>
   <div class="sn-sep"></div>
   <button id="snThemeToggle"><span class="sn-icon" id="snThemeIcon">☀️</span><span class="sn-lbl" id="snThemeLbl">LIGHT</span></button>
 </nav>
