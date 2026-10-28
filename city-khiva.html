@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Khiva — Check-in Journal</title>
+<meta name="description" content="114 check-ins at 80 venues in Khiva, Uzbekistan.">
+<link rel="canonical" href="https://swarm-journal.pages.dev/city-khiva.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Khiva — Check-in Journal">
+<meta property="og:description" content="114 check-ins at 80 venues in Khiva, Uzbekistan.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<style>
+:root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.55;overflow-x:hidden;}
+a{color:var(--teal);}
+.crumb{position:fixed;top:14px;left:18px;z-index:200;font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);background:rgba(18,21,31,.85);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:6px;text-decoration:none;}
+.crumb:hover{color:var(--gold);}
+.wrap{max-width:960px;margin:0 auto;padding:88px 22px 120px;}
+.hero-flag{font-size:0;line-height:0;margin-bottom:16px;}
+.hero-flag .fi{width:96px;height:72px;border-radius:8px;box-shadow:0 8px 26px rgba(0,0,0,.5);}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;line-height:1.08;letter-spacing:-.02em;padding-bottom:.08em;background:linear-gradient(150deg,#f5d48a 0%,#e8b86d 40%,#b97c30 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-family:'DM Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin-top:12px;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:34px 0 12px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;text-align:center;}
+.kpi-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1;}
+.kpi-lbl{font-family:'DM Mono',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-top:7px;}
+section{margin-top:52px;}
+.sec-h{font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;}
+.years{display:flex;align-items:flex-end;gap:6px;height:148px;padding:8px 0;overflow-x:auto;overflow-y:hidden;}
+.yr-bar{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto;min-width:34px;}
+.yr-bar .bar{width:22px;background:linear-gradient(180deg,#f5d48a,#b97c30);border-radius:4px 4px 0 0;}
+.yr-bar .yr-lbl{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);}
+.yr-bar .yr-n{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--teal);}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px;}
+.rank-list{display:flex;flex-direction:column;gap:4px;}
+.rank-row{display:grid;grid-template-columns:20px 1fr auto;gap:8px;align-items:center;padding:4px 6px;border-radius:6px;}
+.rank-row:hover{background:var(--card2);}
+.rank-i{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);}
+.rank-name{font-size:.85rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rank-name a{color:inherit;text-decoration:none;transition:color .15s;}
+.rank-row:hover .rank-name a{color:var(--gold);}
+.rank-n{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--teal);}
+.trips{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;}
+.trips .trip-card.more{display:none;}
+.trips.all .trip-card.more{display:block;}
+.more-btn{display:block;margin:14px auto 0;background:var(--card2);border:1px solid var(--border);border-radius:999px;padding:8px 18px;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--text);cursor:pointer;}
+.more-btn:hover{border-color:var(--gold);color:var(--gold);}
+.trip-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s;}
+.trip-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.trip-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.trip-meta{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em;}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:var(--card2);}
+.shouts{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.shout{position:relative;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px 12px 22px;font-family:'Playfair Display',serif;font-style:italic;font-size:.98rem;color:#e8e9ee;line-height:1.5;}
+.shout::before{content:'';position:absolute;left:10px;top:16px;bottom:16px;width:3px;border-radius:2px;background:linear-gradient(180deg,#f6d38b,#ff6fae);}
+.log-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.92rem;cursor:pointer;text-align:left;}
+.log-btn:hover{border-color:var(--gold);}
+.log-btn b{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:var(--gold);font-weight:400;white-space:nowrap;}
+.log{display:none;margin-top:10px;}
+.log.open{display:block;}
+.log input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:10px 16px;color:var(--text);font-size:.85rem;outline:none;margin-bottom:6px;}
+.log input:focus{border-color:var(--gold);}
+.log-m{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding:16px 2px 6px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;}
+.log-m span{color:var(--muted);}
+.log-r{display:grid;grid-template-columns:104px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:7px 2px;border-bottom:1px solid rgba(255,255,255,.04);}
+.log-r .d{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);white-space:nowrap;}
+.log-r .d b{font-weight:400;margin-left:6px;color:#9aa3c0;}
+.log-r .v{font-size:.86rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.log-r .v a{color:var(--text);text-decoration:none;}
+.log-r .v a:hover{color:var(--gold);}
+.log-r .v i{font-style:normal;color:var(--muted);font-size:.76rem;}
+.log-r .c{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--teal);white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis;}
+.log-r.rf .v{opacity:.75;}
+.log-n{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);padding:6px 2px;}
+@media(max-width:600px){.log-r{grid-template-columns:54px minmax(0,1fr);align-items:center;}.log-r .c{display:none;}.log-r .d b{display:block;margin-left:0;}}
+.shout-meta{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);margin-top:8px;font-style:normal;letter-spacing:.04em;}
+@media(max-width:600px){.wrap{padding:78px 16px 90px;}}
+/* 2026 refresh: photo hero, sunset gradient, dot map, cards */
+.hero{position:relative;min-height:440px;display:flex;align-items:flex-end;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:var(--card2) center/cover no-repeat;filter:brightness(.42) saturate(1.05);transform:scale(1.04);}
+.hero-bg.none{background:radial-gradient(ellipse at 30% 20%,rgba(255,154,107,.18),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(255,111,174,.12),transparent 60%);filter:none;}
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,18,.2) 0%,rgba(10,12,18,.35) 45%,var(--bg) 100%);}
+.hero-in{position:relative;z-index:1;width:100%;max-width:960px;margin:0 auto;padding:110px 22px 34px;}
+.hero-name{display:inline-block;background:linear-gradient(150deg,#f6d38b 0%,#ff9a6b 55%,#ff6fae 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{color:#c4cbe0;}
+.wrap{padding-top:10px;}
+.kpis{grid-template-columns:repeat(4,1fr);margin-top:6px;}
+.kpi{border-radius:18px;text-align:left;background:rgba(18,21,31,.85);}
+.kpi-num{font-size:2.1rem;background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.sec-h{color:#ff9a6b;}
+.cmap{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:10px;overflow:hidden;}
+.cmap svg{display:block;width:100%;height:auto;}
+.cmap circle{fill:#ff9a6b;fill-opacity:.55;}
+.cmap circle.hot{fill:#f6d38b;fill-opacity:.85;}
+.cmap text{font-family:'DM Mono',monospace;font-size:11px;fill:#e0e2ec;paint-order:stroke;stroke:#12141c;stroke-width:3px;letter-spacing:.04em;}
+.years{gap:4px;height:130px;overflow:visible;}
+.yr-bar{flex:1 1 0;min-width:0;}
+.yr-bar .bar{width:100%;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#ff9a6b,#f6d38b);}
+.yr-bar.zero .bar{background:var(--border);}
+.yr-bar.zero .yr-n{visibility:hidden;}
+.yr-bar .yr-n{color:#f6b98b;}
+.cols>div{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px 14px 12px;}
+.rank-n{color:#f6b98b;}
+.trip-card{padding:0;overflow:hidden;border-radius:18px;}
+.trip-card:hover{border-color:#ff9a6b;}
+.trip-cover{aspect-ratio:16/9;background:var(--card2) center/cover no-repeat;}
+.trip-cover.none{aspect-ratio:auto;height:6px;background:linear-gradient(90deg,#f6d38b,#ff9a6b 55%,#ff6fae);opacity:.7;}
+.trip-body{padding:12px 16px 14px;}
+.trip-name{color:#f6b98b;}
+.photos{grid-template-columns:repeat(4,1fr);}
+.photos img{border-radius:12px;}
+.photos img:first-child{grid-column:span 2;grid-row:span 2;height:100%;aspect-ratio:auto;contain:size;}
+.log-btn:hover,.more-btn:hover{border-color:#ff9a6b;}
+.hero-sub a{color:#f6d38b;text-decoration:none;}
+.hero-sub a:hover{text-decoration:underline;}
+.home-tag{font-weight:400;color:#0b0d13;background:#4ec9b0;border-radius:999px;padding:2px 9px;white-space:nowrap;}
+.yr-bar.home .bar{background:linear-gradient(180deg,#7fe0cb,#3aa892);}
+.legend{float:right;color:var(--muted);letter-spacing:.12em;}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#4ec9b0;margin-right:6px;vertical-align:-1px;}
+@media(max-width:700px){.cmap text{font-size:26px;stroke-width:5px;}.cmap circle{transform-box:fill-box;}.kpis{grid-template-columns:1fr 1fr;}.photos{grid-template-columns:repeat(3,1fr);}.hero{min-height:340px;}.yr-bar .yr-lbl{font-size:.42rem;writing-mode:vertical-rl;transform:rotate(180deg);}.yr-bar .yr-n{display:none;}}
+@media(max-width:600px){.wrap{padding:6px 16px 90px;}.hero-in{padding:96px 16px 26px;}}
+</style>
+<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\/pix\/(?!t\/)/,'/pix/t/'):u};addEventListener('error',function(e){var i=e.target;if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[style*="/pix/t/"]').forEach(function(el){var m=/url\(['"]?([^'")]*\/pix\/t\/[^'")]*)/.exec(el.style.backgroundImage||'');if(!m)return;var p=new Image();p.onerror=function(){el.style.backgroundImage="url('"+m[1].replace('/pix/t/','/pix/')+"')"};p.src=m[1]})})</script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
+<body>
+<a class="crumb" href="/country-uz.html">← Uzbekistan</a>
+<header class="hero"><div class="hero-bg" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_CZJULrJvjCTkZCTICEZ0YbTB_vgFXLwk1IvNpr313sw.jpg')"></div><div class="hero-in">
+<div class="hero-flag"><span class="fi fi-uz"></span></div>
+<h1 class="hero-name">Khiva</h1>
+<div class="hero-sub"><a href="/country-uz.html">Uzbekistan</a> · first visit 27 Apr 2026 · last 29 Apr 2026</div>
+</div></header>
+<div class="wrap">
+<div class="kpis"><div class="kpi"><div class="kpi-num">114</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">80</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">years</div></div><div class="kpi"><div class="kpi-num">3</div><div class="kpi-lbl">days</div></div></div>
+<section><div class="sec-h">Where it happened</div><div class="cmap"><svg viewBox="0 0 920 380" role="img" aria-label="Map of check-ins"><circle class="hot" cx="361.2" cy="153.9" r="5.1"/><circle class="hot" cx="360.0" cy="96.5" r="5.1"/><circle class="hot" cx="376.0" cy="99.8" r="5.1"/><circle class="hot" cx="449.8" cy="83.4" r="5.1"/><circle class="hot" cx="441.2" cy="75.2" r="5.1"/><circle class="hot" cx="377.2" cy="144.1" r="5.1"/><circle class="hot" cx="352.6" cy="153.9" r="5.1"/><circle class="hot" cx="340.3" cy="155.6" r="5.1"/><circle class="hot" cx="369.8" cy="178.5" r="5.1"/><circle class="hot" cx="364.9" cy="180.2" r="5.1"/><circle class="hot" cx="376.0" cy="185.1" r="5.1"/><circle class="hot" cx="366.1" cy="199.8" r="5.1"/><circle class="hot" cx="373.5" cy="214.6" r="5.1"/><circle class="hot" cx="377.2" cy="172.0" r="5.1"/><circle class="hot" cx="363.7" cy="149.0" r="5.1"/><circle class="hot" cx="323.1" cy="140.8" r="5.1"/><circle class="hot" cx="320.6" cy="135.9" r="5.1"/><circle class="hot" cx="367.4" cy="60.4" r="5.1"/><circle class="hot" cx="385.8" cy="53.9" r="5.1"/><circle class="hot" cx="408.0" cy="62.1" r="5.1"/><circle class="hot" cx="411.7" cy="50.6" r="5.1"/><circle class="hot" cx="409.2" cy="29.3" r="5.1"/><circle class="hot" cx="420.3" cy="26.0" r="5.1"/><circle class="hot" cx="342.8" cy="70.3" r="5.1"/><circle class="hot" cx="341.5" cy="44.0" r="5.1"/><circle class="hot" cx="408.0" cy="162.1" r="5.1"/><circle class="hot" cx="360.0" cy="250.7" r="5.1"/><circle class="hot" cx="309.5" cy="219.5" r="5.1"/><circle class="hot" cx="296.0" cy="216.2" r="5.1"/><circle class="hot" cx="382.1" cy="155.6" r="5.1"/><circle class="hot" cx="385.8" cy="160.5" r="5.1"/><circle class="hot" cx="371.1" cy="150.6" r="5.1"/><circle class="hot" cx="358.8" cy="153.9" r="5.1"/><circle class="hot" cx="353.8" cy="147.4" r="5.1"/><circle class="hot" cx="355.1" cy="158.8" r="5.1"/><circle class="hot" cx="367.4" cy="165.4" r="5.1"/><circle class="hot" cx="379.7" cy="165.4" r="5.1"/><circle class="hot" cx="390.8" cy="176.9" r="5.1"/><circle class="hot" cx="387.1" cy="172.0" r="5.1"/><circle class="hot" cx="392.0" cy="168.7" r="5.1"/><circle class="hot" cx="372.3" cy="181.8" r="5.1"/><circle class="hot" cx="395.7" cy="173.6" r="5.1"/><circle class="hot" cx="409.2" cy="183.4" r="5.1"/><circle class="hot" cx="442.4" cy="176.9" r="5.1"/><circle class="hot" cx="442.4" cy="186.7" r="5.1"/><circle class="hot" cx="619.6" cy="111.3" r="5.1"/><circle class="hot" cx="568.0" cy="119.5" r="5.1"/><circle class="hot" cx="559.3" cy="135.9" r="5.1"/><circle class="hot" cx="522.4" cy="149.0" r="5.1"/><circle class="hot" cx="336.6" cy="99.8" r="5.1"/><circle class="hot" cx="331.7" cy="93.2" r="5.1"/><circle class="hot" cx="388.3" cy="158.8" r="5.1"/><circle class="hot" cx="373.5" cy="181.8" r="5.1"/><circle class="hot" cx="456.0" cy="147.4" r="5.1"/><circle class="hot" cx="582.7" cy="176.9" r="5.1"/><circle class="hot" cx="581.5" cy="180.2" r="5.1"/><circle class="hot" cx="356.3" cy="93.2" r="6.5"/><circle class="hot" cx="379.7" cy="93.2" r="6.5"/><circle class="hot" cx="468.3" cy="83.4" r="6.5"/><circle class="hot" cx="361.2" cy="144.1" r="6.5"/><circle class="hot" cx="353.8" cy="158.8" r="6.5"/><circle class="hot" cx="329.2" cy="124.4" r="6.5"/><circle class="hot" cx="367.4" cy="153.9" r="6.5"/><circle class="hot" cx="352.6" cy="149.0" r="6.5"/><circle class="hot" cx="394.4" cy="170.3" r="6.5"/><circle class="hot" cx="394.4" cy="163.8" r="6.5"/><circle class="hot" cx="382.1" cy="181.8" r="6.5"/><circle class="hot" cx="367.4" cy="186.7" r="6.5"/><circle class="hot" cx="454.7" cy="183.4" r="6.5"/><circle class="hot" cx="522.4" cy="178.5" r="6.5"/><circle class="hot" cx="571.6" cy="178.5" r="6.5"/><circle class="hot" cx="357.5" cy="90.0" r="7.7"/><circle class="hot" cx="384.6" cy="103.1" r="7.7"/><circle class="hot" cx="394.4" cy="106.4" r="7.7"/><circle class="hot" cx="388.3" cy="132.6" r="7.7"/><circle class="hot" cx="352.6" cy="158.8" r="7.7"/><circle class="hot" cx="378.4" cy="186.7" r="7.7"/><circle class="hot" cx="339.1" cy="150.6" r="7.7"/><circle class="hot" cx="399.4" cy="176.9" r="7.7"/><circle class="hot" cx="358.8" cy="157.2" r="8.6"/></svg></div></section>
+<section><div class="sec-h">By year</div><div class="years"><div class="yr-bar zero"><span class="yr-n">0</span><div class="bar" style="height:3px"></div><span class="yr-lbl">2025</span></div><div class="yr-bar"><span class="yr-n">114</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2026</span></div></div></section>
+<section><div class="cols"><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Itchan Kala (Old Town) (Ichon-qala (Old Town))"><a href="/venue.html#4cb2ce9a1168a093189f3d23">Itchan Kala (Old Town) (Ichon-qala (Old Town))</a></span><span class="rank-n">4</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Garden Palace Khiva"><a href="/venue.html#69ef21562914be5a75703599">Garden Palace Khiva</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Khiva City Walls"><a href="/venue.html#66e6ae8ab553c153ccc9d78c">Khiva City Walls</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Bakcha Darvaza (North Gate)"><a href="/venue.html#64a9597886a2272c420f54fb">Bakcha Darvaza (North Gate)</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Amir Tora Madrassah"><a href="/venue.html#518a48ca498ef7ed5f2a17bb">Amir Tora Madrassah</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Kaltaminor (Kalta Minor)"><a href="/venue.html#533b33be498ea4b9b871288e">Kaltaminor (Kalta Minor)</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Islomxo'ja minorasi"><a href="/venue.html#4dc4f9591f6ef43b8a09de83">Islomxo'ja minorasi</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Ota Darvaza (オタ・ダルヴァサ(西門))"><a href="/venue.html#5d63e7fec40c5b0008fab23a">Ota Darvaza (オタ・ダルヴァサ(西門))</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Polvon Darvoza"><a href="/venue.html#5d6a641b01817000089a6182">Polvon Darvoza</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Чирджели Канал"><a href="/venue.html#69ef2939107bf202b18741f9">Чирджели Канал</a></span><span class="rank-n">2</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Historic and Protected Site">Historic and Protected Site</span><span class="rank-n">63</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Mosque">Mosque</span><span class="rank-n">5</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Outdoor Sculpture">Outdoor Sculpture</span><span class="rank-n">4</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">4</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Hotel">Hotel</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Park">Park</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Tower">Tower</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Plaza">Plaza</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Restaurant">Restaurant</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Canal">Canal</span><span class="rank-n">2</span></div></div></div></div></section>
+
+
+<section><div class="sec-h">Trips here · 1</div><div class="trips"><a class="trip-card" href="/trips.html#trip-28"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_UEpqg6z3ShsYPIHObZ-mZ5NJEzZVU_jQxGUsVgRqovI.jpg')"></div><div class="trip-body"><div class="trip-name">Uzbekistan + Russia + 1 more 🚌</div><div class="trip-meta">2026-04-24 → 2026-05-06 · 13 days · 491 check-ins</div></div></a></div></section>
+<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_pCJaGetJcDTsVfjZHx3EedffHwn6hID0psFaDJhlVdU.jpg" alt="Train 056Жа Khiva - Bukhara 1"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_TkkC7XqgpzqDg_7HUdNfUWgRjZ6Sdu4mnH7NXH2pHjw.jpg" alt="Sherg'ozixon madrasasi"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_M2sQOSbdMsgXFE5U52VU6XQ5Xt_vJEWHls-G0U_wDTY.jpg" alt="Sherg'ozixon madrasasi"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_GAzE9xK2CH-b_k9ivgkZUF_IkqbdLO8kjkJ_6F02PrI.jpg" alt="Islamkhodja Madrasah (Islomxo'ja madrasasi)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_3AoZSARHQSR8sR8qUCzmeXrvWRVs8PGyZopdy3aiu1Y.jpg" alt="Islomxo'ja minorasi"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_OvnrBQj9lfaezv0frTIJ3_Qmr1Vpxqrwyn4YH11R1RE.jpg" alt="Amir Tora Madrassah"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_mN8NvT4iVjLwriClwbmstDa7wVhGsHCK3ATv6EP8FO8.jpg" alt="Amir Tora Madrassah"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_0L2vH4YVlZEEeeeZjSxFgcGAxtXZo1kqmO3S4Ell0a0.jpg" alt="Toshhovli Palace (Tosh Hovli saroyi)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_agKPQlai4HgfJAesqaiSiJjk08dEbnAKR1HqK_VBiJ0.jpg" alt="Muhammad Rahimxon II madrasasi"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_u7WelcCbryO1UG1DVYDyk6bK2OvBPbgH9mfYVCpjEZw.jpg" alt="Muhammad Rahimxon II madrasasi"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_sZ67_scyQDs5-HxLJagacYe-4CpcjbosYlLVLraDocw.jpg" alt="Muhammad Rahimxon II madrasasi"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_52ieDGKBEghVVBpNsJmTPX4RN1ABoWtONwoYqnkI59I.jpg" alt="Nurullaboy saroyi"></div></section>
+<section><div class="sec-h">In your own voice</div><div class="shouts"><div class="shout">“С топовым видом! — with Andrei”<div class="shout-meta">2026 · Terrassa, Khiva</div></div></div></section>
+<section><button class="log-btn" onclick="toggleLog()"><span>All 114 check-ins in Khiva, searchable</span><b id="logLbl">OPEN ▾</b></button><div class="log" id="log"><input type="search" placeholder="Search venues, neighbourhoods, categories…" oninput="filterLog(this.value)"><div class="log-n" id="logN"></div><div id="logBody"></div></div></section>
+</div>
+<script>
+function moreTrips(b){b.previousElementSibling.classList.add('all');b.remove();}
+// The full log loads its own file (<kind>_ck_<slug>.json) on the first open.
+const LOG_URL="/city_ck_khiva.json", MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+      WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], STEP=300;
+let ROWS=null, shown=0, list=[];
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toggleLog(){
+  const l=document.getElementById('log'); l.classList.toggle('open');
+  document.getElementById('logLbl').textContent=l.classList.contains('open')?'HIDE ▴':'OPEN ▾';
+  if(ROWS===null){ROWS=[];fetch(LOG_URL).then(r=>r.json()).then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
+}
+function filterLog(q){
+  q=(q||'').toLowerCase();
+  list=q?ROWS.filter(r=>(r[1]+' '+r[2]+' '+r[3]).toLowerCase().includes(q)):ROWS;
+  shown=0; document.getElementById('logBody').innerHTML=''; moreLog();
+}
+function moreLog(){
+  const body=document.getElementById('logBody'), btn=document.getElementById('logMore'); if(btn) btn.remove();
+  let h='', prev=shown?list[shown-1][0].slice(0,7):'';
+  const end=Math.min(list.length, shown+STEP);
+  for(let k=shown;k<end;k++){
+    const [t,v,c,cat,id,rf]=list[k], m=t.slice(0,7);
+    if(m!==prev){const n=list.filter(r=>r[0].startsWith(m)).length;h+=`<div class="log-m">${MON[+m.slice(5)-1]} ${m.slice(0,4)}<span>${n}</span></div>`;prev=m;}
+    const d=new Date(t.slice(0,10)+'T12:00:00Z');
+    h+=`<div class="log-r${rf?' rf':''}"><span class="d">${WD[d.getUTCDay()]} ${+t.slice(8,10)}<b>${t.slice(11)}</b></span>`+
+       `<span class="v">${id?`<a href="/venue.html#${id}">${esc(v)}</a>`:esc(v)} <i>${esc(c)}</i></span><span class="c">${esc(cat)}</span></div>`;
+  }
+  shown=end; body.insertAdjacentHTML('beforeend',h);
+  document.getElementById('logN').textContent=list.length.toLocaleString()+' shown';
+  if(shown<list.length) body.insertAdjacentHTML('beforeend',`<button class="more-btn" id="logMore" onclick="moreLog()">${Math.min(STEP,list.length-shown)} MORE ▾</button>`);
+}
+</script>
+</body>
+</html>
