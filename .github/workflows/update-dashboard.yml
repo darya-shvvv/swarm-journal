@@ -291,8 +291,10 @@ jobs:
           git add index.html trips.html feed.html companions.html world_cities.html venues.html tips.html photos.html stats.html search.html trips_meta.json feed_meta.json
           git add -A -- 'site-*.css' sw.js manifest.webmanifest feed.xml feed.json map_data.json routes.json guide.html shouts.html years.html 'year-*.html' 'country-*.html'
           # venue dossiers, compare, life, per-country logs, sitemap (2026-10 refresh)
-          git add -A -- venue.html 'venue_data_*.json' venues_data.json compare.html year_facts.json life.html life_data.json 'country_ck_*.json' routes_months.json sitemap.xml
-          ls routes_m_*.json >/dev/null 2>&1 && git add -A -- 'routes_m_*.json' || true
+          # each pattern on its own, so one page that was not built cannot fail the commit
+          for g in venue.html 'venue_data_*.json' venues_data.json compare.html year_facts.json life.html life_data.json 'country_ck_*.json' routes_months.json 'routes_m_*.json' sitemap.xml; do
+            ls $g >/dev/null 2>&1 && git add -A -- "$g" || true
+          done
           # Per-trip check-in shards fetched by trips.html on demand (-A also
           # stages deletions when the trip count shrinks).
           git add -A -- 'trip_checkins_*.json'
