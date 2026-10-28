@@ -21,7 +21,7 @@ from pathlib import Path
 import yaml
 
 from transform import load_mappings, apply_transforms, build_blank_city_resolver
-from metrics import process
+from metrics import compute_coverage, compute_milestones, process
 from metrics.trip_insights import trip_used_plane
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")
@@ -108,6 +108,31 @@ _TRIP_CK_FIELDS = ('ts', 'date', 'time', 'venue', 'venue_id', 'city', 'country',
                    'category', 'lat', 'lng', 'checkin_id', 'refurbished', 'photos', 'm')
 _TRIP_SHARD = 10
 
+SITE_URL = "https://swarm-journal.pages.dev/"
+# Not for search engines: the private visit counter, the search shell and the
+# venue page (one empty shell filled from #id — its content is not crawlable).
+_SITEMAP_SKIP = {"search.html", "venue.html", "index.html"}
+
+
+def _sitemap_priority(name: str) -> str:
+    if name.startswith(("year-", "country-")):
+        return "0.6"
+    return "0.5" if name == "solution.html" else "0.8"
+
+
+def write_sitemap(out_dir: Path, extra: list | None = None) -> int:
+    """sitemap.xml for every generated page (+ tracked extras that exist); returns the URL count."""
+    names = {p.name for p in out_dir.glob("*.html")} | {p.name for p in (extra or []) if Path(p).exists()}
+    pages = sorted(n for n in names if n not in _SITEMAP_SKIP and not n.startswith("google"))
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    urls = [f"  <url><loc>{SITE_URL}</loc><lastmod>{today}</lastmod><priority>1.0</priority></url>"]
+    urls += [f"  <url><loc>{SITE_URL}{n}</loc><lastmod>{today}</lastmod><priority>{_sitemap_priority(n)}</priority></url>"
+             for n in pages]
+    (out_dir / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls) + "\n</urlset>\n", encoding="utf-8")
+    return len(urls)
+
 
 def _write_trip_checkin_shards(trips, out_dir):
     """Write trip_checkins_<id//10>.json; return (content version, trips without checkins)."""
@@ -124,7 +149,12 @@ def _write_trip_checkin_shards(trips, out_dir):
             row[_TRIP_CK_FIELDS.index('refurbished')] = 1 if c.get('refurbished') else 0
             rows.append(row)
         shards.setdefault(t['id'] // _TRIP_SHARD, {})[str(t['id'])] = rows
-        inline.append({k: v for k, v in t.items() if k != 'checkins'})
+        slim = {k: v for k, v in t.items() if k != 'checkins'}
+        # card cover: a photo from the middle of the trip (fewer airports, more of the place)
+        shots = [c['photos'][0] for c in t.get('checkins') or [] if c.get('photos')]
+        if shots:
+            slim['cover'] = shots[len(shots) // 2]
+        inline.append(slim)
     h = hashlib.sha1()
     for n in sorted(shards):
         body = json.dumps({'f': _TRIP_CK_FIELDS, 't': shards[n]},
@@ -243,6 +273,11 @@ if __name__ == "__main__":
     parser.add_argument("--routes-max-fetch", type=int, default=250,
                         help="Max missing routes to fetch per build (default 250); "
                              "the cache warms up over successive CI builds.")
+    parser.add_argument("--routes-all-max-fetch", type=int, default=0,
+                        help="Max missing routes to fetch for legs OUTSIDE trips "
+                             "(every real check-in → the next; feed day routes). "
+                             "Default 0 = serve only what the cache already has; the "
+                             "nightly warm-routes job drains the backlog politely.")
     parser.add_argument("--travel-atlas-out", default=None,
                         help="Opt-in: also write the standalone travel-atlas journal "
                              "(scripts/gen_travel_atlas.py) to this path, built from the "
@@ -377,6 +412,10 @@ if __name__ == "__main__":
     if _backfill_csv.exists():
         with open(_backfill_csv, encoding="utf-8") as fh:
             _bf_rows = list(csv.DictReader(fh))
+        # `note` is the private research trail behind a reconstructed row (sources,
+        # chat quotes, who confirmed what) — it must never reach a generated page.
+        for _r in _bf_rows:
+            _r.pop("note", None)
         rows.extend(_bf_rows)
         rows.sort(key=lambda r: int(r.get("date") or 0))
         log.info("  + %d reconstructed row(s) from %s (%d total)",
@@ -457,6 +496,14 @@ if __name__ == "__main__":
     log.info("Computing metrics (home=%s, min_checkins=%d) …", home_city, min_checkins)
     _name_report: dict = {}
     data, trips = process(rows, mappings, home_city=home_city, min_trip_checkins=min_checkins, trip_names=trip_names, trip_exclude=trip_exclude, trip_end_overrides=trip_end_overrides, trip_start_overrides=trip_start_overrides, trip_tags=trip_tags, new_country_year_overrides=nc_yr_overrides, flights=_metrics_flights, home_history=home_history, home_venue_ids=home_venue_ids, home_eras=home_eras, trip_name_report=_name_report)
+    try:
+        data["milestones"] = compute_milestones(rows, data.get("distance_from_home"))
+    except Exception as _mse:
+        log.warning("milestones failed: %s", _mse)
+    try:
+        data["coverage"] = compute_coverage(rows, home_city, home_history)
+    except Exception as _cve:
+        log.warning("coverage failed: %s", _cve)
 
     # ── trip_names.json self-heal (see metrics/trip_names.py) ─────────────────
     # detect_trips already rendered the healed names; here the heal is logged,
@@ -648,6 +695,17 @@ if __name__ == "__main__":
         )
         log.info("Wrote slim trips metadata → %s  (%d trips)", args.trips_out, len(_slim_trips))
 
+    # ── Likes on check-ins (checkin_likes.json, written by fetch_checkins.py next to
+    #    the CSV): checkin_id → {"n": count, "by": [[user_id, name], …]} ──
+    _checkin_likes: dict = {}
+    _likes_path = Path(args.input).resolve().parent / "checkin_likes.json"
+    if _likes_path.exists():
+        try:
+            _checkin_likes = json.loads(_likes_path.read_text(encoding="utf-8"))
+            log.info("Check-in likes: %d liked check-ins", len(_checkin_likes))
+        except (OSError, ValueError) as _lke:
+            log.warning("checkin_likes.json unreadable: %s", _lke)
+
     # ── Patch trips with photos per check-in from photos.json (if provided) ──
     _photos_by_checkin: dict = {}
     _pix_dir_uri: str = ""
@@ -693,26 +751,65 @@ if __name__ == "__main__":
     except Exception as _tme:
         log.warning("transport-mode classification failed: %s", _tme)
 
-    # ── GPS-like route geometry for trip-map segments (routes.json) ──────────
+    # ── GPS-like route geometry for trip-map segments + feed day legs ─────────
     # Fetch real street/rail paths (FOSSGIS OSRM + BRouter) for mode-tagged
     # segments, served from a persistent cache in the private data repo.
-    # routes.json is ALWAYS written (empty when --routes-cache is unset) so the
-    # template's fetch never 404s.
+    # Everything lands in routes_m_<YYYY-MM>.json shards; routes_months.json is
+    # ALWAYS written (empty when --routes-cache is unset) so the pages' fetch
+    # never 404s. (A single routes.json, 2.5 MB, was dropped 2026-10-26.)
     _routes: dict = {}
+    _all_routes: dict = {}
     if args.routes_cache:
         try:
             import route_paths as _rp
             _rc = _rp.RouteCache(args.routes_cache)
             _routes = _rp.attach_routes(trips, _rc, max_fetch=args.routes_max_fetch)
+            # Every leg between two consecutive REAL check-ins (reconstructed rf* rows
+            # have approximate places and times — they stay straight chords), for the
+            # feed's day routes. Same cache, so a leg a trip already routed is free;
+            # the backlog is spent newest-first, at most one request a second — the
+            # OSRM/BRouter community servers ask for about that.
+            _real = sorted(({"ts": int(r.get("date") or 0), "lat": r.get("lat"), "lng": r.get("lng"),
+                             "category": r.get("category", "")}
+                            for r in rows
+                            if not str(r.get("checkin_id") or "").startswith("rf") and r.get("date")),
+                           key=lambda c: c["ts"])
+            try:
+                _modes_all = _tm.classify_segments(_real, _tm_windows, model=_tm_model)
+            except Exception:
+                _modes_all = [""] * len(_real)
+            for _c, _m in zip(_real, _modes_all):
+                if _m:
+                    _c["m"] = _m
+            _all_routes = _rp.attach_routes([{"checkins": _real}], _rc,
+                                            max_fetch=args.routes_all_max_fetch,
+                                            workers=2, sleep_s=0, min_interval_s=1.0)
             _rc.save()
-            log.info("Route geometry: %d segments routed (cache %s: %d entries)",
-                     len(_routes), args.routes_cache, len(_rc.data))
+            log.info("Route geometry: %d trip segments + %d check-in legs routed (cache %s: %d entries)",
+                     len(_routes), len(_all_routes), args.routes_cache, len(_rc.data))
         except Exception as _rpe:
             log.warning("route-geometry attachment failed: %s", _rpe)
     os.makedirs(args.output_dir, exist_ok=True)
-    Path(os.path.join(args.output_dir, "routes.json")).write_text(
-        json.dumps(_routes, ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8")
+    # Feed day routes, one shard per UTC month of the leg's arrival:
+    # routes_m_<YYYY-MM>.json  {"tsA-tsB": [polyline5, km]}; the feed fetches the
+    # month(s) of the day it draws. Stale shards are removed first.
+    import glob as _glob
+    for _stale in _glob.glob(os.path.join(args.output_dir, "routes_m_*.json")):
+        os.remove(_stale)
+    _by_month: dict = {}
+    for _k, _v in _all_routes.items():
+        _ym = datetime.fromtimestamp(int(_k.split("-")[1]), tz=timezone.utc).strftime("%Y-%m")
+        _by_month.setdefault(_ym, {})[_k] = _v
+    # The trip segments go into the same shards, so trips.html and the feed fetch
+    # only the months they draw instead of all of routes.json (~2.5 MB).
+    for _k, _v in _routes.items():
+        _ym = datetime.fromtimestamp(int(_k.split("-")[1]), tz=timezone.utc).strftime("%Y-%m")
+        _by_month.setdefault(_ym, {})[_k] = _v
+    for _ym, _part in _by_month.items():
+        Path(os.path.join(args.output_dir, f"routes_m_{_ym}.json")).write_text(
+            json.dumps(_part, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    Path(os.path.join(args.output_dir, "routes_months.json")).write_text(
+        json.dumps(sorted(_by_month)), encoding="utf-8")
 
     # ── Load tips for recent section ─────────────────────────────────────────
     # Resolve tips.json next to the input CSV so CI (private-data/checkins.csv →
@@ -1121,10 +1218,12 @@ if __name__ == "__main__":
     _here = _SCRIPT_DIR
     _gen_outputs: list[str] = []
     for gen_script, gen_out, gen_tmpl, gen_kwargs in [
-        (_here / "gen_companions.py", "companions.html",   "companions.html.tmpl",   {"social_data": data}),
+        (_here / "gen_companions.py", "companions.html",   "companions.html.tmpl",   {"social_data": data, "photos_by_checkin": _photos_by_checkin,
+                                                                                      "pix_url": _pix_dir_uri, "trips": trips,
+                                                                                      "likes_by_checkin": _checkin_likes}),
         (_here / "gen_feed.py",       "feed.html",         "feed.html.tmpl",         {"swarm_user_id": fs_user_id}),
         (_here / "gen_worldcities.py","world_cities.html", "world_cities.html.tmpl", {"cities_data": data.get("cities"), "country_count": len(data['countries'])}),
-        (_here / "gen_venues.py",     "venues.html",       "venues.html.tmpl",       {}),
+        (_here / "gen_venues.py",     "venues.html",       "venues.html.tmpl",       {"photos_by_checkin": _photos_by_checkin, "pix_url": _pix_dir_uri}),
         (_here / "gen_tips.py",       "tips.html",         "tips.html.tmpl",         {"tips_path": str(tips_path), "pix_url": _pix_dir_uri, "country_count": len(data['countries'])}),
         (_here / "gen_stats.py",      "stats.html",        "stats.html.tmpl",        {"stats_data": data, "anomalies_html": _anomalies_html}),
         (_here / "gen_search.py",     "search.html",       "search.html.tmpl",       {"rows": rows, "all_tips": all_tips, "trips": trips, "metrics": data}),
@@ -1199,6 +1298,8 @@ if __name__ == "__main__":
         except Exception as _yie:
             log.warning("gen_years_index failed: %s", _yie)
 
+    _culture: dict = {}   # no IMDb/Vivino/Last.fm sources on this site
+
     # ── Generate year-YYYY.html album pages ─────────────────────────────────
     _gen_year = _SCRIPT_DIR / "gen_year_pages.py"
     if _gen_year.exists():
@@ -1239,6 +1340,7 @@ if __name__ == "__main__":
                 flight_history=data.get("flight_history"),
                 flights_data=_flights_list,
                 music_by_year=_music_by_year,
+                culture_by_year=_culture.get("years", {}),
             )
         except Exception as _ye:
             log.warning("gen_year_pages failed: %s", _ye)
@@ -1265,6 +1367,73 @@ if __name__ == "__main__":
             )
         except Exception as _ce:
             log.warning("gen_country_pages failed: %s", _ce)
+
+    # ── Generate venue.html + venue_data_<xx>.json shards ──────────────────────
+    _gen_venue = _SCRIPT_DIR / "gen_venue_page.py"
+    if _gen_venue.exists():
+        try:
+            import importlib.util as _ilu_v
+            _spec_v = _ilu_v.spec_from_file_location("gen_venue_page", _gen_venue)
+            assert _spec_v and _spec_v.loader
+            _mod_v  = _ilu_v.module_from_spec(_spec_v)
+            _spec_v.loader.exec_module(_mod_v)
+            _mod_v.build_page(
+                out_path=args.output_dir,
+                rows=rows,
+                photos_by_checkin=_photos_by_checkin,
+                pix_url=_pix_dir_uri,
+                likes_by_checkin=_checkin_likes,
+            )
+        except Exception as _ve:
+            log.warning("gen_venue_page failed: %s", _ve)
+
+    # ── Generate compare.html + year_facts.json (years / home eras side by side) ─
+    _gen_cmp = _SCRIPT_DIR / "gen_compare.py"
+    if _gen_cmp.exists():
+        try:
+            import importlib.util as _ilu_cmp
+            _spec_cmp = _ilu_cmp.spec_from_file_location("gen_compare", _gen_cmp)
+            assert _spec_cmp and _spec_cmp.loader
+            _mod_cmp  = _ilu_cmp.module_from_spec(_spec_cmp)
+            _spec_cmp.loader.exec_module(_mod_cmp)
+            _mod_cmp.build_page(
+                out_path=args.output_dir,
+                rows=rows,
+                trips=trips,
+                stats_data=data,
+                photos_by_checkin=_photos_by_checkin,
+                home_city=home_city,
+                home_history=home_history,
+                config_dir=str(config_dir),
+                pix_url=_pix_dir_uri,
+            )
+        except Exception as _cmpe:
+            log.warning("gen_compare failed: %s", _cmpe)
+
+    # ── Generate life.html + life_data.json ("Life in stripes") ─────────────────
+    _gen_life = _SCRIPT_DIR / "gen_life.py"
+    if _gen_life.exists():
+        try:
+            import importlib.util as _ilu_l
+            _spec_l = _ilu_l.spec_from_file_location("gen_life", _gen_life)
+            assert _spec_l and _spec_l.loader
+            _mod_l  = _ilu_l.module_from_spec(_spec_l)
+            _spec_l.loader.exec_module(_mod_l)
+            _life_music: dict = {}
+            _life_lf = Path(args.input).resolve().parent / "lastfm_years.json"
+            if _life_lf.exists():
+                _life_music = json.loads(_life_lf.read_text(encoding="utf-8")).get("years", {}) or {}
+            _mod_l.build_page(
+                out_path=args.output_dir,
+                rows=rows,
+                trips=trips,
+                home_city=home_city,
+                home_history=home_history,
+                music_by_year=_life_music,
+                country_total=len(data['countries']),
+            )
+        except Exception as _le:
+            log.warning("gen_life failed: %s", _le)
 
     # ── Post-process: substitute canonical placeholders in every generated file ──
     # Single source of truth: config/country_flags.json + config/category_icons.json
@@ -1369,6 +1538,43 @@ if __name__ == "__main__":
             _html.write_text(_txt.replace("{{CARTO_KEY}}", _carto_key), encoding="utf-8")
             _n_keyed += 1
     log.info("CARTO key injected into %d pages", _n_keyed)
+
+    # ── Check-in count in meta descriptions ("71,000+", rounded down) ─────────
+    _checkins_plus = f"{(data['total'] // 1000) * 1000:,}+"
+    for _html in Path(args.output_dir).glob("*.html"):
+        _txt = _html.read_text(encoding="utf-8")
+        if "{{CHECKINS_PLUS}}" in _txt:
+            _html.write_text(_txt.replace("{{CHECKINS_PLUS}}", _checkins_plus), encoding="utf-8")
+
+    # ── sitemap.xml from the pages this build produced ────────────────────────
+    # The tracked sitemap.xml listed 11 URLs; years, countries, culture, flights
+    # and the rest were never submitted. Private / empty-shell pages stay out.
+    write_sitemap(Path(args.output_dir))
+
+    # ── Photo thumbs: pix/t/<name> with a fallback to the original ────────────
+    # Grids, tiles and covers point at the small copy (scripts/make_thumbs.py,
+    # thumbs.yml); the lightbox keeps the original. A thumb that is not in R2
+    # yet falls back here: an <img> error swaps /pix/t/ back to /pix/, and an
+    # inline background-image is probed once the DOM is ready (a CSS background
+    # has no error event). pixT() is what page scripts call for a thumb URL.
+    _thumbs_js = (
+        "<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\\/pix\\/(?!t\\/)/,'/pix/t/'):u};"
+        "addEventListener('error',function(e){var i=e.target;"
+        "if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);"
+        "addEventListener('DOMContentLoaded',function(){"
+        "document.querySelectorAll('[style*=\"/pix/t/\"]').forEach(function(el){"
+        "var m=/url\\(['\"]?([^'\")]*\\/pix\\/t\\/[^'\")]*)/.exec(el.style.backgroundImage||'');if(!m)return;"
+        "var p=new Image();p.onerror=function(){el.style.backgroundImage=\"url('\"+m[1].replace('/pix/t/','/pix/')+\"')\"};p.src=m[1]})})"
+        "</script>"
+    )
+    _n_thumbs = 0
+    for _html in Path(args.output_dir).glob("*.html"):
+        _txt = _html.read_text(encoding="utf-8")
+        if "data-thumbs" in _txt or "</head>" not in _txt:
+            continue
+        _html.write_text(_txt.replace("</head>", _thumbs_js + "</head>", 1), encoding="utf-8")
+        _n_thumbs += 1
+    log.info("Photo-thumb fallback injected into %d pages", _n_thumbs)
 
     # ── No flights.csv → no flights.html: drop the FLIGHTS nav item ──────────
     # Every page template carries a FLIGHTS side/bottom-nav link; without the

@@ -3,16 +3,28 @@
 
 """
 sync_venue_changes.py — Diff two checkins.csv snapshots, report changed venues,
-and patch tips.json with updated venue metadata.
+and patch tips.json (and optionally backfill.csv) with updated venue metadata.
 
 After a full re-fetch, checkins.csv already has fresh venue info from the API.
 This script syncs those changes into tips.json without extra API calls.
+
+Reconstructed rows in backfill.csv reuse the SAME real Foursquare venue_ids, so
+a rename that lands in checkins.csv leaves backfill.csv holding the stale name
+for that id — a split identity in every build, and in /api/feed too, since
+sync_to_d1.py reconciles `rf*` rows on every run. Pass --backfill to keep both
+sides on the same name.
+
+venueRatings.json and comments.json denormalize the venue name too and are
+rendered on the site, so they take the same rename via --ratings / --comments.
 
 Usage:
     python scripts/sync_venue_changes.py \\
         --old private-data/archive/checkins_2026-03-26T12-00-00Z.csv \\
         --new private-data/checkins.csv \\
-        --tips private-data/tips.json [--dry-run]
+        --tips private-data/tips.json \\
+        [--backfill private-data/backfill.csv] \\
+        [--ratings private-data/venueRatings.json] \\
+        [--comments private-data/comments.json] [--dry-run]
 
 Exit codes:
     0 — success (changes applied or nothing to do)
@@ -21,6 +33,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import collections
 import csv
 import json
 import logging
@@ -33,6 +46,15 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")
 # Fields compared between snapshots to detect venue changes.
 # venue_id is the key; these are the values we track.
 TRACKED = ["venue", "city", "country", "lat", "lng", "category"]
+
+# Marker a reconstructed row can carry in its `shout` to opt out of geo syncing.
+# Some backfill rows deliberately localise a venue that Foursquare pins to ONE
+# coordinate: a river checked in at a different point along it, a country row
+# placed at the actual border crossing rather than the capital. Those rows must
+# keep their hand-set geography when the Foursquare card moves — but they still
+# have to follow a RENAME, or one venue_id ends up carrying two display names.
+GEO_PINNED = "[geo_pinned]"
+GEO_FIELDS = ("city", "country", "lat", "lng")
 
 
 def load_csv_by_venue(path: Path) -> dict[str, dict]:
@@ -56,10 +78,18 @@ def load_csv_by_venue(path: Path) -> dict[str, dict]:
     return by_venue
 
 
-def _load_ts_index(path: Path) -> tuple[dict[str, list[int]], dict[int, str]]:
-    """Return ({venue_id: [timestamps]}, {timestamp: venue_id}) for merge detection."""
+def _load_ts_index(path: Path) -> tuple[dict[str, list[int]], dict[int, set[str]]]:
+    """Return ({venue_id: [timestamps]}, {timestamp: {venue_ids}}) for merge detection.
+
+    The timestamp map holds a SET, because two check-ins can share one unix second
+    at different venues (e.g. Adolf Fredriks kyrkogård + kyrka, both at 1519338605).
+    A plain {ts: vid} let the later row overwrite the earlier one, so the losing
+    venue vanished from the map, looked "gone" from the new snapshot and was
+    reported as merged into its neighbour — a phantom merge that made sync_to_d1
+    rewrite a perfectly good check-in onto the wrong venue_id.
+    """
     vid_ts: dict[str, list[int]] = {}
-    ts_vid: dict[int, str] = {}
+    ts_vid: dict[int, set[str]] = {}
     with open(path, encoding="utf-8", newline="") as fh:
         for row in csv.DictReader(fh):
             vid = row.get("venue_id", "").strip()
@@ -70,7 +100,7 @@ def _load_ts_index(path: Path) -> tuple[dict[str, list[int]], dict[int, str]]:
             if not vid or not ts:
                 continue
             vid_ts.setdefault(vid, []).append(ts)
-            ts_vid[ts] = vid
+            ts_vid.setdefault(ts, set()).add(vid)
     return vid_ts, ts_vid
 
 
@@ -87,11 +117,12 @@ def detect_merges(
     old_vid_ts, _ = _load_ts_index(old_path)
     _, new_ts_vid = _load_ts_index(new_path)
 
-    gone = set(old_vid_ts) - set(new_ts_vid.values())
+    still_present = {v for vids in new_ts_vid.values() for v in vids}
+    gone = set(old_vid_ts) - still_present
     merges = []
     for vid in sorted(gone):
         timestamps = old_vid_ts[vid]
-        targets = {new_ts_vid[ts] for ts in timestamps if ts in new_ts_vid}
+        targets = {v for ts in timestamps if ts in new_ts_vid for v in new_ts_vid[ts]}
         if len(targets) == 1:
             new_vid = next(iter(targets))
             vname = (old[vid].get("venue") or vid) if vid in old else vid
@@ -104,13 +135,39 @@ def detect_merges(
     return merges
 
 
+def load_name_variants(path: Path) -> dict[str, collections.Counter]:
+    """Return {venue_id: Counter(name -> rows)} — every name the snapshot spells.
+
+    load_csv_by_venue() keeps only the freshest row per venue, which is right for
+    coordinates (older rows carry whatever the API said when they were fetched)
+    but wrong for the name: if a venue is renamed mid-month and you check in again
+    afterwards, the freshest row already holds the NEW name while the older rows —
+    and tips.json / backfill.csv / venueRatings.json / comments.json — still hold
+    the old one. Comparing freshest-to-freshest reports no change and the rename
+    never reaches those files.
+    """
+    variants: dict[str, collections.Counter] = {}
+    with open(path, encoding="utf-8", newline="") as fh:
+        for row in csv.DictReader(fh):
+            vid = (row.get("venue_id") or "").strip()
+            name = (row.get("venue") or "").strip()
+            if vid and name:
+                variants.setdefault(vid, collections.Counter())[name] += 1
+    return variants
+
+
 def detect_changes(
-    old: dict[str, dict], new: dict[str, dict]
+    old: dict[str, dict], new: dict[str, dict],
+    old_names: dict[str, collections.Counter] | None = None,
 ) -> list[dict]:
     """
     Return a list of change records for venue_ids that exist in both snapshots
     but have at least one differing TRACKED field.
     Each record: {venue_id, venue_name, fields: {field: (old_val, new_val)}}
+
+    `old_names` (from load_name_variants) widens the name check to EVERY spelling
+    the old snapshot used, so a venue left half-renamed there is still detected.
+    The reported old value is the most common stale spelling.
     """
     changes = []
     for vid, new_row in new.items():
@@ -121,7 +178,17 @@ def detect_changes(
         for field in TRACKED:
             ov = (old_row.get(field) or "").strip()
             nv = (new_row.get(field) or "").strip()
+            if field == "venue" and old_names and ov == nv:
+                stale = [(n, c) for n, c in (old_names.get(vid) or {}).items() if n != nv]
+                if stale:
+                    ov = max(stale, key=lambda x: x[1])[0]
             if ov != nv:
+                # Skip city changes that are blank-city inference fills (city_inferred=1).
+                # A real Foursquare correction always comes with city_inferred=0 from the
+                # API fetch, so null→value with city_inferred=1 means it's our fill.
+                if (field == "city" and not ov and nv
+                        and (new_row.get("city_inferred") or "").strip() == "1"):
+                    continue
                 diffs[field] = (ov, nv)
         if diffs:
             changes.append(
@@ -178,6 +245,154 @@ def patch_tips(
     return tips, patch_records
 
 
+def patch_backfill(
+    path: Path,
+    changes: list[dict],
+    dry_run: bool = False,
+) -> list[dict]:
+    """
+    Apply venue changes to the reconstructed rows in backfill.csv.
+
+    Reconstructed rows carry real Foursquare venue_ids, so they must follow the
+    same rename/move as the real check-ins. Rows with a blank venue_id (places
+    that have no Foursquare venue) are untouched.
+
+    A row whose `shout` carries the GEO_PINNED marker keeps its hand-set
+    geography: city/country/lat/lng are left alone, everything else (notably the
+    display name) still syncs.
+
+    Returns a list of {checkin_id, venue, venue_id, fields: {field: (old, new)}}.
+    """
+    patches: dict[str, dict] = {}
+    for ch in changes:
+        patches[ch["venue_id"]] = {field: nv for field, (_, nv) in ch["fields"].items()}
+    if not patches:
+        return []
+
+    with path.open(encoding="utf-8", newline="") as fh:
+        reader = csv.DictReader(fh)
+        fieldnames = list(reader.fieldnames or [])
+        rows = list(reader)
+
+    patch_records: list[dict] = []
+    for row in rows:
+        vid = (row.get("venue_id") or "").strip()
+        if not vid or vid not in patches:
+            continue
+        pinned = GEO_PINNED in (row.get("shout") or "")
+        changed_fields = {}
+        for field, new_val in patches[vid].items():
+            if field not in fieldnames:
+                continue
+            if pinned and field in GEO_FIELDS:
+                continue
+            old_val = row.get(field) or ""
+            if old_val == new_val:
+                continue
+            changed_fields[field] = (old_val, new_val)
+            row[field] = new_val
+        if changed_fields:
+            patch_records.append({
+                "checkin_id": row.get("checkin_id", ""),
+                "venue":      row.get("venue", ""),
+                "venue_id":   vid,
+                "fields":     changed_fields,
+            })
+
+    if patch_records and not dry_run:
+        with path.open("w", encoding="utf-8", newline="") as fh:
+            writer = csv.DictWriter(fh, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+    return patch_records
+
+
+def _renames(changes: list[dict]) -> dict[str, str]:
+    """venue_id → new display name, for the venue-name-only consumers."""
+    out = {}
+    for ch in changes:
+        pair = ch["fields"].get("venue")
+        if pair:
+            out[ch["venue_id"]] = pair[1]
+    return out
+
+
+def patch_ratings(
+    path: Path,
+    changes: list[dict],
+    dry_run: bool = False,
+) -> list[dict]:
+    """
+    Rename venues inside venueRatings.json ({venueLikes|venueOkays|venueDislikes:
+    [{id, name, url, createdAt}]}). Only the display name is stored there, so only
+    a `venue` diff applies. `url` keeps its old slug on purpose — it ends in the
+    venue id and resolves regardless.
+
+    Returns [{venue_id, bucket, fields: {"name": (old, new)}}].
+    """
+    renames = _renames(changes)
+    if not renames:
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    records: list[dict] = []
+    for bucket, entries in data.items():
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            vid = entry.get("id", "")
+            new_name = renames.get(vid)
+            if not new_name or entry.get("name") == new_name:
+                continue
+            records.append({
+                "venue_id": vid,
+                "bucket":   bucket,
+                "fields":   {"name": (entry.get("name", ""), new_name)},
+            })
+            entry["name"] = new_name
+    if records and not dry_run:
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return records
+
+
+def patch_comments(
+    path: Path,
+    changes: list[dict],
+    dry_run: bool = False,
+) -> list[dict]:
+    """
+    Rename venues inside comments.json ({_meta, comments: {checkin_id: {venue,
+    venue_id, …}}}). Only the display name is stored there.
+
+    Returns [{venue_id, checkin_id, fields: {"venue": (old, new)}}].
+    """
+    renames = _renames(changes)
+    if not renames:
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    comments = data.get("comments")
+    if not isinstance(comments, dict):
+        return []
+    records: list[dict] = []
+    for checkin_id, entry in comments.items():
+        if not isinstance(entry, dict):
+            continue
+        vid = entry.get("venue_id", "")
+        new_name = renames.get(vid)
+        if not new_name or entry.get("venue") == new_name:
+            continue
+        records.append({
+            "venue_id":   vid,
+            "checkin_id": checkin_id,
+            "fields":     {"venue": (entry.get("venue", ""), new_name)},
+        })
+        entry["venue"] = new_name
+    if records and not dry_run:
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return records
+
+
 def _write_diffs(
     changes: list[dict],
     out_path: str,
@@ -220,6 +435,13 @@ def main() -> None:
     parser.add_argument("--old",     required=True, help="Path to the archived (old) checkins.csv")
     parser.add_argument("--new",     required=True, help="Path to the freshly-fetched checkins.csv")
     parser.add_argument("--tips",    required=True, help="Path to tips.json")
+    parser.add_argument("--backfill", default=None,
+                        help="Path to backfill.csv — reconstructed rows reuse real venue_ids "
+                             "and must follow the same rename/move")
+    parser.add_argument("--ratings", default=None,
+                        help="Path to venueRatings.json — carries a denormalized venue name")
+    parser.add_argument("--comments", default=None,
+                        help="Path to comments.json — carries a denormalized venue name")
     parser.add_argument("--out",     default=None,
                         help="Write venue diffs as JSON to this path (for sync_to_d1.py --venue-changes)")
     parser.add_argument("--dry-run", action="store_true", help="Report changes without writing")
@@ -242,7 +464,7 @@ def main() -> None:
     log.info("Old snapshot: %d unique venue_ids", len(old))
     log.info("New snapshot: %d unique venue_ids", len(new))
 
-    changes = detect_changes(old, new)
+    changes = detect_changes(old, new, load_name_variants(args.old))
     merges = detect_merges(old, old_path, new_path)
 
     if not changes:
@@ -254,6 +476,59 @@ def main() -> None:
                 f"{f}: {ov!r}→{nv!r}" for f, (ov, nv) in ch["fields"].items()
             )
             log.info("  %-26s  %s  [%s]", ch["venue_id"], ch["venue_name"], field_summary)
+
+    # ── Patch backfill.csv ─────────────────────────────────────────────────────
+    # Runs before the tips block, which returns early when tips.json is absent.
+    if args.backfill:
+        bf_path = Path(args.backfill)
+        if not bf_path.exists():
+            log.info("backfill.csv not found at %s — skipping backfill patch.", bf_path)
+        else:
+            bf_records = patch_backfill(bf_path, changes, dry_run=args.dry_run)
+            if not bf_records:
+                log.info("backfill.csv unchanged.")
+            else:
+                log.info("")
+                log.info("── Updated backfill rows (%d) ────────────────────────", len(bf_records))
+                for i, rec in enumerate(bf_records, 1):
+                    field_summary = ", ".join(
+                        f"{f}: {ov!r} → {nv!r}" for f, (ov, nv) in rec["fields"].items()
+                    )
+                    log.info("  %2d. [%s]  %s", i, rec["checkin_id"], rec["venue"])
+                    log.info("       %s", field_summary)
+                log.info("─────────────────────────────────────────────────────")
+                if args.dry_run:
+                    log.info("Dry run — backfill.csv not written.")
+                else:
+                    log.info("Saved %s", bf_path)
+                log.info("")
+
+    # ── Patch the venue-name-only JSONs ────────────────────────────────────────
+    # Both denormalize the venue name and are rendered on the site, so a rename
+    # that only lands in checkins.csv leaves them showing the old one forever.
+    for label, arg, patcher, id_key in (
+        ("venueRatings.json", args.ratings,  patch_ratings,  "bucket"),
+        ("comments.json",     args.comments, patch_comments, "checkin_id"),
+    ):
+        if not arg:
+            continue
+        p = Path(arg)
+        if not p.exists():
+            log.info("%s not found at %s — skipping.", label, p)
+            continue
+        recs = patcher(p, changes, dry_run=args.dry_run)
+        if not recs:
+            log.info("%s unchanged.", label)
+            continue
+        log.info("")
+        log.info("── Updated %s (%d) ──", label, len(recs))
+        for i, rec in enumerate(recs, 1):
+            field_summary = ", ".join(
+                f"{f}: {ov!r} → {nv!r}" for f, (ov, nv) in rec["fields"].items()
+            )
+            log.info("  %2d. [%s]  %s", i, rec.get(id_key, ""), field_summary)
+        log.info("%s", "Dry run — not written." if args.dry_run else f"Saved {p}")
+        log.info("")
 
     # ── Patch tips.json ────────────────────────────────────────────────────────
     if not tips_path.exists():

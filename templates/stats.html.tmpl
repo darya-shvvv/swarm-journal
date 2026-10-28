@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Statistics — Check-in Journal</title>
-<meta name="description" content="Deep analytics of 65,000+ Foursquare check-ins: yearly trends, activity streaks, venue loyalty, discovery rate, category mix and more.">
+<meta name="description" content="Deep analytics of {{CHECKINS_PLUS}} Foursquare check-ins: yearly trends, activity streaks, venue loyalty, discovery rate, category mix and more.">
 <link rel="canonical" href="https://swarm-journal.pages.dev/stats.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Check-in Journal">
 <meta property="og:title" content="Statistics — Check-in Journal">
-<meta property="og:description" content="Deep analytics of 65,000+ Foursquare check-ins: yearly trends, activity streaks, venue loyalty, discovery rate, category mix and more.">
+<meta property="og:description" content="Deep analytics of {{CHECKINS_PLUS}} Foursquare check-ins: yearly trends, activity streaks, venue loyalty, discovery rate, category mix and more.">
 <meta property="og:url" content="https://swarm-journal.pages.dev/stats.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Statistics — Check-in Journal">
-<meta name="twitter:description" content="Deep analytics of 65,000+ Foursquare check-ins: yearly trends, activity streaks, venue loyalty, discovery rate, category mix and more.">
+<meta name="twitter:description" content="Deep analytics of {{CHECKINS_PLUS}} Foursquare check-ins: yearly trends, activity streaks, venue loyalty, discovery rate, category mix and more.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -110,17 +110,54 @@ a{color:inherit;}
 .heatmap-week{display:flex;flex-direction:column;gap:3px;}
 .heatmap-cell{width:11px;height:11px;border-radius:2px;background:var(--card2);}
 .heatmap-cell[data-v="0"]{background:#151820;}
-.heatmap-cell[data-v="1"]{background:#1a3a1a;}
-.heatmap-cell[data-v="2"]{background:#1e5c1e;}
-.heatmap-cell[data-v="3"]{background:#c97a20;}
-.heatmap-cell[data-v="4"]{background:#e8b86d;}
-.heatmap-cell[data-v="5"]{background:#f5d48a;}
+.heatmap-cell[data-v="1"]{background:rgba(47,214,181,.22);}
+.heatmap-cell[data-v="2"]{background:rgba(47,214,181,.5);}
+.heatmap-cell[data-v="3"]{background:#2fd6b5;}
+.heatmap-cell[data-v="4"]{background:#ff9a6b;}
+.heatmap-cell[data-v="5"]{background:#ffd08a;}
 .heatmap-tooltip{position:fixed;pointer-events:none;background:rgba(11,13,19,0.96);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:0.64rem;color:var(--text);z-index:9999;display:none;}
 
 /* ── SCROLLBAR on generic lists ── */
 .scroll-list{overflow-y:auto;padding-right:4px;}
 .scroll-list::-webkit-scrollbar{width:3px;}
 .scroll-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* ── MILESTONES ── */
+.ms-chips{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 14px;}
+.ms-chip{font-family:'DM Mono',monospace;font-size:0.56rem;padding:3px 7px;border-radius:3px;background:rgba(232,184,109,0.1);color:var(--gold);border:1px solid rgba(232,184,109,0.2);}
+.ms-list{display:flex;flex-direction:column;gap:5px;}
+.ms-row{display:grid;grid-template-columns:84px 1fr auto;gap:10px;align-items:center;padding:7px 11px;background:var(--card2);border:1px solid var(--border);border-radius:7px;}
+.ms-date{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);}
+.ms-venue{font-size:0.78rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ms-venue a{color:inherit;text-decoration:none;}
+.ms-venue a:hover{color:var(--gold);}
+.ms-place{font-size:0.66rem;color:var(--muted);}
+.ms-tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;}
+.ms-tag{font-family:'DM Mono',monospace;font-size:0.54rem;padding:2px 6px;border-radius:3px;white-space:nowrap;background:rgba(122,133,168,0.12);color:var(--muted);}
+.ms-tag.t-new_country{background:rgba(232,119,138,0.15);color:var(--rose);}
+.ms-tag.t-new_city,.ms-tag.t-city_back{background:rgba(78,201,176,0.13);color:var(--teal);}
+.ms-tag.t-total,.ms-tag.t-milestone_big{background:rgba(232,184,109,0.15);color:var(--gold);}
+.ms-tag.t-comeback_long{background:rgba(155,135,245,0.15);color:#a99af0;}
+
+/* ── COVERAGE (radius of gyration grid) ── */
+.cov-grid{display:grid;grid-template-columns:40px repeat(12,1fr);gap:3px;align-items:center;max-width:560px;}
+.cov-grid .heatmap-cell{width:auto;height:14px;}
+.cov-hdr{font-family:'DM Mono',monospace;font-size:0.54rem;color:var(--muted);text-align:center;}
+.cov-yr{font-family:'DM Mono',monospace;font-size:0.60rem;color:var(--muted);text-align:right;padding-right:4px;}
+.cov-legend{display:flex;gap:4px;align-items:center;font-family:'DM Mono',monospace;font-size:0.56rem;color:var(--muted);margin-top:10px;}
+.cov-legend .heatmap-cell{width:11px;height:11px;}
+/* one hue, lightness rising with the radius bucket (the site heatmap's green→gold mix is not monotonic) */
+#coverageCard .heatmap-cell[data-v="0"]{background:#151820;}
+#coverageCard .heatmap-cell[data-v="1"]{background:#3b2f1b;}
+#coverageCard .heatmap-cell[data-v="2"]{background:#6e5326;}
+#coverageCard .heatmap-cell[data-v="3"]{background:#a87a33;}
+#coverageCard .heatmap-cell[data-v="4"]{background:#d9a650;}
+#coverageCard .heatmap-cell[data-v="5"]{background:#f5d48a;}
+.bar-row{display:grid;grid-template-columns:120px 1fr auto;gap:8px;align-items:center;margin:4px 0;}
+.bar-label{font-size:0.72rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bar-track{background:var(--border);height:6px;border-radius:3px;overflow:hidden;}
+.bar-fill{height:6px;border-radius:3px;}
+.bar-val{font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--muted);white-space:nowrap;}
 
 /* ── MEDIA QUERIES ── */
 @media(max-width:900px){
@@ -145,7 +182,41 @@ a{color:inherit;}
   .reg-row{grid-template-columns:20px 1fr 44px 36px;gap:5px;}
   .reg-name{font-size:.72rem;}
   .heatmap-cell{width:7px;height:7px;}
+  .ms-row{grid-template-columns:1fr;gap:4px;}
+  .ms-tags{justify-content:flex-start;}
+  .cov-grid .heatmap-cell{height:11px;}
 }
+
+/* ── Overview + tabs ── */
+.page-header{padding:40px 56px 18px;border-bottom:none;background:none;}
+.ph-eyebrow{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
+.page-header h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.02;margin-top:10px;color:var(--text);background:none;-webkit-text-fill-color:currentColor;}
+.page-header h1 em{font-style:normal;background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.page-insight{background:none;border-bottom:none;padding:0 56px 10px;max-width:1500px;}
+.st-tabs{position:sticky;top:0;z-index:60;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:12px 56px;background:linear-gradient(var(--bg) 75%,transparent);}
+.st-tabs::-webkit-scrollbar{display:none;}
+.st-tabs button{white-space:nowrap;background:var(--card2);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.06em;color:var(--text);cursor:pointer;}
+.st-tabs button:hover{border-color:var(--gold);}
+.st-tabs button.on{background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae);color:#1a1206;border-color:transparent;}
+.st-tabs button b{font-weight:400;opacity:.6;margin-left:5px;}
+.ins-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:6px 56px 0;margin-bottom:14px;max-width:1500px;}
+.ins-grid[hidden]{display:none;}
+.ins{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:16px 18px;min-width:0;}
+.ins span{display:block;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.ins b{display:block;font-family:'Playfair Display',serif;font-weight:900;font-size:1.9rem;line-height:1.05;margin:10px 0 6px;background:linear-gradient(135deg,#f6d38b,#ff9a6b 55%,#ff6fae);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ins:nth-child(4n+2) b{background:linear-gradient(135deg,#4cb8ff,#9b7bff);-webkit-background-clip:text;background-clip:text;}
+.ins:nth-child(4n+3) b{background:linear-gradient(135deg,#2fd6b5,#4cb8ff);-webkit-background-clip:text;background-clip:text;}
+.ins small{font-size:.74rem;color:var(--text2,#c3c7d6);}
+.card{border-radius:20px;}
+#statGrid[data-active="overview"] .card:not([data-tab~="overview"]),
+#statGrid[data-active="time"] .card:not([data-tab~="time"]),
+#statGrid[data-active="places"] .card:not([data-tab~="places"]),
+#statGrid[data-active="movement"] .card:not([data-tab~="movement"]),
+#statGrid[data-active="people"] .card:not([data-tab~="people"]),
+#statGrid[data-active="words"] .card:not([data-tab~="words"]),
+#statGrid[data-active="data"] .card:not([data-tab~="data"]){display:none !important;}
+@media(max-width:900px){.page-header{padding:26px 18px 12px;}.page-insight{padding:0 18px 8px;}.st-tabs{padding:10px 18px;}.ins-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:6px 18px 0;}}
+@media(max-width:520px){.ins b{font-size:1.45rem;}}
 </style>
 </head>
 <body>
@@ -160,9 +231,14 @@ a{color:inherit;}
 </div>
 
 <div class="page-header">
-  <h1>Statistics</h1>
-  <p>Deep-dive analytics &nbsp;&middot;&nbsp; all check-ins</p>
+  <div class="ph-eyebrow" id="phEyebrow">Statistics</div>
+  <h1 id="phTitle">Statistics</h1>
 </div>
+<div class="st-tabs" id="stTabs">
+  <button data-t="overview" class="on">Overview</button><button data-t="time">Time</button><button data-t="places">Places</button>
+  <button data-t="movement">Movement</button><button data-t="people">People</button><button data-t="words">Words</button><button data-t="data">Data</button>
+</div>
+<div class="ins-grid" id="insGrid"></div>
 
 <div class="page-insight" id="page-insight"></div>
 
@@ -170,47 +246,48 @@ a{color:inherit;}
 
 {{ANOMALIES}}
 
-<div class="grid">
+<div class="grid" id="statGrid" data-active="overview">
+<script>document.getElementById('statGrid').dataset.active=(function(){const h=(location.hash||'').slice(1);return ['overview','time','places','movement','people','words','data'].includes(h)?h:'overview';})();</script>
 
   <!-- 1. Check-ins by Year -->
-  <div class="card">
+  <div data-tab="overview time" class="card">
     <div class="card-title">Check-ins by Year</div>
     <canvas id="yearChart" height="210"></canvas>
     <div id="yoyTable" style="margin-top:14px;overflow-x:auto;"></div>
   </div>
 
   <!-- 2. Monthly Trend -->
-  <div class="card">
+  <div data-tab="time" class="card">
     <div class="card-title">Monthly Trend</div>
     <canvas id="monthChart" height="210"></canvas>
   </div>
 
   <!-- 3. Hour of Day -->
-  <div class="card">
+  <div data-tab="overview time" class="card">
     <div class="card-title">Hour of Day</div>
     <canvas id="hourChart" height="200"></canvas>
   </div>
 
   <!-- 4. Day of Week -->
-  <div class="card">
+  <div data-tab="overview time" class="card">
     <div class="card-title">Day of Week</div>
     <canvas id="dowChart" height="200"></canvas>
   </div>
 
   <!-- 5. Distance per Year -->
-  <div class="card">
+  <div data-tab="movement" class="card">
     <div class="card-title">Distance per Year <em>&middot; km between consecutive check-ins</em></div>
     <canvas id="distChart" height="210"></canvas>
   </div>
 
   <!-- 6. Countries per Year -->
-  <div class="card">
+  <div data-tab="movement" class="card">
     <div class="card-title">Countries per Year</div>
     <canvas id="ctrPerYearChart" height="210"></canvas>
   </div>
 
   <!-- 7. Activity Streaks -->
-  <div class="card">
+  <div data-tab="time" class="card">
     <div class="card-title">Activity Streaks</div>
     <div class="streak-row">
       <div class="streak-stat"><div class="s-num" id="longestStreak">—</div><div class="s-lbl">Longest Streak (days)</div></div>
@@ -220,179 +297,196 @@ a{color:inherit;}
   </div>
 
   <!-- 8. Category Mix by Year -->
-  <div class="card">
+  <div data-tab="places" class="card">
     <div class="card-title">Category Mix by Year <em>&middot; share of top 7 groups</em></div>
     <canvas id="catDriftChart" height="280"></canvas>
   </div>
 
   <!-- 9. Discovery Rate (full-width) -->
-  <div class="card full">
+  <div data-tab="places" class="card full">
     <div class="card-title">Discovery Rate <em>&middot; new vs revisited venues per month</em></div>
     <canvas id="discoveryChart" height="200"></canvas>
   </div>
 
   <!-- 10. Venue Loyalty (full-width) -->
-  <div class="card full">
+  <div data-tab="places" class="card full">
     <div class="card-title">Venue Loyalty <em>&middot; places visited in 3+ different years</em></div>
     <div class="loyalty-list" id="loyaltyGrid"></div>
   </div>
 
   <!-- 11. Regular Haunts (full-width) -->
-  <div class="card full">
+  <div data-tab="places" class="card full">
     <div class="card-title">Regular Haunts <em>&middot; venues visited in the most distinct calendar months</em></div>
     <div class="reg-list" id="regularsListEl"></div>
   </div>
 
   <!-- 12. Venue Visit Frequency -->
-  <div class="card">
+  <div data-tab="places" class="card">
     <div class="card-title">Venue Visit Frequency <em>&middot; how many venues visited N times</em></div>
     <canvas id="freqDistChart" height="220"></canvas>
   </div>
 
   <!-- 13. Revisit Intervals -->
-  <div class="card">
+  <div data-tab="places" class="card">
     <div class="card-title">Revisit Intervals <em>&middot; time between return visits</em></div>
     <canvas id="revisitChart" height="220"></canvas>
   </div>
 
   <!-- 14. Activity Calendar (full-width) -->
-  <div class="card full">
+  <div data-tab="overview time" class="card full">
     <div class="card-title">Activity Calendar <em>&middot; GitHub-style heatmap by day</em></div>
     <div class="heatmap-outer" id="heatmapCont"></div>
   </div>
 
   <!-- 15. Place Categories (full-width) -->
-  <div class="card full">
+  <div data-tab="overview places" class="card full">
     <div class="card-title">Place Categories <em>&middot; by group</em></div>
     <canvas id="catChart" height="85"></canvas>
   </div>
 
   <!-- 16. Hour × Category heatmap (full-width) -->
-  <div class="card full" id="hourCatCard" style="display:none;">
+  <div data-tab="time" class="card full" id="hourCatCard" style="display:none;">
     <div class="card-title">Hour of Day × Category <em>&middot; local time, top 8 groups</em></div>
     <div id="hourCatHeat" style="overflow-x:auto;"></div>
   </div>
 
   <!-- 17. Day of Week × Category -->
-  <div class="card full" id="dowCatCard" style="display:none;">
+  <div data-tab="time" class="card full" id="dowCatCard" style="display:none;">
     <div class="card-title">Day of Week × Category <em>&middot; local time</em></div>
     <div id="dowCatHeat" style="overflow-x:auto;"></div>
   </div>
 
   <!-- 18. Country hour profiles -->
-  <div class="card full" id="ctryHourCard" style="display:none;">
+  <div data-tab="time" class="card full" id="ctryHourCard" style="display:none;">
     <div class="card-title">Country Hour Profiles <em>&middot; % of country's check-ins per local hour &middot; top 12 by volume</em></div>
     <div id="ctryHourHeat" style="overflow-x:auto;"></div>
   </div>
 
   <!-- 19. Shout KPIs + emojis + sentiment + language (full-width) -->
-  <div class="card full" id="shoutKpiCard" style="display:none;">
+  <div data-tab="words" class="card full" id="shoutKpiCard" style="display:none;">
     <div class="card-title">Shouts <em>&middot; free-text notes you wrote with check-ins</em></div>
     <div class="streak-row" id="shoutKpiRow"></div>
   </div>
 
-  <div class="card" id="shoutEmojiCard" style="display:none;">
+  <div data-tab="words" class="card" id="shoutEmojiCard" style="display:none;">
     <div class="card-title">Top Emojis <em>&middot; you used in shouts</em></div>
     <div id="shoutEmojiList" style="line-height:2;"></div>
   </div>
 
-  <div class="card" id="shoutLangCard" style="display:none;">
+  <div data-tab="words" class="card" id="shoutLangCard" style="display:none;">
     <div class="card-title">Language Mix by Year <em>&middot; cyrillic vs latin in shouts</em></div>
     <canvas id="shoutLangChart" height="230"></canvas>
   </div>
 
-  <div class="card" id="shoutSentimentCard" style="display:none;">
+  <div data-tab="words" class="card" id="shoutSentimentCard" style="display:none;">
     <div class="card-title">Shout Mood by Year <em>&middot; emoji-based sentiment</em></div>
     <canvas id="shoutSentChart" height="230"></canvas>
   </div>
 
-  <div class="card" id="shoutCountCard" style="display:none;">
+  <div data-tab="words" class="card" id="shoutCountCard" style="display:none;">
     <div class="card-title">Shouts per Year <em>&middot; count &amp; avg length</em></div>
     <canvas id="shoutCountChart" height="230"></canvas>
   </div>
 
-  <div class="card full" id="shoutWordsCard" style="display:none;">
+  <div data-tab="words" class="card full" id="shoutWordsCard" style="display:none;">
     <div class="card-title">Top Words <em>&middot; most-used non-stopword tokens in your shouts</em></div>
     <div id="shoutWordsList"></div>
   </div>
 
-  <div class="card full" id="shoutWordsByCountryCard" style="display:none;">
+  <div data-tab="words" class="card full" id="shoutWordsByCountryCard" style="display:none;">
     <div class="card-title">Top Words by Country <em>&middot; top 10 countries by shout volume</em></div>
     <div id="shoutWordsCountryList"></div>
   </div>
 
   <!-- 21. Transport Modes (full-width) -->
-  <div class="card full" id="transportCard" style="display:none;">
+  <div data-tab="movement" class="card full" id="transportCard" style="display:none;">
     <div class="card-title">Transport Modes <em>&middot; km/year classified by speed between consecutive check-ins</em></div>
     <div class="streak-row" id="transportKpis"></div>
     <canvas id="transportChart" height="240"></canvas>
   </div>
 
   <!-- 22. Carbon Footprint -->
-  <div class="card" id="carbonCard" style="display:none;">
+  <div data-tab="movement" class="card" id="carbonCard" style="display:none;">
     <div class="card-title">Travel Carbon <em>&middot; kg CO₂e per year, est.</em></div>
     <canvas id="carbonChart" height="220"></canvas>
   </div>
 
   <!-- 23. Distance from Home -->
-  <div class="card" id="distHomeCard" style="display:none;">
+  <div data-tab="movement" class="card" id="distHomeCard" style="display:none;">
     <div class="card-title">Distance from Home <em>&middot; daily mean km from home centroid</em></div>
     <div class="streak-row" id="nomadKpis"></div>
     <canvas id="distHomeChart" height="220"></canvas>
   </div>
 
   <!-- 24. Daily Extremes (full-width) -->
-  <div class="card full" id="dayExtCard" style="display:none;">
+  <div data-tab="time" class="card full" id="dayExtCard" style="display:none;">
     <div class="card-title">First &amp; Last Check-in of Day <em>&middot; median local hour per year</em></div>
     <canvas id="dayExtChart" height="240"></canvas>
   </div>
 
   <!-- 25. Cohort Retention (full-width) -->
-  <div class="card full" id="cohortCard" style="display:none;">
+  <div data-tab="places" class="card full" id="cohortCard" style="display:none;">
     <div class="card-title">Cohort Venue Retention <em>&middot; venues discovered each year &middot; % revisited later</em></div>
     <div id="cohortHeat" style="overflow-x:auto;"></div>
   </div>
 
   <!-- 26. Activity Trajectory (absolute counts, full-width) -->
-  <div class="card full" id="trajectoryCard" style="display:none;">
+  <div data-tab="places" class="card full" id="trajectoryCard" style="display:none;">
     <div class="card-title">Category Trajectory <em>&middot; absolute check-in count per category group per year</em></div>
     <canvas id="trajectoryChart" height="260"></canvas>
   </div>
 
   <!-- 27. City Funnel -->
-  <div class="card" id="cityFunnelCard" style="display:none;">
+  <div data-tab="places" class="card" id="cityFunnelCard" style="display:none;">
     <div class="card-title">City Graduation <em>&middot; cities by total check-in count</em></div>
     <canvas id="cityFunnelChart" height="240"></canvas>
   </div>
 
   <!-- 28. Diversity Index -->
-  <div class="card" id="diversityCard" style="display:none;">
+  <div data-tab="places" class="card" id="diversityCard" style="display:none;">
     <div class="card-title">Diversity Index <em>&middot; Shannon entropy of category mix per year</em></div>
     <canvas id="diversityChart" height="240"></canvas>
   </div>
 
   <!-- 29. Companion Lifecycle (full-width) -->
-  <div class="card full" id="compLifeCard" style="display:none;">
+  <div data-tab="people" class="card full" id="compLifeCard" style="display:none;">
     <div class="card-title">Companion Lifecycle <em>&middot; first &amp; last seen, active span, top venue</em></div>
     <div id="compLifeList"></div>
   </div>
 
   <!-- 30. Source App Trends -->
-  <div class="card" id="srcAppCard" style="display:none;">
+  <div data-tab="data" class="card" id="srcAppCard" style="display:none;">
     <div class="card-title">Source App Trends <em>&middot; check-ins per client per year</em></div>
     <canvas id="srcAppChart" height="220"></canvas>
   </div>
 
   <!-- 31. City inferred (data quality) -->
-  <div class="card" id="cityInferredCard" style="display:none;">
+  <div data-tab="data" class="card" id="cityInferredCard" style="display:none;">
     <div class="card-title">Data Quality <em>&middot; city values filled by centroid resolver</em></div>
     <div class="streak-row" id="cityInferredKpis"></div>
   </div>
 
   <!-- 32. Dormant Venues (full-width) -->
-  <div class="card full" id="dormantCard" style="display:none;">
+  <div data-tab="places" class="card full" id="dormantCard" style="display:none;">
     <div class="card-title">What You Miss <em>&middot; 10+ visit venues you haven't been to in over a year</em></div>
     <div id="dormantList"></div>
+  </div>
+
+  <!-- 33. Records & Milestones -->
+  <div data-tab="overview time" class="card full" id="milestonesCard" style="display:none;">
+    <div class="card-title">Records &amp; Milestones <em>&middot; personal bests and the echo bot's labels over all history</em></div>
+    <div class="streak-row" id="msRecords"></div>
+    <div class="ms-chips" id="msCounts"></div>
+    <div class="scroll-list ms-list" id="msEvents" style="max-height:460px"></div>
+  </div>
+
+  <!-- 34. City coverage & radius of gyration -->
+  <div data-tab="movement" class="card full" id="coverageCard" style="display:none;">
+    <div class="card-title">Coverage &amp; Radius <em>&middot; how far each month reached from home (radius of gyration, km)</em></div>
+    <div class="cov-grid" id="covGrid"></div>
+    <div class="cov-legend" id="covLegend"></div>
+    <div class="card-title" style="margin-top:22px">City coverage <em>&middot; distinct ~500 m cells checked in</em></div>
+    <div id="covCities"></div>
   </div>
 
 </div><!-- /.grid -->
@@ -419,12 +513,70 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
 
 // ── Chart.js defaults ───────────────────────────────────────────────────────
 Chart.defaults.color='#7a85a8';
-Chart.defaults.borderColor='#1e2335';
+Chart.defaults.borderColor='rgba(255,255,255,.05)';
+Chart.defaults.elements.bar.borderRadius=6;
+Chart.defaults.elements.bar.borderSkipped='bottom';
+Chart.defaults.elements.line.tension=.3;
+Chart.defaults.elements.point.radius=0;
+Chart.defaults.elements.point.hoverRadius=4;
+Chart.defaults.plugins.tooltip.backgroundColor='rgba(14,16,24,.96)';
+Chart.defaults.plugins.tooltip.borderColor='rgba(255,255,255,.08)';
+Chart.defaults.plugins.tooltip.borderWidth=1;
+Chart.defaults.plugins.tooltip.padding=10;
+Chart.defaults.plugins.tooltip.cornerRadius=10;
+// old palette → the site's new one (alpha is kept), so every chart follows without editing each config
+const RECOLOR={'232,184,109':'255,154,107','78,205,196':'47,214,181','230,57,70':'255,122,107','196,77,255':'155,123,255',
+  '244,131,31':'255,179,107','69,183,209':'76,184,255','150,206,180':'184,230,92','168,216,168':'94,224,240',
+  '245,212,138':'246,211,139','255,107,157':'255,111,174','77,121,255':'109,139,255','255,77,77':'255,92,122','26,30,46':'255,255,255,.05'};
+function recolor(c){
+  if(typeof c!=='string')return c;
+  let m=c.match(/^#([0-9a-f]{6})$/i), rgb, a=1;
+  if(m){const h=m[1];rgb=[0,2,4].map(i=>parseInt(h.substr(i,2),16)).join(',');}
+  else if((m=c.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)$/i))){rgb=m[1]+','+m[2]+','+m[3];a=m[4]==null?1:+m[4];}
+  else return c;
+  const to=RECOLOR[rgb]; if(!to)return c;
+  if(a>=.4&&a<.8)a=.85;   // half-transparent fills of the new, lighter hues read brown on the dark cards
+  return to.split(',').length===4?'rgba('+to+')':(a===1?'rgb('+to+')':'rgba('+to+','+a+')');
+}
+const withAlpha=(c,a)=>{const m=String(c).match(/^rgba?\((\d+),(\d+),(\d+)/);return m?'rgba('+m[1]+','+m[2]+','+m[3]+','+a+')':c;};
+Chart.register({id:'sitePalette',beforeInit(chart){
+  const scs=(chart.config.options&&chart.config.options.scales)||{};
+  // stacked bars: a per-segment gradient over the whole plot turns the lower segments muddy
+  const stacked=Object.values(scs).some(a=>a&&a.stacked);
+  (chart.config.data.datasets||[]).forEach(ds=>{
+    if(stacked&&ds.borderRadius===undefined)ds.borderRadius=0;
+    ['backgroundColor','borderColor','pointBackgroundColor','hoverBackgroundColor'].forEach(k=>{
+      if(Array.isArray(ds[k]))ds[k]=ds[k].map(recolor); else if(typeof ds[k]==='string')ds[k]=recolor(ds[k]);
+    });
+    const type=ds.type||chart.config.type;
+    if(type==='bar'&&!stacked&&typeof ds.backgroundColor==='string'&&/^rgba?\(/.test(ds.backgroundColor)){
+      const top=ds.backgroundColor;
+      ds.backgroundColor=ctx=>{const ca=ctx.chart.chartArea;if(!ca)return top;const g=ctx.chart.ctx.createLinearGradient(0,ca.top,0,ca.bottom);g.addColorStop(0,top);g.addColorStop(1,withAlpha(top,.35));return g;};
+    }
+  });
+  const sc=chart.config.options&&chart.config.options.scales;
+  if(sc)Object.values(sc).forEach(a=>{if(a&&a.grid&&a.grid.color)a.grid.color=recolor(a.grid.color);});
+}});
+// A chart whose card sits in a tab that is not open is built when that tab opens:
+// all 23 charts used to render on load. None of them is kept in a variable, so
+// handing back a placeholder is safe.
+const _Chart=Chart, DEFERRED=[];
+const tabNow=()=>{const h=(location.hash||'').slice(1);return ['overview','time','places','movement','people','words','data'].includes(h)?h:'overview';};
+window.Chart=new Proxy(_Chart,{construct(T,args){
+  const el=typeof args[0]==='string'?document.getElementById(args[0]):args[0];
+  const card=el&&el.closest&&el.closest('.card[data-tab]');
+  const active=(document.getElementById('statGrid')||{}).dataset?.active||tabNow();
+  if(card&&!card.dataset.tab.split(' ').includes(active)){DEFERRED.push([card,args]);return {deferred:true};}
+  return new T(...args);
+}});
+function buildDeferred(tab){
+  for(let i=DEFERRED.length-1;i>=0;i--){const [card,args]=DEFERRED[i];if(card.dataset.tab.split(' ').includes(tab)){DEFERRED.splice(i,1);try{new _Chart(...args);}catch(e){}}}
+}
 Chart.defaults.font.family="'DM Mono',monospace";
 Chart.defaults.font.size=11;
 
-const PAL=['#e63946','#f4831f','#e8b86d','#f5d48a','#a8d8a8','#4ecdc4','#45b7d1','#96ceb4','#ff6b9d','#c44dff','#4d79ff','#ff4d4d','#ffaa00','#00c9a7'];
-const CC=['#e8b86d','#4ecdc4','#e63946','#45b7d1','#a8d8a8','#c44dff','#f4831f','#96ceb4'];
+const PAL=['#ff7a6b','#ffb36b','#ff9a6b','#f6d38b','#b8e65c','#2fd6b5','#4cb8ff','#5ee0f0','#ff6fae','#9b7bff','#6d8bff','#ff5c7a','#f6c25b','#34d399'];
+const CC=['#ff9a6b','#2fd6b5','#ff6fae','#4cb8ff','#b8e65c','#9b7bff','#f6c25b','#5ee0f0'];
 
 // ── 1. Check-ins by Year ────────────────────────────────────────────────────
 new Chart(document.getElementById('yearChart'),{
@@ -759,15 +911,19 @@ if(S.revisit_intervals&&S.revisit_intervals.length){
       const ds=cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
       const v=d[ds]||0; const cell=document.createElement('div'); cell.className='heatmap-cell';
       cell.setAttribute('data-v',level(v));
-      cell.addEventListener('mouseenter',e=>{if(v>0){tip.textContent=ds+': '+v+' check-in'+(v===1?'':'s');tip.style.display='block';}});
-      cell.addEventListener('mousemove',e=>{tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-28)+'px';});
-      cell.addEventListener('mouseleave',()=>{tip.style.display='none';});
+      if(v>0){cell.dataset.d=ds;cell.dataset.n=v;}
       week.appendChild(cell);
       cur.setDate(cur.getDate()+1);
     }
     if(week.children.length>0) grid.appendChild(week);
     row.appendChild(grid); cont.appendChild(row);
   });
+  // one set of listeners for the whole grid (it was 3 per day cell, ~22k)
+  cont.addEventListener('mouseover',e=>{const c=e.target.closest('.heatmap-cell');
+    if(c&&c.dataset.n){const n=+c.dataset.n;tip.textContent=c.dataset.d+': '+n+' check-in'+(n===1?'':'s');tip.style.display='block';}
+    else tip.style.display='none';});
+  cont.addEventListener('mousemove',e=>{tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-28)+'px';});
+  cont.addEventListener('mouseleave',()=>{tip.style.display='none';});
 })();
 
 // ── 15. Place Categories ────────────────────────────────────────────────────
@@ -1242,6 +1398,66 @@ new Chart(document.getElementById('catChart'),{
   html+='</div>';
   document.getElementById('dormantList').innerHTML=html;
 })();
+
+
+// ── 33. Records & Milestones ─────────────────────────────────────────────────
+(function(){
+  var M=S.milestones;if(!M||!M.events)return;
+  document.getElementById('milestonesCard').style.display='';
+  var R=M.records||{},tiles=[];
+  function tile(n,l,sub){tiles.push('<div class="streak-stat"><div class="s-num">'+n+'</div><div class="s-lbl">'+l+(sub?'<br><span style="font-size:10px;opacity:.7">'+sub+'</span>':'')+'</div></div>');}
+  if(R.farthest_day)tile(R.farthest_day.km.toLocaleString()+' km','Farthest day',esc(R.farthest_day.date));
+  if(R.busiest_day)tile(R.busiest_day.n,'Busiest day',esc(R.busiest_day.date));
+  if(R.most_countries_day)tile(R.most_countries_day.n,'Countries in a day',esc(R.most_countries_day.date));
+  if(R.most_cities_day)tile(R.most_cities_day.n,'Cities in a day',esc(R.most_cities_day.date));
+  if(R.longest_silence)tile(R.longest_silence.days+' d','Longest silence',esc(R.longest_silence.from)+' → '+esc(R.longest_silence.to));
+  function vlink(o){return o.venue_id?'<a href="venue.html#'+esc(o.venue_id)+'">'+esc(o.venue)+'</a>':esc(o.venue);}
+  if(R.longest_comeback)tile(Math.round(R.longest_comeback.days/365*10)/10+' y','Longest comeback',vlink(R.longest_comeback));
+  if(R.top_venue)tile(R.top_venue.n.toLocaleString(),'Top venue',vlink(R.top_venue));
+  document.getElementById('msRecords').innerHTML=tiles.join('');
+  var NAMES={new_country:'New country',new_city:'New city',city_back:'City again',total:'Every 1000th',milestone_big:'50+ visit',milestone:'10/25 visit',comeback_long:'Back after 5y',comeback:'Back after 1y',new_venue:'New venue'};
+  var C=M.counts||{},chips=[];
+  Object.keys(NAMES).forEach(function(k){if(C[k])chips.push('<span class="ms-chip t-'+k+'">'+NAMES[k]+' · '+C[k].toLocaleString()+'</span>');});
+  document.getElementById('msCounts').innerHTML=chips.join('');
+  var rows=M.events.map(function(e){
+    var v=e.venue_id?'<a href="venue.html#'+esc(e.venue_id)+'">'+esc(e.venue)+'</a>':esc(e.venue);
+    var place=[e.city,e.country].filter(Boolean).map(esc).join(', ');
+    var tags=(e.labels||[]).map(function(l){
+      var t=NAMES[l]||l;
+      if((l==='milestone'||l==='milestone_big')&&e.visit_no)t='#'+e.visit_no+' visit';
+      if(l==='total')t='check-in #'+e.checkin_no.toLocaleString();
+      if((l==='comeback'||l==='comeback_long'||l==='city_back')&&e.gap_days)t+=' ('+Math.round(e.gap_days/365*10)/10+'y)';
+      return '<span class="ms-tag t-'+esc(l)+'">'+esc(t)+'</span>';
+    }).join('');
+    return '<div class="ms-row"><div class="ms-date">'+esc(e.date)+'</div><div><div class="ms-venue">'+v+'</div><div class="ms-place">'+place+'</div></div><div class="ms-tags">'+tags+'</div></div>';
+  });
+  document.getElementById('msEvents').innerHTML=rows.join('');
+})();
+
+// ── 34. Coverage & radius of gyration ────────────────────────────────────────
+(function(){
+  var C=S.coverage;if(!C||!C.years||!C.years.length)return;
+  document.getElementById('coverageCard').style.display='';
+  var MON=['J','F','M','A','M','J','J','A','S','O','N','D'];
+  var h='<div></div>'+MON.map(function(m){return '<div class="cov-hdr">'+m+'</div>';}).join('');
+  C.years.forEach(function(y){
+    h+='<div class="cov-yr" title="year radius '+y.rg.toLocaleString()+' km">'+esc(y.y)+'</div>';
+    y.months.forEach(function(m,i){
+      var t=m.n?(esc(y.y)+'-'+(i<9?'0':'')+(i+1)+': '+m.rg.toLocaleString()+' km · '+m.n+' check-ins'):'';
+      h+='<div class="heatmap-cell" data-v="'+m.b+'" title="'+t+'"></div>';
+    });
+  });
+  document.getElementById('covGrid').innerHTML=h;
+  var T=C.thresholds||[],lg='<span>none</span><div class="heatmap-cell" data-v="0"></div>';
+  for(var i=1;i<=5;i++)lg+='<div class="heatmap-cell" data-v="'+i+'" title="'+(i<5?'&lt; '+T[i]+' km':'≥ '+T[4]+' km')+'"></div>';
+  lg+='<span>'+(T.length?'≥ '+T[4].toLocaleString()+' km':'')+'</span>';
+  document.getElementById('covLegend').innerHTML=lg;
+  var mx=Math.max.apply(null,(C.cities||[]).map(function(c){return c.cells;}).concat([1]));
+  document.getElementById('covCities').innerHTML=(C.cities||[]).map(function(c){
+    var w=Math.max(2,Math.round(c.cells/mx*100));
+    return '<div class="bar-row"><div class="bar-label">'+esc(c.city)+'</div><div class="bar-track"><div class="bar-fill" style="width:'+w+'%;background:var(--teal)"></div></div><div class="bar-val">'+c.cells.toLocaleString()+' · '+c.km2+' km²</div></div>';
+  }).join('');
+})();
 </script>
 
 <script>
@@ -1249,6 +1465,48 @@ function gsOpen(){document.getElementById('gsOverlay').classList.add('open');doc
 function gsClose(){document.getElementById('gsOverlay').classList.remove('open');}
 document.getElementById('gsInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&this.value.trim()){location.href='search.html?q='+encodeURIComponent(this.value.trim());}if(e.key==='Escape')gsClose();});
 document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();gsOpen();}if(e.key==='Escape'&&document.getElementById('gsOverlay').classList.contains('open'))gsClose();});
+
+// ── Overview insight tiles + tabs: a tab only toggles which cards are visible ──
+(function(){
+  const n=x=>Number(x||0).toLocaleString('en-US');
+  const by=S.by_year||[], peak=by.reduce((m,r)=>r[1]>m[1]?r:m,['—',0]);
+  const dow=(S.by_dow||[]).map(r=>r[1]), hr=(S.by_hour||[]).map(r=>r[1]);
+  const sum=a=>a.reduce((x,y)=>x+y,0);
+  const ph=hr.length?hr.indexOf(Math.max(...hr)):0;
+  const once=((S.venue_freq_dist||[])[0]||[0,0])[1], up=S.unique_places_count||1;
+  const loyal=(S.venue_loyalty||[])[0];
+  const nk=S.nomad_kpis||{};
+  const tiles=[
+    ['Peak year',peak[0],n(peak[1])+' check-ins'],
+    ['Longest streak',n(S.longest_streak)+' days','current: '+n(S.current_streak)+' days'],
+    ['Weekend share',(dow.length?Math.round(100*(dow[5]+dow[6])/sum(dow)):0)+'%','of all check-ins fall on Sat–Sun'],
+    ['Busiest hour',ph+':00',n(hr[ph])+' check-ins in that hour'],
+    ['One-time places',Math.round(100*once/up)+'%',n(once)+' of '+n(up)+' visited once'],
+    ['Around the Earth',((S.total_km||0)/40075).toFixed(1)+'×',n(S.total_km)+' km between check-ins'],
+    ['Days away',(nk.nomad_pct||0)+'%',n(nk.nomad_days)+' days away from home'],
+    ['Most loyal',loyal?loyal[0]:'—',loyal?(loyal[2]||[]).length+' different years · '+(loyal[1]||''):''],
+  ];
+  const esc2=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  document.getElementById('insGrid').innerHTML=tiles.map(([a,b,c])=>'<div class="ins"><span>'+a+'</span><b title="'+esc2(b)+'">'+esc2(b)+'</b><small>'+esc2(c)+'</small></div>').join('');
+  document.getElementById('phEyebrow').textContent='Statistics · '+(S.date_min||'').slice(0,4)+' – '+(S.date_max||'').slice(0,4);
+  document.getElementById('phTitle').innerHTML=n(S.total)+' check-ins, <em>the patterns</em>';
+  const grid=document.getElementById('statGrid'), tabs=[...document.querySelectorAll('#stTabs button')];
+  tabs.forEach(b=>{const k=b.dataset.t;const c=[...grid.querySelectorAll('.card')].filter(x=>(x.dataset.tab||'').split(' ').includes(k)).length;if(k!=='overview')b.insertAdjacentHTML('beforeend','<b>'+c+'</b>');});
+  function show(k){
+    if(!tabs.some(b=>b.dataset.t===k)) k='overview';
+    grid.dataset.active=k;
+    tabs.forEach(b=>b.classList.toggle('on',b.dataset.t===k));
+    document.getElementById('insGrid').hidden=k!=='overview';
+    buildDeferred(k);
+    // a chart that was built in a card hidden by another tab keeps a stale size: re-measure
+    requestAnimationFrame(()=>{ Object.values(_Chart.instances||{}).forEach(c=>{ try{ c.resize(); }catch(e){} }); });
+  }
+  window.addEventListener('hashchange',()=>show((location.hash||'').slice(1)));
+  window.addEventListener('load',()=>show(grid.dataset.active));
+  tabs.forEach(b=>b.onclick=()=>{history.replaceState(null,'','#'+b.dataset.t);show(b.dataset.t);
+    const top=document.getElementById('stTabs').getBoundingClientRect().top+scrollY;if(scrollY>top)scrollTo({top:top});});
+  show((location.hash||'').slice(1));
+})();
 </script>
 <nav class="side-nav" aria-label="Page shortcuts">
   <a href="index.html"><span class="sn-icon">🏠</span><span class="sn-lbl">HOME</span></a>
@@ -1266,6 +1524,9 @@ document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key
   <a href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">TOTAL PLACES</span></a>
   <a href="companions.html"><span class="sn-icon">👥</span><span class="sn-lbl">WITH</span></a>
   <a class="active" href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <a href="compare.html"><span class="sn-icon">⚖️</span><span class="sn-lbl">COMPARE</span></a>
+  <a href="life.html"><span class="sn-icon">🧬</span><span class="sn-lbl">LIFE</span></a>
+
   <div class="sn-sep"></div>
   <button id="snThemeToggle"><span class="sn-icon" id="snThemeIcon">☀️</span><span class="sn-lbl" id="snThemeLbl">LIGHT</span></button>
 </nav>

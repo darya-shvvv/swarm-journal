@@ -1,0 +1,287 @@
+{
+  "_comment": "venue_id -> the category this venue is GROUPED as (stats groups, category explorer, month buckets) when Foursquare's category is the wrong kind of place. Pages still show Foursquare's own category; checkins.csv is untouched. The category must be listed in categories.json. Keys starting with _ are ignored.",
+  "4f7ae16ae4b00fc6db0ec224": {
+    "category": "Supermarket",
+    "_note": "Суперпрод, Minsk — corner grocery; Foursquare: Department Store"
+  },
+  "4bb9bdaf1261d13a77cce998": {
+    "category": "Supermarket",
+    "_note": "Универсам Центральный, Minsk — Foursquare: Department Store"
+  },
+  "4fa67e20e4b02443376ee29b": {
+    "category": "Supermarket",
+    "_note": "ДорОрс, Minsk — Foursquare: Food and Beverage Retail"
+  },
+  "5d909c17be01240008395602": {
+    "category": "Grocery Store",
+    "_note": "Продукты «Провиантъ», Minsk — Foursquare: Food and Beverage Retail"
+  },
+  "5ffc14c30ee49705b1924d25": {
+    "category": "Grocery Store",
+    "_note": "Alimentara Filletti Famiglia, Chișinău — Foursquare: Food and Beverage Retail"
+  },
+  "4f7ae386e4b0e204105ee5b5": {
+    "category": "Cosmetics Store",
+    "_note": "Остров чистоты, Minsk — household goods, grouped like Мила; Foursquare: Food and Beverage Retail"
+  },
+  "52257f7f11d22e7332eb291f": {
+    "category": "High School",
+    "_note": "Средняя школа № 101, Minsk — Foursquare: Education"
+  },
+  "5128d4e3e4b0fd965c698e57": {
+    "category": "Bus Line",
+    "_note": "Троллейбус № 9, Minsk — Foursquare: Moving Target"
+  },
+  "53fb29ab498ecdca25469c20": {
+    "category": "Bus Line",
+    "_note": "autobus Gródek–Białystok — Foursquare: Moving Target"
+  },
+  "4fc74c70e4b0b4b93fa33a23": {
+    "category": "Rail Station",
+    "_note": "Чыгуначныя касы / railway ticket office, Minsk — Foursquare: Travel and Transportation"
+  },
+  "647aba240939d22cc2a0305a": {
+    "category": "Vacation Rental",
+    "_note": "NEU Suites — a stay (accommodation); Foursquare: Apartment or Condo"
+  },
+  "5e22d904d7da7600081a0b76": {
+    "category": "Restaurant",
+    "_note": "Amelie, Minsk — a restaurant; Foursquare: Café"
+  },
+  "51aa4460498ecfbbd9bf0d76": {
+    "category": "Language School",
+    "_note": "Casa Germană „Hoffnung”, Chișinău — German courses (like the Goethe-Institut); Foursquare: Non-Profit Organization"
+  },
+  "4e6a35c47d8b143eb6ff5b51": {
+    "category": "Language School",
+    "_note": "Fialta, Minsk — NGO, English-speaking clubs; Foursquare: Non-Profit Organization"
+  },
+  "5acf45d9805e3f14950c51a4": {
+    "category": "Coffee Shop",
+    "_note": "Фан Ежа, Minsk — a coffee place (Andrei, 2026-10-27); Foursquare: Café"
+  },
+  "62e3d56c285ccd7a66049152": {
+    "category": "Coffee Shop",
+    "_note": "Cups Coffee Bar, Minsk — a coffee place (Andrei, 2026-10-27); Foursquare: Café"
+  },
+  "591dbd3e78782c021a8749f2": {
+    "category": "Coffee Shop",
+    "_note": "Took Cafe&Bar, Minsk — a coffee place (Andrei, 2026-10-27); Foursquare: Café"
+  },
+  "5b7d910167e5f2002cbaa676": {
+    "category": "Coffee Shop",
+    "_note": "Muffin, Minsk — a coffee place (Andrei, 2026-10-27); Foursquare: Café"
+  },
+  "56acd13b498e66c887297ff8": {
+    "category": "Coffee Shop",
+    "_note": "LiteraCafe, Warsaw — a coffee place (Andrei, 2026-10-27); Foursquare: Café"
+  },
+  "662d9b7c36eb7f7f6f34217c": {
+    "category": "Coffee Shop",
+    "_note": "Amor Amar, Chișinău — a coffee place (Andrei, 2026-10-27); Foursquare: Café"
+  },
+  "606b4190947dd43c98b6fe09": {
+    "category": "Coffee Shop",
+    "_note": "Кофейня «М», Minsk — a coffee place (Andrei, 2026-10-27); Foursquare: Café"
+  },
+  "5cc24bf5135b39002c8ab20e": {
+    "category": "Bar",
+    "_note": "Taxi Blues Café, Chișinău — a bar; Foursquare: Café"
+  },
+  "4c2788053703d13ac71da736": {
+    "category": "Supermarket",
+    "_note": "Белмаркет — category audit 2026-10-27"
+  },
+  "4f609621e4b0ae6370e9f17d": {
+    "category": "Supermarket",
+    "_note": "Белмаркет — category audit 2026-10-27"
+  },
+  "5b0d0b0a464d65002cb72e07": {
+    "category": "Supermarket",
+    "_note": "Белмаркет — category audit 2026-10-27"
+  },
+  "50eed860e4b0e2ef7df87113": {
+    "category": "Supermarket",
+    "_note": "Златка — category audit 2026-10-27"
+  },
+  "5e312f7a85c13800072b5be0": {
+    "category": "Supermarket",
+    "_note": "Евроопт Market — category audit 2026-10-27"
+  },
+  "4e802337775ba0652803e5f5": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "4eabcef17ee5cd8bce08cb8a": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "5c1f7e6a75dcb7002c73ca61": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "597870f7065ef5628a6e0b73": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "5a8540244c9be611980875c1": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "54f6d6b5498e1ed2771066f8": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "54280daa498e05dee5b6b3b0": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "57531463cd10585cbd69b444": {
+    "category": "Supermarket",
+    "_note": "ВИТАЛЮР — category audit 2026-10-27"
+  },
+  "4ea68947dab44fef9196dba1": {
+    "category": "Supermarket",
+    "_note": "Магазин ДорОрс — category audit 2026-10-27"
+  },
+  "5be44c23475abd00390dfb43": {
+    "category": "Doner Restaurant",
+    "_note": "Doner King — category audit 2026-10-27"
+  },
+  "6913ba91b30d223c5e1be981": {
+    "category": "Fast Food Restaurant",
+    "_note": "Today Street Food — category audit 2026-10-27"
+  },
+  "5d652bd4e4330c0008608683": {
+    "category": "Kebab Restaurant",
+    "_note": "Kebab Factory — category audit 2026-10-27"
+  },
+  "503694cce4b0e43b9b4ff799": {
+    "category": "Doner Restaurant",
+    "_note": "Ali Doner Kebab — category audit 2026-10-27"
+  },
+  "65806f4ae5a1b34a37af233e": {
+    "category": "Burger Joint",
+    "_note": "Burgeryyy Downtown — category audit 2026-10-27"
+  },
+  "5648bfe438fac54948270519": {
+    "category": "Coffee Shop",
+    "_note": "Buno Cafe — category audit 2026-10-27"
+  },
+  "4d7a0e9fceaa224b514f0371": {
+    "category": "Language School",
+    "_note": "Институт Гёте / Goethe-Institut Minsk — category audit 2026-10-27"
+  },
+  "5617a971498ec6b932bafedf": {
+    "category": "Social Services Organization",
+    "_note": "ТЦСОН Советского Района — category audit 2026-10-27"
+  },
+  "4f58ddace4b0cd6f8d39136c": {
+    "category": "Airport Service",
+    "_note": "Passport Control - Vama Leușeni — was Police Station; category audit 2026-10-27"
+  },
+  "4f8c2659e4b01f95a5602621": {
+    "category": "Airport Service",
+    "_note": "Passport Control — was Police Station; category audit 2026-10-27"
+  },
+  "5726cc25498e3188aaf1c0c2": {
+    "category": "Airport Service",
+    "_note": "Security Check (Sikkerhetskontrollen) — was Airport; category audit 2026-10-27"
+  },
+  "523dd50e11d22fddb7ec9563": {
+    "category": "Airport Service",
+    "_note": "Security Check — was Travel and Transportation; category audit 2026-10-27"
+  },
+  "4e26c034c65bb6120fce4104": {
+    "category": "Airport Service",
+    "_note": "Security Check Point KLIA — was Airport; category audit 2026-10-27"
+  },
+  "5ba6c7cbfebf31002ca33705": {
+    "category": "Airport Service",
+    "_note": "Security Control — was Travel and Transportation; category audit 2026-10-27"
+  },
+  "4e8735ab82310ce11ea40df3": {
+    "category": "Airport Service",
+    "_note": "Security Check — was Security and Safety; category audit 2026-10-27"
+  },
+  "4e230c93483b041af1fcab52": {
+    "category": "Bike Trail",
+    "_note": "Южный конец велодорожки — a bike path; Foursquare: Other Great Outdoors"
+  },
+  "4f956b49e4b0f08d4183e58b": {
+    "category": "Bike Trail",
+    "_note": "Северный конец велодорожки — a bike path; Foursquare: Other Great Outdoors"
+  },
+  "51813317498e726110882bf3": {
+    "category": "Bike Trail",
+    "_note": "велодорожка парк горького — a bike path; Foursquare: Sports and Recreation"
+  },
+  "528da68211d26c9d1f0584b8": {
+    "category": "Bike Trail",
+    "_note": "Червенский парк. Велодорожка — a bike path; Foursquare: Sports and Recreation"
+  },
+  "5198d328498e27277428ff1c": {
+    "category": "Bike Trail",
+    "_note": "Велодорожка — a bike path; Foursquare: Sports and Recreation"
+  },
+  "4f9cecd2e4b0e5be401dfde1": {
+    "category": "Bike Trail",
+    "_note": "Велодорожка — a bike path; Foursquare: Sports and Recreation"
+  },
+  "656a219755ebd70fd09dc2ec": {
+    "category": "Coffee Shop",
+    "_note": "Осмоловка кафе — кофейня (Андрей, 2026-10-28)"
+  },
+  "5dc1d542dede090008ad3b3c": {
+    "category": "Burger Joint",
+    "_note": "Ukusno — бургерная-ресторан, как вторая точка Ukusno (2026-10-28)"
+  },
+  "5319822f498eebad1930aea8": {
+    "category": "Fast Food Restaurant",
+    "_note": "Hardee's — сетевой фастфуд, не бургерная-ресторан (2026-10-28)"
+  },
+  "56e44c44498efa4a882a27c0": {
+    "category": "Doner Restaurant",
+    "_note": "Донер Ролл — донерная, не бургерная (2026-10-28)"
+  },
+  "5341166a498eba41267e871a": {
+    "category": "Doner Restaurant",
+    "_note": "Mesopotamia (Galați) — сеть донерных, как остальные Mesopotamia (2026-10-28)"
+  },
+  "4e91d87c8231d8feae864da0": {
+    "category": "Bath House",
+    "_note": "Лазня — баня, не бассейн (Андрей, 2026-10-28)"
+  },
+  "640229505f8e0750004f5ee5": {
+    "category": "Spa",
+    "_note": "Hygge Massage Studio — к спа и баням (Андрей, 2026-10-28)"
+  },
+  "4fac0243e4b006e8b38bc8f6": {
+    "category": "Fountain",
+    "_note": "Фонтан Дружба в Гродно — фонтан, не аквапарк (Андрей, 2026-10-28)"
+  },
+  "57e3fc3438fac979ce7007c8": {
+    "category": "Bar",
+    "_note": "Aleponija — бар (Андрей, 2026-10-28)"
+  },
+  "5dcbe05e602c61000800d605": {
+    "category": "Fast Food Restaurant",
+    "_note": "Юджын Крабс — суши-точка, фастфуд (Андрей, 2026-10-28)"
+  },
+  "67fd4b4997f60f140fd7c427": {
+    "category": "Fast Food Restaurant",
+    "_note": "Юджын Крабс — суши-точка, фастфуд (Андрей, 2026-10-28)"
+  },
+  "4e4ecccbaeb70f12849771cc": {
+    "category": "Hookah Bar",
+    "_note": "Mojito — кальянная (Андрей, 2026-10-28)"
+  },
+  "58a972779ab66342211f29b4": {
+    "category": "Hookah Bar",
+    "_note": "Mojito — кальянная (Андрей, 2026-10-28)"
+  },
+  "56927668498e8445d632fff1": {
+    "category": "Hostel",
+    "_note": "Lima Sol House — хостел, не Assisted Living (Андрей, 2026-10-28)"
+  }
+}

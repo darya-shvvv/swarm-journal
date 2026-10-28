@@ -20,7 +20,7 @@ trip_detection:
 dashboard:
   title: "Check-in Journal"
   subtitle_source: "Foursquare"
-  foursquare_user_id: "29447180"
+  foursquare_user_id: "1413067054"
 
 # CARTO basemap key (free, non-commercial: https://carto.com/basemaps/apikey).
 # Public by design — it ships in every page — and domain-restricted at CARTO

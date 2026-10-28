@@ -161,6 +161,31 @@ header h1{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;
 .no-anchor h2{font-size:1.2rem;color:var(--text);margin-bottom:10px;}
 .no-anchor p{font-size:.82rem;line-height:1.6;}
 .no-anchor button{margin-top:18px;padding:9px 18px;border-radius:8px;background:rgba(78,201,196,.10);border:1px solid var(--teal);color:var(--teal);font-size:.78rem;cursor:pointer;font-family:inherit;}
+/* ── 2026 refresh: sunset gradient, pill controls, map-first on phones ── */
+header{border-bottom:none;margin-bottom:8px;}
+header h1{font-size:2.4rem;background:linear-gradient(150deg,#f6d38b 0%,#ff9a6b 55%,#ff6fae 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero{background:radial-gradient(ellipse at 0% 0%,rgba(246,211,139,.16),transparent 55%),radial-gradient(ellipse at 100% 100%,rgba(255,111,174,.12),transparent 55%),var(--card);border:1px solid rgba(255,154,107,.3);border-radius:22px;padding:20px 24px;}
+.hero-anchor-lbl{color:#ff9a6b;}
+.hero-venue{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;}
+.hero-btn{border-radius:999px;padding:7px 13px;}
+.hero-btn:hover{border-color:#ff9a6b;color:#ff9a6b;}
+.discover-card{border-radius:22px;}
+.dc-head h2{color:#ff9a6b;}
+.map-pane{height:440px;}
+.rec-pill{border-color:rgba(255,154,107,.45);background:rgba(255,154,107,.08);color:#ffb38f;}
+.rec-pill:hover,.rec-pill.active{background:rgba(255,154,107,.2);border-color:#ff9a6b;color:#ffc7a8;}
+.cat-group{border-radius:12px;}
+.cat-group-h:hover,.cat-group.open .cat-group-h{background:rgba(255,154,107,.08);}
+.cgcount{color:#ffb38f;background:rgba(255,154,107,.12);}
+.cat-pill.active{background:rgba(255,154,107,.18);border-color:#ff9a6b;color:#ffc7a8;}
+.toggle-btn.active{background:rgba(255,154,107,.15);border-color:#ff9a6b;color:#ffc7a8;}
+.radius-slider input{accent-color:#ff9a6b;}
+.radius-display{color:#ffb38f;}
+.nb-item{border-radius:12px;}
+.nb-item:hover,.nb-item.hover{border-color:rgba(255,154,107,.5);background:rgba(255,154,107,.05);}
+.nb-item .dist{color:#ffb38f;}
+@media(max-width:900px){.right{order:-1;}.map-pane{height:320px;}.list-pane{max-height:none;}.layout{display:flex;flex-direction:column;}}
+@media(max-width:600px){header h1{font-size:1.9rem;}.hero{padding:16px;border-radius:18px;}.hero-venue{font-size:1.35rem;}.discover-card{border-radius:18px;}}
 </style>
 </head>
 <body>
@@ -193,6 +218,8 @@ header h1{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;
   <a href="world_cities.html"><span class="sn-icon">🌐</span><span class="sn-lbl">WORLD</span></a>
   <a href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">VENUES</span></a>
   <a href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <a href="compare.html"><span class="sn-icon">⚖️</span><span class="sn-lbl">COMPARE</span></a>
+  <a href="life.html"><span class="sn-icon">🧬</span><span class="sn-lbl">LIFE</span></a>
   <a href="guide.html" class="active"><span class="sn-icon">🧭</span><span class="sn-lbl">GUIDE</span></a>
 </nav>
 
@@ -416,8 +443,8 @@ function renderDiscover() {
       return `<button class="${cls.join(' ')}" data-cat="${esc(cat)}">${isLiked ? '<span class="heart">❤</span>' : ''}${esc(cat)}${n ? `<span class="cat-pill-count">${n}</span>` : ''}</button>`;
     }).join('');
 
-    const cgIcon = ({ 'Food & Drink': '🍽️', 'Transport': '🚉', 'Culture & Sights': '🎭', 'Nature & Outdoors': '🌿', 'Shopping': '🛍️', 'Home & Office': '🏢', 'Hotels & Lodging': '🏨', 'Sport & Fitness': '💪' })[groupName] || '📌';
-    return `<div class="cat-group${hasLiked ? ' open' : ''}" data-group="${esc(groupName)}">
+    const cgIcon = ({ 'Food & Drink': '🍽️', 'Transport': '🚉', 'Culture & Sights': '🎭', 'Nature & Outdoors': '🌿', 'Shopping': '🛍️', 'Home & Office': '🏢', 'Hotels & Lodging': '🏨', 'Sport & Fitness': '💪', 'Streets & Areas': '🛣️', 'Services & Civic': '🏛️', 'Education': '🎓', 'Nightlife': '🍸' })[groupName] || '📌';
+    return `<div class="cat-group${hasLiked && innerWidth > 900 ? ' open' : ''}" data-group="${esc(groupName)}">
       <button class="cat-group-h">
         <span class="cgi">${cgIcon}</span>
         <span class="cgn">${hasLiked ? '<span class="cgliked">❤</span>' : ''}${esc(groupName)}</span>
@@ -552,13 +579,25 @@ function moveAnchor(lat, lng, label, sourceTag) {
 }
 
 // ── Overpass fetch ────────────────────────────────────────────────────────
+// Checked 2026-10-26: overpass-api.de is often 502/504 under load (its error
+// pages carry no CORS header, so the browser logs a CORS failure); the VK
+// mirror answers with CORS; kumi.systems is slow; openstreetmap.fr answers 403
+// to browsers, so it is gone.
 const ENDPOINTS = [
   'https://overpass-api.de/api/interpreter',
+  'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
-  'https://overpass.openstreetmap.fr/api/interpreter',
 ];
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
+// The mirror that answered last goes first next time (overpass-api.de spends
+// whole days at 502/504, and each failed try costs a CORS error + a round trip).
+const EP_KEY = 'guide-overpass-ep';
+function endpointsInOrder() {
+  let last = '';
+  try { last = localStorage.getItem(EP_KEY) || ''; } catch (e) {}
+  return ENDPOINTS.includes(last) ? [last, ...ENDPOINTS.filter(e => e !== last)] : ENDPOINTS;
+}
 
 async function overpassFetch(tags, abortSignal, onStatus) {
   const cacheK = cacheKey(state.anchor.lat, state.anchor.lng, state.radius, tags);
@@ -577,26 +616,39 @@ async function overpassFetch(tags, abortSignal, onStatus) {
   // Overpass mirrors are frequently rate-limited (429) or overloaded (504).
   // Sweep all endpoints, then retry the whole sweep with backoff before giving
   // up — the caller shows a "busy, retrying…" state rather than a dead end.
-  const ROUNDS = 3;
+  // A mirror that accepts the connection and then never answers (seen 2026-10-27,
+  // every mirror "at capacity") used to hang the search forever: each attempt
+  // gets its own timeout, the whole sweep a deadline, then the caller falls back
+  // to your own visited places.
+  const ROUNDS = 3, PER_TRY_MS = 9000, DEADLINE = Date.now() + 30000;
   const promise = (async () => {
     let lastErr;
     for (let round = 0; round < ROUNDS; round++) {
-      for (const ep of ENDPOINTS) {
+      for (const ep of endpointsInOrder()) {
         if (abortSignal && abortSignal.aborted) throw new DOMException('aborted', 'AbortError');
+        if (Date.now() > DEADLINE) throw lastErr || new Error('Overpass timed out');
+        const tryCtrl = new AbortController();
+        const onAbort = () => tryCtrl.abort();
+        if (abortSignal) abortSignal.addEventListener('abort', onAbort, { once: true });
+        const timer = setTimeout(() => tryCtrl.abort(), PER_TRY_MS);
         try {
           const r = await fetch(ep, {
             method: 'POST',
             body: 'data=' + encodeURIComponent(query),
-            signal: abortSignal,
+            signal: tryCtrl.signal,
           });
           if (!r.ok) { lastErr = new Error('HTTP ' + r.status); continue; }
           const d = await r.json();
+          try { localStorage.setItem(EP_KEY, ep); } catch (e) {}
           const els = d.elements || [];
           idbSet(cacheK, { t: Date.now(), v: els });
           return els;
         } catch (e) {
-          if (e.name === 'AbortError') throw e;
-          lastErr = e;
+          if (abortSignal && abortSignal.aborted) throw e;
+          lastErr = e.name === 'AbortError' ? new Error('timeout ' + ep) : e;
+        } finally {
+          clearTimeout(timer);
+          if (abortSignal) abortSignal.removeEventListener('abort', onAbort);
         }
       }
       if (round < ROUNDS - 1) {

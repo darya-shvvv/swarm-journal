@@ -36,9 +36,16 @@ Fields updated per matching row in checkins.csv:
 Fields updated per matching tip in tips.json (auto-detected next to CSV):
     venue, venue_id (if --new-venue-id), city, country, lat, lng, category
 
+Fields updated per matching entry in venueRatings.json (pass --ratings):
+    name, url, id (if --new-venue-id)
+
 Fields never touched:
     date, shout, source_app, source_url, with_name, with_id (CSV)
-    id, ts, text, agree_count, disagree_count, closed (tips)
+    id, ts, text, agree_count, disagree_count (tips)
+    rating, createdAt (venueRatings)
+
+Optional:
+    --closed   Set closed=True on all matching tips (venue has permanently closed)
 """
 from __future__ import annotations
 
@@ -136,6 +143,8 @@ def main() -> None:
     parser.add_argument("--venue-id",     required=True,               help="Venue ID to find in CSV")
     parser.add_argument("--new-venue-id", default="",                  help="If merged: fetch info from this ID and update venue_id in CSV")
     parser.add_argument("--tips",         default="",                  help="Path to tips.json (default: auto-detect next to CSV)")
+    parser.add_argument("--ratings",      default="",                  help="Path to venueRatings.json (optional)")
+    parser.add_argument("--closed",       action="store_true",         help="Mark all matching tips as closed=True")
     parser.add_argument("--dry-run",      action="store_true",         help="Show what would change without writing")
     args = parser.parse_args()
 
@@ -218,6 +227,8 @@ def main() -> None:
                 "lng":      round(float(patch["lng"]), 5) if patch["lng"] else None,
                 "category": patch["category"],
             }
+            if args.closed:
+                tip_patch["closed"] = True
             for t in tips:
                 if t.get("venue_id", "") != old_venue_id:
                     continue
@@ -228,15 +239,13 @@ def main() -> None:
 
     if changed == 0:
         log.info("Nothing changed — CSV not written.")
-        return
-
-    # ── Write updated CSV ─────────────────────────────────────────────────────
-    with open(csv_path, "w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=FIELDS, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
-
-    log.info("Saved %s (%d total rows, %d updated).", csv_path, len(rows), changed)
+    else:
+        # ── Write updated CSV ─────────────────────────────────────────────────
+        with open(csv_path, "w", encoding="utf-8", newline="") as fh:
+            writer = csv.DictWriter(fh, fieldnames=FIELDS, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+        log.info("Saved %s (%d total rows, %d updated).", csv_path, len(rows), changed)
 
     # ── Patch tips.json (auto-detected next to checkins.csv) ─────────────────
     tips_path = Path(args.tips) if args.tips else csv_path.parent / "tips.json"
@@ -252,6 +261,8 @@ def main() -> None:
         "lng":      round(float(patch["lng"]), 5) if patch["lng"] else None,
         "category": patch["category"],
     }
+    if args.closed:
+        tip_patch["closed"] = True
     tips_changed = 0
     for t in tips:
         if t.get("venue_id", "") != old_venue_id:
@@ -267,6 +278,42 @@ def main() -> None:
         log.info("Saved %s (%d tip(s) updated).", tips_path, tips_changed)
     else:
         log.info("No matching tips found in %s.", tips_path)
+
+    # ── Patch venueRatings.json ───────────────────────────────────────────────
+    ratings_path = Path(args.ratings) if args.ratings else None
+    if not ratings_path or not ratings_path.exists():
+        return
+    ratings = json.loads(ratings_path.read_text(encoding="utf-8"))
+    new_vid = patch["venue_id"]
+    new_name = patch["venue"]
+    new_url = patch["venue_url"]
+    ratings_changed = 0
+    for bucket in ("venueLikes", "venueOkays", "venueDislikes"):
+        for entry in ratings.get(bucket) or []:
+            if str(entry.get("id", "")) != old_venue_id:
+                continue
+            rdiffs: dict[str, tuple] = {}
+            if entry.get("name") != new_name:
+                rdiffs["name"] = (entry.get("name"), new_name)
+                entry["name"] = new_name
+            if entry.get("url") != new_url:
+                rdiffs["url"] = (entry.get("url"), new_url)
+                entry["url"] = new_url
+            if new_venue_id and str(entry.get("id", "")) != new_vid:
+                rdiffs["id"] = (entry.get("id"), new_vid)
+                entry["id"] = new_vid
+            if rdiffs:
+                ratings_changed += 1
+                for field, (old_val, new_val) in rdiffs.items():
+                    log.info("  rating [%s]  %s: %r → %r", bucket, field, old_val, new_val)
+    if ratings_changed:
+        if not args.dry_run:
+            ratings_path.write_text(json.dumps(ratings, ensure_ascii=False, indent=2), encoding="utf-8")
+            log.info("Saved %s (%d rating entry(ies) updated).", ratings_path, ratings_changed)
+        else:
+            log.info("Dry run — venueRatings.json not written (%d change(s)).", ratings_changed)
+    else:
+        log.info("No matching rating entry in %s.", ratings_path)
 
 
 if __name__ == "__main__":

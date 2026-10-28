@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Check-in Journal — Foursquare Dashboard</title>
-<meta name="description" content="Personal Foursquare check-in dashboard: 65,000+ check-ins across {{COUNTRIES}} countries and 838 cities, with interactive maps, trip journal, venue stats and analytics.">
+<meta name="description" content="Personal Foursquare check-in dashboard: {{CHECKINS_PLUS}} check-ins across {{COUNTRIES}} countries and 838 cities, with interactive maps, trip journal, venue stats and analytics.">
 <link rel="canonical" href="https://swarm-journal.pages.dev/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Check-in Journal">
 <meta property="og:title" content="Check-in Journal — Foursquare Dashboard">
-<meta property="og:description" content="Personal Foursquare check-in dashboard: 65,000+ check-ins across {{COUNTRIES}} countries and 838 cities, with interactive maps, trip journal, venue stats and analytics.">
+<meta property="og:description" content="Personal Foursquare check-in dashboard: {{CHECKINS_PLUS}} check-ins across {{COUNTRIES}} countries and 838 cities, with interactive maps, trip journal, venue stats and analytics.">
 <meta property="og:url" content="https://swarm-journal.pages.dev/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Check-in Journal — Foursquare Dashboard">
-<meta name="twitter:description" content="Personal Foursquare check-in dashboard: 65,000+ check-ins across {{COUNTRIES}} countries and 838 cities, with interactive maps, trip journal, venue stats and analytics.">
+<meta name="twitter:description" content="Personal Foursquare check-in dashboard: {{CHECKINS_PLUS}} check-ins across {{COUNTRIES}} countries and 838 cities, with interactive maps, trip journal, venue stats and analytics.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="Check-in Journal — recent check-ins" href="/feed.xml">
 <link rel="alternate" type="application/feed+json" title="Check-in Journal — recent check-ins" href="/feed.json">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Check-in Journal","url":"https://swarm-journal.pages.dev/","description":"Personal Foursquare check-in dashboard tracking 65,000+ check-ins across {{COUNTRIES}} countries."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Check-in Journal","url":"https://swarm-journal.pages.dev/","description":"Personal Foursquare check-in dashboard tracking {{CHECKINS_PLUS}} check-ins across {{COUNTRIES}} countries."}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -219,6 +219,9 @@ a.ci-count:hover{color:var(--gold);text-decoration:underline;}
 /* ── TRIPS LINK ── */
 .trips-link-card{display:flex;align-items:center;justify-content:space-between;padding:20px 26px;background:linear-gradient(135deg,#12151f 0%,#1a1f30 100%);border:1px solid var(--border);border-radius:14px;cursor:pointer;text-decoration:none;transition:border-color 0.2s;}
 .trips-link-card:hover{border-color:var(--gold);}
+.tlc-pair{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-self:start;}
+@media(max-width:1100px){.tlc-pair{grid-template-columns:1fr 1fr 1fr;gap:12px;}.tlc-pair .trips-link-card{padding:16px 14px;}}
+@media(max-width:700px){.tlc-pair{grid-template-columns:1fr;gap:14px;}}
 .tlc-left{display:flex;flex-direction:column;gap:4px;}
 .tlc-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:var(--gold);line-height:1;}
 .tlc-label{font-family:'DM Mono',monospace;font-size:0.60rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);}
@@ -484,6 +487,50 @@ a.ci-count:hover{color:var(--gold);text-decoration:underline;}
   .kpi .lbl{font-size:.54rem;}
   .recent-section{padding:0 10px 20px;}
 }
+/* ── 2026 refresh: the sunset palette of the year/years/country pages, laid over
+   the existing layout — markup and scripts are untouched ── */
+:root{--sun:linear-gradient(135deg,#f6d38b 0%,#ff9a6b 55%,#ff6fae 100%);--coral:#ff9a6b;--coral-soft:#ffb38f;}
+body.light{--sun:linear-gradient(135deg,#a8661a 0%,#c4552d 55%,#b8336a 100%);--coral:#b4502a;--coral-soft:#a4482a;}
+header h1{background:var(--sun);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi .num{background:var(--sun);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.recent-title,.card-title{color:var(--coral);}
+.card{border-radius:22px;}
+.card::after{background:linear-gradient(90deg,transparent,#f6d38b,#ff6fae,transparent);opacity:.3;}
+.recent-card{border-radius:18px;}
+.recent-card::after{background:linear-gradient(90deg,transparent,#f6d38b,#ff6fae,transparent);}
+.recent-card:hover,.photo-card:hover,.year-rc-card:hover{border-color:var(--coral);}
+.rc-map{border-radius:18px 18px 0 0;}
+.otd-chip:hover{border-color:var(--coral);}
+.otd-chip.active,.tab.active,.sort-btn.active{background:var(--sun);border-color:transparent;color:#1a0e0a;}
+body.light .otd-chip.active,body.light .tab.active,body.light .sort-btn.active{color:#fff;}
+.sort-btn:hover:not(.active){background:transparent;color:var(--coral);border-color:var(--coral);}
+.photo-card{border-radius:16px;}
+.flight-rc-card{border-radius:18px;}
+.yr-rc-num{background:var(--sun);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.yr-rc-cta{color:var(--coral);}
+.bar-row .fill{background:linear-gradient(90deg,#f6d38b,#ff9a6b,#ff6fae);}
+.country-item{border-radius:12px;}
+.country-group-name{color:var(--coral);}
+.search-box{border-radius:999px;padding:9px 16px;}
+.search-box:focus{border-color:var(--coral);}
+/* one gutter for header, strips and cards below tablet width; on phones the
+   header buttons get their own row instead of sitting on the title */
+@media(max-width:900px){header{padding-left:14px;padding-right:14px;}.recent-section{padding-left:14px;padding-right:14px;}.grid{padding-left:14px;padding-right:14px;}}
+@media(max-width:600px){header{padding-top:52px;}}
+/* phones (and enlarged system fonts): columns sized in rem so a 3-digit rank or a
+   long IATA route never runs into its neighbour */
+@media(max-width:600px){
+  .bar-row{grid-template-columns:1.9rem minmax(0,1fr) 3.4rem 3rem;gap:4px;}
+  .bar-row .rank{text-align:left;}
+  .country-item{gap:6px;padding:8px 10px;}
+  .ci-rank{width:auto;min-width:1.3rem;}
+  .fl-rc-head{gap:8px;min-width:0;}
+  .fl-rc-logo,.fl-rc-logo-fallback{width:30px;height:30px;}
+  .fl-rc-route{font-size:.95rem;gap:4px;min-width:0;white-space:nowrap;}
+  .card-title{letter-spacing:.12em;gap:4px 8px;}
+  .recent-header{flex-wrap:wrap;row-gap:2px;}
+  .recent-title{letter-spacing:.14em;}
+}
 </style>
 </head>
 <body>
@@ -733,6 +780,16 @@ a.ci-count:hover{color:var(--gold);text-decoration:underline;}
     </div>
     <div class="tlc-arrow">📊</div>
   </a>
+  <div class="tlc-pair">
+    <a class="trips-link-card" href="compare.html">
+      <div class="tlc-left"><div class="tlc-label">Compare years →</div></div>
+      <div class="tlc-arrow">⚖️</div>
+    </a>
+    <a class="trips-link-card" href="life.html">
+      <div class="tlc-left"><div class="tlc-label">Life in Stripes →</div></div>
+      <div class="tlc-arrow">🧬</div>
+    </a>
+  </div>
 
   <div class="card full" id="s-map">
     <div class="card-title">Map <em>&middot;</em>
@@ -997,7 +1054,7 @@ function renderExplorer(cat){
   const data=explorerData[cat]||[];
   const max=data.length?data[0][2]:1;
   document.getElementById('explorerList').innerHTML=data.map(([name,city,count,vid],i)=>{
-    const vname=vid?`<a href="https://foursquare.com/v/${vid}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(name)}</a>`:esc(name);
+    const vname=vid?`<a href="/venue.html#${vid}" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(name)}</a>`:esc(name);
     return `<div class="bar-row">
       <span class="rank">#${i+1}</span>
       <span class="name" title="${esc(name)} · ${esc(city)}">${vname}<span class="city-tag">${esc(city||'')} </span></span>
@@ -1066,7 +1123,8 @@ function barList(id,data,opts){
   }).join('');
 }
 barList('citiesList',S.cities,{linkCity:true});
-barList('citiesPlacesList',S.cities_by_venues);
+// the hidden "by places" pane (~6k nodes) is built when its tab first opens
+let _cityPlacesBuilt=false;
 // event delegation: city count clicks
 document.getElementById('paneCityCheckins').addEventListener('click',function(e){
   const a=e.target.closest('a[data-filter-city]');
@@ -1078,7 +1136,7 @@ document.getElementById('paneCityCheckins').addEventListener('click',function(e)
 (function(){
   const data=S.venues, max=data[0][1];
   document.getElementById('venuesList').innerHTML=data.map(([n,c,city,vid],i)=>{
-    const vname=vid?`<a href="https://foursquare.com/v/${vid}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(n)}</a>`:esc(n);
+    const vname=vid?`<a href="/venue.html#${vid}" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(n)}</a>`:esc(n);
     return `<div class="bar-row" data-name="${n.toLowerCase().replace(/"/g,'')}${city?' '+city.toLowerCase():''}">
       <span class="rank">#${i+1}</span>
       <span class="name" title="${esc(n)}${city?' · '+esc(city):''}">  ${vname}<span class="city-tag">${esc(city||'')} </span></span>
@@ -1143,7 +1201,7 @@ function filterList(id,q){
   // ── Foursquare app URL ──
   function fsUrl(r){
     if(!r.venue_id) return null;
-    return `https://app.foursquare.com/v/${encodeURIComponent(r.venue.toLowerCase().replace(/\s+/g,'-'))}/${r.venue_id}`;
+    return `/venue.html#${r.venue_id}`;
   }
 
   // ── Category icons: emoji + vivid colour, 100% self-contained, no CDN ──
@@ -1162,7 +1220,7 @@ function filterList(id,q){
     const vUrl=fsUrl(r);
     // Use div+onclick to avoid nested <a> (card link + venue link both being <a>)
     const cardClick=swarmUrl?` onclick="window.open('${swarmUrl}','_blank')"`:' onclick=""';
-    const venueLink=vUrl?`<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(r.venue)||'Unknown venue'}</a>`:esc(r.venue)||'Unknown venue';
+    const venueLink=vUrl?`<a href="${vUrl}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(r.venue)||'Unknown venue'}</a>`:esc(r.venue)||'Unknown venue';
     const streak=r.venue_id&&venueCounts[r.venue_id]>1
       ? `<div class="rc-streak">🔁 ${venueCounts[r.venue_id]}×</div>` : '';
     const f=r.country?flagHtml(r.country,'1em'):'';
@@ -1228,9 +1286,9 @@ function filterList(id,q){
     years.length+(years.length===1?' year · ':' years · ')+(minY===maxY?maxY:minY+'–'+maxY);
   const card=(r,i)=>{
     const swarmUrl=r.checkin_id?`https://www.swarmapp.com/user/{{SWARM_USER_ID}}/checkin/${r.checkin_id}`:null;
-    const vUrl=r.venue_id?`https://foursquare.com/v/${r.venue_id}`:'';
+    const vUrl=r.venue_id?`/venue.html#${r.venue_id}`:'';
     const cardClick=swarmUrl?` onclick="window.open('${swarmUrl}','_blank')"`:'';
-    const venueLink=vUrl?`<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(r.venue)||'Unknown venue'}</a>`:esc(r.venue)||'Unknown venue';
+    const venueLink=vUrl?`<a href="${vUrl}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(r.venue)||'Unknown venue'}</a>`:esc(r.venue)||'Unknown venue';
     const f=r.country?flagHtml(r.country,'1em'):'';
     const locStr=[r.city,r.country].filter(Boolean).join(', ');
     const ago=r.origin?'✨ first ever':(r.years_ago===1?'1 year ago':r.years_ago+' years ago');
@@ -1294,7 +1352,7 @@ function filterList(id,q){
     const loc=[(t.nci||t.city),(t.nc||t.country)].filter(Boolean).join(', ');
     const closedBadge=t.closed?'<span class="rc-closed">CLOSED</span>':'';
     const agreeStr=t.agree_count>0?`👍 ${t.agree_count} · `:'';
-    const tipPhotoEl=t.photo?`<img class="tip-card-photo" src="${t.photo}" loading="lazy" alt="" onclick="event.stopPropagation();window.open('${t.photo}','_blank')" style="cursor:zoom-in;">`:'';
+    const tipPhotoEl=t.photo?`<img class="tip-card-photo" src="${pixT(t.photo)}" loading="lazy" alt="" onclick="event.stopPropagation();window.open('${t.photo}','_blank')" style="cursor:zoom-in;">`:'';
     return `<${tag}${href} class="recent-card tip-card" style="${tUrl?'text-decoration:none;cursor:pointer;':''}">
       ${tipPhotoEl}
       <div class="rc-venue-row"><div class="rc-venue">${esc(t.venue||'Unknown venue')}${closedBadge}</div>${catIcon(t.category||'')}</div>
@@ -1338,11 +1396,11 @@ function filterList(id,q){
   })();
   const scroll=document.getElementById('shoutsScroll');
   scroll.innerHTML=sh.items.map(s=>{
-    const vUrl=s.venue_id?`https://foursquare.com/v/${s.venue_id}`:'';
+    const vUrl=s.venue_id?`/venue.html#${s.venue_id}`:'';
     const swarmUrl=s.checkin_id?`https://www.swarmapp.com/user/{{SWARM_USER_ID}}/checkin/${s.checkin_id}`:'';
     const cardClick=swarmUrl?` onclick="window.open('${swarmUrl}','_blank')"`:'';
     const venueLink=vUrl
-      ? `<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(s.venue||'Unknown venue')}</a>`
+      ? `<a href="${vUrl}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(s.venue||'Unknown venue')}</a>`
       : esc(s.venue||'Unknown venue');
     const f=s.country?flagHtml(s.country):'';
     const loc=[s.city,s.country].filter(Boolean).join(', ');
@@ -1369,7 +1427,7 @@ function filterList(id,q){
 window._setAirlineLogo = function(img, iata) {
   if (!iata) { img.style.display='none'; const fb=img.nextElementSibling; if(fb)fb.style.display='inline-flex'; return; }
   const cdns = [
-    `https://images.kiwi.com/airlines/64/${iata}.png`,
+    `https://images.kiwi.com/airlines/64x64/${iata}.png`,
     `https://www.gstatic.com/flights/airline_logos/70px/${iata}.png`,
     `https://content.airhex.com/content/logos/airlines_${iata}_70_70_s.png`,
   ];
@@ -1479,11 +1537,11 @@ window._setAirlineLogo = function(img, iata) {
   document.addEventListener('keydown',e=>{if(!document.getElementById('rcGallery').classList.contains('open'))return;if(e.key==='ArrowLeft')rcgPrev();else if(e.key==='ArrowRight')rcgNext();else if(e.key==='Escape')rcgClose();});
 
   document.getElementById('photosScroll').innerHTML=photos.map((p,i)=>{
-    const vUrl=p.venue_id?`https://foursquare.com/v/${p.venue_id}`:'';
-    const venueEl=vUrl?`<a href="${vUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(p.venue)}</a>`:esc(p.venue);
+    const vUrl=p.venue_id?`/venue.html#${p.venue_id}`:'';
+    const venueEl=vUrl?`<a href="${vUrl}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='inherit'">${esc(p.venue)}</a>`:esc(p.venue);
     const badge=p.srcs.length>1?`<div class="photo-card-badge">+${p.srcs.length-1}</div>`:'';
     return `<div class="photo-card" onclick="rcgOpen(${i})">
-      <img src="${p.srcs[0]}" loading="lazy" alt="${esc(p.venue)}">
+      <img src="${pixT(p.srcs[0])}" loading="lazy" alt="${esc(p.venue)}">
       ${badge}
       <div class="photo-card-info">
         <div class="photo-card-venue">${venueEl}</div>
@@ -2186,6 +2244,7 @@ function buildCityMap(){
   window.switchCityTab=function(tab,el){
     document.getElementById('paneCityCheckins').style.display=tab==='checkins'?'':'none';
     document.getElementById('paneCityPlaces').style.display=tab==='places'?'':'none';
+    if(tab==='places'&&!_cityPlacesBuilt){_cityPlacesBuilt=true;barList('citiesPlacesList',S.cities_by_venues);}
     document.getElementById('paneCityCountry').style.display=tab==='country'?'':'none';
     document.getElementById('paneCityWorld').style.display=tab==='world'?'':'none';
     document.querySelectorAll('#tabCityCheckins,#tabCityPlaces,#tabCityCountry,#tabCityWorld').forEach(t=>t.classList.remove('active'));
@@ -2238,6 +2297,8 @@ function buildCityMap(){
   <a class="sn-item" href="venues.html"><span class="sn-icon">🏢</span><span class="sn-lbl">TOTAL PLACES</span></a>
   <a class="sn-item" href="companions.html"><span class="sn-icon">👥</span><span class="sn-lbl">WITH</span></a>
   <a class="sn-item" href="stats.html"><span class="sn-icon">📊</span><span class="sn-lbl">STATS</span></a>
+  <a href="compare.html"><span class="sn-icon">⚖️</span><span class="sn-lbl">COMPARE</span></a>
+  <a href="life.html"><span class="sn-icon">🧬</span><span class="sn-lbl">LIFE</span></a>
   <div class="sn-sep"></div>
   <button class="sn-item" id="snThemeToggle"><span class="sn-icon" id="snThemeIcon">☀️</span><span class="sn-lbl" id="snThemeLbl">LIGHT</span></button>
 </nav>
