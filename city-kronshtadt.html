@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -123,6 +125,24 @@ section{margin-top:52px;}
 .yr-bar.home .bar{background:linear-gradient(180deg,#7fe0cb,#3aa892);}
 .legend{float:right;color:var(--muted);letter-spacing:.12em;}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#4ec9b0;margin-right:6px;vertical-align:-1px;}
+.lmap{height:440px;border-radius:20px;border:1px solid var(--border);overflow:hidden;background:#0d0f16;}
+.lmap .leaflet-control-attribution{background:rgba(10,12,18,.7);color:#7a85a8;font-size:.55rem;}
+.lmap .leaflet-control-attribution a{color:#9aa3c0;}
+.lmap .leaflet-bar{border:1px solid var(--border);box-shadow:none;}
+.lmap .leaflet-bar a{background:rgba(18,21,31,.9);color:var(--text);border-bottom-color:var(--border);}
+.lmap .leaflet-bar a:hover{background:var(--card2);color:#ff9a6b;}
+.photos img{cursor:zoom-in;transition:filter .15s;}
+.photos img:hover{filter:brightness(1.12);}
+.lb{position:fixed;inset:0;z-index:1000;background:rgba(5,6,10,.94);display:none;align-items:center;justify-content:center;}
+.lb.open{display:flex;}
+.lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.6);}
+.lb-cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.08em;color:#c4cbe0;padding:0 60px;}
+.lb button{position:absolute;background:rgba(18,21,31,.8);border:1px solid var(--border);color:var(--text);border-radius:999px;width:44px;height:44px;font-size:1.3rem;cursor:pointer;}
+.lb button:hover{border-color:#ff9a6b;color:#ff9a6b;}
+.lb-x{top:16px;right:16px;}
+.lb-p{left:16px;top:50%;transform:translateY(-50%);}
+.lb-n{right:16px;top:50%;transform:translateY(-50%);}
+@media(max-width:700px){.lmap{height:340px;}.lb-p,.lb-n{top:auto;bottom:52px;transform:none;}}
 @media(max-width:700px){.cmap text{font-size:26px;stroke-width:5px;}.cmap circle{transform-box:fill-box;}.kpis{grid-template-columns:1fr 1fr;}.photos{grid-template-columns:repeat(3,1fr);}.hero{min-height:340px;}.yr-bar .yr-lbl{font-size:.42rem;writing-mode:vertical-rl;transform:rotate(180deg);}.yr-bar .yr-n{display:none;}}
 @media(max-width:600px){.wrap{padding:6px 16px 90px;}.hero-in{padding:96px 16px 26px;}}
 </style>
@@ -136,27 +156,83 @@ section{margin-top:52px;}
 </div></header>
 <div class="wrap">
 <div class="kpis"><div class="kpi"><div class="kpi-num">32</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">32</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">years</div></div><div class="kpi"><div class="kpi-num">2</div><div class="kpi-lbl">days</div></div></div>
-<section><div class="sec-h">Where it happened</div><div class="cmap"><svg viewBox="0 0 920 380" role="img" aria-label="Map of check-ins"><circle class="hot" cx="894.0" cy="267.4" r="8.6"/><circle class="hot" cx="26.0" cy="167.6" r="8.6"/><circle class="hot" cx="103.2" cy="112.6" r="8.6"/><circle class="hot" cx="148.6" cy="153.2" r="8.6"/><circle class="hot" cx="149.1" cy="151.5" r="8.6"/><circle class="hot" cx="148.2" cy="153.6" r="8.6"/><circle class="hot" cx="146.6" cy="155.7" r="8.6"/><circle class="hot" cx="148.7" cy="156.7" r="8.6"/><circle class="hot" cx="141.7" cy="175.3" r="8.6"/><circle class="hot" cx="174.8" cy="163.4" r="8.6"/><circle class="hot" cx="150.7" cy="153.6" r="8.6"/><circle class="hot" cx="152.3" cy="154.3" r="8.6"/><circle class="hot" cx="163.6" cy="158.8" r="8.6"/><circle class="hot" cx="167.8" cy="165.1" r="8.6"/><circle class="hot" cx="168.0" cy="165.5" r="8.6"/><circle class="hot" cx="169.8" cy="164.8" r="8.6"/><circle class="hot" cx="164.3" cy="165.8" r="8.6"/><circle class="hot" cx="164.9" cy="166.9" r="8.6"/><circle class="hot" cx="165.4" cy="170.0" r="8.6"/><circle class="hot" cx="153.3" cy="183.7" r="8.6"/><circle class="hot" cx="153.5" cy="183.0" r="8.6"/><circle class="hot" cx="151.7" cy="187.2" r="8.6"/><circle class="hot" cx="154.9" cy="178.8" r="8.6"/><circle class="hot" cx="143.8" cy="191.4" r="8.6"/><circle class="hot" cx="148.7" cy="178.8" r="8.6"/><circle class="hot" cx="145.2" cy="176.7" r="8.6"/><circle class="hot" cx="147.3" cy="180.2" r="8.6"/><circle class="hot" cx="141.9" cy="193.2" r="8.6"/><circle class="hot" cx="146.6" cy="183.0" r="8.6"/><circle class="hot" cx="142.3" cy="175.3" r="8.6"/><circle class="hot" cx="142.1" cy="175.3" r="8.6"/><circle class="hot" cx="140.7" cy="172.8" r="8.6"/></svg></div></section>
+<section><div class="sec-h">Where it happened</div><div class="lmap" id="lmap"></div><script type="application/json" id="mapData">{"p":[[59.9629,30.1917,1],[59.9914,29.696,1],[60.0071,29.7401,1],[59.9955,29.766,1],[59.996,29.7663,1],[59.9954,29.7658,1],[59.9948,29.7649,1],[59.9945,29.7661,1],[59.9892,29.7621,1],[59.9926,29.781,1],[59.9954,29.7672,1],[59.9952,29.7681,1],[59.9939,29.7746,1],[59.9921,29.777,1],[59.992,29.7771,1],[59.9922,29.7781,1],[59.9919,29.775,1],[59.9916,29.7753,1],[59.9907,29.7756,1],[59.9868,29.7687,1],[59.987,29.7688,1],[59.9858,29.7678,1],[59.9882,29.7696,1],[59.9846,29.7633,1],[59.9882,29.7661,1],[59.9888,29.7641,1],[59.9878,29.7653,1],[59.9841,29.7622,1],[59.987,29.7649,1],[59.9892,29.7624,1],[59.9892,29.7623,1],[59.9899,29.7615,1]],"b":[[59.9629,29.696],[60.0071,30.1917]],"q":{"kind":"city","name":"Kronshtadt","country":"Russia"}}</script></section>
 <section><div class="sec-h">By year</div><div class="years"><div class="yr-bar"><span class="yr-n">32</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2025</span></div><div class="yr-bar zero"><span class="yr-n">0</span><div class="bar" style="height:3px"></div><span class="yr-lbl">2026</span></div></div></section>
 <section><div class="cols"><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Метеор «Astra marine” Петербург-Петергоф"><a href="/venue.html#5d456e32bf66ef00083ab0fc">Метеор «Astra marine” Петербург-Петергоф</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Подводный автодорожный тоннель"><a href="/venue.html#4e344625c65b2313e280b455">Подводный автодорожный тоннель</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Kotlin Island (о. Котлин)"><a href="/venue.html#4ead16dd775bad292f46311d">Kotlin Island (о. Котлин)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Kronstadt (Кронштадт)"><a href="/venue.html#4d772fbc8963f04dddade837">Kronstadt (Кронштадт)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Фонтан"><a href="/venue.html#4f86f52de4b0bd6fe0e12c79">Фонтан</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Андреевский сад"><a href="/venue.html#4f1f2739e4b0c30f8e805b92">Андреевский сад</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Памятник Котлу"><a href="/venue.html#51a24057498eb37311f39cb0">Памятник Котлу</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Дерево Желания"><a href="/venue.html#4e6cdafbd4c09a17a5c56528">Дерево Желания</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Обводный канал"><a href="/venue.html#5d569e5588fca90008c09cd6">Обводный канал</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Екатерининский парк"><a href="/venue.html#4fbe611be4b09e81e6a69d63">Екатерининский парк</a></span><span class="rank-n">1</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">5</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Park">Park</span><span class="rank-n">4</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Bridge">Bridge</span><span class="rank-n">4</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Historic and Protected Site">Historic and Protected Site</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Canal">Canal</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Pier">Pier</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Port">Port</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Tunnel">Tunnel</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Island">Island</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="City">City</span><span class="rank-n">1</span></div></div></div></div></section>
 
 
 <section><div class="sec-h">Trips here · 1</div><div class="trips"><a class="trip-card" href="/trips.html#trip-13"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_uMUuk2eja_6PcjeuaC8JkznezpJZo95MqABxNrrTcCM.jpg')"></div><div class="trip-body"><div class="trip-name">Second vacation - exploring SPB region 🚂</div><div class="trip-meta">2025-09-06 → 2025-09-18 · 13 days · 542 check-ins</div></div></a></div></section>
-<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_MSxjv0Mo3iNW7CqVZ3JPVjdVEWBaQfh6oagebkukgNg.jpg" alt="Деревянный маяк"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_F33VHoytTNwlBy_HLuXmDJjwDD365hMy2De4bkQr7dI.jpg" alt="Купеческая Гавань"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_4AHOQRLqW2u9Ebc7JvBnTbgTr4WT3niEdKr0lFuSGAc.jpg" alt="Макаровский мост"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_5EJ3mNd5Av15IsRg4e_zBdZsUb-q1VeJAmXiPBZwakU.jpg" alt="Макаровский мост"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Wpcq1BBirWIUicG3e3OKZzmJROI4DfPWHPDTXwkWTKs.jpg" alt="Памятник Адмиралу Макарову"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_oV4CQx9g-C70e3zQ1ZPkY9ZY_2gcmKrjS7bqh3TzpbY.jpg" alt="Kronstadt Naval Cathedral (Морской Никольский собор)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_DLRckdZhTojQqfFwdsxzwHk2HwrH-7yYrGrxzB8P_b4.jpg" alt="Kronstadt Naval Cathedral (Морской Никольский собор)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_qN2tbvTDDfZOF68KmRddrhlujPYGQIc5fqUIelwqYhY.jpg" alt="Kronstadt Naval Cathedral (Морской Никольский собор)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_HoiU3nnHs9lZMDtGdjeuEXR1kzUrD4ylwZp0xCIQirU.jpg" alt="Екатерининский парк"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_SJmfyrSEMloGhZQgBErd6A7Kmeiu5QcR5g5hexguk7M.jpg" alt="Обводный канал"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_L8S3T6o-9V6-xD0YkopznMy8fFK3PovFsf9pZgcXdME.jpg" alt="Дерево Желания"></div></section>
+<section><div class="sec-h">Photos · 11</div><div class="photos" id="photoGrid"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_MSxjv0Mo3iNW7CqVZ3JPVjdVEWBaQfh6oagebkukgNg.jpg" alt="Деревянный маяк" data-i="0"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_F33VHoytTNwlBy_HLuXmDJjwDD365hMy2De4bkQr7dI.jpg" alt="Купеческая Гавань" data-i="1"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_4AHOQRLqW2u9Ebc7JvBnTbgTr4WT3niEdKr0lFuSGAc.jpg" alt="Макаровский мост" data-i="2"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_5EJ3mNd5Av15IsRg4e_zBdZsUb-q1VeJAmXiPBZwakU.jpg" alt="Макаровский мост" data-i="3"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Wpcq1BBirWIUicG3e3OKZzmJROI4DfPWHPDTXwkWTKs.jpg" alt="Памятник Адмиралу Макарову" data-i="4"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_oV4CQx9g-C70e3zQ1ZPkY9ZY_2gcmKrjS7bqh3TzpbY.jpg" alt="Kronstadt Naval Cathedral (Морской Никольский собор)" data-i="5"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_DLRckdZhTojQqfFwdsxzwHk2HwrH-7yYrGrxzB8P_b4.jpg" alt="Kronstadt Naval Cathedral (Морской Никольский собор)" data-i="6"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_qN2tbvTDDfZOF68KmRddrhlujPYGQIc5fqUIelwqYhY.jpg" alt="Kronstadt Naval Cathedral (Морской Никольский собор)" data-i="7"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_HoiU3nnHs9lZMDtGdjeuEXR1kzUrD4ylwZp0xCIQirU.jpg" alt="Екатерининский парк" data-i="8"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_SJmfyrSEMloGhZQgBErd6A7Kmeiu5QcR5g5hexguk7M.jpg" alt="Обводный канал" data-i="9"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_L8S3T6o-9V6-xD0YkopznMy8fFK3PovFsf9pZgcXdME.jpg" alt="Дерево Желания" data-i="10"></div><script type="application/json" id="phData">[["1413067054_MSxjv0Mo3iNW7CqVZ3JPVjdVEWBaQfh6oagebkukgNg.jpg","Деревянный маяк","2025-09-16"],["1413067054_F33VHoytTNwlBy_HLuXmDJjwDD365hMy2De4bkQr7dI.jpg","Купеческая Гавань","2025-09-16"],["1413067054_4AHOQRLqW2u9Ebc7JvBnTbgTr4WT3niEdKr0lFuSGAc.jpg","Макаровский мост","2025-09-16"],["1413067054_5EJ3mNd5Av15IsRg4e_zBdZsUb-q1VeJAmXiPBZwakU.jpg","Макаровский мост","2025-09-16"],["1413067054_Wpcq1BBirWIUicG3e3OKZzmJROI4DfPWHPDTXwkWTKs.jpg","Памятник Адмиралу Макарову","2025-09-16"],["1413067054_oV4CQx9g-C70e3zQ1ZPkY9ZY_2gcmKrjS7bqh3TzpbY.jpg","Kronstadt Naval Cathedral (Морской Никольский собор)","2025-09-16"],["1413067054_DLRckdZhTojQqfFwdsxzwHk2HwrH-7yYrGrxzB8P_b4.jpg","Kronstadt Naval Cathedral (Морской Никольский собор)","2025-09-16"],["1413067054_qN2tbvTDDfZOF68KmRddrhlujPYGQIc5fqUIelwqYhY.jpg","Kronstadt Naval Cathedral (Морской Никольский собор)","2025-09-16"],["1413067054_HoiU3nnHs9lZMDtGdjeuEXR1kzUrD4ylwZp0xCIQirU.jpg","Екатерининский парк","2025-09-16"],["1413067054_SJmfyrSEMloGhZQgBErd6A7Kmeiu5QcR5g5hexguk7M.jpg","Обводный канал","2025-09-16"],["1413067054_L8S3T6o-9V6-xD0YkopznMy8fFK3PovFsf9pZgcXdME.jpg","Дерево Желания","2025-09-16"]]</script></section>
 <section><div class="sec-h">In your own voice</div><div class="shouts"><div class="shout">“Чекин, который не состоялся бы без Andrei 😘”<div class="shout-meta">2025 · Метеор «Astra marine” Петербург-Петергоф, Kronshtadt</div></div></div></section>
 <section><button class="log-btn" onclick="toggleLog()"><span>All 32 check-ins in Kronshtadt, searchable</span><b id="logLbl">OPEN ▾</b></button><div class="log" id="log"><input type="search" placeholder="Search venues, neighbourhoods, categories…" oninput="filterLog(this.value)"><div class="log-n" id="logN"></div><div id="logBody"></div></div></section>
 </div>
+<div class="lb" id="lb" onclick="lbClose(event)"><button class="lb-x" aria-label="Close">×</button><button class="lb-p" aria-label="Previous" onclick="lbStep(event,-1)">‹</button><img id="lbImg" alt=""><button class="lb-n" aria-label="Next" onclick="lbStep(event,1)">›</button><div class="lb-cap" id="lbCap"></div></div>
 <script>
 function moreTrips(b){b.previousElementSibling.classList.add('all');b.remove();}
 // The full log loads its own file (<kind>_ck_<slug>.json) on the first open.
 const LOG_URL="/city_ck_kronshtadt.json", MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], STEP=300;
-let ROWS=null, shown=0, list=[];
+let ROWS=null, shown=0, list=[], LOGP=null;
+const loadLog=()=>LOGP||(LOGP=fetch(LOG_URL).then(r=>r.json()));
+// Photos: the first tiles ship inline, the rest come with the log file
+const PIX="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix";
+let PH=JSON.parse((document.getElementById('phData')||{textContent:'[]'}).textContent), lbI=0;
+document.addEventListener('click',e=>{const im=e.target.closest('.photos img');if(im)lbOpen(+im.dataset.i);});
+function lbOpen(i){
+  lbI=(i+PH.length)%PH.length; const [fn,v,d]=PH[lbI];
+  document.getElementById('lbImg').src=PIX+'/'+fn;
+  document.getElementById('lbCap').textContent=[v,d].filter(Boolean).join(' · ')+'  ·  '+(lbI+1)+' / '+PH.length;
+  document.getElementById('lb').classList.add('open');
+}
+function lbStep(e,k){e.stopPropagation();lbOpen(lbI+k);}
+function lbClose(e){if(e.target.id==='lb'||e.target.classList.contains('lb-x'))document.getElementById('lb').classList.remove('open');}
+addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')document.getElementById('lb').classList.remove('open');
+  else if(e.key==='ArrowLeft')lbOpen(lbI-1); else if(e.key==='ArrowRight')lbOpen(lbI+1);
+});
+function morePhotos(b){
+  b.textContent='LOADING…';
+  loadLog().then(j=>{
+    const g=document.getElementById('photoGrid'), have=g.children.length; PH=j.p||PH;
+    g.insertAdjacentHTML('beforeend',PH.slice(have).map(([fn,v],k)=>
+      `<img loading="lazy" src="${PIX}/t/${esc(fn)}" alt="${esc(v)}" data-i="${have+k}">`).join(''));
+    b.remove();
+  }).catch(()=>{b.textContent='COULD NOT LOAD';});
+}
+// Map: CARTO tiles, a dot per venue, the place's own outline from OpenStreetMap
+(function(){
+  const el=document.getElementById('lmap'), dd=document.getElementById('mapData');
+  if(!el||!dd||!window.L)return;
+  const D=JSON.parse(dd.textContent);
+  const m=L.map(el,{preferCanvas:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4lwx_1_a667c2540e715948f2a06df2',
+    {attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(m);
+  m.fitBounds(D.b,{padding:[18,18],maxZoom:15});
+  m.createPane('bnd').style.zIndex=350;
+  const top=Math.max(...D.p.map(p=>p[2]));
+  D.p.forEach(([a,o,n])=>L.circleMarker([a,o],{radius:2.2+7*Math.sqrt(n/top),stroke:false,
+    fillColor:n*4>=top?'#f6d38b':'#ff9a6b',fillOpacity:n*4>=top?.9:.6,interactive:false}).addTo(m));
+  const q=D.q, key='bnd1:'+q.kind+':'+q.name+':'+q.country;
+  const draw=g=>{if(g)L.geoJSON(g,{pane:'bnd',interactive:false,style:{color:'#4ec9b0',weight:2,opacity:.9,
+    fillColor:'#4ec9b0',fillOpacity:.06}}).addTo(m);};
+  let c=null; try{c=localStorage.getItem(key);}catch(e){}
+  if(c!==null){draw(c?JSON.parse(c):null);return;}
+  const city=q.kind==='city';
+  const u='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&polygon_geojson=1&polygon_threshold='+
+    (city?'0.0005':'0.01')+'&'+(city?'city='+encodeURIComponent(q.name)+'&country='+encodeURIComponent(q.country)
+    :'country='+encodeURIComponent(q.name));
+  fetch(u).then(r=>r.json()).then(j=>{
+    const g=j&&j[0]&&j[0].geojson, ok=g&&/Polygon/.test(g.type)?g:null;
+    try{localStorage.setItem(key,ok?JSON.stringify(ok):'');}catch(e){}
+    draw(ok);
+  }).catch(()=>{});
+})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toggleLog(){
   const l=document.getElementById('log'); l.classList.toggle('open');
   document.getElementById('logLbl').textContent=l.classList.contains('open')?'HIDE ▴':'OPEN ▾';
-  if(ROWS===null){ROWS=[];fetch(LOG_URL).then(r=>r.json()).then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
+  if(ROWS===null){ROWS=[];loadLog().then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
 }
 function filterLog(q){
   q=(q||'').toLowerCase();

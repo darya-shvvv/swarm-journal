@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -123,6 +125,24 @@ section{margin-top:52px;}
 .yr-bar.home .bar{background:linear-gradient(180deg,#7fe0cb,#3aa892);}
 .legend{float:right;color:var(--muted);letter-spacing:.12em;}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#4ec9b0;margin-right:6px;vertical-align:-1px;}
+.lmap{height:440px;border-radius:20px;border:1px solid var(--border);overflow:hidden;background:#0d0f16;}
+.lmap .leaflet-control-attribution{background:rgba(10,12,18,.7);color:#7a85a8;font-size:.55rem;}
+.lmap .leaflet-control-attribution a{color:#9aa3c0;}
+.lmap .leaflet-bar{border:1px solid var(--border);box-shadow:none;}
+.lmap .leaflet-bar a{background:rgba(18,21,31,.9);color:var(--text);border-bottom-color:var(--border);}
+.lmap .leaflet-bar a:hover{background:var(--card2);color:#ff9a6b;}
+.photos img{cursor:zoom-in;transition:filter .15s;}
+.photos img:hover{filter:brightness(1.12);}
+.lb{position:fixed;inset:0;z-index:1000;background:rgba(5,6,10,.94);display:none;align-items:center;justify-content:center;}
+.lb.open{display:flex;}
+.lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.6);}
+.lb-cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.08em;color:#c4cbe0;padding:0 60px;}
+.lb button{position:absolute;background:rgba(18,21,31,.8);border:1px solid var(--border);color:var(--text);border-radius:999px;width:44px;height:44px;font-size:1.3rem;cursor:pointer;}
+.lb button:hover{border-color:#ff9a6b;color:#ff9a6b;}
+.lb-x{top:16px;right:16px;}
+.lb-p{left:16px;top:50%;transform:translateY(-50%);}
+.lb-n{right:16px;top:50%;transform:translateY(-50%);}
+@media(max-width:700px){.lmap{height:340px;}.lb-p,.lb-n{top:auto;bottom:52px;transform:none;}}
 @media(max-width:700px){.cmap text{font-size:26px;stroke-width:5px;}.cmap circle{transform-box:fill-box;}.kpis{grid-template-columns:1fr 1fr;}.photos{grid-template-columns:repeat(3,1fr);}.hero{min-height:340px;}.yr-bar .yr-lbl{font-size:.42rem;writing-mode:vertical-rl;transform:rotate(180deg);}.yr-bar .yr-n{display:none;}}
 @media(max-width:600px){.wrap{padding:6px 16px 90px;}.hero-in{padding:96px 16px 26px;}}
 </style>
@@ -136,27 +156,83 @@ section{margin-top:52px;}
 </div></header>
 <div class="wrap">
 <div class="kpis"><div class="kpi"><div class="kpi-num">36</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">36</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">years</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">days</div></div></div>
-<section><div class="sec-h">Where it happened</div><div class="cmap"><svg viewBox="0 0 920 380" role="img" aria-label="Map of check-ins"><circle class="hot" cx="354.4" cy="119.5" r="8.6"/><circle class="hot" cx="303.8" cy="221.2" r="8.6"/><circle class="hot" cx="342.7" cy="201.5" r="8.6"/><circle class="hot" cx="357.3" cy="153.9" r="8.6"/><circle class="hot" cx="373.9" cy="155.6" r="8.6"/><circle class="hot" cx="377.8" cy="150.6" r="8.6"/><circle class="hot" cx="375.8" cy="144.1" r="8.6"/><circle class="hot" cx="396.2" cy="108.0" r="8.6"/><circle class="hot" cx="375.8" cy="111.3" r="8.6"/><circle class="hot" cx="374.8" cy="112.9" r="8.6"/><circle class="hot" cx="372.9" cy="101.4" r="8.6"/><circle class="hot" cx="369.0" cy="99.8" r="8.6"/><circle class="hot" cx="355.4" cy="112.9" r="8.6"/><circle class="hot" cx="358.3" cy="112.9" r="8.6"/><circle class="hot" cx="334.0" cy="116.2" r="8.6"/><circle class="hot" cx="332.0" cy="149.0" r="8.6"/><circle class="hot" cx="355.4" cy="126.0" r="8.6"/><circle class="hot" cx="347.6" cy="86.7" r="8.6"/><circle class="hot" cx="365.1" cy="71.9" r="8.6"/><circle class="hot" cx="370.9" cy="83.4" r="8.6"/><circle class="hot" cx="370.0" cy="53.9" r="8.6"/><circle class="hot" cx="375.8" cy="52.2" r="8.6"/><circle class="hot" cx="393.3" cy="30.9" r="8.6"/><circle class="hot" cx="412.8" cy="26.0" r="8.6"/><circle class="hot" cx="408.9" cy="63.7" r="8.6"/><circle class="hot" cx="451.7" cy="91.6" r="8.6"/><circle class="hot" cx="449.8" cy="88.3" r="8.6"/><circle class="hot" cx="391.4" cy="99.8" r="8.6"/><circle class="hot" cx="350.5" cy="126.0" r="8.6"/><circle class="hot" cx="296.0" cy="221.2" r="8.6"/><circle class="hot" cx="341.7" cy="240.8" r="8.6"/><circle class="hot" cx="346.6" cy="232.6" r="8.6"/><circle class="hot" cx="376.8" cy="196.6" r="8.6"/><circle class="hot" cx="344.7" cy="206.4" r="8.6"/><circle class="hot" cx="334.0" cy="217.9" r="8.6"/><circle class="hot" cx="305.7" cy="231.0" r="8.6"/></svg></div></section>
+<section><div class="sec-h">Where it happened</div><div class="lmap" id="lmap"></div><script type="application/json" id="mapData">{"p":[[53.5981,25.8247,1],[53.5919,25.8195,1],[53.5931,25.8235,1],[53.596,25.825,1],[53.5959,25.8267,1],[53.5962,25.8271,1],[53.5966,25.8269,1],[53.5988,25.829,1],[53.5986,25.8269,1],[53.5985,25.8268,1],[53.5992,25.8266,1],[53.5993,25.8262,1],[53.5985,25.8248,1],[53.5985,25.8251,1],[53.5983,25.8226,1],[53.5963,25.8224,1],[53.5977,25.8248,1],[53.6001,25.824,1],[53.601,25.8258,1],[53.6003,25.8264,1],[53.6021,25.8263,1],[53.6022,25.8269,1],[53.6035,25.8287,1],[53.6038,25.8307,1],[53.6015,25.8303,1],[53.5998,25.8347,1],[53.6,25.8345,1],[53.5993,25.8285,1],[53.5977,25.8243,1],[53.5919,25.8187,1],[53.5907,25.8234,1],[53.5912,25.8239,1],[53.5934,25.827,1],[53.5928,25.8237,1],[53.5921,25.8226,1],[53.5913,25.8197,1]],"b":[[53.5907,25.8187],[53.6038,25.8347]],"q":{"kind":"city","name":"Navahrudak","country":"Belarus"}}</script></section>
 <section><div class="sec-h">By year</div><div class="years"><div class="yr-bar"><span class="yr-n">36</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2025</span></div><div class="yr-bar zero"><span class="yr-n">0</span><div class="bar" style="height:3px"></div><span class="yr-lbl">2026</span></div></div></section>
 <section><div class="cols"><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Новогрудок"><a href="/venue.html#4e1852a462e12640d873ef9f">Новогрудок</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Автовокзал &quot;Новогрудок&quot;"><a href="/venue.html#4e959a2d6da116125498f24f">Автовокзал &quot;Новогрудок&quot;</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Памятник Владимиру Высоцкому"><a href="/venue.html#51dac196498ebd04f46483bd">Памятник Владимиру Высоцкому</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Карета"><a href="/venue.html#5f12bc2fc5d2fb46607bf68e">Карета</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Музыкант"><a href="/venue.html#680e3c767b38c71ac3d186d9">Музыкант</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Пони"><a href="/venue.html#68f49cea9c16553ba84eb38d">Пони</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Сады Победы"><a href="/venue.html#667820c6ec2fcb570544dc82">Сады Победы</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Аллея фонарей"><a href="/venue.html#5617aab1498e95b398bff455">Аллея фонарей</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Памяти Советских Воинов"><a href="/venue.html#68f4ae47771f2b31d1e43661">Памяти Советских Воинов</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Памятник воинам-афганцам"><a href="/venue.html#5f12bec0bbe7a85ce66fe68c">Памятник воинам-афганцам</a></span><span class="rank-n">1</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">7</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Outdoor Sculpture">Outdoor Sculpture</span><span class="rank-n">5</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Park">Park</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Historic and Protected Site">Historic and Protected Site</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Church">Church</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Temple">Temple</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Scenic Lookout">Scenic Lookout</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Cemetery">Cemetery</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="City">City</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Bus Station">Bus Station</span><span class="rank-n">1</span></div></div></div></div></section>
 
 
 <section><div class="sec-h">Trips here · 1</div><div class="trips"><a class="trip-card" href="/trips.html#trip-16"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_7XpRkUb7lbbqgBRuO7C49_eqnF2NattRvL3n0pl7jf8.jpg')"></div><div class="trip-body"><div class="trip-name">Navahrudak - Lida castles 🚂</div><div class="trip-meta">2025-10-19 → 2025-10-20 · 2 days · 71 check-ins</div></div></a></div></section>
-<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_69Snl3EjPr1lFcvMmbwh6o35Q9ZIafCNImZxDCxeRjw.jpg" alt="Бульба"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_rMvdesrML70dYg-rpUGKd5pIHpqEDPcSLRmzoqjvz04.jpg" alt="Бык"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_K_6EWfZIWZCzwVIfRnJwB8ohvFKccJi2R-r8539mUg4.jpg" alt="Мечеть"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_7XpRkUb7lbbqgBRuO7C49_eqnF2NattRvL3n0pl7jf8.jpg" alt="Mohiłki Staryja Chryscijanskija / Старое Христианское Кладбище"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_bkkPdW4mCUPzFMKu8CodqRbO3sgucC0obyOCWDUHGAI.jpg" alt="Вожык"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Ym49es9X3RFrIoQT3efk_lu5Lt05aonDHi8vfgWlmBM.jpg" alt="Водонапорная Башня"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_BzoHqeyZcOMu0yjurdgnhL-iOYZQ53sXoFloTyAC8Z0.jpg" alt="Гара Мiндоўга"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_VRPUmQq9UlPU8DZAQZ-grhDJICjGjiPavKkcUXilZNo.jpg" alt="Памятник Миндовгу"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_T5v9n2eaJ0v28Y3dVi6sWU5U5K7PWGpYrVbl0zlwX1s.jpg" alt="Фара Витовта"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_qkN0dBNPiLjrgkZpE705Tooqs25hKPb04XvuHOdgLXg.jpg" alt="Парковое Озеро"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_1OOyqR1ZXHhw-_2VUxJyOZkDkCvMFYhX8dYkkaaP6uc.jpg" alt="Городской Парк"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_8l5mWTx_iwj7kswOuNlcWdRJNaAUoDhzWJaeuyy1zzA.jpg" alt="Городской Парк"></div></section>
+<section><div class="sec-h">Photos · 28</div><div class="photos" id="photoGrid"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_69Snl3EjPr1lFcvMmbwh6o35Q9ZIafCNImZxDCxeRjw.jpg" alt="Бульба" data-i="0"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_rMvdesrML70dYg-rpUGKd5pIHpqEDPcSLRmzoqjvz04.jpg" alt="Бык" data-i="1"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_K_6EWfZIWZCzwVIfRnJwB8ohvFKccJi2R-r8539mUg4.jpg" alt="Мечеть" data-i="2"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_7XpRkUb7lbbqgBRuO7C49_eqnF2NattRvL3n0pl7jf8.jpg" alt="Mohiłki Staryja Chryscijanskija / Старое Христианское Кладбище" data-i="3"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_bkkPdW4mCUPzFMKu8CodqRbO3sgucC0obyOCWDUHGAI.jpg" alt="Вожык" data-i="4"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Ym49es9X3RFrIoQT3efk_lu5Lt05aonDHi8vfgWlmBM.jpg" alt="Водонапорная Башня" data-i="5"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_BzoHqeyZcOMu0yjurdgnhL-iOYZQ53sXoFloTyAC8Z0.jpg" alt="Гара Мiндоўга" data-i="6"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_VRPUmQq9UlPU8DZAQZ-grhDJICjGjiPavKkcUXilZNo.jpg" alt="Памятник Миндовгу" data-i="7"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_T5v9n2eaJ0v28Y3dVi6sWU5U5K7PWGpYrVbl0zlwX1s.jpg" alt="Фара Витовта" data-i="8"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_qkN0dBNPiLjrgkZpE705Tooqs25hKPb04XvuHOdgLXg.jpg" alt="Парковое Озеро" data-i="9"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_1OOyqR1ZXHhw-_2VUxJyOZkDkCvMFYhX8dYkkaaP6uc.jpg" alt="Городской Парк" data-i="10"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_8l5mWTx_iwj7kswOuNlcWdRJNaAUoDhzWJaeuyy1zzA.jpg" alt="Городской Парк" data-i="11"></div><button class="more-btn" onclick="morePhotos(this)">ALL 28 PHOTOS ▾</button><script type="application/json" id="phData">[["1413067054_69Snl3EjPr1lFcvMmbwh6o35Q9ZIafCNImZxDCxeRjw.jpg","Бульба","2025-10-19"],["1413067054_rMvdesrML70dYg-rpUGKd5pIHpqEDPcSLRmzoqjvz04.jpg","Бык","2025-10-19"],["1413067054_K_6EWfZIWZCzwVIfRnJwB8ohvFKccJi2R-r8539mUg4.jpg","Мечеть","2025-10-19"],["1413067054_7XpRkUb7lbbqgBRuO7C49_eqnF2NattRvL3n0pl7jf8.jpg","Mohiłki Staryja Chryscijanskija / Старое Христианское Кладбище","2025-10-19"],["1413067054_bkkPdW4mCUPzFMKu8CodqRbO3sgucC0obyOCWDUHGAI.jpg","Вожык","2025-10-19"],["1413067054_Ym49es9X3RFrIoQT3efk_lu5Lt05aonDHi8vfgWlmBM.jpg","Водонапорная Башня","2025-10-19"],["1413067054_BzoHqeyZcOMu0yjurdgnhL-iOYZQ53sXoFloTyAC8Z0.jpg","Гара Мiндоўга","2025-10-19"],["1413067054_VRPUmQq9UlPU8DZAQZ-grhDJICjGjiPavKkcUXilZNo.jpg","Памятник Миндовгу","2025-10-19"],["1413067054_T5v9n2eaJ0v28Y3dVi6sWU5U5K7PWGpYrVbl0zlwX1s.jpg","Фара Витовта","2025-10-19"],["1413067054_qkN0dBNPiLjrgkZpE705Tooqs25hKPb04XvuHOdgLXg.jpg","Парковое Озеро","2025-10-19"],["1413067054_1OOyqR1ZXHhw-_2VUxJyOZkDkCvMFYhX8dYkkaaP6uc.jpg","Городской Парк","2025-10-19"],["1413067054_8l5mWTx_iwj7kswOuNlcWdRJNaAUoDhzWJaeuyy1zzA.jpg","Городской Парк","2025-10-19"]]</script></section>
 
 <section><button class="log-btn" onclick="toggleLog()"><span>All 36 check-ins in Navahrudak, searchable</span><b id="logLbl">OPEN ▾</b></button><div class="log" id="log"><input type="search" placeholder="Search venues, neighbourhoods, categories…" oninput="filterLog(this.value)"><div class="log-n" id="logN"></div><div id="logBody"></div></div></section>
 </div>
+<div class="lb" id="lb" onclick="lbClose(event)"><button class="lb-x" aria-label="Close">×</button><button class="lb-p" aria-label="Previous" onclick="lbStep(event,-1)">‹</button><img id="lbImg" alt=""><button class="lb-n" aria-label="Next" onclick="lbStep(event,1)">›</button><div class="lb-cap" id="lbCap"></div></div>
 <script>
 function moreTrips(b){b.previousElementSibling.classList.add('all');b.remove();}
 // The full log loads its own file (<kind>_ck_<slug>.json) on the first open.
 const LOG_URL="/city_ck_navahrudak.json", MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], STEP=300;
-let ROWS=null, shown=0, list=[];
+let ROWS=null, shown=0, list=[], LOGP=null;
+const loadLog=()=>LOGP||(LOGP=fetch(LOG_URL).then(r=>r.json()));
+// Photos: the first tiles ship inline, the rest come with the log file
+const PIX="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix";
+let PH=JSON.parse((document.getElementById('phData')||{textContent:'[]'}).textContent), lbI=0;
+document.addEventListener('click',e=>{const im=e.target.closest('.photos img');if(im)lbOpen(+im.dataset.i);});
+function lbOpen(i){
+  lbI=(i+PH.length)%PH.length; const [fn,v,d]=PH[lbI];
+  document.getElementById('lbImg').src=PIX+'/'+fn;
+  document.getElementById('lbCap').textContent=[v,d].filter(Boolean).join(' · ')+'  ·  '+(lbI+1)+' / '+PH.length;
+  document.getElementById('lb').classList.add('open');
+}
+function lbStep(e,k){e.stopPropagation();lbOpen(lbI+k);}
+function lbClose(e){if(e.target.id==='lb'||e.target.classList.contains('lb-x'))document.getElementById('lb').classList.remove('open');}
+addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')document.getElementById('lb').classList.remove('open');
+  else if(e.key==='ArrowLeft')lbOpen(lbI-1); else if(e.key==='ArrowRight')lbOpen(lbI+1);
+});
+function morePhotos(b){
+  b.textContent='LOADING…';
+  loadLog().then(j=>{
+    const g=document.getElementById('photoGrid'), have=g.children.length; PH=j.p||PH;
+    g.insertAdjacentHTML('beforeend',PH.slice(have).map(([fn,v],k)=>
+      `<img loading="lazy" src="${PIX}/t/${esc(fn)}" alt="${esc(v)}" data-i="${have+k}">`).join(''));
+    b.remove();
+  }).catch(()=>{b.textContent='COULD NOT LOAD';});
+}
+// Map: CARTO tiles, a dot per venue, the place's own outline from OpenStreetMap
+(function(){
+  const el=document.getElementById('lmap'), dd=document.getElementById('mapData');
+  if(!el||!dd||!window.L)return;
+  const D=JSON.parse(dd.textContent);
+  const m=L.map(el,{preferCanvas:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4lwx_1_a667c2540e715948f2a06df2',
+    {attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(m);
+  m.fitBounds(D.b,{padding:[18,18],maxZoom:15});
+  m.createPane('bnd').style.zIndex=350;
+  const top=Math.max(...D.p.map(p=>p[2]));
+  D.p.forEach(([a,o,n])=>L.circleMarker([a,o],{radius:2.2+7*Math.sqrt(n/top),stroke:false,
+    fillColor:n*4>=top?'#f6d38b':'#ff9a6b',fillOpacity:n*4>=top?.9:.6,interactive:false}).addTo(m));
+  const q=D.q, key='bnd1:'+q.kind+':'+q.name+':'+q.country;
+  const draw=g=>{if(g)L.geoJSON(g,{pane:'bnd',interactive:false,style:{color:'#4ec9b0',weight:2,opacity:.9,
+    fillColor:'#4ec9b0',fillOpacity:.06}}).addTo(m);};
+  let c=null; try{c=localStorage.getItem(key);}catch(e){}
+  if(c!==null){draw(c?JSON.parse(c):null);return;}
+  const city=q.kind==='city';
+  const u='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&polygon_geojson=1&polygon_threshold='+
+    (city?'0.0005':'0.01')+'&'+(city?'city='+encodeURIComponent(q.name)+'&country='+encodeURIComponent(q.country)
+    :'country='+encodeURIComponent(q.name));
+  fetch(u).then(r=>r.json()).then(j=>{
+    const g=j&&j[0]&&j[0].geojson, ok=g&&/Polygon/.test(g.type)?g:null;
+    try{localStorage.setItem(key,ok?JSON.stringify(ok):'');}catch(e){}
+    draw(ok);
+  }).catch(()=>{});
+})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toggleLog(){
   const l=document.getElementById('log'); l.classList.toggle('open');
   document.getElementById('logLbl').textContent=l.classList.contains('open')?'HIDE ▴':'OPEN ▾';
-  if(ROWS===null){ROWS=[];fetch(LOG_URL).then(r=>r.json()).then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
+  if(ROWS===null){ROWS=[];loadLog().then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
 }
 function filterLog(q){
   q=(q||'').toLowerCase();

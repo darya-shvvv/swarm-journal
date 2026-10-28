@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -123,6 +125,24 @@ section{margin-top:52px;}
 .yr-bar.home .bar{background:linear-gradient(180deg,#7fe0cb,#3aa892);}
 .legend{float:right;color:var(--muted);letter-spacing:.12em;}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#4ec9b0;margin-right:6px;vertical-align:-1px;}
+.lmap{height:440px;border-radius:20px;border:1px solid var(--border);overflow:hidden;background:#0d0f16;}
+.lmap .leaflet-control-attribution{background:rgba(10,12,18,.7);color:#7a85a8;font-size:.55rem;}
+.lmap .leaflet-control-attribution a{color:#9aa3c0;}
+.lmap .leaflet-bar{border:1px solid var(--border);box-shadow:none;}
+.lmap .leaflet-bar a{background:rgba(18,21,31,.9);color:var(--text);border-bottom-color:var(--border);}
+.lmap .leaflet-bar a:hover{background:var(--card2);color:#ff9a6b;}
+.photos img{cursor:zoom-in;transition:filter .15s;}
+.photos img:hover{filter:brightness(1.12);}
+.lb{position:fixed;inset:0;z-index:1000;background:rgba(5,6,10,.94);display:none;align-items:center;justify-content:center;}
+.lb.open{display:flex;}
+.lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.6);}
+.lb-cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.08em;color:#c4cbe0;padding:0 60px;}
+.lb button{position:absolute;background:rgba(18,21,31,.8);border:1px solid var(--border);color:var(--text);border-radius:999px;width:44px;height:44px;font-size:1.3rem;cursor:pointer;}
+.lb button:hover{border-color:#ff9a6b;color:#ff9a6b;}
+.lb-x{top:16px;right:16px;}
+.lb-p{left:16px;top:50%;transform:translateY(-50%);}
+.lb-n{right:16px;top:50%;transform:translateY(-50%);}
+@media(max-width:700px){.lmap{height:340px;}.lb-p,.lb-n{top:auto;bottom:52px;transform:none;}}
 @media(max-width:700px){.cmap text{font-size:26px;stroke-width:5px;}.cmap circle{transform-box:fill-box;}.kpis{grid-template-columns:1fr 1fr;}.photos{grid-template-columns:repeat(3,1fr);}.hero{min-height:340px;}.yr-bar .yr-lbl{font-size:.42rem;writing-mode:vertical-rl;transform:rotate(180deg);}.yr-bar .yr-n{display:none;}}
 @media(max-width:600px){.wrap{padding:6px 16px 90px;}.hero-in{padding:96px 16px 26px;}}
 </style>
@@ -136,27 +156,83 @@ section{margin-top:52px;}
 </div></header>
 <div class="wrap">
 <div class="kpis"><div class="kpi"><div class="kpi-num">39</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">39</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">years</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">days</div></div></div>
-<section><div class="sec-h">Where it happened</div><div class="cmap"><svg viewBox="0 0 920 380" role="img" aria-label="Map of check-ins"><circle class="hot" cx="376.1" cy="94.9" r="8.6"/><circle class="hot" cx="398.3" cy="149.0" r="8.6"/><circle class="hot" cx="408.2" cy="101.4" r="8.6"/><circle class="hot" cx="399.9" cy="93.2" r="8.6"/><circle class="hot" cx="402.4" cy="94.9" r="8.6"/><circle class="hot" cx="399.1" cy="103.1" r="8.6"/><circle class="hot" cx="415.6" cy="108.0" r="8.6"/><circle class="hot" cx="463.3" cy="80.1" r="8.6"/><circle class="hot" cx="373.6" cy="57.2" r="8.6"/><circle class="hot" cx="347.3" cy="52.2" r="8.6"/><circle class="hot" cx="307.8" cy="40.8" r="8.6"/><circle class="hot" cx="305.3" cy="52.2" r="8.6"/><circle class="hot" cx="298.7" cy="50.6" r="8.6"/><circle class="hot" cx="281.4" cy="30.9" r="8.6"/><circle class="hot" cx="264.2" cy="26.0" r="8.6"/><circle class="hot" cx="476.5" cy="58.8" r="8.6"/><circle class="hot" cx="481.4" cy="65.4" r="8.6"/><circle class="hot" cx="484.7" cy="86.7" r="8.6"/><circle class="hot" cx="474.0" cy="88.3" r="8.6"/><circle class="hot" cx="467.4" cy="111.3" r="8.6"/><circle class="hot" cx="470.7" cy="91.6" r="8.6"/><circle class="hot" cx="467.4" cy="109.6" r="8.6"/><circle class="hot" cx="466.6" cy="119.5" r="8.6"/><circle class="hot" cx="437.0" cy="193.3" r="8.6"/><circle class="hot" cx="477.3" cy="199.8" r="8.6"/><circle class="hot" cx="487.2" cy="201.5" r="8.6"/><circle class="hot" cx="443.5" cy="201.5" r="8.6"/><circle class="hot" cx="440.3" cy="198.2" r="8.6"/><circle class="hot" cx="429.6" cy="190.0" r="8.6"/><circle class="hot" cx="379.4" cy="176.9" r="8.6"/><circle class="hot" cx="374.4" cy="173.6" r="8.6"/><circle class="hot" cx="385.9" cy="142.4" r="8.6"/><circle class="hot" cx="384.3" cy="153.9" r="8.6"/><circle class="hot" cx="390.9" cy="131.0" r="8.6"/><circle class="hot" cx="450.1" cy="183.4" r="8.6"/><circle class="hot" cx="527.5" cy="199.8" r="8.6"/><circle class="hot" cx="526.7" cy="191.6" r="8.6"/><circle class="hot" cx="655.8" cy="168.7" r="8.6"/><circle class="hot" cx="577.7" cy="173.6" r="8.6"/></svg></div></section>
+<section><div class="sec-h">Where it happened</div><div class="lmap" id="lmap"></div><script type="application/json" id="mapData">{"p":[[59.8851,29.9062,1],[59.8818,29.9089,1],[59.8847,29.9101,1],[59.8852,29.9091,1],[59.8851,29.9094,1],[59.8846,29.909,1],[59.8843,29.911,1],[59.886,29.9168,1],[59.8874,29.9059,1],[59.8877,29.9027,1],[59.8884,29.8979,1],[59.8877,29.8976,1],[59.8878,29.8968,1],[59.889,29.8947,1],[59.8893,29.8926,1],[59.8873,29.9184,1],[59.8869,29.919,1],[59.8856,29.9194,1],[59.8855,29.9181,1],[59.8841,29.9173,1],[59.8853,29.9177,1],[59.8842,29.9173,1],[59.8836,29.9172,1],[59.8791,29.9136,1],[59.8787,29.9185,1],[59.8786,29.9197,1],[59.8786,29.9144,1],[59.8788,29.914,1],[59.8793,29.9127,1],[59.8801,29.9066,1],[59.8803,29.906,1],[59.8822,29.9074,1],[59.8815,29.9072,1],[59.8829,29.908,1],[59.8797,29.9152,1],[59.8787,29.9246,1],[59.8792,29.9245,1],[59.8806,29.9402,1],[59.8803,29.9307,1]],"b":[[59.8786,29.8926],[59.8893,29.9402]],"q":{"kind":"city","name":"Peterhof","country":"Russia"}}</script></section>
 <section><div class="sec-h">By year</div><div class="years"><div class="yr-bar"><span class="yr-n">39</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2025</span></div><div class="yr-bar zero"><span class="yr-n">0</span><div class="bar" style="height:3px"></div><span class="yr-lbl">2026</span></div></div></section>
 <section><div class="cols"><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Кассы Нижнего парка (ул. Аврова)"><a href="/venue.html#502a6b6de4b06079cd6fd707">Кассы Нижнего парка (ул. Аврова)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Peterhof (Петергоф)"><a href="/venue.html#4c2a0c5cfe6e2d7f0ebb553c">Peterhof (Петергоф)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Peterhof Museum Reserve (Музей-заповедник «Петергоф»)"><a href="/venue.html#4df48a02483bdb5e1378145c">Peterhof Museum Reserve (Музей-заповедник «Петергоф»)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Samson and the Lion Fountain (Фонтан «Самсон»)"><a href="/venue.html#4e62115a1838ad3d0e9e1b43">Samson and the Lion Fountain (Фонтан «Самсон»)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="The Grand Cascade (Большой каскад)"><a href="/venue.html#51bda01b498e616986437417">The Grand Cascade (Большой каскад)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Grand Palace (Большой Петергофский дворец)"><a href="/venue.html#4e2516bcaeb7df1e0f4659df">Grand Palace (Большой Петергофский дворец)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Церковный Корпус Большого Дворца"><a href="/venue.html#4f3fa0dee4b00e2d50b5ca07">Церковный Корпус Большого Дворца</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Lower Park (Нижний парк)"><a href="/venue.html#4dd91a367d8b32266417ce81">Lower Park (Нижний парк)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Фонтан «Ева»"><a href="/venue.html#4fc205b9e4b0d3da5939e6ab">Фонтан «Ева»</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Львиный каскад"><a href="/venue.html#4f9d42d3e4b08ea03a0d691e">Львиный каскад</a></span><span class="rank-n">1</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Fountain">Fountain</span><span class="rank-n">14</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Park">Park</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Plaza">Plaza</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Temple">Temple</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Ticket Seller">Ticket Seller</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="City">City</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="History Museum">History Museum</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Palace">Palace</span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Church">Church</span><span class="rank-n">1</span></div></div></div></div></section>
 
 
 <section><div class="sec-h">Trips here · 1</div><div class="trips"><a class="trip-card" href="/trips.html#trip-13"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_uMUuk2eja_6PcjeuaC8JkznezpJZo95MqABxNrrTcCM.jpg')"></div><div class="trip-body"><div class="trip-name">Second vacation - exploring SPB region 🚂</div><div class="trip-meta">2025-09-06 → 2025-09-18 · 13 days · 542 check-ins</div></div></a></div></section>
-<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_gjyW6x5kvlRIFiGGWZbEGeIYv9HBXCEYuyY76DUvWwE.jpg" alt="Капелла"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_POWt13_jgnO--jjFyXjyrl_YLtFN5QE9tS8_MZqvNlk.jpg" alt="Капелла"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054__9viz-3925cde7NP0WZR42dTiwO7CeetzbfygFPOS4w.jpg" alt="Gothic Stables (Готические конюшни)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_RzbcMRis4s6ZhtWfnohGbm454rOqYpQM5T75msq8n8Y.jpg" alt="Gothic Stables (Готические конюшни)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054__MJLwkaaE2j2AId7JUM3x2b7AsCwyzPxC8N3earPdfM.jpg" alt="Кошачий треугольник"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_yw7fpewjBzBm9cmjU1KONRDr90dXHuoEwzDJlkIfUV4.jpg" alt="Кошачий треугольник"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_ad71zjadY319RxLntg7Ka9Uk2Z33PkTiYS5vPFCNvZw.jpg" alt="Upper Garden (Верхний сад)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Bs8hlUUJpTy6t_cHxjsKO2xKzCoBAHyFUP5rpWZc1ws.jpg" alt="Upper Garden (Верхний сад)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Ob6LzJtjE4ic9jofh2wez1EmSKyjji6nP5ZXcRUqAqc.jpg" alt="Дом Трувеллера F&amp;F"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_ckKK1_DVgYvxotkHNmp27hGqWQFi84kFV5rId4QX-0c.jpg" alt="Собор Петра и Павла"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_NLL0D4VS5QoznaS-FuaxBE6sDFbLJyWvBr_9oRuoWfg.jpg" alt="Торговая площадь"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_efdPpFA5GX9nr768oQITG2gaoEXYlQMqsxj_3VhFnAs.jpg" alt="Торговая площадь"></div></section>
+<section><div class="sec-h">Photos · 22</div><div class="photos" id="photoGrid"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_gjyW6x5kvlRIFiGGWZbEGeIYv9HBXCEYuyY76DUvWwE.jpg" alt="Капелла" data-i="0"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_POWt13_jgnO--jjFyXjyrl_YLtFN5QE9tS8_MZqvNlk.jpg" alt="Капелла" data-i="1"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054__9viz-3925cde7NP0WZR42dTiwO7CeetzbfygFPOS4w.jpg" alt="Gothic Stables (Готические конюшни)" data-i="2"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_RzbcMRis4s6ZhtWfnohGbm454rOqYpQM5T75msq8n8Y.jpg" alt="Gothic Stables (Готические конюшни)" data-i="3"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054__MJLwkaaE2j2AId7JUM3x2b7AsCwyzPxC8N3earPdfM.jpg" alt="Кошачий треугольник" data-i="4"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_yw7fpewjBzBm9cmjU1KONRDr90dXHuoEwzDJlkIfUV4.jpg" alt="Кошачий треугольник" data-i="5"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_ad71zjadY319RxLntg7Ka9Uk2Z33PkTiYS5vPFCNvZw.jpg" alt="Upper Garden (Верхний сад)" data-i="6"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Bs8hlUUJpTy6t_cHxjsKO2xKzCoBAHyFUP5rpWZc1ws.jpg" alt="Upper Garden (Верхний сад)" data-i="7"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Ob6LzJtjE4ic9jofh2wez1EmSKyjji6nP5ZXcRUqAqc.jpg" alt="Дом Трувеллера F&amp;F" data-i="8"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_ckKK1_DVgYvxotkHNmp27hGqWQFi84kFV5rId4QX-0c.jpg" alt="Собор Петра и Павла" data-i="9"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_NLL0D4VS5QoznaS-FuaxBE6sDFbLJyWvBr_9oRuoWfg.jpg" alt="Торговая площадь" data-i="10"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_efdPpFA5GX9nr768oQITG2gaoEXYlQMqsxj_3VhFnAs.jpg" alt="Торговая площадь" data-i="11"></div><button class="more-btn" onclick="morePhotos(this)">ALL 22 PHOTOS ▾</button><script type="application/json" id="phData">[["1413067054_gjyW6x5kvlRIFiGGWZbEGeIYv9HBXCEYuyY76DUvWwE.jpg","Капелла","2025-09-15"],["1413067054_POWt13_jgnO--jjFyXjyrl_YLtFN5QE9tS8_MZqvNlk.jpg","Капелла","2025-09-15"],["1413067054__9viz-3925cde7NP0WZR42dTiwO7CeetzbfygFPOS4w.jpg","Gothic Stables (Готические конюшни)","2025-09-15"],["1413067054_RzbcMRis4s6ZhtWfnohGbm454rOqYpQM5T75msq8n8Y.jpg","Gothic Stables (Готические конюшни)","2025-09-15"],["1413067054__MJLwkaaE2j2AId7JUM3x2b7AsCwyzPxC8N3earPdfM.jpg","Кошачий треугольник","2025-09-15"],["1413067054_yw7fpewjBzBm9cmjU1KONRDr90dXHuoEwzDJlkIfUV4.jpg","Кошачий треугольник","2025-09-15"],["1413067054_ad71zjadY319RxLntg7Ka9Uk2Z33PkTiYS5vPFCNvZw.jpg","Upper Garden (Верхний сад)","2025-09-15"],["1413067054_Bs8hlUUJpTy6t_cHxjsKO2xKzCoBAHyFUP5rpWZc1ws.jpg","Upper Garden (Верхний сад)","2025-09-15"],["1413067054_Ob6LzJtjE4ic9jofh2wez1EmSKyjji6nP5ZXcRUqAqc.jpg","Дом Трувеллера F&F","2025-09-15"],["1413067054_ckKK1_DVgYvxotkHNmp27hGqWQFi84kFV5rId4QX-0c.jpg","Собор Петра и Павла","2025-09-15"],["1413067054_NLL0D4VS5QoznaS-FuaxBE6sDFbLJyWvBr_9oRuoWfg.jpg","Торговая площадь","2025-09-15"],["1413067054_efdPpFA5GX9nr768oQITG2gaoEXYlQMqsxj_3VhFnAs.jpg","Торговая площадь","2025-09-15"]]</script></section>
 <section><div class="sec-h">In your own voice</div><div class="shouts"><div class="shout">“На фото 2 кота, ибо возле третьего прибухивали :с”<div class="shout-meta">2025 · Кошачий треугольник, Peterhof</div></div></div></section>
 <section><button class="log-btn" onclick="toggleLog()"><span>All 39 check-ins in Peterhof, searchable</span><b id="logLbl">OPEN ▾</b></button><div class="log" id="log"><input type="search" placeholder="Search venues, neighbourhoods, categories…" oninput="filterLog(this.value)"><div class="log-n" id="logN"></div><div id="logBody"></div></div></section>
 </div>
+<div class="lb" id="lb" onclick="lbClose(event)"><button class="lb-x" aria-label="Close">×</button><button class="lb-p" aria-label="Previous" onclick="lbStep(event,-1)">‹</button><img id="lbImg" alt=""><button class="lb-n" aria-label="Next" onclick="lbStep(event,1)">›</button><div class="lb-cap" id="lbCap"></div></div>
 <script>
 function moreTrips(b){b.previousElementSibling.classList.add('all');b.remove();}
 // The full log loads its own file (<kind>_ck_<slug>.json) on the first open.
 const LOG_URL="/city_ck_peterhof.json", MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], STEP=300;
-let ROWS=null, shown=0, list=[];
+let ROWS=null, shown=0, list=[], LOGP=null;
+const loadLog=()=>LOGP||(LOGP=fetch(LOG_URL).then(r=>r.json()));
+// Photos: the first tiles ship inline, the rest come with the log file
+const PIX="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix";
+let PH=JSON.parse((document.getElementById('phData')||{textContent:'[]'}).textContent), lbI=0;
+document.addEventListener('click',e=>{const im=e.target.closest('.photos img');if(im)lbOpen(+im.dataset.i);});
+function lbOpen(i){
+  lbI=(i+PH.length)%PH.length; const [fn,v,d]=PH[lbI];
+  document.getElementById('lbImg').src=PIX+'/'+fn;
+  document.getElementById('lbCap').textContent=[v,d].filter(Boolean).join(' · ')+'  ·  '+(lbI+1)+' / '+PH.length;
+  document.getElementById('lb').classList.add('open');
+}
+function lbStep(e,k){e.stopPropagation();lbOpen(lbI+k);}
+function lbClose(e){if(e.target.id==='lb'||e.target.classList.contains('lb-x'))document.getElementById('lb').classList.remove('open');}
+addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')document.getElementById('lb').classList.remove('open');
+  else if(e.key==='ArrowLeft')lbOpen(lbI-1); else if(e.key==='ArrowRight')lbOpen(lbI+1);
+});
+function morePhotos(b){
+  b.textContent='LOADING…';
+  loadLog().then(j=>{
+    const g=document.getElementById('photoGrid'), have=g.children.length; PH=j.p||PH;
+    g.insertAdjacentHTML('beforeend',PH.slice(have).map(([fn,v],k)=>
+      `<img loading="lazy" src="${PIX}/t/${esc(fn)}" alt="${esc(v)}" data-i="${have+k}">`).join(''));
+    b.remove();
+  }).catch(()=>{b.textContent='COULD NOT LOAD';});
+}
+// Map: CARTO tiles, a dot per venue, the place's own outline from OpenStreetMap
+(function(){
+  const el=document.getElementById('lmap'), dd=document.getElementById('mapData');
+  if(!el||!dd||!window.L)return;
+  const D=JSON.parse(dd.textContent);
+  const m=L.map(el,{preferCanvas:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4lwx_1_a667c2540e715948f2a06df2',
+    {attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(m);
+  m.fitBounds(D.b,{padding:[18,18],maxZoom:15});
+  m.createPane('bnd').style.zIndex=350;
+  const top=Math.max(...D.p.map(p=>p[2]));
+  D.p.forEach(([a,o,n])=>L.circleMarker([a,o],{radius:2.2+7*Math.sqrt(n/top),stroke:false,
+    fillColor:n*4>=top?'#f6d38b':'#ff9a6b',fillOpacity:n*4>=top?.9:.6,interactive:false}).addTo(m));
+  const q=D.q, key='bnd1:'+q.kind+':'+q.name+':'+q.country;
+  const draw=g=>{if(g)L.geoJSON(g,{pane:'bnd',interactive:false,style:{color:'#4ec9b0',weight:2,opacity:.9,
+    fillColor:'#4ec9b0',fillOpacity:.06}}).addTo(m);};
+  let c=null; try{c=localStorage.getItem(key);}catch(e){}
+  if(c!==null){draw(c?JSON.parse(c):null);return;}
+  const city=q.kind==='city';
+  const u='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&polygon_geojson=1&polygon_threshold='+
+    (city?'0.0005':'0.01')+'&'+(city?'city='+encodeURIComponent(q.name)+'&country='+encodeURIComponent(q.country)
+    :'country='+encodeURIComponent(q.name));
+  fetch(u).then(r=>r.json()).then(j=>{
+    const g=j&&j[0]&&j[0].geojson, ok=g&&/Polygon/.test(g.type)?g:null;
+    try{localStorage.setItem(key,ok?JSON.stringify(ok):'');}catch(e){}
+    draw(ok);
+  }).catch(()=>{});
+})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toggleLog(){
   const l=document.getElementById('log'); l.classList.toggle('open');
   document.getElementById('logLbl').textContent=l.classList.contains('open')?'HIDE ▴':'OPEN ▾';
-  if(ROWS===null){ROWS=[];fetch(LOG_URL).then(r=>r.json()).then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
+  if(ROWS===null){ROWS=[];loadLog().then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
 }
 function filterLog(q){
   q=(q||'').toLowerCase();

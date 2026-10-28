@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -123,6 +125,24 @@ section{margin-top:52px;}
 .yr-bar.home .bar{background:linear-gradient(180deg,#7fe0cb,#3aa892);}
 .legend{float:right;color:var(--muted);letter-spacing:.12em;}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#4ec9b0;margin-right:6px;vertical-align:-1px;}
+.lmap{height:440px;border-radius:20px;border:1px solid var(--border);overflow:hidden;background:#0d0f16;}
+.lmap .leaflet-control-attribution{background:rgba(10,12,18,.7);color:#7a85a8;font-size:.55rem;}
+.lmap .leaflet-control-attribution a{color:#9aa3c0;}
+.lmap .leaflet-bar{border:1px solid var(--border);box-shadow:none;}
+.lmap .leaflet-bar a{background:rgba(18,21,31,.9);color:var(--text);border-bottom-color:var(--border);}
+.lmap .leaflet-bar a:hover{background:var(--card2);color:#ff9a6b;}
+.photos img{cursor:zoom-in;transition:filter .15s;}
+.photos img:hover{filter:brightness(1.12);}
+.lb{position:fixed;inset:0;z-index:1000;background:rgba(5,6,10,.94);display:none;align-items:center;justify-content:center;}
+.lb.open{display:flex;}
+.lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.6);}
+.lb-cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.08em;color:#c4cbe0;padding:0 60px;}
+.lb button{position:absolute;background:rgba(18,21,31,.8);border:1px solid var(--border);color:var(--text);border-radius:999px;width:44px;height:44px;font-size:1.3rem;cursor:pointer;}
+.lb button:hover{border-color:#ff9a6b;color:#ff9a6b;}
+.lb-x{top:16px;right:16px;}
+.lb-p{left:16px;top:50%;transform:translateY(-50%);}
+.lb-n{right:16px;top:50%;transform:translateY(-50%);}
+@media(max-width:700px){.lmap{height:340px;}.lb-p,.lb-n{top:auto;bottom:52px;transform:none;}}
 @media(max-width:700px){.cmap text{font-size:26px;stroke-width:5px;}.cmap circle{transform-box:fill-box;}.kpis{grid-template-columns:1fr 1fr;}.photos{grid-template-columns:repeat(3,1fr);}.hero{min-height:340px;}.yr-bar .yr-lbl{font-size:.42rem;writing-mode:vertical-rl;transform:rotate(180deg);}.yr-bar .yr-n{display:none;}}
 @media(max-width:600px){.wrap{padding:6px 16px 90px;}.hero-in{padding:96px 16px 26px;}}
 </style>
@@ -136,27 +156,83 @@ section{margin-top:52px;}
 </div></header>
 <div class="wrap">
 <div class="kpis"><div class="kpi"><div class="kpi-num">47</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">43</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">years</div></div><div class="kpi"><div class="kpi-num">2</div><div class="kpi-lbl">days</div></div></div>
-<section><div class="sec-h">Where it happened</div><div class="cmap"><svg viewBox="0 0 920 380" role="img" aria-label="Map of check-ins"><circle class="hot" cx="26.0" cy="121.9" r="6.5"/><circle class="hot" cx="847.8" cy="157.3" r="6.5"/><circle class="hot" cx="824.2" cy="175.5" r="6.5"/><circle class="hot" cx="824.3" cy="175.8" r="6.5"/><circle class="hot" cx="821.3" cy="178.7" r="6.5"/><circle class="hot" cx="820.6" cy="179.2" r="6.5"/><circle class="hot" cx="821.5" cy="179.3" r="6.5"/><circle class="hot" cx="818.8" cy="175.5" r="6.5"/><circle class="hot" cx="821.3" cy="181.0" r="6.5"/><circle class="hot" cx="822.9" cy="181.3" r="6.5"/><circle class="hot" cx="728.2" cy="258.1" r="6.5"/><circle class="hot" cx="821.4" cy="181.4" r="6.5"/><circle class="hot" cx="820.8" cy="181.0" r="6.5"/><circle class="hot" cx="820.3" cy="181.6" r="6.5"/><circle class="hot" cx="820.3" cy="181.6" r="6.5"/><circle class="hot" cx="820.2" cy="181.7" r="6.5"/><circle class="hot" cx="820.3" cy="181.1" r="6.5"/><circle class="hot" cx="819.5" cy="181.6" r="6.5"/><circle class="hot" cx="819.8" cy="182.0" r="6.5"/><circle class="hot" cx="819.0" cy="182.6" r="6.5"/><circle class="hot" cx="818.3" cy="181.7" r="6.5"/><circle class="hot" cx="819.0" cy="182.8" r="6.5"/><circle class="hot" cx="819.6" cy="183.1" r="6.5"/><circle class="hot" cx="820.1" cy="183.3" r="6.5"/><circle class="hot" cx="819.9" cy="183.7" r="6.5"/><circle class="hot" cx="817.8" cy="186.3" r="6.5"/><circle class="hot" cx="818.0" cy="185.5" r="6.5"/><circle class="hot" cx="816.7" cy="184.3" r="6.5"/><circle class="hot" cx="818.4" cy="177.0" r="6.5"/><circle class="hot" cx="819.3" cy="177.6" r="6.5"/><circle class="hot" cx="820.5" cy="179.3" r="6.5"/><circle class="hot" cx="822.5" cy="176.3" r="6.5"/><circle class="hot" cx="824.1" cy="175.7" r="6.5"/><circle class="hot" cx="824.6" cy="175.6" r="6.5"/><circle class="hot" cx="893.4" cy="137.6" r="6.5"/><circle class="hot" cx="893.4" cy="137.2" r="6.5"/><circle class="hot" cx="893.1" cy="137.8" r="6.5"/><circle class="hot" cx="894.0" cy="137.1" r="6.5"/><circle class="hot" cx="893.4" cy="137.3" r="6.5"/><circle class="hot" cx="893.5" cy="137.6" r="8.6"/><circle class="hot" cx="893.5" cy="137.6" r="8.6"/><circle class="hot" cx="893.5" cy="137.7" r="8.6"/><circle class="hot" cx="819.6" cy="177.0" r="8.6"/></svg></div></section>
+<section><div class="sec-h">Where it happened</div><div class="lmap" id="lmap"></div><script type="application/json" id="mapData">{"p":[[40.4649,50.0525,2],[40.465,50.0525,2],[40.4646,50.0525,2],[40.5,47.5,1],[40.4207,49.918,1],[40.3799,49.8485,1],[40.3792,49.8487,1],[40.3766,49.8351,2],[40.3728,49.8401,1],[40.3717,49.8379,1],[40.3715,49.8405,1],[40.38,49.8326,1],[40.3676,49.8399,1],[40.3668,49.8446,1],[40.1948,49.5661,1],[40.3666,49.8404,1],[40.3676,49.8384,1],[40.3662,49.837,1],[40.3663,49.837,1],[40.3661,49.8369,1],[40.3673,49.837,1],[40.3662,49.8348,1],[40.3653,49.8357,1],[40.3641,49.8333,1],[40.3659,49.8312,1],[40.3635,49.8332,1],[40.3629,49.835,1],[40.3624,49.8364,1],[40.3615,49.8359,1],[40.3556,49.8297,1],[40.3575,49.8304,1],[40.3601,49.8264,1],[40.3766,49.8315,1],[40.3751,49.8341,1],[40.3715,49.8377,1],[40.3782,49.8435,1],[40.3794,49.8481,1],[40.3798,49.8498,1],[40.4649,50.0522,1],[40.4657,50.0522,1],[40.4644,50.0512,1],[40.466,50.0539,1],[40.4656,50.0521,1]],"b":[[40.1948,47.5],[40.5,50.0539]],"q":{"kind":"city","name":"Baku","country":"Azerbaijan"}}</script></section>
 <section><div class="sec-h">By year</div><div class="years"><div class="yr-bar zero"><span class="yr-n">0</span><div class="bar" style="height:3px"></div><span class="yr-lbl">2025</span></div><div class="yr-bar"><span class="yr-n">47</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2026</span></div></div></section>
 <section><div class="cols"><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Heydar Aliyev International Airport (GYD) (Heydər Əliyev Beynəlxalq Aeroportu)"><a href="/venue.html#4d01bf2d68e38eecdbaadec4">Heydar Aliyev International Airport (GYD) (Heydər Əliyev Beynəlxalq Aeroportu)</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Passport Control"><a href="/venue.html#51346440e4b0d576d2099e99">Passport Control</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Airport Express Bus"><a href="/venue.html#6ab7893821ef5110cc841fc0">Airport Express Bus</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Courtyard by Marriott Baku"><a href="/venue.html#6082fcd5abc301770f91e55d">Courtyard by Marriott Baku</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Azerbaijan (Azərbaycan)"><a href="/venue.html#53110e9ce4b03443dd8484e8">Azerbaijan (Azərbaycan)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Koroğlu Metrostansiyası"><a href="/venue.html#4cb16fbc5430b7136ec63716">Koroğlu Metrostansiyası</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="28 May Metrostansiyası"><a href="/venue.html#4cb037d8aef16dcbf4fcae54">28 May Metrostansiyası</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="14 Avtobus"><a href="/venue.html#51c58321498e3a8ecfa46442">14 Avtobus</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Nizami Street (Nizami Küçəsi)"><a href="/venue.html#4f1e922de4b0293a862a2a9d">Nizami Street (Nizami Küçəsi)</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Fountains Square (Fəvvarələr Meydanı)"><a href="/venue.html#4dbd1460f7b1ab37dd6ec2db">Fountains Square (Fəvvarələr Meydanı)</a></span><span class="rank-n">1</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Park">Park</span><span class="rank-n">7</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Historic and Protected Site">Historic and Protected Site</span><span class="rank-n">5</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Airport Service">Airport Service</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Plaza">Plaza</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="International Airport">International Airport</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Bus Station">Bus Station</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Metro Station">Metro Station</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Hotel">Hotel</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Road">Road</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">2</span></div></div></div></div></section>
 
 
 <section><div class="sec-h">Trips here · 1</div><div class="trips"><a class="trip-card" href="/trips.html#trip-35"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_0DwU3eJnk50o7Idmlr7A1UxTMlFOcsXlKN338b0k910.jpg')"></div><div class="trip-body"><div class="trip-name">Turkey + Moldova + 3 more ✈️</div><div class="trip-meta">2026-09-26 → 2026-10-12 · 17 days · 897 check-ins</div></div></a></div></section>
-<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_eeOvdQ5ov82huSo8yRHmToMU33wGxH7kwlFO_qDW4Ss.jpg" alt="Premium Bank Lounge"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_QBhBcVsqCWEEoQRrB_mQUTASd2YUvndYi_q37Mg0s_Q.jpg" alt="Heydər Əliyev Parkı"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_4m_GSWPQJAuoutrVXM7KIWRBVbc2Swq8c85k9FOGDGs.jpg" alt="Courtyard by Marriott Baku"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_tDQNaqfu2ZXUwyksSC_KYXTRfF-pqWsv2LWIOU2IXa8.jpg" alt="Islam Səfərli küçəsi"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_6t-tGMYyna1QTxRBK4r4M4eXHknNwr_mI028eSsoBfo.jpg" alt="Flame Towers (Alov qüllələri)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_orm0ruWQcj4q5OdiZuUQ78w4WYgiSgkduoKvB4FnaVM.jpg" alt="Flame Towers (Alov qüllələri)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_fDFg7bp9p9ISbenEPFW5MIjma4pPmybE0dPhWIVRuH0.jpg" alt="Panorama / Панорама"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_y_4uMFwBAfBqi_31R-4sDg18jonIOJ20V17pDUbHx9o.jpg" alt="Swans Fountain"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_xONPLnYCUrPp7I_fFYNMlYEht9hboTGJrWj6emd6LTA.jpg" alt="Azneft Meydanı | Azneft Square"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_NH4HkGmFy2uLPtD0jQ1XuAQYcUYuUPy-PBfm97mFXks.jpg" alt="Philarmonia Wall Clock"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_o1GJeH1BeeuzwcmCXeEcywFT67VKIeNfTqnD7NQtdUY.jpg" alt="Philarmonia Garden (Filarmoniya Bağı)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_KKM00isjKX07Ja1D8kTKIavQnYpTAbHwlLAZZQ7lFD4.jpg" alt="Monument Lovers &amp; Cats"></div></section>
+<section><div class="sec-h">Photos · 21</div><div class="photos" id="photoGrid"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_eeOvdQ5ov82huSo8yRHmToMU33wGxH7kwlFO_qDW4Ss.jpg" alt="Premium Bank Lounge" data-i="0"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_QBhBcVsqCWEEoQRrB_mQUTASd2YUvndYi_q37Mg0s_Q.jpg" alt="Heydər Əliyev Parkı" data-i="1"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_4m_GSWPQJAuoutrVXM7KIWRBVbc2Swq8c85k9FOGDGs.jpg" alt="Courtyard by Marriott Baku" data-i="2"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_tDQNaqfu2ZXUwyksSC_KYXTRfF-pqWsv2LWIOU2IXa8.jpg" alt="Islam Səfərli küçəsi" data-i="3"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_6t-tGMYyna1QTxRBK4r4M4eXHknNwr_mI028eSsoBfo.jpg" alt="Flame Towers (Alov qüllələri)" data-i="4"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_orm0ruWQcj4q5OdiZuUQ78w4WYgiSgkduoKvB4FnaVM.jpg" alt="Flame Towers (Alov qüllələri)" data-i="5"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_fDFg7bp9p9ISbenEPFW5MIjma4pPmybE0dPhWIVRuH0.jpg" alt="Panorama / Панорама" data-i="6"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_y_4uMFwBAfBqi_31R-4sDg18jonIOJ20V17pDUbHx9o.jpg" alt="Swans Fountain" data-i="7"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_xONPLnYCUrPp7I_fFYNMlYEht9hboTGJrWj6emd6LTA.jpg" alt="Azneft Meydanı | Azneft Square" data-i="8"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_NH4HkGmFy2uLPtD0jQ1XuAQYcUYuUPy-PBfm97mFXks.jpg" alt="Philarmonia Wall Clock" data-i="9"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_o1GJeH1BeeuzwcmCXeEcywFT67VKIeNfTqnD7NQtdUY.jpg" alt="Philarmonia Garden (Filarmoniya Bağı)" data-i="10"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_KKM00isjKX07Ja1D8kTKIavQnYpTAbHwlLAZZQ7lFD4.jpg" alt="Monument Lovers &amp; Cats" data-i="11"></div><button class="more-btn" onclick="morePhotos(this)">ALL 21 PHOTOS ▾</button><script type="application/json" id="phData">[["1413067054_eeOvdQ5ov82huSo8yRHmToMU33wGxH7kwlFO_qDW4Ss.jpg","Premium Bank Lounge","2026-10-12"],["1413067054_QBhBcVsqCWEEoQRrB_mQUTASd2YUvndYi_q37Mg0s_Q.jpg","Heydər Əliyev Parkı","2026-10-12"],["1413067054_4m_GSWPQJAuoutrVXM7KIWRBVbc2Swq8c85k9FOGDGs.jpg","Courtyard by Marriott Baku","2026-10-12"],["1413067054_tDQNaqfu2ZXUwyksSC_KYXTRfF-pqWsv2LWIOU2IXa8.jpg","Islam Səfərli küçəsi","2026-10-11"],["1413067054_6t-tGMYyna1QTxRBK4r4M4eXHknNwr_mI028eSsoBfo.jpg","Flame Towers (Alov qüllələri)","2026-10-11"],["1413067054_orm0ruWQcj4q5OdiZuUQ78w4WYgiSgkduoKvB4FnaVM.jpg","Flame Towers (Alov qüllələri)","2026-10-11"],["1413067054_fDFg7bp9p9ISbenEPFW5MIjma4pPmybE0dPhWIVRuH0.jpg","Panorama / Панорама","2026-10-11"],["1413067054_y_4uMFwBAfBqi_31R-4sDg18jonIOJ20V17pDUbHx9o.jpg","Swans Fountain","2026-10-11"],["1413067054_xONPLnYCUrPp7I_fFYNMlYEht9hboTGJrWj6emd6LTA.jpg","Azneft Meydanı | Azneft Square","2026-10-11"],["1413067054_NH4HkGmFy2uLPtD0jQ1XuAQYcUYuUPy-PBfm97mFXks.jpg","Philarmonia Wall Clock","2026-10-11"],["1413067054_o1GJeH1BeeuzwcmCXeEcywFT67VKIeNfTqnD7NQtdUY.jpg","Philarmonia Garden (Filarmoniya Bağı)","2026-10-11"],["1413067054_KKM00isjKX07Ja1D8kTKIavQnYpTAbHwlLAZZQ7lFD4.jpg","Monument Lovers & Cats","2026-10-11"]]</script></section>
 <section><div class="sec-h">In your own voice</div><div class="shouts"><div class="shout">“Я не знаю сколько лестничных пролетов я прошла ради этого вида!!”<div class="shout-meta">2026 · Panorama / Панорама, Baku</div></div></div></section>
 <section><button class="log-btn" onclick="toggleLog()"><span>All 47 check-ins in Baku, searchable</span><b id="logLbl">OPEN ▾</b></button><div class="log" id="log"><input type="search" placeholder="Search venues, neighbourhoods, categories…" oninput="filterLog(this.value)"><div class="log-n" id="logN"></div><div id="logBody"></div></div></section>
 </div>
+<div class="lb" id="lb" onclick="lbClose(event)"><button class="lb-x" aria-label="Close">×</button><button class="lb-p" aria-label="Previous" onclick="lbStep(event,-1)">‹</button><img id="lbImg" alt=""><button class="lb-n" aria-label="Next" onclick="lbStep(event,1)">›</button><div class="lb-cap" id="lbCap"></div></div>
 <script>
 function moreTrips(b){b.previousElementSibling.classList.add('all');b.remove();}
 // The full log loads its own file (<kind>_ck_<slug>.json) on the first open.
 const LOG_URL="/city_ck_baku.json", MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], STEP=300;
-let ROWS=null, shown=0, list=[];
+let ROWS=null, shown=0, list=[], LOGP=null;
+const loadLog=()=>LOGP||(LOGP=fetch(LOG_URL).then(r=>r.json()));
+// Photos: the first tiles ship inline, the rest come with the log file
+const PIX="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix";
+let PH=JSON.parse((document.getElementById('phData')||{textContent:'[]'}).textContent), lbI=0;
+document.addEventListener('click',e=>{const im=e.target.closest('.photos img');if(im)lbOpen(+im.dataset.i);});
+function lbOpen(i){
+  lbI=(i+PH.length)%PH.length; const [fn,v,d]=PH[lbI];
+  document.getElementById('lbImg').src=PIX+'/'+fn;
+  document.getElementById('lbCap').textContent=[v,d].filter(Boolean).join(' · ')+'  ·  '+(lbI+1)+' / '+PH.length;
+  document.getElementById('lb').classList.add('open');
+}
+function lbStep(e,k){e.stopPropagation();lbOpen(lbI+k);}
+function lbClose(e){if(e.target.id==='lb'||e.target.classList.contains('lb-x'))document.getElementById('lb').classList.remove('open');}
+addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')document.getElementById('lb').classList.remove('open');
+  else if(e.key==='ArrowLeft')lbOpen(lbI-1); else if(e.key==='ArrowRight')lbOpen(lbI+1);
+});
+function morePhotos(b){
+  b.textContent='LOADING…';
+  loadLog().then(j=>{
+    const g=document.getElementById('photoGrid'), have=g.children.length; PH=j.p||PH;
+    g.insertAdjacentHTML('beforeend',PH.slice(have).map(([fn,v],k)=>
+      `<img loading="lazy" src="${PIX}/t/${esc(fn)}" alt="${esc(v)}" data-i="${have+k}">`).join(''));
+    b.remove();
+  }).catch(()=>{b.textContent='COULD NOT LOAD';});
+}
+// Map: CARTO tiles, a dot per venue, the place's own outline from OpenStreetMap
+(function(){
+  const el=document.getElementById('lmap'), dd=document.getElementById('mapData');
+  if(!el||!dd||!window.L)return;
+  const D=JSON.parse(dd.textContent);
+  const m=L.map(el,{preferCanvas:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4lwx_1_a667c2540e715948f2a06df2',
+    {attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(m);
+  m.fitBounds(D.b,{padding:[18,18],maxZoom:15});
+  m.createPane('bnd').style.zIndex=350;
+  const top=Math.max(...D.p.map(p=>p[2]));
+  D.p.forEach(([a,o,n])=>L.circleMarker([a,o],{radius:2.2+7*Math.sqrt(n/top),stroke:false,
+    fillColor:n*4>=top?'#f6d38b':'#ff9a6b',fillOpacity:n*4>=top?.9:.6,interactive:false}).addTo(m));
+  const q=D.q, key='bnd1:'+q.kind+':'+q.name+':'+q.country;
+  const draw=g=>{if(g)L.geoJSON(g,{pane:'bnd',interactive:false,style:{color:'#4ec9b0',weight:2,opacity:.9,
+    fillColor:'#4ec9b0',fillOpacity:.06}}).addTo(m);};
+  let c=null; try{c=localStorage.getItem(key);}catch(e){}
+  if(c!==null){draw(c?JSON.parse(c):null);return;}
+  const city=q.kind==='city';
+  const u='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&polygon_geojson=1&polygon_threshold='+
+    (city?'0.0005':'0.01')+'&'+(city?'city='+encodeURIComponent(q.name)+'&country='+encodeURIComponent(q.country)
+    :'country='+encodeURIComponent(q.name));
+  fetch(u).then(r=>r.json()).then(j=>{
+    const g=j&&j[0]&&j[0].geojson, ok=g&&/Polygon/.test(g.type)?g:null;
+    try{localStorage.setItem(key,ok?JSON.stringify(ok):'');}catch(e){}
+    draw(ok);
+  }).catch(()=>{});
+})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toggleLog(){
   const l=document.getElementById('log'); l.classList.toggle('open');
   document.getElementById('logLbl').textContent=l.classList.contains('open')?'HIDE ▴':'OPEN ▾';
-  if(ROWS===null){ROWS=[];fetch(LOG_URL).then(r=>r.json()).then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
+  if(ROWS===null){ROWS=[];loadLog().then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
 }
 function filterLog(q){
   q=(q||'').toLowerCase();

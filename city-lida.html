@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -123,6 +125,24 @@ section{margin-top:52px;}
 .yr-bar.home .bar{background:linear-gradient(180deg,#7fe0cb,#3aa892);}
 .legend{float:right;color:var(--muted);letter-spacing:.12em;}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#4ec9b0;margin-right:6px;vertical-align:-1px;}
+.lmap{height:440px;border-radius:20px;border:1px solid var(--border);overflow:hidden;background:#0d0f16;}
+.lmap .leaflet-control-attribution{background:rgba(10,12,18,.7);color:#7a85a8;font-size:.55rem;}
+.lmap .leaflet-control-attribution a{color:#9aa3c0;}
+.lmap .leaflet-bar{border:1px solid var(--border);box-shadow:none;}
+.lmap .leaflet-bar a{background:rgba(18,21,31,.9);color:var(--text);border-bottom-color:var(--border);}
+.lmap .leaflet-bar a:hover{background:var(--card2);color:#ff9a6b;}
+.photos img{cursor:zoom-in;transition:filter .15s;}
+.photos img:hover{filter:brightness(1.12);}
+.lb{position:fixed;inset:0;z-index:1000;background:rgba(5,6,10,.94);display:none;align-items:center;justify-content:center;}
+.lb.open{display:flex;}
+.lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.6);}
+.lb-cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.08em;color:#c4cbe0;padding:0 60px;}
+.lb button{position:absolute;background:rgba(18,21,31,.8);border:1px solid var(--border);color:var(--text);border-radius:999px;width:44px;height:44px;font-size:1.3rem;cursor:pointer;}
+.lb button:hover{border-color:#ff9a6b;color:#ff9a6b;}
+.lb-x{top:16px;right:16px;}
+.lb-p{left:16px;top:50%;transform:translateY(-50%);}
+.lb-n{right:16px;top:50%;transform:translateY(-50%);}
+@media(max-width:700px){.lmap{height:340px;}.lb-p,.lb-n{top:auto;bottom:52px;transform:none;}}
 @media(max-width:700px){.cmap text{font-size:26px;stroke-width:5px;}.cmap circle{transform-box:fill-box;}.kpis{grid-template-columns:1fr 1fr;}.photos{grid-template-columns:repeat(3,1fr);}.hero{min-height:340px;}.yr-bar .yr-lbl{font-size:.42rem;writing-mode:vertical-rl;transform:rotate(180deg);}.yr-bar .yr-n{display:none;}}
 @media(max-width:600px){.wrap{padding:6px 16px 90px;}.hero-in{padding:96px 16px 26px;}}
 </style>
@@ -136,27 +156,83 @@ section{margin-top:52px;}
 </div></header>
 <div class="wrap">
 <div class="kpis"><div class="kpi"><div class="kpi-num">73</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">41</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">2</div><div class="kpi-lbl">years</div></div><div class="kpi"><div class="kpi-num">4</div><div class="kpi-lbl">days</div></div></div>
-<section><div class="sec-h">Where it happened</div><div class="cmap"><svg viewBox="0 0 920 380" role="img" aria-label="Map of check-ins"><circle class="hot" cx="407.0" cy="58.9" r="5.1"/><circle class="hot" cx="450.6" cy="31.7" r="5.1"/><circle class="hot" cx="394.6" cy="31.2" r="5.1"/><circle class="hot" cx="392.7" cy="94.2" r="5.1"/><circle class="hot" cx="384.0" cy="68.0" r="5.1"/><circle class="hot" cx="384.2" cy="63.2" r="5.1"/><circle class="hot" cx="374.1" cy="89.9" r="5.1"/><circle class="hot" cx="380.9" cy="90.4" r="5.1"/><circle class="hot" cx="410.4" cy="60.8" r="5.1"/><circle class="hot" cx="413.8" cy="74.2" r="5.1"/><circle class="hot" cx="430.6" cy="54.6" r="5.1"/><circle class="hot" cx="383.4" cy="36.5" r="5.1"/><circle class="hot" cx="372.4" cy="27.4" r="5.1"/><circle class="hot" cx="372.4" cy="98.9" r="5.1"/><circle class="hot" cx="374.7" cy="106.6" r="5.1"/><circle class="hot" cx="377.8" cy="180.5" r="5.1"/><circle class="hot" cx="396.6" cy="60.3" r="5.1"/><circle class="hot" cx="399.1" cy="35.5" r="5.1"/><circle class="hot" cx="394.9" cy="61.8" r="5.1"/><circle class="hot" cx="372.4" cy="90.8" r="6.5"/><circle class="hot" cx="393.8" cy="83.7" r="6.5"/><circle class="hot" cx="390.1" cy="63.2" r="6.5"/><circle class="hot" cx="397.2" cy="47.5" r="6.5"/><circle class="hot" cx="403.4" cy="26.0" r="6.5"/><circle class="hot" cx="380.9" cy="64.6" r="6.5"/><circle class="hot" cx="409.3" cy="53.7" r="6.5"/><circle class="hot" cx="395.5" cy="57.5" r="6.5"/><circle class="hot" cx="394.1" cy="44.6" r="6.5"/><circle class="hot" cx="547.6" cy="354.0" r="6.5"/><circle class="hot" cx="404.8" cy="97.5" r="7.7"/><circle class="hot" cx="396.3" cy="72.2" r="7.7"/><circle class="hot" cx="394.4" cy="79.9" r="7.7"/><circle class="hot" cx="396.0" cy="71.8" r="7.7"/><circle class="hot" cx="398.6" cy="73.7" r="7.7"/><circle class="hot" cx="396.3" cy="69.9" r="7.7"/><circle class="hot" cx="396.9" cy="67.0" r="7.7"/><circle class="hot" cx="395.8" cy="45.5" r="7.7"/><circle class="hot" cx="395.5" cy="47.0" r="7.7"/><circle class="hot" cx="404.2" cy="90.8" r="7.7"/><circle class="hot" cx="397.7" cy="31.2" r="8.6"/></svg></div></section>
+<section><div class="sec-h">Where it happened</div><div class="lmap" id="lmap"></div><script type="application/json" id="mapData">{"p":[[53.8847,25.2945,2],[53.8833,25.306,3],[53.8862,25.3021,2],[53.8886,25.303,3],[53.887,25.3023,3],[53.8887,25.3029,3],[53.8883,25.3038,3],[53.8891,25.303,3],[53.8897,25.3032,3],[53.8905,25.3008,2],[53.8914,25.3068,1],[53.8938,25.3033,2],[53.8942,25.3028,3],[53.8939,25.3027,3],[53.8971,25.3223,1],[53.8983,25.3055,2],[53.8972,25.3035,4],[53.8972,25.3024,1],[53.8847,25.3058,3],[53.884,25.3017,1],[53.8895,25.2986,1],[53.8902,25.2975,2],[53.8905,25.2987,1],[53.8849,25.2951,1],[53.8848,25.2975,1],[53.8925,25.3076,2],[53.891,25.308,1],[53.8882,25.3092,1],[53.8923,25.3152,1],[53.8917,25.3027,2],[53.8944,25.3022,2],[53.8961,25.2984,1],[53.898,25.2945,1],[53.883,25.2945,1],[53.8814,25.2953,1],[53.8659,25.2964,1],[53.8295,25.3568,2],[53.8911,25.3031,1],[53.8963,25.304,1],[53.8908,25.3025,1]],"b":[[53.8295,25.2945],[53.8983,25.3568]],"q":{"kind":"city","name":"Lida","country":"Belarus"}}</script></section>
 <section><div class="sec-h">By year</div><div class="years"><div class="yr-bar"><span class="yr-n">52</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2025</span></div><div class="yr-bar"><span class="yr-n">21</span><div class="bar" style="height:34px"></div><span class="yr-lbl">2026</span></div></div></section>
 <section><div class="cols"><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Lida (Лида)"><a href="/venue.html#50152aede4b021abafcd95a6">Lida (Лида)</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Площадь 600-летия Лиды"><a href="/venue.html#55fd6ffd498eeb92918b2c63">Площадь 600-летия Лиды</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Lida Castle (Лидский замок)"><a href="/venue.html#4dbd64e85da3ff58ec61b259">Lida Castle (Лидский замок)</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Памятник Гедимину"><a href="/venue.html#5d6a4cace5ddae00085d5e14">Памятник Гедимину</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Командировочный"><a href="/venue.html#6468a7c16cd4f55c2dd3ba84">Командировочный</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Крестовоздвиженский костел"><a href="/venue.html#50756db1e4b0a4e8d4275b7d">Крестовоздвиженский костел</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Памятник Франциску Скорине"><a href="/venue.html#5996e98fe679bc4aaf352725">Памятник Франциску Скорине</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Памятный знак в честь 140-летия Лидского пива"><a href="/venue.html#60f29486111649605e4811dc">Памятный знак в честь 140-летия Лидского пива</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Улица Советская"><a href="/venue.html#5ae47e654b78c5002c6d6543">Улица Советская</a></span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Пивные Бочонки"><a href="/venue.html#6898bdf43900e20e08c4cc8b">Пивные Бочонки</a></span><span class="rank-n">3</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">14</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Outdoor Sculpture">Outdoor Sculpture</span><span class="rank-n">9</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Plaza">Plaza</span><span class="rank-n">7</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Road">Road</span><span class="rank-n">7</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Lake">Lake</span><span class="rank-n">5</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Temple">Temple</span><span class="rank-n">4</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="City">City</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Castle">Castle</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Bus Station">Bus Station</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="BBQ Joint">BBQ Joint</span><span class="rank-n">2</span></div></div></div></div></section>
 
 
 <section><div class="sec-h">Trips here · 4</div><div class="trips"><a class="trip-card" href="/trips.html#trip-34"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_tBqyoJ7U_TEkmkcacnFDnHSuKLfTfxMVbl8dU7VO3os.jpg')"></div><div class="trip-body"><div class="trip-name">Hrodna, Belarus 🚂</div><div class="trip-meta">2026-09-04 → 2026-09-06 · 3 days · 55 check-ins</div></div></a><a class="trip-card" href="/trips.html#trip-30"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_rXXlf_JQ0oaLQEfIANiga_ngiPM2DLdueQ0u1AAecww.jpg')"></div><div class="trip-body"><div class="trip-name">Hrodna, Belarus 🚂</div><div class="trip-meta">2026-05-18 → 2026-05-18 · 1 day · 27 check-ins</div></div></a><a class="trip-card" href="/trips.html#trip-16"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_7XpRkUb7lbbqgBRuO7C49_eqnF2NattRvL3n0pl7jf8.jpg')"></div><div class="trip-body"><div class="trip-name">Navahrudak - Lida castles 🚂</div><div class="trip-meta">2025-10-19 → 2025-10-20 · 2 days · 71 check-ins</div></div></a><a class="trip-card" href="/trips.html#trip-11"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_8cgZ_Es1FPBXdC_KC3tmTJQbRbjO0P9Hrh_UjL68JOk.jpg')"></div><div class="trip-body"><div class="trip-name">Lida day trip 🚌</div><div class="trip-meta">2025-08-10 → 2025-08-11 · 2 days · 30 check-ins</div></div></a></div></section>
-<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_EZPUrSKAuXNQgTOLw4RsXf2_TxYNHl07g1rC5nw7qDI.jpg" alt="Jinnee"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_YQQFJGFE40uMSxMSFaby6eoULrgh8j3q3YzgR5d2tGI.jpg" alt="Jinnee"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_EqNy4MJmk567QOFT7OiLAwyNFRwP_bbb3KnBgUW_hYM.jpg" alt="Лидское Озеро"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_1PjgQBKZdhqON60xGZpQ0rfSHzLW6DxGn_BjVFuQzJY.jpg" alt="Лидское Озеро"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_fAUGKy88WNkjs2CGe_iS61CI24zxG1EKLCYyLkcLJDk.jpg" alt="Пивные Бочонки"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_qpMgk4D-V7sq9hwBYsPhulrLCq9OI_V614yYu8kohaA.jpg" alt="Улица Советская"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_6j9hHY9vLq1zcZ3JVzqFSb-sUh14SjIxiXVuOQclZxg.jpg" alt="Улица Советская"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_C9u8bYOhVu88uOE9ewTx0goLs2ZEoaAVl_RY16JF2ok.jpg" alt="Памятный знак в честь 140-летия Лидского пива"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054__VSKuF7Uj7NEZPvvbX2-5NMUgyt9YNQG2HVI9bbPG54.jpg" alt="Дожиночная Площадь"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_tBqyoJ7U_TEkmkcacnFDnHSuKLfTfxMVbl8dU7VO3os.jpg" alt="Крестовоздвиженский костел"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_mllU2Vt2CUuJrXfLpBeJ_hS7lo_Ag2fUq8EtlxZtSxA.jpg" alt="Командировочный"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_navm84IY7J0bh4j_NDnDTh3k2NIlQY-G4ZT1UQS-CPc.jpg" alt="Памятник Гедимину"></div></section>
+<section><div class="sec-h">Photos · 65</div><div class="photos" id="photoGrid"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_EZPUrSKAuXNQgTOLw4RsXf2_TxYNHl07g1rC5nw7qDI.jpg" alt="Jinnee" data-i="0"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_YQQFJGFE40uMSxMSFaby6eoULrgh8j3q3YzgR5d2tGI.jpg" alt="Jinnee" data-i="1"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_EqNy4MJmk567QOFT7OiLAwyNFRwP_bbb3KnBgUW_hYM.jpg" alt="Лидское Озеро" data-i="2"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_1PjgQBKZdhqON60xGZpQ0rfSHzLW6DxGn_BjVFuQzJY.jpg" alt="Лидское Озеро" data-i="3"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_fAUGKy88WNkjs2CGe_iS61CI24zxG1EKLCYyLkcLJDk.jpg" alt="Пивные Бочонки" data-i="4"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_qpMgk4D-V7sq9hwBYsPhulrLCq9OI_V614yYu8kohaA.jpg" alt="Улица Советская" data-i="5"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_6j9hHY9vLq1zcZ3JVzqFSb-sUh14SjIxiXVuOQclZxg.jpg" alt="Улица Советская" data-i="6"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_C9u8bYOhVu88uOE9ewTx0goLs2ZEoaAVl_RY16JF2ok.jpg" alt="Памятный знак в честь 140-летия Лидского пива" data-i="7"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054__VSKuF7Uj7NEZPvvbX2-5NMUgyt9YNQG2HVI9bbPG54.jpg" alt="Дожиночная Площадь" data-i="8"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_tBqyoJ7U_TEkmkcacnFDnHSuKLfTfxMVbl8dU7VO3os.jpg" alt="Крестовоздвиженский костел" data-i="9"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_mllU2Vt2CUuJrXfLpBeJ_hS7lo_Ag2fUq8EtlxZtSxA.jpg" alt="Командировочный" data-i="10"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_navm84IY7J0bh4j_NDnDTh3k2NIlQY-G4ZT1UQS-CPc.jpg" alt="Памятник Гедимину" data-i="11"></div><button class="more-btn" onclick="morePhotos(this)">ALL 65 PHOTOS ▾</button><script type="application/json" id="phData">[["1413067054_EZPUrSKAuXNQgTOLw4RsXf2_TxYNHl07g1rC5nw7qDI.jpg","Jinnee","2026-09-05"],["1413067054_YQQFJGFE40uMSxMSFaby6eoULrgh8j3q3YzgR5d2tGI.jpg","Jinnee","2026-09-05"],["1413067054_EqNy4MJmk567QOFT7OiLAwyNFRwP_bbb3KnBgUW_hYM.jpg","Лидское Озеро","2026-09-05"],["1413067054_1PjgQBKZdhqON60xGZpQ0rfSHzLW6DxGn_BjVFuQzJY.jpg","Лидское Озеро","2026-09-05"],["1413067054_fAUGKy88WNkjs2CGe_iS61CI24zxG1EKLCYyLkcLJDk.jpg","Пивные Бочонки","2026-09-05"],["1413067054_qpMgk4D-V7sq9hwBYsPhulrLCq9OI_V614yYu8kohaA.jpg","Улица Советская","2026-09-05"],["1413067054_6j9hHY9vLq1zcZ3JVzqFSb-sUh14SjIxiXVuOQclZxg.jpg","Улица Советская","2026-09-05"],["1413067054_C9u8bYOhVu88uOE9ewTx0goLs2ZEoaAVl_RY16JF2ok.jpg","Памятный знак в честь 140-летия Лидского пива","2026-09-05"],["1413067054__VSKuF7Uj7NEZPvvbX2-5NMUgyt9YNQG2HVI9bbPG54.jpg","Дожиночная Площадь","2026-09-05"],["1413067054_tBqyoJ7U_TEkmkcacnFDnHSuKLfTfxMVbl8dU7VO3os.jpg","Крестовоздвиженский костел","2026-09-05"],["1413067054_mllU2Vt2CUuJrXfLpBeJ_hS7lo_Ag2fUq8EtlxZtSxA.jpg","Командировочный","2026-09-05"],["1413067054_navm84IY7J0bh4j_NDnDTh3k2NIlQY-G4ZT1UQS-CPc.jpg","Памятник Гедимину","2026-09-05"]]</script></section>
 <section><div class="sec-h">In your own voice</div><div class="shouts"><div class="shout">“Больше магазин, чем музей — with Tanya”<div class="shout-meta">2026 · Музей Лідскага Бровара, Lida</div></div><div class="shout">“Замок на закате 🤌 — with Andrei”<div class="shout-meta">2025 · Lida Castle (Лидский замок), Lida</div></div></div></section>
 <section><button class="log-btn" onclick="toggleLog()"><span>All 73 check-ins in Lida, searchable</span><b id="logLbl">OPEN ▾</b></button><div class="log" id="log"><input type="search" placeholder="Search venues, neighbourhoods, categories…" oninput="filterLog(this.value)"><div class="log-n" id="logN"></div><div id="logBody"></div></div></section>
 </div>
+<div class="lb" id="lb" onclick="lbClose(event)"><button class="lb-x" aria-label="Close">×</button><button class="lb-p" aria-label="Previous" onclick="lbStep(event,-1)">‹</button><img id="lbImg" alt=""><button class="lb-n" aria-label="Next" onclick="lbStep(event,1)">›</button><div class="lb-cap" id="lbCap"></div></div>
 <script>
 function moreTrips(b){b.previousElementSibling.classList.add('all');b.remove();}
 // The full log loads its own file (<kind>_ck_<slug>.json) on the first open.
 const LOG_URL="/city_ck_lida.json", MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], STEP=300;
-let ROWS=null, shown=0, list=[];
+let ROWS=null, shown=0, list=[], LOGP=null;
+const loadLog=()=>LOGP||(LOGP=fetch(LOG_URL).then(r=>r.json()));
+// Photos: the first tiles ship inline, the rest come with the log file
+const PIX="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix";
+let PH=JSON.parse((document.getElementById('phData')||{textContent:'[]'}).textContent), lbI=0;
+document.addEventListener('click',e=>{const im=e.target.closest('.photos img');if(im)lbOpen(+im.dataset.i);});
+function lbOpen(i){
+  lbI=(i+PH.length)%PH.length; const [fn,v,d]=PH[lbI];
+  document.getElementById('lbImg').src=PIX+'/'+fn;
+  document.getElementById('lbCap').textContent=[v,d].filter(Boolean).join(' · ')+'  ·  '+(lbI+1)+' / '+PH.length;
+  document.getElementById('lb').classList.add('open');
+}
+function lbStep(e,k){e.stopPropagation();lbOpen(lbI+k);}
+function lbClose(e){if(e.target.id==='lb'||e.target.classList.contains('lb-x'))document.getElementById('lb').classList.remove('open');}
+addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')document.getElementById('lb').classList.remove('open');
+  else if(e.key==='ArrowLeft')lbOpen(lbI-1); else if(e.key==='ArrowRight')lbOpen(lbI+1);
+});
+function morePhotos(b){
+  b.textContent='LOADING…';
+  loadLog().then(j=>{
+    const g=document.getElementById('photoGrid'), have=g.children.length; PH=j.p||PH;
+    g.insertAdjacentHTML('beforeend',PH.slice(have).map(([fn,v],k)=>
+      `<img loading="lazy" src="${PIX}/t/${esc(fn)}" alt="${esc(v)}" data-i="${have+k}">`).join(''));
+    b.remove();
+  }).catch(()=>{b.textContent='COULD NOT LOAD';});
+}
+// Map: CARTO tiles, a dot per venue, the place's own outline from OpenStreetMap
+(function(){
+  const el=document.getElementById('lmap'), dd=document.getElementById('mapData');
+  if(!el||!dd||!window.L)return;
+  const D=JSON.parse(dd.textContent);
+  const m=L.map(el,{preferCanvas:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4lwx_1_a667c2540e715948f2a06df2',
+    {attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(m);
+  m.fitBounds(D.b,{padding:[18,18],maxZoom:15});
+  m.createPane('bnd').style.zIndex=350;
+  const top=Math.max(...D.p.map(p=>p[2]));
+  D.p.forEach(([a,o,n])=>L.circleMarker([a,o],{radius:2.2+7*Math.sqrt(n/top),stroke:false,
+    fillColor:n*4>=top?'#f6d38b':'#ff9a6b',fillOpacity:n*4>=top?.9:.6,interactive:false}).addTo(m));
+  const q=D.q, key='bnd1:'+q.kind+':'+q.name+':'+q.country;
+  const draw=g=>{if(g)L.geoJSON(g,{pane:'bnd',interactive:false,style:{color:'#4ec9b0',weight:2,opacity:.9,
+    fillColor:'#4ec9b0',fillOpacity:.06}}).addTo(m);};
+  let c=null; try{c=localStorage.getItem(key);}catch(e){}
+  if(c!==null){draw(c?JSON.parse(c):null);return;}
+  const city=q.kind==='city';
+  const u='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&polygon_geojson=1&polygon_threshold='+
+    (city?'0.0005':'0.01')+'&'+(city?'city='+encodeURIComponent(q.name)+'&country='+encodeURIComponent(q.country)
+    :'country='+encodeURIComponent(q.name));
+  fetch(u).then(r=>r.json()).then(j=>{
+    const g=j&&j[0]&&j[0].geojson, ok=g&&/Polygon/.test(g.type)?g:null;
+    try{localStorage.setItem(key,ok?JSON.stringify(ok):'');}catch(e){}
+    draw(ok);
+  }).catch(()=>{});
+})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toggleLog(){
   const l=document.getElementById('log'); l.classList.toggle('open');
   document.getElementById('logLbl').textContent=l.classList.contains('open')?'HIDE ▴':'OPEN ▾';
-  if(ROWS===null){ROWS=[];fetch(LOG_URL).then(r=>r.json()).then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
+  if(ROWS===null){ROWS=[];loadLog().then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
 }
 function filterLog(q){
   q=(q||'').toLowerCase();

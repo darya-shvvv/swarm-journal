@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--bg:#0a0c12;--card:#12141c;--card2:#181a24;--border:#222738;--text:#e0e2ec;--muted:#7a85a8;--gold:#e8b86d;--teal:#4ec9b0;--rose:#e8778a;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -123,6 +125,24 @@ section{margin-top:52px;}
 .yr-bar.home .bar{background:linear-gradient(180deg,#7fe0cb,#3aa892);}
 .legend{float:right;color:var(--muted);letter-spacing:.12em;}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#4ec9b0;margin-right:6px;vertical-align:-1px;}
+.lmap{height:440px;border-radius:20px;border:1px solid var(--border);overflow:hidden;background:#0d0f16;}
+.lmap .leaflet-control-attribution{background:rgba(10,12,18,.7);color:#7a85a8;font-size:.55rem;}
+.lmap .leaflet-control-attribution a{color:#9aa3c0;}
+.lmap .leaflet-bar{border:1px solid var(--border);box-shadow:none;}
+.lmap .leaflet-bar a{background:rgba(18,21,31,.9);color:var(--text);border-bottom-color:var(--border);}
+.lmap .leaflet-bar a:hover{background:var(--card2);color:#ff9a6b;}
+.photos img{cursor:zoom-in;transition:filter .15s;}
+.photos img:hover{filter:brightness(1.12);}
+.lb{position:fixed;inset:0;z-index:1000;background:rgba(5,6,10,.94);display:none;align-items:center;justify-content:center;}
+.lb.open{display:flex;}
+.lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.6);}
+.lb-cap{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.08em;color:#c4cbe0;padding:0 60px;}
+.lb button{position:absolute;background:rgba(18,21,31,.8);border:1px solid var(--border);color:var(--text);border-radius:999px;width:44px;height:44px;font-size:1.3rem;cursor:pointer;}
+.lb button:hover{border-color:#ff9a6b;color:#ff9a6b;}
+.lb-x{top:16px;right:16px;}
+.lb-p{left:16px;top:50%;transform:translateY(-50%);}
+.lb-n{right:16px;top:50%;transform:translateY(-50%);}
+@media(max-width:700px){.lmap{height:340px;}.lb-p,.lb-n{top:auto;bottom:52px;transform:none;}}
 @media(max-width:700px){.cmap text{font-size:26px;stroke-width:5px;}.cmap circle{transform-box:fill-box;}.kpis{grid-template-columns:1fr 1fr;}.photos{grid-template-columns:repeat(3,1fr);}.hero{min-height:340px;}.yr-bar .yr-lbl{font-size:.42rem;writing-mode:vertical-rl;transform:rotate(180deg);}.yr-bar .yr-n{display:none;}}
 @media(max-width:600px){.wrap{padding:6px 16px 90px;}.hero-in{padding:96px 16px 26px;}}
 </style>
@@ -136,27 +156,83 @@ section{margin-top:52px;}
 </div></header>
 <div class="wrap">
 <div class="kpis"><div class="kpi"><div class="kpi-num">51</div><div class="kpi-lbl">check-ins</div></div><div class="kpi"><div class="kpi-num">45</div><div class="kpi-lbl">venues</div></div><div class="kpi"><div class="kpi-num">1</div><div class="kpi-lbl">years</div></div><div class="kpi"><div class="kpi-num">2</div><div class="kpi-lbl">days</div></div></div>
-<section><div class="sec-h">Where it happened</div><div class="cmap"><svg viewBox="0 0 920 380" role="img" aria-label="Map of check-ins"><circle class="hot" cx="492.9" cy="127.5" r="6.5"/><circle class="hot" cx="403.6" cy="120.0" r="6.5"/><circle class="hot" cx="501.9" cy="130.9" r="6.5"/><circle class="hot" cx="518.8" cy="130.9" r="6.5"/><circle class="hot" cx="545.1" cy="101.5" r="6.5"/><circle class="hot" cx="570.4" cy="74.4" r="6.5"/><circle class="hot" cx="581.1" cy="65.2" r="6.5"/><circle class="hot" cx="573.8" cy="46.8" r="6.5"/><circle class="hot" cx="574.2" cy="43.9" r="6.5"/><circle class="hot" cx="501.5" cy="36.4" r="6.5"/><circle class="hot" cx="370.4" cy="301.0" r="6.5"/><circle class="hot" cx="416.4" cy="354.0" r="6.5"/><circle class="hot" cx="519.8" cy="26.0" r="6.5"/><circle class="hot" cx="385.3" cy="130.3" r="6.5"/><circle class="hot" cx="382.2" cy="122.8" r="6.5"/><circle class="hot" cx="393.2" cy="117.7" r="6.5"/><circle class="hot" cx="395.3" cy="117.1" r="6.5"/><circle class="hot" cx="395.0" cy="117.1" r="6.5"/><circle class="hot" cx="397.7" cy="114.8" r="6.5"/><circle class="hot" cx="396.0" cy="112.5" r="6.5"/><circle class="hot" cx="398.4" cy="114.2" r="6.5"/><circle class="hot" cx="406.4" cy="120.0" r="6.5"/><circle class="hot" cx="402.6" cy="121.1" r="6.5"/><circle class="hot" cx="411.2" cy="123.4" r="6.5"/><circle class="hot" cx="411.9" cy="125.1" r="6.5"/><circle class="hot" cx="425.8" cy="120.5" r="6.5"/><circle class="hot" cx="419.9" cy="123.4" r="6.5"/><circle class="hot" cx="435.8" cy="121.1" r="6.5"/><circle class="hot" cx="581.4" cy="69.8" r="6.5"/><circle class="hot" cx="338.6" cy="159.2" r="6.5"/><circle class="hot" cx="341.7" cy="152.8" r="6.5"/><circle class="hot" cx="386.7" cy="130.3" r="6.5"/><circle class="hot" cx="399.5" cy="132.6" r="6.5"/><circle class="hot" cx="498.1" cy="140.7" r="6.5"/><circle class="hot" cx="493.6" cy="139.0" r="6.5"/><circle class="hot" cx="493.9" cy="137.3" r="6.5"/><circle class="hot" cx="492.2" cy="136.1" r="6.5"/><circle class="hot" cx="493.2" cy="137.8" r="6.5"/><circle class="hot" cx="488.7" cy="139.0" r="6.5"/><circle class="hot" cx="574.5" cy="76.7" r="8.6"/><circle class="hot" cx="578.3" cy="77.3" r="8.6"/><circle class="hot" cx="569.3" cy="71.0" r="8.6"/><circle class="hot" cx="409.5" cy="121.1" r="8.6"/><circle class="hot" cx="409.1" cy="123.4" r="8.6"/><circle class="hot" cx="340.0" cy="144.7" r="8.6"/></svg></div></section>
+<section><div class="sec-h">Where it happened</div><div class="lmap" id="lmap"></div><script type="application/json" id="mapData">{"p":[[53.1313,26.0431,1],[53.1326,26.0173,1],[53.1307,26.0457,1],[53.1307,26.0506,1],[53.1358,26.0582,1],[53.1405,26.0655,1],[53.1421,26.0686,1],[53.1401,26.0667,2],[53.14,26.0678,2],[53.1411,26.0652,2],[53.1453,26.0665,1],[53.1458,26.0666,1],[53.1471,26.0456,1],[53.1012,26.0077,1],[53.092,26.021,1],[53.1489,26.0509,1],[53.1308,26.012,1],[53.1321,26.0111,1],[53.133,26.0143,1],[53.1331,26.0149,1],[53.1331,26.0148,1],[53.1335,26.0156,1],[53.1339,26.0151,1],[53.1336,26.0158,1],[53.1324,26.019,2],[53.1326,26.0181,1],[53.1324,26.017,1],[53.132,26.0189,2],[53.132,26.0195,1],[53.1317,26.0197,1],[53.1325,26.0237,1],[53.132,26.022,1],[53.1324,26.0266,1],[53.1283,25.9989,2],[53.1413,26.0687,1],[53.1258,25.9985,1],[53.1269,25.9994,1],[53.1308,26.0124,1],[53.1304,26.0161,1],[53.129,26.0446,1],[53.1293,26.0433,1],[53.1296,26.0434,1],[53.1298,26.0429,1],[53.1295,26.0432,1],[53.1293,26.0419,1]],"b":[[53.092,25.9985],[53.1489,26.0687]],"q":{"kind":"city","name":"Baranovichi","country":"Belarus"}}</script></section>
 <section><div class="sec-h">By year</div><div class="years"><div class="yr-bar"><span class="yr-n">51</span><div class="bar" style="height:84px"></div><span class="yr-lbl">2025</span></div><div class="yr-bar zero"><span class="yr-n">0</span><div class="bar" style="height:3px"></div><span class="yr-lbl">2026</span></div></div></section>
 <section><div class="cols"><div><div class="sec-h">Top venues</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Парковая 19"><a href="/venue.html#684d4e5853adf340c45d5ddc">Парковая 19</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Парковая"><a href="/venue.html#50688481e4b08e8fd468e5e0">Парковая</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Жлобинское"><a href="/venue.html#4fb7aa19e4b0b4f099760c93">Жлобинское</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Площадь Ленина / Lenin Square"><a href="/venue.html#4f8062c0e4b02b9568c6b7e6">Площадь Ленина / Lenin Square</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Фонтан &quot;Каменный Цветок&quot;"><a href="/venue.html#4ffadfcae4b0f1c61a1716b9">Фонтан &quot;Каменный Цветок&quot;</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Аўтобус № 14"><a href="/venue.html#535e2cd3498e51ccd250a30a">Аўтобус № 14</a></span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Автовокзал"><a href="/venue.html#4e5889c6b993732579dbf3ca">Автовокзал</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Барановичи"><a href="/venue.html#4f886953e4b03a0f247a7e85">Барановичи</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Улица Зелёная"><a href="/venue.html#684d3c77f23380372c9c750f">Улица Зелёная</a></span><span class="rank-n">1</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Улица Першукевича"><a href="/venue.html#684d3d7426338a2f3c15e567">Улица Першукевича</a></span><span class="rank-n">1</span></div></div></div><div><div class="sec-h">Categories</div><div class="rank-list"><div class="rank-row"><span class="rank-i">1</span><span class="rank-name" title="Road">Road</span><span class="rank-n">8</span></div><div class="rank-row"><span class="rank-i">2</span><span class="rank-name" title="Monument">Monument</span><span class="rank-n">7</span></div><div class="rank-row"><span class="rank-i">3</span><span class="rank-name" title="Park">Park</span><span class="rank-n">6</span></div><div class="rank-row"><span class="rank-i">4</span><span class="rank-name" title="Bus Line">Bus Line</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">5</span><span class="rank-name" title="Plaza">Plaza</span><span class="rank-n">3</span></div><div class="rank-row"><span class="rank-i">6</span><span class="rank-name" title="Apartment or Condo">Apartment or Condo</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">7</span><span class="rank-name" title="Neighborhood">Neighborhood</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">8</span><span class="rank-name" title="Lake">Lake</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">9</span><span class="rank-name" title="Outdoor Sculpture">Outdoor Sculpture</span><span class="rank-n">2</span></div><div class="rank-row"><span class="rank-i">10</span><span class="rank-name" title="Bus Station">Bus Station</span><span class="rank-n">1</span></div></div></div></div></section>
 
 
 <section><div class="sec-h">Trips here · 1</div><div class="trips"><a class="trip-card" href="/trips.html#trip-7"><div class="trip-cover" style="background-image:url('https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_-MURPImUxuiuQxFOrG8SZHaqZqgGQp9K3NXPk-RZ7mQ.jpg')"></div><div class="trip-body"><div class="trip-name">Baranovichi animal party 🚌</div><div class="trip-meta">2025-06-14 → 2025-06-16 · 3 days · 89 check-ins</div></div></a></div></section>
-<section><div class="sec-h">Photos</div><div class="photos"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Bflc-Vrilm_41TUhAFbsR1l6XLflU8PruxtH8uzDIeI.jpg" alt="Baranovichi-Polesskiye Station (Барановичи-Полесские)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Kkv-uSot22eUd07gtPYjzjItSFfZnZwbmylvunbe9_g.jpg" alt="Baranovichi-Polesskiye Station (Барановичи-Полесские)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Se-k0Sh2P-sE40NLdaC90oyJuMeXpg44hTjXI50Z-DI.jpg" alt="Baranovichi-Polesskiye Station (Барановичи-Полесские)"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_eOBUEmU6IMhRtdjdu5ejFiANU_YiPWxpiqN1RhGLUao.jpg" alt="Паровоз"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_53tTN0TdAXlRJWBFu4Rq9U1khSkjobQrV3Y4-kziuWQ.jpg" alt="Медный Конь"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_6cztL43mRwUxfqerzNUc7eXkarK5ngtchPahsAvfQq0.jpg" alt="Улица Комсомольская"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_D52SSgBLTjn5axeBvGZzR5v89EpmNt62aaoWNG-72Vo.jpg" alt="Улица Комсомольская"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_aOBDVCTZI3QDa-CBrisDvRpcwqQLsrGl38_tYDJcaNQ.jpg" alt="памятник водопроводчику"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_aJDaBIawto8cA4bahC-u5zIj7-d9IlgfU7mK65qXZL4.jpg" alt="Стары парк"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_yaeENxGiWM78MrMSpzuP80vcdWNT2IAFbVY5Hg1FwHA.jpg" alt="Стары парк"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_PHONgaR4e-qbzrjycvol6lSrtlxWqZHjStbi0BeXk4Q.jpg" alt="Жлобинское"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_kaiUV_gwBWUKeFILw6ysdw6UcLbg0ZWZQinYX_uC7qo.jpg" alt="Бульвар Хейнола"></div></section>
+<section><div class="sec-h">Photos · 22</div><div class="photos" id="photoGrid"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Bflc-Vrilm_41TUhAFbsR1l6XLflU8PruxtH8uzDIeI.jpg" alt="Baranovichi-Polesskiye Station (Барановичи-Полесские)" data-i="0"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Kkv-uSot22eUd07gtPYjzjItSFfZnZwbmylvunbe9_g.jpg" alt="Baranovichi-Polesskiye Station (Барановичи-Полесские)" data-i="1"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_Se-k0Sh2P-sE40NLdaC90oyJuMeXpg44hTjXI50Z-DI.jpg" alt="Baranovichi-Polesskiye Station (Барановичи-Полесские)" data-i="2"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_eOBUEmU6IMhRtdjdu5ejFiANU_YiPWxpiqN1RhGLUao.jpg" alt="Паровоз" data-i="3"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_53tTN0TdAXlRJWBFu4Rq9U1khSkjobQrV3Y4-kziuWQ.jpg" alt="Медный Конь" data-i="4"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_6cztL43mRwUxfqerzNUc7eXkarK5ngtchPahsAvfQq0.jpg" alt="Улица Комсомольская" data-i="5"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_D52SSgBLTjn5axeBvGZzR5v89EpmNt62aaoWNG-72Vo.jpg" alt="Улица Комсомольская" data-i="6"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_aOBDVCTZI3QDa-CBrisDvRpcwqQLsrGl38_tYDJcaNQ.jpg" alt="памятник водопроводчику" data-i="7"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_aJDaBIawto8cA4bahC-u5zIj7-d9IlgfU7mK65qXZL4.jpg" alt="Стары парк" data-i="8"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_yaeENxGiWM78MrMSpzuP80vcdWNT2IAFbVY5Hg1FwHA.jpg" alt="Стары парк" data-i="9"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_PHONgaR4e-qbzrjycvol6lSrtlxWqZHjStbi0BeXk4Q.jpg" alt="Жлобинское" data-i="10"><img loading="lazy" src="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix/t/1413067054_kaiUV_gwBWUKeFILw6ysdw6UcLbg0ZWZQinYX_uC7qo.jpg" alt="Бульвар Хейнола" data-i="11"></div><button class="more-btn" onclick="morePhotos(this)">ALL 22 PHOTOS ▾</button><script type="application/json" id="phData">[["1413067054_Bflc-Vrilm_41TUhAFbsR1l6XLflU8PruxtH8uzDIeI.jpg","Baranovichi-Polesskiye Station (Барановичи-Полесские)","2025-06-15"],["1413067054_Kkv-uSot22eUd07gtPYjzjItSFfZnZwbmylvunbe9_g.jpg","Baranovichi-Polesskiye Station (Барановичи-Полесские)","2025-06-15"],["1413067054_Se-k0Sh2P-sE40NLdaC90oyJuMeXpg44hTjXI50Z-DI.jpg","Baranovichi-Polesskiye Station (Барановичи-Полесские)","2025-06-15"],["1413067054_eOBUEmU6IMhRtdjdu5ejFiANU_YiPWxpiqN1RhGLUao.jpg","Паровоз","2025-06-15"],["1413067054_53tTN0TdAXlRJWBFu4Rq9U1khSkjobQrV3Y4-kziuWQ.jpg","Медный Конь","2025-06-15"],["1413067054_6cztL43mRwUxfqerzNUc7eXkarK5ngtchPahsAvfQq0.jpg","Улица Комсомольская","2025-06-15"],["1413067054_D52SSgBLTjn5axeBvGZzR5v89EpmNt62aaoWNG-72Vo.jpg","Улица Комсомольская","2025-06-15"],["1413067054_aOBDVCTZI3QDa-CBrisDvRpcwqQLsrGl38_tYDJcaNQ.jpg","памятник водопроводчику","2025-06-15"],["1413067054_aJDaBIawto8cA4bahC-u5zIj7-d9IlgfU7mK65qXZL4.jpg","Стары парк","2025-06-15"],["1413067054_yaeENxGiWM78MrMSpzuP80vcdWNT2IAFbVY5Hg1FwHA.jpg","Стары парк","2025-06-15"],["1413067054_PHONgaR4e-qbzrjycvol6lSrtlxWqZHjStbi0BeXk4Q.jpg","Жлобинское","2025-06-15"],["1413067054_kaiUV_gwBWUKeFILw6ysdw6UcLbg0ZWZQinYX_uC7qo.jpg","Бульвар Хейнола","2025-06-14"]]</script></section>
 
 <section><button class="log-btn" onclick="toggleLog()"><span>All 51 check-ins in Baranovichi, searchable</span><b id="logLbl">OPEN ▾</b></button><div class="log" id="log"><input type="search" placeholder="Search venues, neighbourhoods, categories…" oninput="filterLog(this.value)"><div class="log-n" id="logN"></div><div id="logBody"></div></div></section>
 </div>
+<div class="lb" id="lb" onclick="lbClose(event)"><button class="lb-x" aria-label="Close">×</button><button class="lb-p" aria-label="Previous" onclick="lbStep(event,-1)">‹</button><img id="lbImg" alt=""><button class="lb-n" aria-label="Next" onclick="lbStep(event,1)">›</button><div class="lb-cap" id="lbCap"></div></div>
 <script>
 function moreTrips(b){b.previousElementSibling.classList.add('all');b.remove();}
 // The full log loads its own file (<kind>_ck_<slug>.json) on the first open.
 const LOG_URL="/city_ck_baranovichi.json", MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], STEP=300;
-let ROWS=null, shown=0, list=[];
+let ROWS=null, shown=0, list=[], LOGP=null;
+const loadLog=()=>LOGP||(LOGP=fetch(LOG_URL).then(r=>r.json()));
+// Photos: the first tiles ship inline, the rest come with the log file
+const PIX="https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix";
+let PH=JSON.parse((document.getElementById('phData')||{textContent:'[]'}).textContent), lbI=0;
+document.addEventListener('click',e=>{const im=e.target.closest('.photos img');if(im)lbOpen(+im.dataset.i);});
+function lbOpen(i){
+  lbI=(i+PH.length)%PH.length; const [fn,v,d]=PH[lbI];
+  document.getElementById('lbImg').src=PIX+'/'+fn;
+  document.getElementById('lbCap').textContent=[v,d].filter(Boolean).join(' · ')+'  ·  '+(lbI+1)+' / '+PH.length;
+  document.getElementById('lb').classList.add('open');
+}
+function lbStep(e,k){e.stopPropagation();lbOpen(lbI+k);}
+function lbClose(e){if(e.target.id==='lb'||e.target.classList.contains('lb-x'))document.getElementById('lb').classList.remove('open');}
+addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')document.getElementById('lb').classList.remove('open');
+  else if(e.key==='ArrowLeft')lbOpen(lbI-1); else if(e.key==='ArrowRight')lbOpen(lbI+1);
+});
+function morePhotos(b){
+  b.textContent='LOADING…';
+  loadLog().then(j=>{
+    const g=document.getElementById('photoGrid'), have=g.children.length; PH=j.p||PH;
+    g.insertAdjacentHTML('beforeend',PH.slice(have).map(([fn,v],k)=>
+      `<img loading="lazy" src="${PIX}/t/${esc(fn)}" alt="${esc(v)}" data-i="${have+k}">`).join(''));
+    b.remove();
+  }).catch(()=>{b.textContent='COULD NOT LOAD';});
+}
+// Map: CARTO tiles, a dot per venue, the place's own outline from OpenStreetMap
+(function(){
+  const el=document.getElementById('lmap'), dd=document.getElementById('mapData');
+  if(!el||!dd||!window.L)return;
+  const D=JSON.parse(dd.textContent);
+  const m=L.map(el,{preferCanvas:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4lwx_1_a667c2540e715948f2a06df2',
+    {attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(m);
+  m.fitBounds(D.b,{padding:[18,18],maxZoom:15});
+  m.createPane('bnd').style.zIndex=350;
+  const top=Math.max(...D.p.map(p=>p[2]));
+  D.p.forEach(([a,o,n])=>L.circleMarker([a,o],{radius:2.2+7*Math.sqrt(n/top),stroke:false,
+    fillColor:n*4>=top?'#f6d38b':'#ff9a6b',fillOpacity:n*4>=top?.9:.6,interactive:false}).addTo(m));
+  const q=D.q, key='bnd1:'+q.kind+':'+q.name+':'+q.country;
+  const draw=g=>{if(g)L.geoJSON(g,{pane:'bnd',interactive:false,style:{color:'#4ec9b0',weight:2,opacity:.9,
+    fillColor:'#4ec9b0',fillOpacity:.06}}).addTo(m);};
+  let c=null; try{c=localStorage.getItem(key);}catch(e){}
+  if(c!==null){draw(c?JSON.parse(c):null);return;}
+  const city=q.kind==='city';
+  const u='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&polygon_geojson=1&polygon_threshold='+
+    (city?'0.0005':'0.01')+'&'+(city?'city='+encodeURIComponent(q.name)+'&country='+encodeURIComponent(q.country)
+    :'country='+encodeURIComponent(q.name));
+  fetch(u).then(r=>r.json()).then(j=>{
+    const g=j&&j[0]&&j[0].geojson, ok=g&&/Polygon/.test(g.type)?g:null;
+    try{localStorage.setItem(key,ok?JSON.stringify(ok):'');}catch(e){}
+    draw(ok);
+  }).catch(()=>{});
+})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toggleLog(){
   const l=document.getElementById('log'); l.classList.toggle('open');
   document.getElementById('logLbl').textContent=l.classList.contains('open')?'HIDE ▴':'OPEN ▾';
-  if(ROWS===null){ROWS=[];fetch(LOG_URL).then(r=>r.json()).then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
+  if(ROWS===null){ROWS=[];loadLog().then(j=>{ROWS=j.r;filterLog('');}).catch(()=>{document.getElementById('logBody').textContent='Could not load the log.';});}
 }
 function filterLog(q){
   q=(q||'').toLowerCase();
