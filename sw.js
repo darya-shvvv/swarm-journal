@@ -1,6 +1,6 @@
 // Service worker — versioned per build so a fresh deploy invalidates old caches.
-// 20261029173334 is substituted at build time with the build timestamp.
-const VERSION = '20261029173334';
+// 20261029200118 is substituted at build time with the build timestamp.
+const VERSION = '20261029200118';
 const CACHE = 'foursq-' + VERSION;
 // Tiny app shell precached on install; every other page is runtime-cached.
 const SHELL = ['/', '/index.html', '/favicon.svg', '/manifest.webmanifest'];
