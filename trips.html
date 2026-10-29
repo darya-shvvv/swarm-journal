@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Trip Journal — Check-in Journal</title>
 <meta name="description" content="36 trips across 6 countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
-<link rel="canonical" href="https://swarm-journal.pages.dev/trips.html">
+<link rel="canonical" href="https://swarm-journal.pages.dev/trips">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Check-in Journal">
 <meta property="og:title" content="Trip Journal — Check-in Journal">
 <meta property="og:description" content="36 trips across 6 countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
-<meta property="og:url" content="https://swarm-journal.pages.dev/trips.html">
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://swarm-journal.pages.dev/trips">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Trip Journal — Check-in Journal">
 <meta name="twitter:description" content="36 trips across 6 countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -326,7 +326,7 @@ body.light .ts-cell.z{background:var(--card2);}
 .detail-city{background:rgba(232,184,109,.05);border-color:rgba(232,184,109,.15);color:var(--text2);text-decoration:none;}
 a.detail-city:hover{border-color:#ff9a6b;color:#ff9a6b;}
 </style>
-<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\/pix\/(?!t\/)/,'/pix/t/'):u};addEventListener('error',function(e){var i=e.target;if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[style*="/pix/t/"]').forEach(function(el){var m=/url\(['"]?([^'")]*\/pix\/t\/[^'")]*)/.exec(el.style.backgroundImage||'');if(!m)return;var p=new Image();p.onerror=function(){el.style.backgroundImage="url('"+m[1].replace('/pix/t/','/pix/')+"')"};p.src=m[1]})})</script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script></head>
+<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\/pix\/(?!t\/)/,'/pix/t/'):u};addEventListener('error',function(e){var i=e.target;if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[style*="/pix/t/"]').forEach(function(el){var m=/url\(['"]?([^'")]*\/pix\/t\/[^'")]*)/.exec(el.style.backgroundImage||'');if(!m)return;var p=new Image();p.onerror=function(){el.style.backgroundImage="url('"+m[1].replace('/pix/t/','/pix/')+"')"};p.src=m[1]})})</script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script><meta property="og:image" content="https://swarm-journal.pages.dev/og-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Trip Journal — Check-in Journal","url":"https://swarm-journal.pages.dev/trips","isPartOf":{"@type":"WebSite","name":"Check-in Journal","url":"https://swarm-journal.pages.dev/"},"description":"36 trips across 6 countries, built from Foursquare check-ins. Interactive maps, timelines, country stats and trip analytics."}</script></head>
 <body>
 
 <nav class="topnav">
@@ -344,7 +344,7 @@ a.detail-city:hover{border-color:#ff9a6b;color:#ff9a6b;}
   <div class="list-header">
     <div>
       <h1>Trip Journal</h1>
-      <div class="list-meta">36 trips &nbsp;·&nbsp; updated 2026-10-29 20:01 UTC</div>
+      <div class="list-meta">36 trips &nbsp;·&nbsp; updated 2026-10-29 20:44 UTC</div>
     </div>
   </div>
   <div class="page-insight" id="page-insight"></div>
@@ -434,7 +434,7 @@ function tripCard(t, big){
   const a = isAir(t) ? ' m-a' : '';
   const bike = (t.tags||[]).includes('bicycle') ? '<span class="tc-tag" title="Bicycle trip">🚲</span>' : '';
   return `<a class="trip-card${big?' big':''}" id="card-trip-${t.id}" href="#trip-${t.id}" onclick="showTrip(${t.id});return false;">
-    ${t.cover && PIX_DIR ? `<img class="tc-img" loading="lazy" src="${esc(PIX_DIR+'/t/'+t.cover)}" alt="">` : `<div class="tc-noimg${a}"></div>`}
+    ${t.cover && PIX_DIR ? `<img class="tc-img" loading="lazy" src="${esc(PIX_DIR+'/t/'+t.cover)}" alt="${esc(bareName(t.name))}">` : `<div class="tc-noimg${a}"></div>`}
     <span class="tc-mode${a}">${modeIcon(t.name)}</span><span class="tc-num">#${t.id}</span>
     <div class="tc-body">
       <div class="tc-dates">${shortD(t.start_date)}${t.end_date!==t.start_date?' – '+shortD(t.end_date):''}${t.start_date.slice(0,4)!==t.end_date.slice(0,4)?' '+t.end_date.slice(0,4):''} · ${t.duration} d</div>
