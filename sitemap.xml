@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://swarm-journal.pages.dev/</loc><lastmod>2026-10-29</lastmod><priority>1.0</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/</loc><lastmod>2026-10-30</lastmod><priority>1.0</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-baku</loc><lastmod>2026-10-12</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-baranovichi</loc><lastmod>2025-06-15</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-bender</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
@@ -14,7 +14,7 @@
   <url><loc>https://swarm-journal.pages.dev/city-lida</loc><lastmod>2026-09-05</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-lomonosov</loc><lastmod>2025-09-16</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-maladzyechna</loc><lastmod>2026-04-18</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/city-minsk</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/city-minsk</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-mogilev</loc><lastmod>2026-05-17</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-moscow</loc><lastmod>2026-10-12</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-navahrudak</loc><lastmod>2025-10-19</lastmod><priority>0.8</priority></url>
@@ -29,27 +29,27 @@
   <url><loc>https://swarm-journal.pages.dev/city-urgench</loc><lastmod>2026-04-27</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-vitebsk</loc><lastmod>2026-07-05</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/city-vyborg</loc><lastmod>2025-09-14</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/companions</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/compare</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/companions</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/compare</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/country-az</loc><lastmod>2026-10-12</lastmod><priority>0.6</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/country-by</loc><lastmod>2026-10-29</lastmod><priority>0.6</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/country-by</loc><lastmod>2026-10-30</lastmod><priority>0.6</priority></url>
   <url><loc>https://swarm-journal.pages.dev/country-md</loc><lastmod>2026-10-11</lastmod><priority>0.6</priority></url>
   <url><loc>https://swarm-journal.pages.dev/country-ru</loc><lastmod>2026-10-12</lastmod><priority>0.6</priority></url>
   <url><loc>https://swarm-journal.pages.dev/country-tr</loc><lastmod>2026-10-04</lastmod><priority>0.6</priority></url>
   <url><loc>https://swarm-journal.pages.dev/country-uz</loc><lastmod>2026-05-05</lastmod><priority>0.6</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/feed</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/guide</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/life</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/lists</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/photos</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/ratings</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/shouts</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/stats</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/tips</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/trips</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/venues</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/world_cities</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/feed</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/guide</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/life</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/lists</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/photos</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/ratings</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/shouts</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/stats</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/tips</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/trips</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/venues</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/world_cities</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
   <url><loc>https://swarm-journal.pages.dev/year-2025</loc><lastmod>2025-12-31</lastmod><priority>0.6</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/year-2026</loc><lastmod>2026-10-29</lastmod><priority>0.6</priority></url>
-  <url><loc>https://swarm-journal.pages.dev/years</loc><lastmod>2026-10-29</lastmod><priority>0.8</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/year-2026</loc><lastmod>2026-10-30</lastmod><priority>0.6</priority></url>
+  <url><loc>https://swarm-journal.pages.dev/years</loc><lastmod>2026-10-30</lastmod><priority>0.8</priority></url>
 </urlset>
