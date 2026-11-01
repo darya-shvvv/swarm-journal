@@ -2249,8 +2249,8 @@
     "start_ts": 1793505369,
     "start_year": 2026,
     "duration": 1,
-    "checkin_count": 9,
-    "unique_places": 9,
+    "checkin_count": 10,
+    "unique_places": 10,
     "countries": [
       "Belarus"
     ],
@@ -2290,6 +2290,10 @@
       ],
       [
         "Supermarket",
+        1
+      ],
+      [
+        "Shopping Mall",
         1
       ]
     ]
