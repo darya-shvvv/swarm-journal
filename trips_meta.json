@@ -2249,8 +2249,8 @@
     "start_ts": 1793505369,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 28,
-    "unique_places": 24,
+    "checkin_count": 29,
+    "unique_places": 25,
     "countries": [
       "Belarus"
     ],
@@ -2289,15 +2289,15 @@
         2
       ],
       [
+        "Coffee Shop",
+        2
+      ],
+      [
         "Platform",
         1
       ],
       [
         "Train",
-        1
-      ],
-      [
-        "City",
         1
       ]
     ]
