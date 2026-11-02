@@ -2249,8 +2249,8 @@
     "start_ts": 1793505369,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 19,
-    "unique_places": 19,
+    "checkin_count": 20,
+    "unique_places": 20,
     "countries": [
       "Belarus"
     ],
@@ -2277,6 +2277,10 @@
         2
       ],
       [
+        "Road",
+        2
+      ],
+      [
         "Platform",
         1
       ],
@@ -2294,10 +2298,6 @@
       ],
       [
         "Supermarket",
-        1
-      ],
-      [
-        "Road",
         1
       ]
     ]
