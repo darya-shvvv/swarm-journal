@@ -2249,8 +2249,8 @@
     "start_ts": 1793505369,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 32,
-    "unique_places": 26,
+    "checkin_count": 33,
+    "unique_places": 27,
     "countries": [
       "Belarus"
     ],
@@ -2277,6 +2277,10 @@
         2
       ],
       [
+        "City",
+        2
+      ],
+      [
         "Home (private)",
         2
       ],
@@ -2295,10 +2299,6 @@
       [
         "Coffee Shop",
         2
-      ],
-      [
-        "Platform",
-        1
       ]
     ]
   }
