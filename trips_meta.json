@@ -2249,8 +2249,8 @@
     "start_ts": 1793505369,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 29,
-    "unique_places": 25,
+    "checkin_count": 32,
+    "unique_places": 26,
     "countries": [
       "Belarus"
     ],
@@ -2262,14 +2262,18 @@
     "top_cats": [
       [
         "Plaza",
-        4
+        5
+      ],
+      [
+        "Rail Station",
+        3
       ],
       [
         "Road",
         3
       ],
       [
-        "Rail Station",
+        "Train",
         2
       ],
       [
@@ -2294,10 +2298,6 @@
       ],
       [
         "Platform",
-        1
-      ],
-      [
-        "Train",
         1
       ]
     ]
