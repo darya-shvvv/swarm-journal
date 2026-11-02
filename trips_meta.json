@@ -2249,7 +2249,7 @@
     "start_ts": 1793505369,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 33,
+    "checkin_count": 34,
     "unique_places": 27,
     "countries": [
       "Belarus"
@@ -2266,7 +2266,7 @@
       ],
       [
         "Rail Station",
-        3
+        4
       ],
       [
         "Road",
