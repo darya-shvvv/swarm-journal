@@ -2249,8 +2249,8 @@
     "start_ts": 1793505369,
     "start_year": 2026,
     "duration": 2,
-    "checkin_count": 21,
-    "unique_places": 21,
+    "checkin_count": 26,
+    "unique_places": 22,
     "countries": [
       "Belarus"
     ],
@@ -2261,11 +2261,15 @@
     "tags": [],
     "top_cats": [
       [
-        "Rail Station",
-        2
+        "Plaza",
+        3
       ],
       [
-        "Plaza",
+        "Road",
+        3
+      ],
+      [
+        "Rail Station",
         2
       ],
       [
@@ -2277,7 +2281,11 @@
         2
       ],
       [
-        "Road",
+        "Monument",
+        2
+      ],
+      [
+        "Other Great Outdoors",
         2
       ],
       [
@@ -2290,14 +2298,6 @@
       ],
       [
         "City",
-        1
-      ],
-      [
-        "Neighborhood",
-        1
-      ],
-      [
-        "Supermarket",
         1
       ]
     ]
