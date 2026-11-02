@@ -2245,12 +2245,12 @@
     "id": 37,
     "name": "Hrodna, Belarus 🚂",
     "start_date": "2026-11-01",
-    "end_date": "2026-11-01",
+    "end_date": "2026-11-02",
     "start_ts": 1793505369,
     "start_year": 2026,
-    "duration": 1,
-    "checkin_count": 16,
-    "unique_places": 16,
+    "duration": 2,
+    "checkin_count": 17,
+    "unique_places": 17,
     "countries": [
       "Belarus"
     ],
