@@ -203,6 +203,19 @@ jobs:
             --backfill private-data/backfill.csv --config-dir config \
             --cache private-data/boundaries.json --max 80
 
+      # ── 5c. Elevation, weather and admin regions for the stats page ───────────
+      #   Only what is missing (new coordinates, check-in days, cities), capped per
+      #   run; kept in the data repo's geo_context.json. Never fails the run.
+      - name: Fetch missing geo context
+        continue-on-error: true
+        timeout-minutes: 15
+        if: |
+          github.event_name == 'workflow_dispatch' ||
+          steps.fetch.outputs.CHANGED == 'true'
+        run: |
+          python scripts/fetch_geo_context.py --csv private-data/checkins.csv --config-dir config \
+            --cache private-data/geo_context.json --max-elevation 60 --max-weather 150 --max-regions 300
+
       # ── 6. Commit updated data files to private data repo ────────────────────
       - name: Commit updated data files to data repo
         if: |
@@ -221,6 +234,7 @@ jobs:
           [ -f lists.json ]        && git add lists.json        || true
           [ -f checkin_likes.json ] && git add checkin_likes.json || true
           [ -f boundaries.json ]    && git add boundaries.json    || true
+          [ -f geo_context.json ]   && git add geo_context.json   || true
           if git diff --cached --quiet; then
             echo "Nothing to commit in data repo."
           else
@@ -267,6 +281,7 @@ jobs:
             --config-dir config \
             --output-dir . \
             --boundaries private-data/boundaries.json \
+            --geo-context private-data/geo_context.json \
             --trip-names-healed-out "$RUNNER_TEMP/trip_names_healed.json" \
             $PHOTOS_ARG $PIX_URL_ARG $RATINGS_ARG $LISTS_ARG
 
