@@ -214,7 +214,7 @@ jobs:
           steps.fetch.outputs.CHANGED == 'true'
         run: |
           python scripts/fetch_geo_context.py --csv private-data/checkins.csv --config-dir config \
-            --cache private-data/geo_context.json --max-elevation 60 --max-weather 150 --max-regions 300
+            --cache private-data/geo_context.json --max-elevation 5 --max-weather 150 --max-regions 300
 
       # ── 6. Commit updated data files to private data repo ────────────────────
       - name: Commit updated data files to data repo
