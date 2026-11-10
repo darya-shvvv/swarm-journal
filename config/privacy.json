@@ -1,0 +1,4 @@
+{
+  "_comment": "Privacy switches for the stats extras (metrics/explore.py): hide_home shows a private home as \"Home\" instead of its address.",
+  "hide_home": true
+}
