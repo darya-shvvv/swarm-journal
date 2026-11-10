@@ -235,6 +235,7 @@ jobs:
           [ -f checkin_likes.json ] && git add checkin_likes.json || true
           [ -f boundaries.json ]    && git add boundaries.json    || true
           [ -f geo_context.json ]   && git add geo_context.json   || true
+          [ -f region_shapes.json ] && git add region_shapes.json || true
           if git diff --cached --quiet; then
             echo "Nothing to commit in data repo."
           else
