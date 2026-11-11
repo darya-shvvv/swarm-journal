@@ -187,6 +187,8 @@ jobs:
 
           git add checkins.csv tips.json
           if [ -f photos.json ]; then git add photos.json; fi
+          if [ -f checkin_likes.json ]; then git add checkin_likes.json; fi
+          if [ -f venue_closed.json ]; then git add venue_closed.json; fi
           [ -n "$ARCHIVE_NAME" ] && git add "archive/${ARCHIVE_NAME}"
           [ -f checkins_anomalies.json ] && git add checkins_anomalies.json
           [ -f duplicate_checkins.csv  ] && git add duplicate_checkins.csv
