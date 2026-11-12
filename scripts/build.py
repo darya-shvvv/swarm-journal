@@ -27,6 +27,32 @@ from metrics.trip_insights import trip_used_plane
 logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")
 log = logging.getLogger(__name__)
 
+# ── Pass failures: recorded, summarised at the end, fatal when critical ──────
+# A pass that ships a PAGE (or the stats explore payload, post-processing, SEO)
+# is critical: if it throws, the build exits 1 after the summary so CI never
+# deploys a site with a missing or half-filled page. Data enrichment passes
+# (flights, milestones, routes, comments...) stay soft but are listed too.
+# --allow-partial turns critical failures back into warnings (local preview).
+_PASS_FAILURES: list[tuple[str, bool, str]] = []
+
+
+def _pass_failed(name: str, exc: BaseException, critical: bool = False) -> None:
+    """Record a failed build pass; critical ones also log the traceback."""
+    if critical:
+        log.error("%s failed: %s", name, exc, exc_info=exc)
+    else:
+        log.warning("%s failed: %s", name, exc)
+    _PASS_FAILURES.append((name, critical, f"{type(exc).__name__}: {exc}"))
+
+
+def report_pass_failures(allow_partial: bool = False) -> int:
+    """Log (and add to the GitHub step summary) every failed pass.
+
+    Returns the exit code: 1 when a critical pass failed and partial builds
+    are not allowed, else 0."""
+    if not _PASS_FAILURES:
+        return 0
+
 # Directory that contains this script (scripts/) and the project root (one level up)
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _PROJECT_ROOT = _SCRIPT_DIR.parent
@@ -278,6 +304,9 @@ if __name__ == "__main__":
                         help="Opt-in: also write the standalone travel-atlas journal "
                              "(scripts/gen_travel_atlas.py) to this path, built from the "
                              "same rows/stats/trips as the site. Needs --photos.")
+    parser.add_argument("--allow-partial", action="store_true",
+                        help="Do not exit 1 when a critical pass (a page generator, explore, "
+                             "post-process, SEO) throws; the failures are still summarised.")
     args = parser.parse_args()
 
     if not os.path.exists(args.input):
@@ -437,7 +466,7 @@ if __name__ == "__main__":
             from flights import load_flights as _lf_days
             _flight_days = sorted({f["date"] for f in _lf_days(_flights_csv) if f.get("date")})
         except Exception as _fde:
-            log.warning("flight days for feed_meta failed: %s", _fde)
+            _pass_failed("flight days for feed_meta", _fde)
     generate_feed_meta(rows, args.output_dir, _flight_days)
 
     trip_names_path = config_dir / "trip_names.json"
@@ -490,7 +519,7 @@ if __name__ == "__main__":
             from flights import load_flights as _lf_metrics
             _metrics_flights = _lf_metrics(_metrics_flights_csv)
         except Exception as _mfe:
-            log.warning("flights.csv load for metrics failed: %s", _mfe)
+            _pass_failed("flights.csv load for metrics", _mfe)
 
     log.info("Computing metrics (home=%s, min_checkins=%d) …", home_city, min_checkins)
     _name_report: dict = {}
@@ -498,11 +527,11 @@ if __name__ == "__main__":
     try:
         data["milestones"] = compute_milestones(rows, data.get("distance_from_home"))
     except Exception as _mse:
-        log.warning("milestones failed: %s", _mse)
+        _pass_failed("milestones", _mse)
     try:
         data["coverage"] = compute_coverage(rows, home_city, home_history)
     except Exception as _cve:
-        log.warning("coverage failed: %s", _cve)
+        _pass_failed("coverage", _cve)
     _scrobbles: list = []
     try:
         # Default: the data repo's file beside --input — every workflow that builds
@@ -564,7 +593,7 @@ if __name__ == "__main__":
                 json.dumps(_rmap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
             data["explore"]["regions"]["map"] = len(_rmap["features"])
     except Exception as _exe:
-        log.warning("explore failed: %s", _exe)
+        _pass_failed("explore", _exe, critical=True)
 
     # ── trip_names.json self-heal (see metrics/trip_names.py) ─────────────────
     # detect_trips already rendered the healed names; here the heal is logged,
@@ -608,7 +637,7 @@ if __name__ == "__main__":
             log.info("Flights: %d parsed | %d IATA airports resolved | %d check-ins matched",
                      len(_fl), len(_iata), len(flight_matches))
         except Exception as _fe:
-            log.warning("flights.csv load failed: %s", _fe)
+            _pass_failed("flights.csv load", _fe)
     else:
         log.info("No flights.csv at %s — Flight History card will be hidden", flights_path)
 
@@ -800,7 +829,7 @@ if __name__ == "__main__":
                         _x[_k]["thumb"] = _pix_dir_uri + "/t/" + _x[_k]["src"]
                 data["explore"]["then_now"] = _tn
         except Exception as _tne:
-            log.warning("then_now failed: %s", _tne)
+            _pass_failed("then_now", _tne)
 
     # ── Per-segment transport modes (trips map + feed) ───────────────────────
     # Attach checkin["m"] (arrival-mode char) to every trip check-in before
@@ -829,7 +858,7 @@ if __name__ == "__main__":
                  dict(_tm_counts.most_common()),
                  "self-trained" if _tm_model else "fallback to bands")
     except Exception as _tme:
-        log.warning("transport-mode classification failed: %s", _tme)
+        _pass_failed("transport-mode classification", _tme)
 
     # ── GPS-like route geometry for trip-map segments + feed day legs ─────────
     # Fetch real street/rail paths (FOSSGIS OSRM + BRouter) for mode-tagged
@@ -868,7 +897,7 @@ if __name__ == "__main__":
             log.info("Route geometry: %d trip segments + %d check-in legs routed (cache %s: %d entries)",
                      len(_routes), len(_all_routes), args.routes_cache, len(_rc.data))
         except Exception as _rpe:
-            log.warning("route-geometry attachment failed: %s", _rpe)
+            _pass_failed("route-geometry attachment", _rpe)
     os.makedirs(args.output_dir, exist_ok=True)
     # Feed day routes, one shard per UTC month of the leg's arrival:
     # routes_m_<YYYY-MM>.json  {"tsA-tsB": [polyline5, km]}; the feed fetches the
@@ -1147,7 +1176,7 @@ if __name__ == "__main__":
             _lists_data_json = json.dumps(_lists_out, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
             log.info("Loaded %d lists from %s", len(_lists_out), lists_path)
         except Exception as _le:
-            log.warning("Failed to load lists.json: %s", _le)
+            _pass_failed("lists.json load", _le)
     else:
         log.info("lists.json not found at %s — skipping lists.html", lists_path)
 
@@ -1175,7 +1204,7 @@ if __name__ == "__main__":
                 )
                 log.info("Anomalies: %d duplicate pair(s)", _n_dup)
         except Exception as _ae:
-            log.warning("Failed to load anomalies: %s", _ae)
+            _pass_failed("anomalies", _ae)
 
     # ── Extract shouts, then merge per-check-in comment threads ─────────────────
     # comments.json (reply threads under check-ins, distinct from shouts) lives
@@ -1194,7 +1223,7 @@ if __name__ == "__main__":
                 _comments_path.read_text(encoding="utf-8")
             ).get("comments", {}) or {}
         except Exception as _ce:  # noqa: BLE001
-            log.warning("Could not read %s (%s) — comments won't render", _comments_path, _ce)
+            _pass_failed(f"comments ({_comments_path.name})", _ce)
     shouts_for_page = _merge_comments(all_shouts, rows, _comments_map)
     _n_threads = sum(1 for s in shouts_for_page if s.get("comments"))
     log.info("Shouts page: %d entr(y/ies), %d with comment threads (%d comment-only)",
@@ -1328,7 +1357,7 @@ if __name__ == "__main__":
                 )
                 _gen_outputs.append(os.path.join(args.output_dir, gen_out))
             except Exception as _e:
-                log.warning("Generator %s failed: %s", gen_script.name, _e)
+                _pass_failed(gen_script.name, _e, critical=True)
         else:
             log.warning("Generator not found: %s", gen_script)
 
@@ -1357,7 +1386,7 @@ if __name__ == "__main__":
                 iata_coords=_iata2,
             )
         except Exception as _fle:
-            log.warning("gen_flights failed: %s", _fle)
+            _pass_failed("gen_flights", _fle, critical=True)
 
     # ── Generate years.html (overview index of year cards) ──────────────────
     _gen_yix = _SCRIPT_DIR / "gen_years_index.py"
@@ -1376,7 +1405,7 @@ if __name__ == "__main__":
                 rows=rows, pix_url=_pix_dir_uri,
             )
         except Exception as _yie:
-            log.warning("gen_years_index failed: %s", _yie)
+            _pass_failed("gen_years_index", _yie, critical=True)
 
     _culture: dict = {}   # no IMDb/Vivino/Last.fm sources on this site
 
@@ -1406,7 +1435,7 @@ if __name__ == "__main__":
                     _music_by_year = _lf_music.get("years", {}) or {}
                     log.info("Last.fm: %d years of scrobble stats loaded", len(_music_by_year))
                 except Exception as _lfe:
-                    log.warning("lastfm_years.json load failed: %s", _lfe)
+                    _pass_failed("lastfm_years.json load", _lfe)
             _mod_y.build_page(
                 csv_path=args.input,
                 config_dir=str(config_dir),
@@ -1423,7 +1452,7 @@ if __name__ == "__main__":
                 culture_by_year=_culture.get("years", {}),
             )
         except Exception as _ye:
-            log.warning("gen_year_pages failed: %s", _ye)
+            _pass_failed("gen_year_pages", _ye, critical=True)
 
     # ── Generate country-<slug>.html per-country pages ──────────────────────────
     _gen_ctry = _SCRIPT_DIR / "gen_country_pages.py"
@@ -1451,7 +1480,7 @@ if __name__ == "__main__":
                                 else _beside_input(args, "boundaries.json")) and _bnd.exists() else None),
             )
         except Exception as _ce:
-            log.warning("gen_country_pages failed: %s", _ce)
+            _pass_failed("gen_country_pages", _ce, critical=True)
 
     # ── Generate venue.html + venue_data_<xx>.json shards ──────────────────────
     _gen_venue = _SCRIPT_DIR / "gen_venue_page.py"
@@ -1470,7 +1499,7 @@ if __name__ == "__main__":
                 likes_by_checkin=_checkin_likes,
             )
         except Exception as _ve:
-            log.warning("gen_venue_page failed: %s", _ve)
+            _pass_failed("gen_venue_page", _ve, critical=True)
 
     # ── Generate compare.html + year_facts.json (years / home eras side by side) ─
     _gen_cmp = _SCRIPT_DIR / "gen_compare.py"
@@ -1493,7 +1522,7 @@ if __name__ == "__main__":
                 pix_url=_pix_dir_uri,
             )
         except Exception as _cmpe:
-            log.warning("gen_compare failed: %s", _cmpe)
+            _pass_failed("gen_compare", _cmpe, critical=True)
 
     # ── Generate life.html + life_data.json ("Life in stripes") ─────────────────
     _gen_life = _SCRIPT_DIR / "gen_life.py"
@@ -1518,7 +1547,7 @@ if __name__ == "__main__":
                 country_total=len(data['countries']),
             )
         except Exception as _le:
-            log.warning("gen_life failed: %s", _le)
+            _pass_failed("gen_life", _le, critical=True)
 
     # ── Link city names to city-<slug>.html (gen_country_pages fills data["city_pages"]) ──
     _city_pages_json = json.dumps(data.get("city_pages") or {}, ensure_ascii=False, separators=(",", ":"))
@@ -1549,7 +1578,7 @@ if __name__ == "__main__":
             if _dirty:
                 _p.write_text(_txt, encoding="utf-8")
         except Exception as _e:
-            log.warning("post-process substitution failed for %s: %s", _out_file, _e)
+            _pass_failed(f"post-process substitution ({_out_file})", _e, critical=True)
 
     # ── Generate photos.html (all photos gallery) ────────────────────────────
     if args.photos and _photos_by_checkin:
@@ -1584,7 +1613,7 @@ if __name__ == "__main__":
                     if _dirty:
                         _photos_html.write_text(_txt, encoding="utf-8")
             except Exception as _e:
-                log.warning("gen_photos.py failed: %s", _e)
+                _pass_failed("gen_photos.py", _e, critical=True)
         else:
             log.warning("gen_photos.py not found — skipping photos.html")
 
@@ -1748,7 +1777,7 @@ if __name__ == "__main__":
                                 swarm_user_id=fs_user_id)
             log.info("Syndication: feed.xml + feed.json written")
     except Exception as _fe:
-        log.warning("gen_feeds failed: %s", _fe)
+        _pass_failed("gen_feeds", _fe, critical=True)
 
     # ── Search engines + link previews (seo.py) ───────────────────────────────
     # Extensionless canonical URLs (Pages 308s every *.html), og:image + the
@@ -1766,7 +1795,7 @@ if __name__ == "__main__":
         log.info("SEO: %d pages finished, sitemap %d URLs, og card %s",
                  _seo_n["pages"], _seo_n["sitemap"], "written" if _seo_n["card"] else "skipped")
     except Exception as _seo_e:
-        log.warning("seo pass failed: %s", _seo_e)
+        _pass_failed("seo", _seo_e, critical=True)
 
     # ── Opt-in: standalone travel-atlas journal (gen_travel_atlas.py) ──────────
     # Written last, after the PWA/placeholder passes, so the file stays a clean
@@ -1783,6 +1812,9 @@ if __name__ == "__main__":
                      args.travel_atlas_out, _ta_meta["checkins"], _ta_meta["countries"],
                      _ta_meta["trips"], _ta_meta["photos"])
         except Exception as _tae:
-            log.warning("gen_travel_atlas failed: %s", _tae)
+            _pass_failed("gen_travel_atlas", _tae)
 
+    _rc = report_pass_failures(args.allow_partial)
+    if _rc:
+        sys.exit(_rc)
     log.info("Done!")
