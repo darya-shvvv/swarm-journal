@@ -398,6 +398,58 @@ def _ts(r: dict) -> int:
 
 # ── Row-level transforms ───────────────────────────────────────────────────────
 
+#: Raw city names that are a PART of some city, not a place of their own:
+#: "Downtown" is Cairo's centre in city_merge, but Foursquare labels the centre of
+#: Alexandria the same way. Such a merge only holds near the city it names.
+GENERIC_CITY_NAMES = frozenset({
+    "downtown", "centre", "center", "centro", "city centre", "city center", "old town",
+    "old city", "medina", "wust el-balad", "centrum", "stare miasto", "altstadt", "midtown",
+})
+GENERIC_MERGE_KM = 50
+LIVE_CITY_MIN = 2
+
+
+LivePoints = dict[str, dict[tuple[int, int], list[tuple[float, float, str]]]]
+
+
+def live_city_points(rows: list[dict], skip: set[int] | frozenset[int] = frozenset()) -> LivePoints:
+    """Where your real check-ins say each city is: {country: {1-degree bucket:
+    [(lat, lng, city)]}}, one point per ~1 km cell (its most common city). A blank
+    row then takes the city of the NEAREST real check-in, not of the nearest city
+    centre, which inside a big city (Minsk) is often a suburb's. Cities named by
+    fewer than LIVE_CITY_MIN check-ins, inferred rows and whole-country check-ins
+    do not count."""
+    cells: dict[tuple[str, int, int], Counter] = defaultdict(Counter)
+    per_city: Counter = Counter()
+    for i, r in enumerate(rows):
+        if i in skip or not r.get("city") or r.get("city_inferred") == "1":
+            continue
+        if (r.get("category") or "").strip() in _COUNTRY_LEVEL:
+            continue
+        try:
+            la, ln = float(r["lat"]), float(r["lng"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        cells[(r.get("country", ""), round(la * 100), round(ln * 100))][r["city"]] += 1
+        per_city[(r["city"], r.get("country", ""))] += 1
+    out: LivePoints = defaultdict(lambda: defaultdict(list))
+    for (country, la100, ln100), cnt in cells.items():
+        city = next((c for c, _ in cnt.most_common() if per_city[(c, country)] >= LIVE_CITY_MIN), None)
+        if city:
+            la, ln = la100 / 100, ln100 / 100
+            out[country][(math.floor(la), math.floor(ln))].append((la, ln, city))
+    return out
+
+
+def live_near(live: LivePoints | None, country: str, lat: float, lng: float) -> list[tuple[float, float, str]]:
+    """The live points of `country` in the 3x3 one-degree buckets around a spot."""
+    b = (live or {}).get(country)
+    if not b:
+        return []
+    la, ln = math.floor(lat), math.floor(lng)
+    return [p for dl in (-1, 0, 1) for dn in (-1, 0, 1) for p in b.get((la + dl, ln + dn), [])]
+
+
 def apply_transforms(
     rows: list[dict],
     mappings: dict[str, Any],
@@ -421,7 +473,9 @@ def apply_transforms(
     blank_filled  = 0
     malformed_dates = 0
 
-    for row in rows:
+    generic: list[int] = []          # merged from a generic name ("Downtown"), checked by distance
+
+    for _idx, row in enumerate(rows):
         ts = row.get("date", "").strip()
 
         # Per-check-in companion override (companion_fixes.json), keyed by
@@ -518,14 +572,33 @@ def apply_transforms(
                 row["city_inferred"] = "1"
         elif city_normalised in city_merge:
             row["city"] = city_merge[city_normalised]
+            if city_normalised.lower() in GENERIC_CITY_NAMES:
+                generic.append(_idx)
         elif city in city_merge:
             row["city"] = city_merge[city]
+            if city.lower() in GENERIC_CITY_NAMES:
+                generic.append(_idx)
 
         row.setdefault("city_inferred", "0")
 
         # Validate date
         if ts and not ts.lstrip("-").isdigit():
             malformed_dates += 1
+
+    if generic:
+        # "Downtown" -> Cairo holds in Cairo; downtown Alexandria goes back to blank
+        # and is inferred from its neighbours like any blank row.
+        live = live_city_points(rows, skip=set(generic))
+        for i in generic:
+            r = rows[i]
+            try:
+                la, ln = float(r["lat"]), float(r["lng"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            near = [_haversine(la, ln, a, b) for a, b, c in live_near(live, r.get("country", ""), la, ln)
+                    if c == r["city"]]
+            if not near or min(near) > GENERIC_MERGE_KM:
+                r["city"] = ""
 
     if blank_city_resolver is not None:
         blank_filled += _fill_blank_from_neighbours(
@@ -557,7 +630,8 @@ _COUNTRY_LEVEL = frozenset({"Country", "State"})
 def drop_foreign_city_on_country_rows(rows: list[dict]) -> int:
     """Blank the city of a whole-country check-in when that city is another country's.
 
-    A city's country is the one most of its check-ins carry. Returns the count."""
+    The city is kept when some real (non-country) check-in places it in this same
+    country — a border twin like Sculeni exists on both sides. Returns the count."""
     votes: dict[str, Counter] = defaultdict(Counter)
     for r in rows:
         if r.get("city") and (r.get("category") or "").strip() not in _COUNTRY_LEVEL:
@@ -568,7 +642,7 @@ def drop_foreign_city_on_country_rows(rows: list[dict]) -> int:
         if not city or (r.get("category") or "").strip() not in _COUNTRY_LEVEL:
             continue
         v = votes.get(city)
-        if v and v.most_common(1)[0][0] != r.get("country", ""):
+        if v and not v.get(r.get("country", "")):
             r["city"] = ""
             n += 1
     return n
