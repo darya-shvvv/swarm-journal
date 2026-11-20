@@ -27,6 +27,9 @@ a{color:var(--teal);}
 .kpi-num.sm{font-size:1.15rem;padding:.3rem 0;white-space:nowrap;}
 .kpi-lbl{font-family:'DM Mono',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-top:7px;}
 section{margin-top:48px;}
+.rhythm{margin-top:6px;font-size:.88rem;color:var(--muted);line-height:1.7;}
+.rhythm b{color:var(--text);font-weight:500;}
+.rh-h{font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);margin-right:10px;}
 .sec-h{font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;}
 .bars{display:flex;align-items:flex-end;gap:5px;height:140px;padding:8px 0;overflow-x:auto;overflow-y:hidden;}
 .bar-col{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto;min-width:30px;}
@@ -101,7 +104,7 @@ details[open] .yr-arrow{transform:rotate(90deg);}
 .note{color:var(--muted);font-size:.85rem;margin-top:24px;}
 @media(max-width:600px){.wrap{padding:78px 16px 90px;}.log{padding:2px 12px 12px;}.vr{grid-template-columns:52px 1fr auto;gap:0 10px;}.vr-x{font-size:.84rem;}.vr-p span{width:42px;height:32px;}.vr-p span:nth-child(n+3){display:none;}.vr-p i.m2{display:flex;}.yr-strip{display:none;}}
 </style>
-<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\/pix\/(?!t\/)/,'/pix/t/'):u};addEventListener('error',function(e){var i=e.target;if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[style*="/pix/t/"]').forEach(function(el){var m=/url\(['"]?([^'")]*\/pix\/t\/[^'")]*)/.exec(el.style.backgroundImage||'');if(!m)return;var p=new Image();p.onerror=function(){el.style.backgroundImage="url('"+m[1].replace('/pix/t/','/pix/')+"')"};p.src=m[1]})})</script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script><meta property="og:title" content="Venue · Foursquare history"><meta property="og:url" content="https://swarm-journal.pages.dev/venue"><meta property="og:type" content="website"><meta property="og:description" content="Every visit to one place: when, how often, with whom."><meta property="og:site_name" content="Check-in Journal"><meta property="og:image" content="https://swarm-journal.pages.dev/og-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Venue · Foursquare history","url":"https://swarm-journal.pages.dev/venue","isPartOf":{"@type":"WebSite","name":"Check-in Journal","url":"https://swarm-journal.pages.dev/"},"description":"Every visit to one place: when, how often, with whom."}</script></head>
+<script data-thumbs>window.pixT=function(u){return u?String(u).replace(/\/pix\/(?!t\/)/,'/pix/t/'):u};addEventListener('error',function(e){var i=e.target;if(i&&i.tagName==='IMG'&&i.src.indexOf('/pix/t/')>0)i.src=i.src.replace('/pix/t/','/pix/')},true);addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[style*="/pix/t/"]').forEach(function(el){var m=/url\(['"]?([^'")]*\/pix\/t\/[^'")]*)/.exec(el.style.backgroundImage||'');if(!m)return;var p=new Image();p.onerror=function(){el.style.backgroundImage="url('"+m[1].replace('/pix/t/','/pix/')+"')"};p.src=m[1]})})</script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0b0d13"><script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script><script>addEventListener('keydown',function(e){var k=e.key==='/'&&!e.ctrlKey&&!e.metaKey&&!e.altKey,c=(e.ctrlKey||e.metaKey)&&e.key==='k';if(!k&&!c)return;var t=e.target,n=t&&t.tagName;if(k&&(n==='INPUT'||n==='TEXTAREA'||n==='SELECT'||(t&&t.isContentEditable)))return;if(window.openSearch){if(k){e.preventDefault();window.openSearch()}return}var q=document.getElementById('qInput');e.preventDefault();if(q){q.focus();q.select()}else location.href='/search.html'})</script><meta property="og:title" content="Venue · Foursquare history"><meta property="og:url" content="https://swarm-journal.pages.dev/venue"><meta property="og:type" content="website"><meta property="og:description" content="Every visit to one place: when, how often, with whom."><meta property="og:site_name" content="Check-in Journal"><meta property="og:image" content="https://swarm-journal.pages.dev/og-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Venue · Foursquare history","url":"https://swarm-journal.pages.dev/venue","isPartOf":{"@type":"WebSite","name":"Check-in Journal","url":"https://swarm-journal.pages.dev/"},"description":"Every visit to one place: when, how often, with whom."}</script></head>
 <body>
 <a class="crumb" href="/index.html">← dashboard</a>
 <div class="wrap" id="app"></div>
@@ -115,7 +118,7 @@ details[open] .yr-arrow{transform:rotate(90deg);}
 <script type="application/json" id="cityPages">{"Minsk":"minsk","Hrodna":"hrodna","Saint Petersburg":"saint-petersburg","Istanbul":"istanbul","Moscow":"moscow","Chișinău":"chisinau","Vitebsk":"vitebsk","Khiva":"khiva","Samarkand":"samarkand","Bukhara":"bukhara","Mogilev":"mogilev","Gomel":"gomel","Lida":"lida","Vyborg":"vyborg","Baranovichi":"baranovichi","Tashkent":"tashkent","Baku":"baku","Peterhof":"peterhof","Navahrudak":"navahrudak","Kronshtadt":"kronshtadt","Bender":"bender","Urgench":"urgench","Slonim":"slonim","Maladzyechna":"maladzyechna","Skidel":"skidel","Pushkin":"pushkin","Lomonosov":"lomonosov","Tiraspol":"tiraspol"}</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const VER = "3988bf62";
+const VER = "3a623e85";
 const PIX = "https://pub-ef0c742e8c7e437ea1081cd9a05586cd.r2.dev/pix";
 const TOP = [{"id": "561f9bb2498e17de8d4c3918", "name": "ZIKO", "city": "Minsk", "n": 188}, {"id": "677ec96fc6250d127346a70a", "name": "Соседи", "city": "Minsk", "n": 183}, {"id": "5003ed00e4b06c76d1847eb9", "name": "Комсомольская улица", "city": "Minsk", "n": 142}, {"id": "501ec326e4b0d43ab64feba1", "name": "Станция метро «Грушевка»", "city": "Minsk", "n": 122}, {"id": "5c840d62123a19002cfe2d68", "name": "Корона", "city": "Hrodna", "n": 104}, {"id": "553129c9498e0d5798414695", "name": "ZIKO", "city": "Hrodna", "n": 101}, {"id": "509a2cb0e4b07f27239bf268", "name": "Остановка «Улица Лермонтова»", "city": "Minsk", "n": 93}, {"id": "683fe17a6dc3736f7273e983", "name": "Остановка \"Поликлиника 7\"", "city": "Hrodna", "n": 92}, {"id": "62812542e322e92643404cd7", "name": "Улица Лермонтова", "city": "Minsk", "n": 91}, {"id": "4fe7762be4b0a0c3b0bf1679", "name": "Автобус №57", "city": "Minsk", "n": 89}, {"id": "5025061de4b06768d205a862", "name": "Улица Интернациональная", "city": "Minsk", "n": 75}, {"id": "4f5f7ef8e4b040463dc6f773", "name": "Остановка «Романовская слобода»", "city": "Minsk", "n": 56}, {"id": "4e1dcd7ab0fb93d2d065d2cb", "name": "Станция метро «Площадь Якуба Коласа»", "city": "Minsk", "n": 51}, {"id": "51150a68e4b0dff468e552fa", "name": "Автобус №23", "city": "Minsk", "n": 49}, {"id": "4e6fa859e4cdd991624c7a02", "name": "Привокзальная площадь (Прывакзальная плошча)", "city": "Minsk", "n": 46}, {"id": "4cfcdda9c671721e5abfca18", "name": "Станция метро «Площадь Ленина»", "city": "Minsk", "n": 43}, {"id": "4db07be48154905aadad6c40", "name": "Soviet Square (Советская площадь / Soviet Square)", "city": "Hrodna", "n": 42}, {"id": "60affcfdbc414b5b7f716144", "name": "Евроопт Hyper", "city": "Minsk", "n": 42}, {"id": "50e22181e4b0a78b098ccd2a", "name": "Улица Советская", "city": "Hrodna", "n": 41}, {"id": "51372453e4b027d7284f5ee2", "name": "Grushevka (Грушаўка)", "city": "Minsk", "n": 40}, {"id": "5079c6a8e4b07d24b09c30f2", "name": "Лермонтова 43", "city": "Minsk", "n": 39}, {"id": "5e0e1328452fe10008d6a841", "name": "Gym24 Грушевка", "city": "Minsk", "n": 38}, {"id": "509a502ae4b0dbacec0462f9", "name": "Сквер на Либкнехта", "city": "Minsk", "n": 35}, {"id": "4cfa42980df3236ab2aef2a9", "name": "Станция метро «Октябрьская» (Станцыя метро «Кастрычніцкая»)", "city": "Minsk", "n": 34}, {"id": "4c255dca905a0f4764796160", "name": "Minsk Railway Station (Чыгуначны вакзал «Мінск-Пасажырскі»)", "city": "Minsk", "n": 33}, {"id": "6838b928fa6eb2074304dcd2", "name": "Остановка \"Гаи\"", "city": "Hrodna", "n": 33}, {"id": "4c5ebb8499ff76b0aa0dcc9e", "name": "Minsk (Мінск)", "city": "Minsk", "n": 31}, {"id": "5db18bda9faee5000819b2f0", "name": "Санта", "city": "Hrodna", "n": 30}, {"id": "4e0184f21495692a4bb944ea", "name": "Площадь Франтишка Богушевича", "city": "Minsk", "n": 29}, {"id": "4ef70a26a17cdc15b39ff427", "name": "Станция метро «Немига»", "city": "Minsk", "n": 29}, {"id": "692d361fbf46a3652353a6e9", "name": "Изюм", "city": "Minsk", "n": 28}, {"id": "4f96d3107beb0b352afd447a", "name": "Розочка-Карлочка", "city": "Minsk", "n": 28}, {"id": "68f9f409b617f11917b026a1", "name": "Wildberries", "city": "Minsk", "n": 27}, {"id": "5ec6ea3d5ccc140008b90eb8", "name": "Привокзальная Площадь", "city": "Hrodna", "n": 27}, {"id": "5c91321ccad1b60039facf51", "name": "Kvartal", "city": "Minsk", "n": 26}, {"id": "4e7f174e9adfa4c4ab1a226b", "name": "Автовокзал «Центральный»", "city": "Minsk", "n": 26}, {"id": "4e00306e45dd1e4999da10a3", "name": "Grodno Railway Station (Чыгуначны вакзал)", "city": "Hrodna", "n": 24}, {"id": "4f5b7a71e4b01014b9d4baeb", "name": "Троллейбус №23", "city": "Minsk", "n": 24}, {"id": "512e3b52e4b0f2109a8ff201", "name": "Nemiga (Нямiга)", "city": "Minsk", "n": 23}, {"id": "4ebb7c21108143f083a3a9d8", "name": "Станция метро «Площадь Победы»", "city": "Minsk", "n": 23}];
 // {city: slug} for cities with a city-<slug>.html page; build.py fills the JSON block
@@ -179,6 +182,37 @@ function renderTop() {
       '<span class="rank-name">' + esc(t.name) + ' <span class="rank-sub">· ' + esc(t.city) + '</span></span>' +
       '<span class="rank-n">' + fmt(t.n) + '</span></a>').join('') + '</div></section>';
 }
+// "Your rhythm here", from the local visit times: the usual weekday and hour when
+// one stands out, how often (median gap between visit days), the years you kept
+// coming back without a break, and how long ago the last visit was.
+const DAYS = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
+function rhythm(rec, ix) {
+  if (rec.n < 3) return '';
+  const loc = rec.v.map(v => v[ix.local]).filter(Boolean).sort();
+  const dayOf = s => new Date(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+  const bits = [];
+  const wdN = Array(7).fill(0); loc.forEach(s => wdN[dayOf(s).getDay()]++);
+  const topWd = wdN.indexOf(Math.max(...wdN));
+  if (loc.length >= 5 && wdN[topWd] / loc.length >= 0.3) bits.push('mostly on <b>' + DAYS[topWd] + '</b>');
+  const hrs = rec.hours || [], tot = hrs.reduce((a, b) => a + b, 0);
+  let bh = -1, bn = 0;
+  for (let i = 0; i < 24; i++) { const n = hrs[i] + (hrs[(i + 1) % 24] || 0); if (n > bn) { bn = n; bh = i; } }
+  if (tot >= 5 && bn / tot >= 0.35) bits.push('around <b>' + String(bh).padStart(2, '0') + ':00–' + String((bh + 2) % 24).padStart(2, '0') + ':00</b>');
+  const days = [...new Set(loc.map(s => s.slice(0, 10)))].map(s => dayOf(s).getTime());
+  if (days.length >= 4) {
+    const gaps = days.slice(1).map((t, i) => Math.round((t - days[i]) / 864e5)).sort((a, b) => a - b);
+    const med = gaps[Math.floor(gaps.length / 2)];
+    if (med <= 60) bits.push('every <b>' + (med <= 1 ? 'day' : '~' + med + ' days') + '</b>');
+  }
+  const ys = [...new Set(loc.map(s => +s.slice(0, 4)))].sort();
+  let run = 1;
+  for (let i = ys.length - 1; i > 0 && ys[i] - ys[i - 1] === 1; i--) run++;
+  const y0 = ys[ys.length - run], y1 = ys[ys.length - 1];
+  if (run >= 3) bits.push(y1 >= new Date().getFullYear() - 1 ? 'a regular since <b>' + y0 + '</b>' : 'a regular <b>' + y0 + '–' + y1 + '</b>');
+  const ago = Math.floor((Date.now() - dayOf(loc[loc.length - 1]).getTime()) / 864e5);
+  if (ago >= 0) bits.push('last here <b>' + (ago === 0 ? 'today' : ago === 1 ? 'yesterday' : ago < 60 ? ago + ' days ago' : ago < 730 ? Math.round(ago / 30.4) + ' months ago' : Math.floor(ago / 365.25) + ' years ago') + '</b>');
+  return bits.length ? '<span class="rh-h">Your rhythm</span>' + bits.join(' · ') : '';
+}
 function render(id, rec, f) {
   const ix = Object.fromEntries(f.map((k, i) => [k, i]));
   const place = [rec.city, rec.country].filter(Boolean).join(', ');
@@ -193,6 +227,8 @@ function render(id, rec, f) {
     [[fmt(rec.n), rec.n === 1 ? 'visit' : 'visits'], [rec.first, 'first visit'], [rec.last, 'last visit'],
      [span, span === 1 ? 'year' : 'years span'], [fmt(rec.companions.length), 'companions'], [fmt(rec.photos), 'photos']]
       .map(([a, b]) => '<div class="kpi"><div class="kpi-num' + (/^\d{4}-/.test(a) ? ' sm' : '') + '">' + esc(a) + '</div><div class="kpi-lbl">' + esc(b) + '</div></div>').join('') + '</div>';
+  const rh = rhythm(rec, ix);
+  if (rh) h += '<div class="rhythm">' + rh + '</div>';
   if (rec.lat != null && rec.lng != null) h += '<section><div class="sec-h">Where</div><div id="map"></div></section>';
   if (yrs.length > 1) h += '<section><div class="sec-h">Visits per year</div>' + bars(yrs, '') + '</section>';
   if (rec.n > 2) h += '<section><div class="sec-h">Local hour of day</div>' + bars(rec.hours.map((n, i) => [String(i).padStart(2, '0'), n]), 'h') + '</section>';
